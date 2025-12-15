@@ -50,13 +50,7 @@
           "pdf_mapping": {
             "field": "Renouvellement droits identiques"
           }
-        }
-      ]
-    },
-    {
-      "id": "aidant_familial",
-      "title": "Aidant familial",
-      "questions": [
+        },
         {
           "id": "q_aidant_familial",
           "type": "checkbox",

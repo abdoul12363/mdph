@@ -89,6 +89,21 @@ function renderInput(q, value) {
     return `<label class="choice"><input type="checkbox" id="answer" ${checked}/> ${q.label}</label>`;
   }
 
+  if (type === 'checkbox_multiple' && Array.isArray(q.options)) {
+    const selectedValues = Array.isArray(value) ? value : [];
+    
+    return `
+      <div class="choice-grid" id="answer">
+        ${q.options.map(opt => {
+          const optValue = opt.value || opt;
+          const optLabel = opt.label || opt;
+          const checked = selectedValues.includes(optValue) ? 'checked' : '';
+          return `<label class="choice"><input type="checkbox" name="multi_check" value="${optValue}" ${checked}/> ${optLabel}</label>`;
+        }).join('')}
+      </div>
+    `;
+  }
+
   if (type === 'radio' && Array.isArray(q.options)) {
     const defaultVal = q.defaultValue !== undefined ? q.defaultValue : '';
     const currentValue = value !== undefined ? value : defaultVal;
@@ -170,6 +185,11 @@ function getAnswerFromDom(q) {
     return el ? el.checked : false;
   }
   
+  if (type === 'checkbox_multiple') {
+    const checkedBoxes = document.querySelectorAll('input[name="multi_check"]:checked');
+    return Array.from(checkedBoxes).map(cb => cb.value);
+  }
+  
   if (type === 'radio') {
     const el = document.querySelector('input[name="opt"]:checked');
     return el ? el.value : '';
@@ -218,32 +238,74 @@ function render() {
     return;
   }
 
-  const value = responses[q.id];
-
-  $('questionArea').innerHTML = `
-    <h2 class="q-title">${q.label || q.libelle_plateforme || 'Question sans titre'}</h2>
-    ${renderInput(q, value)}
-  `;
-
-  // Ajouter les événements pour les champs radio_with_text
-  if (q.type === 'radio_with_text') {
-    const radioInputs = document.querySelectorAll('input[name="opt"]');
-    radioInputs.forEach(radio => {
-      radio.addEventListener('change', function() {
-        // Masquer tous les champs texte
-        const textFields = document.querySelectorAll('.text-field-inline');
-        textFields.forEach(field => field.style.display = 'none');
-        
-        // Afficher le champ texte correspondant si nécessaire
-        const selectedOption = q.options.find(opt => opt.value === this.value);
-        if (selectedOption && selectedOption.hasTextField) {
-          const textField = this.parentElement.nextElementSibling;
-          if (textField && textField.classList.contains('text-field-inline')) {
-            textField.style.display = 'block';
-          }
-        }
-      });
+  // Vérifier si cette question fait partie d'une section avec plusieurs questions
+  const currentSection = q.sectionTitle;
+  const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
+  
+  if (sectionQuestions.length > 1 && currentSection === "Type de demande") {
+    // Afficher toutes les questions de la section ensemble sans titre de section
+    let sectionHtml = '';
+    
+    sectionQuestions.forEach(sectionQ => {
+      const value = responses[sectionQ.id];
+      sectionHtml += `
+        <div class="question-item" data-question-id="${sectionQ.id}" style="margin-bottom: 15px;">
+          ${renderInput(sectionQ, value)}
+        </div>
+      `;
     });
+    
+    $('questionArea').innerHTML = sectionHtml;
+    
+    // Ajouter les événements pour tous les champs de la section
+    sectionQuestions.forEach(sectionQ => {
+      if (sectionQ.type === 'radio_with_text') {
+        const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
+        const radioInputs = questionDiv.querySelectorAll('input[name="opt"]');
+        radioInputs.forEach(radio => {
+          radio.addEventListener('change', function() {
+            const textFields = questionDiv.querySelectorAll('.text-field-inline');
+            textFields.forEach(field => field.style.display = 'none');
+            
+            const selectedOption = sectionQ.options.find(opt => opt.value === this.value);
+            if (selectedOption && selectedOption.hasTextField) {
+              const textField = this.parentElement.nextElementSibling;
+              if (textField && textField.classList.contains('text-field-inline')) {
+                textField.style.display = 'block';
+              }
+            }
+          });
+        });
+      }
+    });
+    
+  } else {
+    // Affichage normal pour une question seule
+    const value = responses[q.id];
+
+    $('questionArea').innerHTML = `
+      <h2 class="q-title">${q.label || q.libelle_plateforme || 'Question sans titre'}</h2>
+      ${renderInput(q, value)}
+    `;
+
+    // Ajouter les événements pour les champs radio_with_text
+    if (q.type === 'radio_with_text') {
+      const radioInputs = document.querySelectorAll('input[name="opt"]');
+      radioInputs.forEach(radio => {
+        radio.addEventListener('change', function() {
+          const textFields = document.querySelectorAll('.text-field-inline');
+          textFields.forEach(field => field.style.display = 'none');
+          
+          const selectedOption = q.options.find(opt => opt.value === this.value);
+          if (selectedOption && selectedOption.hasTextField) {
+            const textField = this.parentElement.nextElementSibling;
+            if (textField && textField.classList.contains('text-field-inline')) {
+              textField.style.display = 'block';
+            }
+          }
+        });
+      });
+    }
   }
 
   updateProgress();
@@ -253,29 +315,62 @@ function next() {
   const q = visible[idx];
   if (!q) return;
 
-  const answer = getAnswerFromDom(q);
-  if (!validateRequired(q, answer)) {
-    setStatus('Ce champ est obligatoire.');
-    return;
-  }
-
-  // normalisations
-  if (q.type_champ === 'oui_non') {
-    responses[q.id] = normalizeOuiNon(answer);
+  // Si on est dans une section avec plusieurs questions, récupérer toutes les réponses
+  const currentSection = q.sectionTitle;
+  const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
+  
+  if (sectionQuestions.length > 1 && currentSection === "Type de demande") {
+    // Sauvegarder toutes les réponses de la section
+    sectionQuestions.forEach(sectionQ => {
+      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
+      if (questionDiv) {
+        // Temporairement définir le contexte pour cette question
+        const originalAnswer = document.querySelector('#answer');
+        const sectionAnswer = questionDiv.querySelector('#answer, input[type="checkbox"]');
+        
+        if (sectionAnswer) {
+          // Créer temporairement un élément avec l'ID answer pour getAnswerFromDom
+          sectionAnswer.id = 'answer';
+          const answer = getAnswerFromDom(sectionQ);
+          responses[sectionQ.id] = answer;
+          
+          // Restaurer l'ID original
+          if (originalAnswer && originalAnswer !== sectionAnswer) {
+            sectionAnswer.removeAttribute('id');
+            originalAnswer.id = 'answer';
+          }
+        }
+      }
+    });
+    
+    // Passer à la section suivante (sauter toutes les questions de cette section)
+    const nextSectionIndex = visible.findIndex((q, i) => i > idx && q.sectionTitle !== currentSection);
+    if (nextSectionIndex !== -1) {
+      idx = nextSectionIndex;
+    } else {
+      idx = visible.length; // Fin du formulaire
+    }
   } else {
-    responses[q.id] = answer;
+    // Logique normale pour une question seule
+    const answer = getAnswerFromDom(q);
+    if (!validateRequired(q, answer)) {
+      setStatus('Ce champ est obligatoire.');
+      return;
+    }
+
+    // normalisations
+    if (q.type_champ === 'oui_non') {
+      responses[q.id] = normalizeOuiNon(answer);
+    } else {
+      responses[q.id] = answer;
+    }
+
+    idx++;
   }
 
   saveLocal(true);
-
-  refreshVisible();
-  if (idx < visible.length - 1) {
-    idx += 1;
-    render();
-    setStatus('');
-  } else {
-    setStatus('Fin du formulaire. Tu peux générer le PDF.');
-  }
+  render();
+  setStatus('');
 }
 
 function prev() {

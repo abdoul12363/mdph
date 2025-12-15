@@ -193,7 +193,7 @@
         },
         {
           "id": "q_contact_mdph",
-          "type": "checkbox",
+          "type": "checkbox_multiple",
           "label": "Si besoin, comment souhaitez-vous être contacté par la MDPH ?",
           "required": false,
           "options": [
