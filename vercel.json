@@ -2,46 +2,12 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "form.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "form.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "form.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "styles.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "data/*.json",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/*",
+      "src": "**/*.{html,js,css,json,png,svg,ico}",
       "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/form",
-      "dest": "/form.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "src": "/form", "dest": "/form.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
