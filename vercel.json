@@ -1,16 +1,16 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "form.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    }
+    { "src": "form.html", "use": "@vercel/static" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "form.js", "use": "@vercel/static" },
+    { "src": "form.css", "use": "@vercel/static" },
+    { "src": "styles.css", "use": "@vercel/static" },
+    { "src": "scripts/*.js", "use": "@vercel/static" },
+    { "src": "api/**/*.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/form.html" }
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
