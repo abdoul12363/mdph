@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Configuration des pages du formulaire CERFA MDPH",
+    "lastUpdated": "2025-12-15"
+  },
+  "pages": [
+    {
+      "id": "page1",
+      "title": "Type de demande et dossier existant",
+      "description": "Type de demande et informations sur un éventuel dossier existant",
+      "questionsFile": "pages/page1/questions_cerfa_page1.json",
+      "pdfMappingFile": "pages/page1/pdf_fields_order_page1.json",
+      "order": 1,
+      "required": true
+    },
+    {
+      "id": "page2",
+      "title": "Votre identité",
+      "description": "Identité et informations personnelles du demandeur",
+      "questionsFile": "pages/page2/questions_cerfa_page2.json",
+      "pdfMappingFile": "pages/page2/pdf_fields_order_page2.json",
+      "order": 2,
+      "required": true
+    }
+  ]
+}

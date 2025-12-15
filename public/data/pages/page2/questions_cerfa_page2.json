@@ -1,0 +1,352 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Formulaire CERFA MDPH - Page 2 - Identité et informations personnelles",
+    "lastUpdated": "2025-12-16",
+    "pageNumber": 2,
+    "pageTitle": "Votre identité"
+  },
+  "sections": [
+    {
+      "id": "identite_demandeur",
+      "title": "Identité de l'enfant ou de l'adulte concerné par la demande",
+      "description": "Renseignements obligatoires",
+      "questions": [
+        {
+          "id": "q_nom_naissance",
+          "type": "text",
+          "label": "Nom de naissance :",
+          "required": true,
+          "pdf_mapping": {
+            "field": "Nom de naissance p2"
+          }
+        },
+        {
+          "id": "q_nom_usage",
+          "type": "text",
+          "label": "Nom d'époux/se ou d'usage :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Nom d'usage p2"
+          }
+        },
+        {
+          "id": "q_prenoms",
+          "type": "text",
+          "label": "Prénoms :",
+          "required": true,
+          "pdf_mapping": {
+            "field": "Prénoms p2"
+          }
+        },
+        {
+          "id": "q_sexe",
+          "type": "radio",
+          "label": "Sexe :",
+          "required": true,
+          "defaultValue": "homme",
+          "options": [
+            {"value": "homme", "label": "Homme"},
+            {"value": "femme", "label": "Femme"}
+          ],
+          "pdf_mapping": {
+            "field": "sexe_p2",
+            "values": {
+              "homme": "Sexe H p2",
+              "femme": "Sexe F p2"
+            }
+          }
+        },
+        {
+          "id": "q_date_naissance",
+          "type": "date",
+          "label": "Date de naissance :",
+          "required": true,
+          "pdf_mapping": {
+            "field": ["DN J p2", "DN M p2", "DN A p2"]
+          }
+        },
+        {
+          "id": "q_commune_naissance",
+          "type": "text",
+          "label": "Commune de naissance :",
+          "required": true,
+          "pdf_mapping": {
+            "field": "Commune de naissance p2"
+          }
+        },
+        {
+          "id": "q_departement_naissance",
+          "type": "text",
+          "label": "Département :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Département de naissance p2"
+          }
+        },
+        {
+          "id": "q_pays_naissance",
+          "type": "radio_with_text",
+          "label": "Pays de naissance :",
+          "required": true,
+          "options": [
+            {"value": "france", "label": "France"},
+            {"value": "eee", "label": "Espace Économique Européen ou Suisse"},
+            {"value": "autre", "label": "Autre, préciser :", "hasTextField": true, "textFieldLabel": "Préciser le pays :"}
+          ],
+          "pdf_mapping": {
+            "field": "pays_naissance_p2",
+            "values": {
+              "france": "Pays de naissance France p2",
+              "autre": "Pays de naissance Autre préciser p2"
+            },
+            "textField": "Pays de naissance Autre p2"
+          }
+        },
+        {
+          "id": "q_nationalite",
+          "type": "radio",
+          "label": "Nationalité :",
+          "required": true,
+          "options": [
+            {"value": "francaise", "label": "Française"},
+            {"value": "eee", "label": "Espace Économique Européen ou Suisse"},
+            {"value": "autre", "label": "Autre"}
+          ],
+          "pdf_mapping": {
+            "field": "nationalite_p2",
+            "values": {
+              "francaise": "Nationalité f p2",
+              "eee": "Nationalité e p2",
+              "autre": "Nationalité autre p2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "adresse_contact",
+      "title": "Adresse et contact",
+      "questions": [
+        {
+          "id": "q_adresse",
+          "type": "text",
+          "label": "Adresse (numéro et rue) :",
+          "required": true,
+          "pdf_mapping": {
+            "field": "Adresse p2"
+          }
+        },
+        {
+          "id": "q_complement_adresse",
+          "type": "text",
+          "label": "Complément d'adresse (si besoin précisez le nom de la personne qui vous héberge) :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Complément d'adresse p2"
+          }
+        },
+        {
+          "id": "q_code_postal",
+          "type": "text",
+          "label": "Code postal :",
+          "required": true,
+          "pdf_mapping": {
+            "field": ["Code postal 1 p2", "Code postal 2 p2", "Code postal 3 p2", "Code postal 4 p2", "Code postal 5 p2"]
+          }
+        },
+        {
+          "id": "q_commune",
+          "type": "text",
+          "label": "Commune :",
+          "required": true,
+          "pdf_mapping": {
+            "field": "Commune p2"
+          }
+        },
+        {
+          "id": "q_pays",
+          "type": "text",
+          "label": "Pays :",
+          "required": true,
+          "pdf_mapping": {
+            "field": "Pays p2"
+          }
+        },
+        {
+          "id": "q_telephone",
+          "type": "text",
+          "label": "Téléphone :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Numéro de téléphone p2"
+          }
+        },
+        {
+          "id": "q_email",
+          "type": "email",
+          "label": "Adresse e-mail :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Adresse e-mail p2"
+          }
+        },
+        {
+          "id": "q_contact_mdph",
+          "type": "checkbox",
+          "label": "Si besoin, comment souhaitez-vous être contacté par la MDPH ?",
+          "required": false,
+          "options": [
+            {"value": "email", "label": "E-mail"},
+            {"value": "telephone", "label": "Appel téléphonique"},
+            {"value": "sms", "label": "SMS"},
+            {"value": "courrier", "label": "Courrier"}
+          ],
+          "pdf_mapping": {
+            "field": "contact_mdph_p2",
+            "values": {
+              "email": "E-mail p2",
+              "telephone": "Appel téléphonique p2",
+              "sms": "SMS p2",
+              "courrier": "Courrier p2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "securite_sociale",
+      "title": "Sécurité sociale et organismes",
+      "questions": [
+        {
+          "id": "q_numero_ss",
+          "type": "text",
+          "label": "Votre numéro de Sécurité Sociale :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "N° SS p2"
+          }
+        },
+        {
+          "id": "q_numero_ss_enfant",
+          "type": "text",
+          "label": "Si c'est votre enfant qui est concerné par la demande, indiquer son numéro de sécurité sociale :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "N° SS Enfant p2"
+          }
+        },
+        {
+          "id": "q_organisme_assurance",
+          "type": "radio_with_text",
+          "label": "Organisme d'assurance maladie :",
+          "required": false,
+          "options": [
+            {"value": "cpam", "label": "CPAM"},
+            {"value": "msa", "label": "MSA"},
+            {"value": "rsi", "label": "RSI"},
+            {"value": "autre", "label": "Autre (préciser)", "hasTextField": true, "textFieldLabel": "Préciser l'organisme :"}
+          ],
+          "pdf_mapping": {
+            "field": "organisme_assurance_p2",
+            "values": {
+              "cpam": "OAM CPAM p2",
+              "msa": "OAM MSA p2",
+              "rsi": "OAM RSI p2",
+              "autre": "OAM Autre p2"
+            },
+            "textField": "Organisme assurance maladie Autre p2"
+          }
+        },
+        {
+          "id": "q_organisme_prestations",
+          "type": "radio",
+          "label": "Organisme payeur de prestations familiales/RSA :",
+          "required": false,
+          "options": [
+            {"value": "caf", "label": "CAF"},
+            {"value": "msa", "label": "MSA"},
+            {"value": "autre", "label": "Autre"}
+          ],
+          "pdf_mapping": {
+            "field": "organisme_prestations_p2",
+            "values": {
+              "caf": "OP CAF p2",
+              "msa": "OP MSA p2",
+              "autre": "OP Autre p2"
+            }
+          }
+        },
+        {
+          "id": "q_numero_allocataire",
+          "type": "text",
+          "label": "N° d'allocataire :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Numéro d'allocataire p2"
+          }
+        },
+        {
+          "id": "q_nom_organisme",
+          "type": "text",
+          "label": "Nom de l'organisme :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Nom de l'organisme p2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "autorite_parentale",
+      "title": "Autorité parentale, délégation d'autorité parentale ou tutelle (pour les mineurs)",
+      "questions": [
+        {
+          "id": "q_parent1_nom",
+          "type": "text",
+          "label": "Parent 1 ou représentant légal 1 - Nom :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Représentant légal 1 Nom p2"
+          }
+        },
+        {
+          "id": "q_parent1_prenom",
+          "type": "text",
+          "label": "Parent 1 ou représentant légal 1 - Prénom :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Représentant légal 1 Prénom p2"
+          }
+        },
+        {
+          "id": "q_parent2_nom",
+          "type": "text",
+          "label": "Parent 2 ou représentant légal 2 - Nom :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Représentant légal 2 Nom p2"
+          }
+        },
+        {
+          "id": "q_parent2_prenom",
+          "type": "text",
+          "label": "Parent 2 ou représentant légal 2 - Prénom :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Représentant légal 2 Prénom p2"
+          }
+        },
+        {
+          "id": "q_qui_exerce_autorite",
+          "type": "text",
+          "label": "Qui exerce l'autorité parentale :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Qui exerce autorité parentale p2"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     const root = process.cwd();
 
     const pdfPath = path.join(root, 'Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
-    const questionsPath = path.join(root, 'data', 'questions_cerfa.json');
+    const questionsPath = path.join(root, 'public', 'data', 'pages', 'page1', 'questions_cerfa_page1.json');
 
     if (!fs.existsSync(pdfPath)) {
       res.statusCode = 500;
@@ -40,11 +40,21 @@ export default async function handler(req, res) {
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const form = pdfDoc.getForm();
 
-    for (const q of questionsData.questions) {
+    // Extraire toutes les questions de toutes les sections
+    const allQuestions = [];
+    if (questionsData.sections) {
+      for (const section of questionsData.sections) {
+        if (section.questions) {
+          allQuestions.push(...section.questions);
+        }
+      }
+    }
+
+    for (const q of allQuestions) {
       const answer = responses[q.id];
       if (answer === undefined || answer === null || answer === '') continue;
 
-      const map = q.pdf_field_name;
+      const map = q.pdf_mapping?.field || q.pdf_field_name;
 
       if (typeof map === 'string') {
         try {

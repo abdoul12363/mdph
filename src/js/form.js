@@ -72,15 +72,69 @@ function updateProgress() {
 }
 
 function renderInput(q, value) {
-  if (q.type_champ === 'texte_long') {
+  const type = q.type || q.type_champ;
+  
+  if (type === 'texte_long' || type === 'textarea') {
     return `<textarea class="input" id="answer" placeholder="Ta réponse...">${value ? String(value) : ''}</textarea>`;
   }
 
-  if (q.type_champ === 'date') {
+  if (type === 'date') {
     return `<input class="input" id="answer" type="date" value="${value ? String(value) : ''}" />`;
   }
 
-  if (q.type_champ === 'oui_non') {
+  if (type === 'checkbox') {
+    const defaultVal = q.defaultValue !== undefined ? q.defaultValue : false;
+    const currentValue = value !== undefined ? value : defaultVal;
+    const checked = currentValue ? 'checked' : '';
+    return `<label class="choice"><input type="checkbox" id="answer" ${checked}/> ${q.label}</label>`;
+  }
+
+  if (type === 'radio' && Array.isArray(q.options)) {
+    const defaultVal = q.defaultValue !== undefined ? q.defaultValue : '';
+    const currentValue = value !== undefined ? value : defaultVal;
+    const v = currentValue ? String(currentValue) : '';
+    
+    return `
+      <div class="choice-grid" id="answer">
+        ${q.options.map(opt => {
+          const optValue = opt.value || opt;
+          const optLabel = opt.label || opt;
+          const checked = optValue === v ? 'checked' : '';
+          return `<label class="choice"><input type="radio" name="opt" value="${optValue}" ${checked}/> ${optLabel}</label>`;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  if (type === 'radio_with_text' && Array.isArray(q.options)) {
+    const defaultVal = q.defaultValue !== undefined ? q.defaultValue : '';
+    const currentValue = value !== undefined ? value : defaultVal;
+    const v = currentValue ? String(currentValue) : '';
+    
+    let html = '<div class="choice-grid" id="answer">';
+    
+    q.options.forEach(opt => {
+      const optValue = opt.value || opt;
+      const optLabel = opt.label || opt;
+      const checked = optValue === v ? 'checked' : '';
+      
+      html += `<label class="choice"><input type="radio" name="opt" value="${optValue}" ${checked}/> ${optLabel}</label>`;
+      
+      // Ajouter le champ texte si cette option l'a
+      if (opt.hasTextField) {
+        const textFieldValue = responses[q.id + '_text'] || '';
+        const textFieldVisible = optValue === v ? 'block' : 'none';
+        html += `<div class="text-field-inline" style="display: ${textFieldVisible}; margin-left: 20px; margin-top: 5px;">
+          <input type="text" name="opt_text" placeholder="${opt.textFieldLabel || 'Préciser...'}" value="${textFieldValue}" class="input" style="width: 200px;"/>
+        </div>`;
+      }
+    });
+    
+    html += '</div>';
+    return html;
+  }
+
+  if (type === 'oui_non') {
     const v = normalizeOuiNon(value);
     const checkedOui = v === 'oui' ? 'checked' : '';
     const checkedNon = v === 'non' ? 'checked' : '';
@@ -92,7 +146,7 @@ function renderInput(q, value) {
     `;
   }
 
-  if (q.type_champ === 'choix_multiple' && Array.isArray(q.valeurs_possibles)) {
+  if (type === 'choix_multiple' && Array.isArray(q.valeurs_possibles)) {
     const v = value ? String(value) : '';
     return `
       <div class="choice-grid" id="answer">
@@ -109,12 +163,38 @@ function renderInput(q, value) {
 }
 
 function getAnswerFromDom(q) {
-  if (q.type_champ === 'oui_non') {
+  const type = q.type || q.type_champ;
+  
+  if (type === 'checkbox') {
+    const el = document.querySelector('#answer');
+    return el ? el.checked : false;
+  }
+  
+  if (type === 'radio') {
+    const el = document.querySelector('input[name="opt"]:checked');
+    return el ? el.value : '';
+  }
+  
+  if (type === 'radio_with_text') {
+    const el = document.querySelector('input[name="opt"]:checked');
+    const radioValue = el ? el.value : '';
+    
+    // Si l'option sélectionnée a un champ texte, récupérer aussi sa valeur
+    const textEl = document.querySelector('input[name="opt_text"]');
+    if (textEl && textEl.value.trim()) {
+      // Sauvegarder aussi la valeur du champ texte séparément
+      responses[q.id + '_text'] = textEl.value.trim();
+    }
+    
+    return radioValue;
+  }
+  
+  if (type === 'oui_non') {
     const el = document.querySelector('input[name="yn"]:checked');
     return el ? el.value : '';
   }
 
-  if (q.type_champ === 'choix_multiple') {
+  if (type === 'choix_multiple') {
     const el = document.querySelector('input[name="opt"]:checked');
     return el ? el.value : '';
   }
@@ -141,9 +221,30 @@ function render() {
   const value = responses[q.id];
 
   $('questionArea').innerHTML = `
-    <h2 class="q-title">${q.libelle_plateforme}</h2>
+    <h2 class="q-title">${q.label || q.libelle_plateforme || 'Question sans titre'}</h2>
     ${renderInput(q, value)}
   `;
+
+  // Ajouter les événements pour les champs radio_with_text
+  if (q.type === 'radio_with_text') {
+    const radioInputs = document.querySelectorAll('input[name="opt"]');
+    radioInputs.forEach(radio => {
+      radio.addEventListener('change', function() {
+        // Masquer tous les champs texte
+        const textFields = document.querySelectorAll('.text-field-inline');
+        textFields.forEach(field => field.style.display = 'none');
+        
+        // Afficher le champ texte correspondant si nécessaire
+        const selectedOption = q.options.find(opt => opt.value === this.value);
+        if (selectedOption && selectedOption.hasTextField) {
+          const textField = this.parentElement.nextElementSibling;
+          if (textField && textField.classList.contains('text-field-inline')) {
+            textField.style.display = 'block';
+          }
+        }
+      });
+    });
+  }
 
   updateProgress();
 }
@@ -223,10 +324,41 @@ async function boot() {
   loadSaved();
 
   try {
-    const r = await fetch('/data/questions_cerfa.json');
-    const data = await r.json();
-    // Accès aux questions via la nouvelle structure
-    allQuestions = data?.sections?.identite?.questions || [];
+    // Charger la configuration des pages
+    const pagesResponse = await fetch('/data/form_pages.json');
+    const pagesConfig = await pagesResponse.json();
+    
+    allQuestions = [];
+    
+    // Charger toutes les pages dans l'ordre
+    for (const pageConfig of pagesConfig.pages.sort((a, b) => a.order - b.order)) {
+      try {
+        const pageResponse = await fetch(`/data/${pageConfig.questionsFile}`);
+        const pageData = await pageResponse.json();
+        
+        console.log(`📄 Chargement de ${pageConfig.title}...`);
+        
+        if (pageData?.sections) {
+          for (const section of pageData.sections) {
+            if (section.questions) {
+              // Ajouter l'info de la page à chaque question
+              const questionsWithPage = section.questions.map(q => ({
+                ...q,
+                pageId: pageConfig.id,
+                pageTitle: pageConfig.title,
+                sectionTitle: section.title
+              }));
+              allQuestions.push(...questionsWithPage);
+            }
+          }
+        }
+      } catch (pageError) {
+        console.error(`Erreur lors du chargement de ${pageConfig.title}:`, pageError);
+      }
+    }
+    
+    console.log(`✅ ${allQuestions.length} questions chargées depuis ${pagesConfig.pages.length} pages`);
+    
     if (!Array.isArray(allQuestions)) {
       console.error('Format de questions invalide :', allQuestions);
       allQuestions = [];

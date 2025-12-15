@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Formulaire CERFA MDPH - Page 1 - Type de demande et dossier existant",
+    "lastUpdated": "2025-12-15",
+    "pageNumber": 1,
+    "pageTitle": "Type de demande et dossier existant"
+  },
+  "sections": [
+    {
+      "id": "type_demande",
+      "title": "Type de demande",
+      "questions": [
+        {
+          "id": "q_premiere_demande",
+          "type": "checkbox",
+          "label": "C'est ma première demande à la MDPH",
+          "required": false,
+          "defaultValue": false,
+          "pdf_mapping": {
+            "field": "Première demande à la MDPH"
+          }
+        },
+        {
+          "id": "q_situation_changee",
+          "type": "checkbox",
+          "label": "Ma situation médicale, administrative, familiale ou mon projet a changé",
+          "required": false,
+          "defaultValue": false,
+          "pdf_mapping": {
+            "field": "Ma situation a changé"
+          }
+        },
+        {
+          "id": "q_reevaluation",
+          "type": "checkbox",
+          "label": "Je souhaite une réévaluation de ma situation et/ou une révision de mes droits",
+          "required": false,
+          "defaultValue": false,
+          "pdf_mapping": {
+            "field": "Réévaluation de ma situation"
+          }
+        },
+        {
+          "id": "q_renouvellement",
+          "type": "checkbox",
+          "label": "Je souhaite le renouvellement de mes droits à l'identique car j'estime que ma situation n'a pas changé",
+          "required": false,
+          "defaultValue": false,
+          "pdf_mapping": {
+            "field": "Renouvellement droits identiques"
+          }
+        }
+      ]
+    },
+    {
+      "id": "aidant_familial",
+      "title": "Aidant familial",
+      "questions": [
+        {
+          "id": "q_aidant_familial",
+          "type": "checkbox",
+          "label": "Votre aidant familial (la personne qui s'occupe de vous au quotidien) souhaite exprimer sa situation et ses besoins",
+          "required": false,
+          "defaultValue": false,
+          "pdf_mapping": {
+            "field": "Aidant familial souhaite exprimer sa situation"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dossier_existant",
+      "title": "Dossier existant à la MDPH",
+      "questions": [
+        {
+          "id": "q_dossier_existant",
+          "type": "oui_non",
+          "label": "Avez-vous déjà un dossier à la MDPH ?",
+          "required": true,
+          "pdf_mapping": {
+            "field": "Oui, j'ai déja un dossier à la MDPH"
+          }
+        },
+        {
+          "id": "q_departement",
+          "type": "text",
+          "label": "Dans quel département ?",
+          "required": true,
+          "condition_affichage": "q_dossier_existant === 'oui'",
+          "pdf_mapping": {
+            "field": "Indiquer dans quel département"
+          }
+        },
+        {
+          "id": "q_numero_dossier",
+          "type": "text",
+          "label": "Numéro de dossier :",
+          "required": true,
+          "condition_affichage": "q_dossier_existant === 'oui'",
+          "pdf_mapping": {
+            "field": "Numéro de dossier"
+          }
+        }
+      ]
+    }
+  ]
+}

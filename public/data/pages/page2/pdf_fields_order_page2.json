@@ -1,0 +1,300 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Ordre des champs PDF pour la page 2 - Identité et informations personnelles",
+    "lastUpdated": "2025-12-16",
+    "pageNumber": 2
+  },
+  "fields_order": [
+    "Nom de naissance p2",
+    "Nom d'usage p2",
+    "Prénoms p2",
+    "Sexe H p2",
+    "Sexe F p2",
+    "DN J p2",
+    "DN M p2", 
+    "DN A p2",
+    "Commune de naissance p2",
+    "Département de naissance p2",
+    "Pays de naissance France p2",
+    "Pays de naissance Autre préciser p2",
+    "Pays de naissance Autre p2",
+    "Nationalité f p2",
+    "Nationalité e p2",
+    "Nationalité autre p2",
+    "Adresse p2",
+    "Complément d'adresse p2",
+    "Code postal 1 p2",
+    "Code postal 2 p2",
+    "Code postal 3 p2",
+    "Code postal 4 p2",
+    "Code postal 5 p2",
+    "Commune p2",
+    "Pays p2",
+    "Numéro de téléphone p2",
+    "Adresse e-mail p2",
+    "E-mail p2",
+    "Appel téléphonique p2",
+    "SMS p2",
+    "Courrier p2",
+    "N° SS p2",
+    "N° SS Enfant p2",
+    "OAM CPAM p2",
+    "OAM MSA p2",
+    "OAM RSI p2",
+    "OAM Autre p2",
+    "Organisme assurance maladie Autre p2",
+    "OP CAF p2",
+    "OP MSA p2",
+    "OP Autre p2",
+    "Numéro d'allocataire p2",
+    "Nom de l'organisme p2",
+    "Représentant légal 1 Nom p2",
+    "Représentant légal 1 Prénom p2",
+    "Représentant légal 2 Nom p2",
+    "Représentant légal 2 Prénom p2",
+    "Qui exerce autorité parentale p2"
+  ],
+  "field_mappings": {
+    "Nom de naissance p2": {
+      "type": "text",
+      "required": true,
+      "description": "Nom de naissance"
+    },
+    "Nom d'usage p2": {
+      "type": "text",
+      "required": false,
+      "description": "Nom d'époux/se ou d'usage"
+    },
+    "Prénoms p2": {
+      "type": "text",
+      "required": true,
+      "description": "Prénoms"
+    },
+    "Sexe H p2": {
+      "type": "radio",
+      "required": true,
+      "description": "Sexe - Homme"
+    },
+    "Sexe F p2": {
+      "type": "radio",
+      "required": true,
+      "description": "Sexe - Femme"
+    },
+    "DN J p2": {
+      "type": "text",
+      "required": true,
+      "description": "Date de naissance - Jour"
+    },
+    "DN M p2": {
+      "type": "text",
+      "required": true,
+      "description": "Date de naissance - Mois"
+    },
+    "DN A p2": {
+      "type": "text",
+      "required": true,
+      "description": "Date de naissance - Année"
+    },
+    "Commune de naissance p2": {
+      "type": "text",
+      "required": true,
+      "description": "Commune de naissance"
+    },
+    "Département de naissance p2": {
+      "type": "text",
+      "required": false,
+      "description": "Département de naissance"
+    },
+    "Pays de naissance France p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Pays de naissance - France"
+    },
+    "Pays de naissance Autre préciser p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Pays de naissance - Autre à préciser"
+    },
+    "Pays de naissance Autre p2": {
+      "type": "text",
+      "required": false,
+      "description": "Pays de naissance - Autre (texte)"
+    },
+    "Nationalité f p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Nationalité française"
+    },
+    "Nationalité e p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Nationalité EEE"
+    },
+    "Nationalité autre p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Autre nationalité"
+    },
+    "Adresse p2": {
+      "type": "text",
+      "required": true,
+      "description": "Adresse (numéro et rue)"
+    },
+    "Complément d'adresse p2": {
+      "type": "text",
+      "required": false,
+      "description": "Complément d'adresse"
+    },
+    "Code postal 1 p2": {
+      "type": "text",
+      "required": true,
+      "description": "Code postal - 1er chiffre"
+    },
+    "Code postal 2 p2": {
+      "type": "text",
+      "required": true,
+      "description": "Code postal - 2ème chiffre"
+    },
+    "Code postal 3 p2": {
+      "type": "text",
+      "required": true,
+      "description": "Code postal - 3ème chiffre"
+    },
+    "Code postal 4 p2": {
+      "type": "text",
+      "required": true,
+      "description": "Code postal - 4ème chiffre"
+    },
+    "Code postal 5 p2": {
+      "type": "text",
+      "required": true,
+      "description": "Code postal - 5ème chiffre"
+    },
+    "Commune p2": {
+      "type": "text",
+      "required": true,
+      "description": "Commune"
+    },
+    "Pays p2": {
+      "type": "text",
+      "required": true,
+      "description": "Pays"
+    },
+    "Numéro de téléphone p2": {
+      "type": "text",
+      "required": false,
+      "description": "Numéro de téléphone"
+    },
+    "Adresse e-mail p2": {
+      "type": "email",
+      "required": false,
+      "description": "Adresse e-mail"
+    },
+    "E-mail p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Contact par e-mail"
+    },
+    "Appel téléphonique p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Contact par téléphone"
+    },
+    "SMS p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Contact par SMS"
+    },
+    "Courrier p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Contact par courrier"
+    },
+    "N° SS p2": {
+      "type": "text",
+      "required": false,
+      "description": "Numéro de Sécurité Sociale"
+    },
+    "N° SS Enfant p2": {
+      "type": "text",
+      "required": false,
+      "description": "Numéro de Sécurité Sociale de l'enfant"
+    },
+    "OAM CPAM p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Organisme assurance maladie - CPAM"
+    },
+    "OAM MSA p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Organisme assurance maladie - MSA"
+    },
+    "OAM RSI p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Organisme assurance maladie - RSI"
+    },
+    "OAM Autre p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Organisme assurance maladie - Autre"
+    },
+    "Organisme assurance maladie Autre p2": {
+      "type": "text",
+      "required": false,
+      "description": "Autre organisme assurance maladie (texte)"
+    },
+    "OP CAF p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Organisme prestations - CAF"
+    },
+    "OP MSA p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Organisme prestations - MSA"
+    },
+    "OP Autre p2": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Organisme prestations - Autre"
+    },
+    "Numéro d'allocataire p2": {
+      "type": "text",
+      "required": false,
+      "description": "Numéro d'allocataire"
+    },
+    "Nom de l'organisme p2": {
+      "type": "text",
+      "required": false,
+      "description": "Nom de l'organisme"
+    },
+    "Représentant légal 1 Nom p2": {
+      "type": "text",
+      "required": false,
+      "description": "Parent 1 - Nom"
+    },
+    "Représentant légal 1 Prénom p2": {
+      "type": "text",
+      "required": false,
+      "description": "Parent 1 - Prénom"
+    },
+    "Représentant légal 2 Nom p2": {
+      "type": "text",
+      "required": false,
+      "description": "Parent 2 - Nom"
+    },
+    "Représentant légal 2 Prénom p2": {
+      "type": "text",
+      "required": false,
+      "description": "Parent 2 - Prénom"
+    },
+    "Qui exerce autorité parentale p2": {
+      "type": "text",
+      "required": false,
+      "description": "Qui exerce l'autorité parentale"
+    }
+  }
+}

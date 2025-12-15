@@ -8,6 +8,7 @@
     "dev": "node scripts/dev_server.js"
   },
   "dependencies": {
-    "pdf-lib": "^1.17.1"
+    "pdf-lib": "^1.17.1",
+    "pdf2json": "^4.0.0"
   }
 }

@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Ordre des champs PDF pour la page 1 - Dossier existant",
+    "lastUpdated": "2025-12-15",
+    "pageNumber": 1
+  },
+  "fields_order": [
+    "Première demande à la MDPH",
+    "Ma situation a changé",
+    "Réévaluation de ma situation",
+    "Renouvellement droits identiques",
+    "Aidant familial souhaite exprimer sa situation",
+    "Oui, j'ai déja un dossier à la MDPH",
+    "Indiquer dans quel département", 
+    "Numéro de dossier"
+  ],
+  "field_mappings": {
+    "Première demande à la MDPH": {
+      "type": "checkbox",
+      "required": false,
+      "description": "C'est ma première demande à la MDPH"
+    },
+    "Ma situation a changé": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Ma situation médicale, administrative, familiale ou mon projet a changé"
+    },
+    "Réévaluation de ma situation": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Je souhaite une réévaluation de ma situation et/ou une révision de mes droits"
+    },
+    "Renouvellement droits identiques": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Je souhaite le renouvellement de mes droits à l'identique"
+    },
+    "Aidant familial souhaite exprimer sa situation": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Aidant familial souhaite exprimer sa situation et ses besoins"
+    },
+    "Oui, j'ai déja un dossier à la MDPH": {
+      "type": "checkbox",
+      "required": true,
+      "description": "Avez-vous déjà un dossier à la MDPH ?"
+    },
+    "Indiquer dans quel département": {
+      "type": "text", 
+      "required": true,
+      "description": "Dans quel département ?",
+      "condition": "Oui, j'ai déja un dossier à la MDPH === true"
+    },
+    "Numéro de dossier": {
+      "type": "text",
+      "required": true,
+      "description": "Numéro de dossier MDPH existant",
+      "condition": "Oui, j'ai déja un dossier à la MDPH === true"
+    }
+  }
+}
