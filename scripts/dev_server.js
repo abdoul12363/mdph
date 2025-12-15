@@ -57,7 +57,7 @@ async function handleApiFill(req, res) {
     }
 
     try {
-      const apiModulePath = path.join(ROOT, 'api', 'fill.js');
+      const apiModulePath = path.join(ROOT, 'src', 'api', 'fill.js');
       const apiModuleUrl = pathToFileURL(apiModulePath);
       // Cache-bust pour éviter un module figé pendant le dev
       const { default: handler } = await import(`${apiModuleUrl.href}?t=${Date.now()}`);
@@ -66,6 +66,25 @@ async function handleApiFill(req, res) {
       res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify({ error: 'Local API error', details: String(e?.message || e) }));
     }
+  });
+}
+
+function serveFile(filePath, res) {
+  const ext = path.extname(filePath).toLowerCase();
+  const contentType = MIME[ext] || 'application/octet-stream';
+  
+  res.writeHead(200, {
+    'Content-Type': contentType,
+    'Cache-Control': 'no-cache'
+  });
+  
+  const stream = fs.createReadStream(filePath);
+  stream.pipe(res);
+  
+  stream.on('error', (err) => {
+    console.error('Error reading file:', filePath, err);
+    res.writeHead(500);
+    res.end('Internal Server Error');
   });
 }
 
@@ -78,8 +97,32 @@ const server = http.createServer((req, res) => {
 
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
 
-  let urlPath = req.url;
-  if (urlPath === '/' || urlPath === '') urlPath = '/index.html';
+  let urlPath = req.url.split('?')[0]; // Ignorer les paramètres de requête
+
+  // Gestion des routes principales
+  if (urlPath === '/' || urlPath === '' || urlPath === '/index.html') {
+    const indexPath = path.join(ROOT, 'src/pages/index.html');
+    if (fs.existsSync(indexPath)) {
+      serveFile(indexPath, res);
+      return;
+    } else {
+      console.error('Index file not found at:', indexPath);
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Index file not found');
+      return;
+    }
+  } else if (urlPath === '/form' || urlPath === '/form.html') {
+    const formPath = path.join(ROOT, 'src/pages/form.html');
+    if (fs.existsSync(formPath)) {
+      serveFile(formPath, res);
+      return;
+    } else {
+      console.error('Form file not found at:', formPath);
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Form file not found');
+      return;
+    }
+  }
 
   // Local API routing (simulate Vercel serverless)
   if (urlPath.startsWith('/api/fill')) {
@@ -88,7 +131,70 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  const filePath = safeJoin(ROOT, urlPath);
+  // Gestion des chemins des ressources
+  let filePath;
+  
+  // Si le chemin commence par /public/, on le sert depuis le dossier public
+  if (urlPath.startsWith('/public/')) {
+    filePath = safeJoin(ROOT, urlPath);
+  } 
+  // Si c'est une ressource JS, CSS ou une page, on la sert depuis src
+  else if (urlPath.startsWith('/src/')) {
+    filePath = safeJoin(ROOT, urlPath);
+  }
+  // Pour les chemins de données
+  else if (urlPath.startsWith('/data/')) {
+    // Essayer d'abord dans public/data
+    filePath = safeJoin(ROOT, '/public' + urlPath);
+    // Si pas trouvé, essayer directement dans data
+    if (!fs.existsSync(filePath)) {
+      filePath = safeJoin(ROOT, urlPath);
+    }
+  }
+  // Pour les fichiers CSS, JS, images, etc.
+  else if (urlPath.match(/\.(css|js|png|jpg|jpeg|gif|ico|svg)$/)) {
+    // Essayer d'abord dans public
+    filePath = safeJoin(ROOT, '/public' + urlPath);
+    
+    // Si pas trouvé, essayer dans src
+    if (!fs.existsSync(filePath)) {
+      filePath = safeJoin(ROOT, '/src' + urlPath);
+    }
+    
+    // Pour les fichiers JS, essayer dans src/js
+    if ((!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) && urlPath.endsWith('.js')) {
+      const jsPath = safeJoin(ROOT, '/src/js' + urlPath);
+      if (fs.existsSync(jsPath)) {
+        filePath = jsPath;
+      }
+    }
+    
+    // Pour les fichiers CSS, essayer dans src/css
+    if ((!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) && urlPath.endsWith('.css')) {
+      const cssPath = safeJoin(ROOT, '/src/css' + urlPath);
+      if (fs.existsSync(cssPath)) {
+        filePath = cssPath;
+      }
+    }
+  }
+  // Pour les autres chemins
+  else {
+    // Essayer d'abord dans public
+    filePath = safeJoin(ROOT, '/public' + urlPath);
+    
+    // Si pas trouvé, essayer dans src
+    if (!fs.existsSync(filePath)) {
+      filePath = safeJoin(ROOT, '/src' + urlPath);
+    }
+    
+    // Si c'est un dossier, essayer d'ajouter index.html
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+      const indexPath = path.join(filePath, 'index.html');
+      if (fs.existsSync(indexPath)) {
+        filePath = indexPath;
+      }
+    }
+  }
   if (!filePath) {
     res.writeHead(403);
     res.end('Forbidden');

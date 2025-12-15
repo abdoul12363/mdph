@@ -1,33 +1,12 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { PDFDocument } from 'pdf-lib';
+import { normalizeOuiNon, splitDateToDMY } from '../src/utils/utils.js';
 
-function splitDateToDMY(value) {
-  if (!value) return { d: '', m: '', y: '' };
-
-  const iso = /^\d{4}-\d{2}-\d{2}$/;
-  const fr = /^\d{2}\/\d{2}\/\d{4}$/;
-
-  if (iso.test(value)) {
-    const [y, m, d] = value.split('-');
-    return { d, m, y };
-  }
-
-  if (fr.test(value)) {
-    const [d, m, y] = value.split('/');
-    return { d, m, y };
-  }
-
-  return { d: '', m: '', y: '' };
-}
-
-function normalizeOuiNon(v) {
-  if (typeof v === 'boolean') return v ? 'oui' : 'non';
-  if (!v) return 'non';
-  const s = String(v).trim().toLowerCase();
-  if (['oui', 'o', 'yes', 'y', '1', 'true'].includes(s)) return 'oui';
-  return 'non';
-}
+// Fonctions exportées pour compatibilité
+// Les implémentations sont maintenant dans src/utils/utils.js
+export { normalizeOuiNon, splitDateToDMY } from '../src/utils/utils.js';
 
 function readJson(absPath) {
   return JSON.parse(fs.readFileSync(absPath, 'utf8'));

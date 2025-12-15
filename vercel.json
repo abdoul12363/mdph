@@ -2,11 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/pages/index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "src/pages/form.html",
+      "src": "src/pages/**/*.html",
       "use": "@vercel/static"
     },
     {
@@ -18,17 +14,35 @@
       "use": "@vercel/static"
     },
     {
-      "src": "data/**",
-      "use": "@vercel/static"
+      "src": "src/api/fill.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
+    {
+      "src": "/api/fill",
+      "dest": "/src/api/fill.js",
+      "methods": ["POST"]
+    },
     {
       "src": "/form",
       "dest": "/src/pages/form.html"
     },
     {
+      "src": "/",
+      "dest": "/src/pages/index.html"
+    },
+    {
+      "src": "/data/(.*)",
+      "dest": "/public/data/$1"
+    },
+    {
       "src": "/(.*)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/(.*)",
+      "status": 200,
       "dest": "/src/pages/index.html"
     }
   ]

@@ -1,3 +1,5 @@
+import { normalizeOuiNon } from '../utils/utils.js';
+
 const storageKey = 'cerfa_responses_v1';
 
 let allQuestions = [];
@@ -9,21 +11,28 @@ let inFlight = false;
 function $(id) { return document.getElementById(id); }
 
 function setStatus(msg) {
-  $('status').textContent = msg || '';
+  const statusEl = $('status');
+  if (statusEl) statusEl.textContent = msg || '';
 }
 
 function loadSaved() {
   try {
     const raw = localStorage.getItem(storageKey);
     if (raw) responses = JSON.parse(raw);
-  } catch {
+  } catch (error) {
+    console.error('Erreur lors du chargement des données sauvegardées :', error);
     responses = {};
   }
 }
 
 function saveLocal(silent = false) {
-  localStorage.setItem(storageKey, JSON.stringify(responses));
-  if (!silent) setStatus('Sauvegardé localement.');
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(responses));
+    if (!silent) setStatus('Sauvegardé localement.');
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde locale :', error);
+    setStatus('Erreur lors de la sauvegarde');
+  }
 }
 
 function resetAll() {
@@ -34,14 +43,6 @@ function resetAll() {
   refreshVisible();
   render();
   setStatus('Réinitialisé.');
-}
-
-function normalizeOuiNon(v) {
-  if (typeof v === 'boolean') return v ? 'oui' : 'non';
-  if (!v) return 'non';
-  const s = String(v).trim().toLowerCase();
-  if (['oui', 'o', 'yes', 'y', '1', 'true'].includes(s)) return 'oui';
-  return 'non';
 }
 
 function evaluateCondition(cond) {
@@ -222,7 +223,7 @@ async function boot() {
   loadSaved();
 
   try {
-    const r = await fetch('/public/data/questions_cerfa.json');
+    const r = await fetch('/data/questions_cerfa.json');
     const data = await r.json();
     // Accès aux questions via la nouvelle structure
     allQuestions = data?.sections?.identite?.questions || [];
