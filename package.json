@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "fill": "node scripts/fill_cerfa_pdf.js",
-    "dev": "node scripts/dev_server.js"
+    "dev": "node scripts/dev_server.js",
+    "build": "echo 'Build complete'",
+    "start": "node scripts/dev_server.js"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1"
