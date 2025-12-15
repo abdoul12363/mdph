@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "scripts/dev_server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "**/*.{html,js,css,json,pdf,svg,png,jpg,jpeg,ico}",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/fill",
+      "dest": "/scripts/dev_server.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/scripts/dev_server.js"
+    }
+  ]
+}
