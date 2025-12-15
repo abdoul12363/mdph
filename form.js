@@ -224,8 +224,14 @@ async function boot() {
   try {
     const r = await fetch('/data/questions_cerfa.json');
     const data = await r.json();
-    allQuestions = Array.isArray(data.questions) ? data.questions : [];
-  } catch {
+    // Accès aux questions via la nouvelle structure
+    allQuestions = data?.sections?.identite?.questions || [];
+    if (!Array.isArray(allQuestions)) {
+      console.error('Format de questions invalide :', allQuestions);
+      allQuestions = [];
+    }
+  } catch (error) {
+    console.error('Erreur lors du chargement des questions :', error);
     allQuestions = [];
   }
 
