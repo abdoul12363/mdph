@@ -222,7 +222,7 @@ async function boot() {
   loadSaved();
 
   try {
-    const r = await fetch('/data/questions_cerfa.json');
+    const r = await fetch('/public/data/questions_cerfa.json');
     const data = await r.json();
     // Accès aux questions via la nouvelle structure
     allQuestions = data?.sections?.identite?.questions || [];

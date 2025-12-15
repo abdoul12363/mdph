@@ -2,12 +2,34 @@
   "version": 2,
   "builds": [
     {
-      "src": "**/*.{html,js,css,json,png,svg,ico}",
+      "src": "src/pages/index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "src/pages/form.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "src/**/*.{js,css}",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "data/**",
       "use": "@vercel/static"
     }
   ],
   "routes": [
-    { "src": "/form", "dest": "/form.html" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "/form",
+      "dest": "/src/pages/form.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/src/pages/index.html"
+    }
   ]
 }
