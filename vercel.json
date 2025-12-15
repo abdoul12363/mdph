@@ -2,23 +2,46 @@
   "version": 2,
   "builds": [
     {
-      "src": "scripts/dev_server.js",
-      "use": "@vercel/node"
+      "src": "index.html",
+      "use": "@vercel/static"
     },
     {
-      "src": "**/*.{html,js,css,json,pdf,svg,png,jpg,jpeg,ico}",
+      "src": "form.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "form.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "form.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "styles.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "data/*.json",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/*",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/api/fill",
-      "dest": "/scripts/dev_server.js",
-      "methods": ["POST"]
+      "src": "/form",
+      "dest": "/form.html"
     },
     {
       "src": "/(.*)",
-      "dest": "/scripts/dev_server.js"
+      "dest": "/index.html"
     }
+  ],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
