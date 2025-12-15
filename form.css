@@ -1,0 +1,77 @@
+.nav-button{
+  background:transparent;
+  border:1px solid rgba(255,255,255,.12);
+  padding:8px 10px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.brand-icon{
+  font-size:20px;
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+/* Centrage vertical du contenu du formulaire */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 80px 0 40px;
+}
+
+/* Largeur élargie pour le formulaire */
+.main .container {
+  max-width: 800px;
+  width: 100%;
+}
+
+.form-header{margin:4px 0 24px}
+.form-title{margin:0 0 6px;font-size:22px}
+.form-card{padding:24px;margin-top:80px}
+
+.progress{margin:24px 0 12px}
+.progress-bar{height:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));width:0%;transition:width .2s ease}
+.progress-meta{display:flex;justify-content:space-between;margin-top:8px}
+
+.q-title{font-weight:800;margin:0 0 6px;margin-left:-24px;padding-left:0}
+.q-help{margin:0 0 40px !important;color:var(--muted);font-size:14px;line-height:1.6}
+
+.input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:var(--text);font-size:14px;outline:none}
+.input:focus{border-color:rgba(255,255,255,.28)}
+.input[type="date"]{color-scheme:dark}
+.input[type="date"]::-webkit-calendar-picker-indicator{
+  filter:brightness(0) invert(1);
+  cursor:pointer;
+  opacity:0.8;
+}
+input[type="date"]::-webkit-calendar-picker-indicator{
+  filter:brightness(0) invert(1);
+  cursor:pointer;
+  opacity:0.8;
+}
+textarea.input{min-height:110px;resize:vertical}
+
+.choice-grid{display:grid;gap:8px}
+.choice{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(255,255,255,.03);cursor:pointer}
+.choice input{transform:scale(1.05)}
+
+.cta{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:60px !important}
+
+.form-actions{display:flex;justify-content:space-between;gap:10px;margin-top:40px}
+
+@media (max-width: 760px){
+  .form-actions{flex-direction:column}
+  .form-actions .btn{width:100%}
+}

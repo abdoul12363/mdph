@@ -1,0 +1,729 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "description": "Questions CERFA MDPH - Formulaire complet dans l'ordre du PDF",
+    "lastUpdated": "2025-12-15"
+  },
+  "questions": [
+    {
+      "id": "q_type_demande",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Type de demande",
+      "obligatoire": true,
+      "valeurs_possibles": ["Première demande", "Renouvellement", "Révision"],
+      "pdf_field_name": {
+        "Première demande": "Première demande à la MDPH",
+        "Renouvellement": "Renouvellement droits identiques", 
+        "Révision": "Ma situation a changé"
+      }
+    },
+    {
+      "id": "q_dossier_existant",
+      "type_champ": "oui_non",
+      "libelle_plateforme": "As-tu déjà un dossier à la MDPH ?",
+      "obligatoire": false,
+      "pdf_field_name": "Oui, j'ai déja un dossier à la MDPH"
+    },
+    {
+      "id": "q_departement_dossier",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Dans quel département ?",
+      "obligatoire": false,
+      "condition_affichage": "q_dossier_existant == 'oui'",
+      "pdf_field_name": "Indiquer dans quel département"
+    },
+    {
+      "id": "q_numero_dossier",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Quel est ton numéro de dossier ?",
+      "obligatoire": false,
+      "condition_affichage": "q_dossier_existant == 'oui'",
+      "pdf_field_name": "Numéro de dossier"
+    },
+    {
+      "id": "q_sexe",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Tu es ?",
+      "obligatoire": true,
+      "valeurs_possibles": ["Homme", "Femme"],
+      "pdf_field_name": {"Homme": "Sexe H p2", "Femme": "Sexe F p2"}
+    },
+    {
+      "id": "q_nom_naissance",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Quel est ton nom de naissance ?",
+      "obligatoire": true,
+      "pdf_field_name": "Nom de naissance p2"
+    },
+    {
+      "id": "q_nom_usage",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Quel est ton nom d'époux/se ou d'usage ?",
+      "obligatoire": false,
+      "pdf_field_name": "Nom d'usage p2"
+    },
+    {
+      "id": "q_prenoms",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Quels sont tes prénoms ?",
+      "obligatoire": true,
+      "pdf_field_name": "Prénoms p2"
+    },
+    {
+      "id": "q_date_naissance",
+      "type_champ": "date",
+      "libelle_plateforme": "Quelle est ta date de naissance ?",
+      "obligatoire": true,
+      "pdf_field_name": ["DN J p2", "DN M p2", "DN A p2"]
+    },
+    {
+      "id": "q_nationalite",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Quelle est ta nationalité ?",
+      "obligatoire": true,
+      "valeurs_possibles": ["Française", "Espace Économique Européen ou Suisse", "Autre"],
+      "pdf_field_name": {"Française": "Nationalité f p2", "Espace Économique Européen ou Suisse": "Nationalité e p2", "Autre": "Nationalité autre p2"}
+    },
+    {
+      "id": "q_commune_naissance",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Dans quelle commune es-tu né(e) ?",
+      "obligatoire": true,
+      "pdf_field_name": "Commune de naissance p2"
+    },
+    {
+      "id": "q_departement_naissance",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Dans quel département es-tu né(e) ?",
+      "obligatoire": true,
+      "pdf_field_name": "Département de naissance p2"
+    },
+    {
+      "id": "q_pays_naissance",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Dans quel pays es-tu né(e) ?",
+      "obligatoire": true,
+      "valeurs_possibles": ["France", "Autre"],
+      "pdf_field_name": {"France": "Pays de naissance France p2", "Autre": "Pays de naissance Autre préciser p2"}
+    },
+    {
+      "id": "q_date_arrivee_france",
+      "type_champ": "date",
+      "libelle_plateforme": "Si tu as résidé à l'étranger, quelle est ta date d'arrivée en France ?",
+      "obligatoire": false,
+      "pdf_field_name": ["DA J p2", "DA M p2", "DA A p2"]
+    },
+    {
+      "id": "q_complement_adresse",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Complément d'adresse (nom de la personne qui t'héberge si besoin) ?",
+      "obligatoire": false,
+      "pdf_field_name": "Complément d'adresse"
+    },
+    {
+      "id": "q_adresse",
+      "type_champ": "texte_long",
+      "libelle_plateforme": "Quelle est ton adresse (numéro et rue) ?",
+      "obligatoire": true,
+      "pdf_field_name": "Adresse p2"
+    },
+    {
+      "id": "q_code_postal",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Quel est ton code postal ?",
+      "obligatoire": true,
+      "pdf_field_name": "Code postal"
+    },
+    {
+      "id": "q_commune",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Dans quelle commune habites-tu ?",
+      "obligatoire": true,
+      "pdf_field_name": "Commune"
+    },
+    {
+      "id": "q_pays_residence",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Dans quel pays habites-tu ?",
+      "obligatoire": true,
+      "pdf_field_name": "Pays p2"
+    },
+    {
+      "id": "q_telephone",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Quel est ton numéro de téléphone ?",
+      "obligatoire": false,
+      "pdf_field_name": "Numéro de téléphone p2"
+    },
+    {
+      "id": "q_email",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Quelle est ton adresse e-mail ?",
+      "obligatoire": false,
+      "pdf_field_name": "Adresse e-mail p2"
+    },
+    {
+      "id": "q_mode_contact",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Comment souhaites-tu être contacté par la MDPH ?",
+      "obligatoire": false,
+      "valeurs_possibles": ["E-mail", "Appel téléphonique", "SMS", "Courrier"],
+      "pdf_field_name": {"E-mail": "E-mail p2", "Appel téléphonique": "Appel téléphonique p2", "SMS": "SMS p2", "Courrier": "Courrier p2"}
+    },
+    {
+      "id": "q_organisme_domicile",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "As-tu élu domicile auprès d'un organisme (association, centre d'hébergement) ?",
+      "obligatoire": false,
+      "pdf_field_name": "Nom de l'organisme p2"
+    },
+    {
+      "id": "q_organisme_prestations",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Quel est ton organisme payeur de prestations familiales/RSA ?",
+      "obligatoire": false,
+      "valeurs_possibles": ["CAF", "MSA", "Autre"],
+      "pdf_field_name": {"CAF": "OP CAF p2", "MSA": "OP MSA p2", "Autre": "OP Autre p2"}
+    },
+    {
+      "id": "q_numero_allocataire",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Quel est ton numéro d'allocataire ?",
+      "obligatoire": false,
+      "pdf_field_name": "Numéro d'allocataire p2"
+    },
+    {
+      "id": "q_organisme_assurance",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Quel est ton organisme d'assurance maladie ?",
+      "obligatoire": true,
+      "valeurs_possibles": ["CPAM", "MSA", "RSI", "Autre"],
+      "pdf_field_name": {"CPAM": "OAM CPAM p2", "MSA": "OAM MSA p2", "RSI": "OAM RSI p2", "Autre": "OAM Autre p2"}
+    },
+    {
+      "id": "q_numero_securite_sociale",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Quel est ton numéro de sécurité sociale ?",
+      "obligatoire": true,
+      "pdf_field_name": "Numéro de sécurité sociale"
+    },
+    {
+      "id": "q_autorite_parentale",
+      "type_champ": "oui_non",
+      "libelle_plateforme": "Y a-t-il une autorité parentale, délégation d'autorité parentale ou tutelle ?",
+      "obligatoire": false,
+      "pdf_field_name": {
+        "oui": "Représentant légal 1 p2",
+        "non": "Représentant légal 2 p2"
+      }
+    },
+    {
+      "id": "q_representant_1_nom",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Nom du représentant légal 1 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Nom représentant légal 1 p2"
+    },
+    {
+      "id": "q_representant_1_prenom",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Prénom du représentant légal 1 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Prénom représentant légal 1 p2"
+    },
+    {
+      "id": "q_representant_1_date_naissance",
+      "type_champ": "date",
+      "libelle_plateforme": "Date de naissance du représentant légal 1 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": ["DN RL1 J p2", "DN RL1 M p2", "DN RL1 A p2"]
+    },
+    {
+      "id": "q_representant_1_adresse",
+      "type_champ": "texte_long",
+      "libelle_plateforme": "Adresse du représentant légal 1 (numéro et rue) :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Adresse représentant légal 1 p2"
+    },
+    {
+      "id": "q_representant_1_complement_adresse",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Complément d'adresse du représentant légal 1 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Complément d'adresse représentant légal 1 p2"
+    },
+    {
+      "id": "q_representant_1_code_postal",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Code postal du représentant légal 1 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Code postal représentant légal 1 p2"
+    },
+    {
+      "id": "q_representant_1_commune",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Commune du représentant légal 1 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Commune représentant légal 1 p2"
+    },
+    {
+      "id": "q_representant_1_pays",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Pays du représentant légal 1 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Pays représentant légal 1 p2"
+    },
+    {
+      "id": "q_representant_1_telephone",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Téléphone du représentant légal 1 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Numéro de téléphone représentant légal 1 p2"
+    },
+    {
+      "id": "q_representant_1_email",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Adresse e-mail du représentant légal 1 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Adresse e-mail représentant légal 1 p2"
+    },
+    {
+      "id": "q_representant_2_nom",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Nom du représentant légal 2 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Nom représentant légal 2 p2"
+    },
+    {
+      "id": "q_representant_2_prenom",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Prénom du représentant légal 2 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Prénom représentant légal 2 p2"
+    },
+    {
+      "id": "q_representant_2_date_naissance",
+      "type_champ": "date",
+      "libelle_plateforme": "Date de naissance du représentant légal 2 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": ["DN RL2 J p2", "DN RL2 M p2", "DN RL2 A p2"]
+    },
+    {
+      "id": "q_representant_2_adresse",
+      "type_champ": "texte_long",
+      "libelle_plateforme": "Adresse du représentant légal 2 (numéro et rue) :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Adresse représentant légal 2 p2"
+    },
+    {
+      "id": "q_representant_2_complement_adresse",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Complément d'adresse du représentant légal 2 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Complément d'adresse représentant légal 2 p2"
+    },
+    {
+      "id": "q_representant_2_code_postal",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Code postal du représentant légal 2 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Code postal représentant légal 2 p2"
+    },
+    {
+      "id": "q_representant_2_commune",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Commune du représentant légal 2 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Commune représentant légal 2 p2"
+    },
+    {
+      "id": "q_representant_2_pays",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Pays du représentant légal 2 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Pays représentant légal 2 p2"
+    },
+    {
+      "id": "q_representant_2_telephone",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Téléphone du représentant légal 2 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Numéro de téléphone représentant légal 2 p2"
+    },
+    {
+      "id": "q_representant_2_email",
+      "type_champ": "texte_court",
+      "libelle_plateforme": "Adresse e-mail du représentant légal 2 :",
+      "obligatoire": false,
+      "condition_affichage": "q_autorite_parentale == 'oui'",
+      "pdf_field_name": "Adresse e-mail représentant légal 2 p2"
+    },
+    {
+      "id": "q_difficultes_certificat",
+      "type_champ": "texte_long",
+      "libelle_plateforme": "J'ai rencontré des difficultés pour faire remplir mon certificat médical par le médecin. Préciser :",
+      "obligatoire": false,
+      "pdf_field_name": "Difficultés certificat médical"
+    },
+    {
+      "id": "q_indemnisation_accident",
+      "type_champ": "oui_non",
+      "libelle_plateforme": "As-tu fait une demande d'indemnisation ?",
+      "obligatoire": false,
+      "condition_affichage": "q_accident_origine != 'Non'",
+      "pdf_field_name": "Avez-vous fait une demande d'indemnisation ? Oui"
+    },
+    {
+      "id": "q_situation_familiale",
+      "type_champ": "choix_multiple", 
+      "libelle_plateforme": "Quelle est ta situation familiale ?",
+      "obligatoire": false,
+      "valeurs_possibles": ["Seul", "En couple", "Avec un parent", "Avec votre enfant", "Autre"],
+      "pdf_field_name": {
+        "Seul": "Situation Seul",
+        "En couple": "Situation En couple",
+        "Avec un parent": "Situation Avec un parent (ou les deux)",
+        "Avec votre enfant": "Situation Avec votre enfant (ou l'un d'entre eux)",
+        "Autre": "Autre situation"
+      }
+    },
+    {
+      "id": "q_type_logement",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Quel est ton type de logement ?",
+      "obligatoire": false,
+      "valeurs_possibles": ["Propriétaire", "Locataire", "Logement indépendant", "Établissement médico-social", "Hébergé chez parents", "Hébergé chez ami", "Hébergé chez enfants", "Hébergé famille", "Famille d'accueil", "Autre"],
+      "pdf_field_name": {
+        "Propriétaire": "Vous êtes propriétaire",
+        "Locataire": "Vous êtes locataire", 
+        "Logement indépendant": "Vous avez un logement indépendant",
+        "Établissement médico-social": "Vous êtes dans un établissement médico social",
+        "Hébergé chez parents": "Vous êtes hébergé au domicile de vos parents",
+        "Hébergé chez ami": "Vous êtes hébergé au domicile d'un ami",
+        "Hébergé chez enfants": "Vous êtes hébergé au domicile de vos enfants",
+        "Hébergé famille": "Vous êtes hébergé au domicile d'un autre membre de votre famille",
+        "Famille d'accueil": "Vous êtes hébergé au domicile d'une famille d'accueil",
+        "Autre": "Autre situation Lieu de vie"
+      }
+    },
+    {
+      "id": "q_revenus_actuels",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Quels sont tes revenus actuels ?",
+      "obligatoire": false,
+      "valeurs_possibles": ["AAH", "Allocation chômage", "RSA", "ASS", "Revenu d'activité", "Revenu ESAT", "Aucun"],
+      "pdf_field_name": {
+        "AAH": "Vous recevez l'AAH",
+        "Allocation chômage": "Vous recevez l'Allocation chômage",
+        "RSA": "Vous recevez le RSA", 
+        "ASS": "Vous recevez l'ASS",
+        "Revenu d'activité": "Dans les 12 mois précédents vous avez perçu un revenu d'activité",
+        "Revenu ESAT": "Dans les 12 mois précédents vous avez perçu un revenu d'activité en ESAT"
+      }
+    },
+    {
+      "id": "q_pensions_invalidite",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Perçois-tu une pension d'invalidité ?",
+      "obligatoire": false,
+      "valeurs_possibles": ["Non", "1ère catégorie", "2e catégorie", "3e catégorie", "Autres pensions"],
+      "pdf_field_name": {
+        "1ère catégorie": "Pension d'invalidité 1re catégorie",
+        "2e catégorie": "Pension d'invalidité 2e catégorie", 
+        "3e catégorie": "Pension d'invalidité 3e catégorie",
+        "Autres pensions": "Autres pensions de ce type"
+      }
+    },
+    {
+      "id": "q_traitement_rapide",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Demandes-tu un traitement rapide ?",
+      "obligatoire": false,
+      "valeurs_possibles": ["Non", "Hospitalisation", "Perte emploi", "Fin droits", "Autre"],
+      "pdf_field_name": {
+        "Hospitalisation": "Traitement rapide Hospitalisation",
+        "Perte emploi": "Traitement rapide Risque perte travail",
+        "Fin droits": "Traitement rapide Fin de droits dans moins de 2 mois"
+      }
+    },
+    {
+      "id": "q_aide_demarches",
+      "type_champ": "choix_multiple", 
+      "libelle_plateforme": "Qui t'aide dans tes démarches ?",
+      "obligatoire": false,
+      "valeurs_possibles": ["Personne", "Association", "Proche", "Autre"],
+      "pdf_field_name": {
+        "Association": "Aide dans vos démarches MDPH Une association",
+        "Proche": "Aide dans vos démarches MDPH Un proche",
+        "Autre": "Aide dans vos démarches MDPH Autre"
+      }
+    },
+    {
+      "id": "q_demandes_aides",
+      "type_champ": "choix_multiple",
+      "libelle_plateforme": "Quelles aides demandes-tu ?",
+      "obligatoire": true,
+      "valeurs_possibles": ["AAH", "RQTH", "Carte mobilité inclusion stationnement", "Carte mobilité inclusion invalidité", "Orientation professionnelle", "Orientation établissement médico-social", "Aides techniques"],
+      "pdf_field_name": {
+        "AAH": "Vous recevez l'AAH",
+        "RQTH": "RQTH",
+        "Carte mobilité inclusion stationnement": "Vous avez plus de 20 ans Carte mobilité inclusion Mention stationnement",
+        "Carte mobilité inclusion invalidité": "Vous avez plus de 20 ans Carte mobilité inclusion Mention invalidité",
+    "valeurs_possibles": ["Personne", "Association", "Proche", "Autre"],
+    "pdf_field_name": {
+      "Association": "Aide dans vos démarches MDPH Une association",
+      "Proche": "Aide dans vos démarches MDPH Un proche",
+      "Autre": "Aide dans vos démarches MDPH Autre"
+    }
+  },
+  {
+    "id": "q_demandes_aides",
+    "type_champ": "choix_multiple",
+    "libelle_plateforme": "Quelles aides demandes-tu ?",
+    "obligatoire": true,
+    "valeurs_possibles": ["AAH", "RQTH", "Carte mobilité inclusion stationnement", "Carte mobilité inclusion invalidité", "Orientation professionnelle", "Orientation établissement médico-social", "Aides techniques"],
+    "pdf_field_name": {
+      "AAH": "Vous recevez l'AAH",
+      "RQTH": "RQTH",
+      "Carte mobilité inclusion stationnement": "Vous avez plus de 20 ans Carte mobilité inclusion Mention stationnement",
+      "Carte mobilité inclusion invalidité": "Vous avez plus de 20 ans Carte mobilité inclusion Mention invalidité",
+      "Orientation professionnelle": "Orientation professionnelle",
+      "Orientation établissement médico-social": "Vous avez plus de 20 ans Orientation vers un établissement ou service médico-social pour adultes",
+      "Aides techniques": "Aides techniques"
+    }
+  },
+  {
+    "id": "q_rqth_actuelle",
+    "type_champ": "oui_non",
+    "libelle_plateforme": "Bénéficies-tu actuellement d'une RQTH ?",
+    "obligatoire": false,
+    "pdf_field_name": "Oui, je bénéficie d'une RQTH"
+  },
+  {
+    "id": "q_aides_techniques_precisions",
+    "type_champ": "texte_long",
+    "libelle_plateforme": "Si tu demandes des aides techniques, précise lesquelles :",
+    "obligatoire": false,
+    "condition_affichage": "q_demandes_aides.includes('Aides techniques')",
+    "pdf_field_name": "Aides techniques Préciser"
+  },
+  {
+    "id": "q_aide_humaine_eleves",
+    "type_champ": "texte_long",
+    "libelle_plateforme": "Si tu es élève/étudiant, précise tes besoins d'aide humaine :",
+    "obligatoire": false,
+    "pdf_field_name": "Aide humaine aux élèves handicapés Préciser"
+  },
+  {
+    "id": "q_signature_personne",
+    "type_champ": "oui_non",
+    "libelle_plateforme": "Je signe personnellement cette demande",
+    "obligatoire": true,
+    "pdf_field_name": "Signature personne concernée"
+  },
+  {
+    "id": "q_signature_representant",
+    "type_champ": "oui_non",
+    "libelle_plateforme": "Signature du représentant légal (si mineur ou sous tutelle)",
+    "obligatoire": false,
+    "pdf_field_name": "Signature représentant légal"
+  },
+  {
+    "id": "q_signature_parents",
+    "type_champ": "oui_non",
+    "libelle_plateforme": "Signature des deux parents (si mineur)",
+    "obligatoire": false,
+    "pdf_field_name": "Signature des deux parents"
+  },
+  {
+    "id": "q_lieu_signature",
+    "type_champ": "texte_court",
+    "libelle_plateforme": "Lieu de signature :",
+    "obligatoire": false,
+    "pdf_field_name": "Fait à"
+  },
+  {
+    "id": "q_date_signature",
+    "type_champ": "date",
+    "libelle_plateforme": "Date de signature :",
+    "obligatoire": true,
+    "pdf_field_name": ["Signature p4"]
+  },
+  {
+    "id": "q_situation_emploi",
+    "type_champ": "choix_multiple",
+    "libelle_plateforme": "Quelle est ta situation professionnelle actuelle ?",
+    "obligatoire": true,
+    "valeurs_possibles": ["J'ai un emploi", "Je suis sans emploi", "Je suis en formation", "Je n'ai jamais travaillé"],
+    "pdf_field_name": {
+      "J'ai un emploi": "Oui j'ai un emploi",
+      "Je suis sans emploi": "Je suis sans emploi", 
+      "Je suis en formation": "Je suis en formation continue",
+      "Je n'ai jamais travaillé": "Non, je n'ai jamais travaillé"
+    }
+  },
+  {
+    "id": "q_type_emploi",
+    "type_champ": "choix_multiple",
+    "libelle_plateforme": "Quel type d'emploi as-tu ?",
+    "obligatoire": false,
+    "condition_affichage": "q_situation_emploi == 'J\\'ai un emploi'",
+    "valeurs_possibles": ["CDI", "CDD", "Intérim", "Contrat aidé", "Travailleur indépendant", "Stagiaire formation professionnelle"],
+    "pdf_field_name": {
+      "CDI": "Type d'emploi CDI",
+      "CDD": "Type d'emploi CDD",
+      "Intérim": "Type d'emploi Interim",
+      "Contrat aidé": "Type d'emploi Contrat aidé",
+      "Travailleur indépendant": "Type d'emploi Travailleur indépendant",
+      "Stagiaire formation professionnelle": "Type d'emploi Stagiaire de la formation professionnelle"
+    }
+  },
+  {
+    "id": "q_arret_travail",
+    "type_champ": "oui_non",
+    "libelle_plateforme": "Es-tu actuellement en arrêt de travail ?",
+    "obligatoire": false,
+    "condition_affichage": "q_situation_emploi == 'J\\'ai un emploi'",
+    "pdf_field_name": "Oui, je suis actuellement en arrêt de travail"
+  },
+  {
+    "id": "q_amenagements_poste",
+    "type_champ": "oui_non",
+    "libelle_plateforme": "Des aménagements ont-ils été réalisés sur ton poste de travail ?",
+    "obligatoire": false,
+    "condition_affichage": "q_situation_emploi == 'J\\'ai un emploi'",
+    "pdf_field_name": "Oui, des aménagements ont été réalisés sur mon poste de travail"
+  },
+  {
+    "id": "q_formation_continue",
+    "type_champ": "texte_long",
+    "libelle_plateforme": "Si tu es en formation continue, précise laquelle :",
+    "obligatoire": false,
+    "condition_affichage": "q_situation_emploi == 'Je suis en formation'",
+    "pdf_field_name": "Je suis en formation continue Préciser"
+  },
+  {
+    "id": "q_formation_superieure",
+    "type_champ": "oui_non",
+    "libelle_plateforme": "Es-tu en formation supérieure ?",
+    "obligatoire": false,
+    "pdf_field_name": "En formation supérieure"
+  },
+  {
+    "id": "q_milieu_scolarite",
+    "type_champ": "choix_multiple",
+    "libelle_plateforme": "Dans quel milieu suis-tu scolarisé(e) ?",
+    "obligatoire": false,
+    "valeurs_possibles": ["Milieu ordinaire", "Temps partagé service de soin", "Temps partagé établissement spécialisé"],
+    "pdf_field_name": {
+      "Milieu ordinaire": "En milieu ordinaire",
+      "Temps partagé service de soin": "En temps partagé entre service de soin et milieu ordinaire",
+      "Temps partagé établissement spécialisé": "En temps partagé entre établissement et milieu ordinaire"
+    }
+  },
+  {
+    "id": "q_objectifs_professionnels",
+    "type_champ": "choix_multiple",
+    "libelle_plateforme": "Quels sont tes objectifs professionnels ?",
+    "obligatoire": false,
+    "valeurs_possibles": ["Accéder à un emploi", "Accéder à une formation", "Adapter environnement de travail"],
+    "pdf_field_name": {
+      "Accéder à un emploi": "Accéder à un emploi",
+      "Accéder à une formation": "Accéder à une formation",
+      "Adapter environnement de travail": "Adapter votre environnement de travail"
+    }
+  },
+  {
+    "id": "q_temps_partiel",
+    "type_champ": "oui_non",
+    "libelle_plateforme": "Travailles-tu à temps partiel ?",
+    "obligatoire": false,
+    "pdf_field_name": "Temps partiel"
+  },
+  {
+    "id": "q_emploi_adapte",
+    "type_champ": "choix_multiple",
+    "libelle_plateforme": "Ton emploi est-il adapté à ton handicap ?",
+    "obligatoire": false,
+    "valeurs_possibles": ["Oui", "Non"],
+    "pdf_field_name": {
+      "Oui": "Est-il adapté à votre handicap ? Oui",
+      "Non": "Est-il adapté à votre handicap ? Non"
+    }
+  },
+  {
+    "id": "q_emploi_depuis",
+    "type_champ": "date",
+    "libelle_plateforme": "Tu as un emploi depuis le :",
+    "obligatoire": false,
+    "pdf_field_name": ["Emploi Date début Jour", "Emploi Date début Mois", "Emploi Date début Année"]
+  },
+  {
+    "id": "q_employeur_nom",
+    "type_champ": "texte_court",
+    "libelle_plateforme": "Nom de ton employeur :",
+    "obligatoire": false,
+    "pdf_field_name": "Votre employeur Nom"
+  },
+  {
+    "id": "q_employeur_adresse",
+    "type_champ": "texte_long",
+    "libelle_plateforme": "Adresse de ton employeur :",
+    "obligatoire": false,
+    "pdf_field_name": "Votre employeur Adresse"
+  },
+  {
+    "id": "q_votre_emploi",
+    "type_champ": "texte_court",
+    "libelle_plateforme": "Ton emploi :",
+    "obligatoire": false,
+    "pdf_field_name": "Votre emploi"
+  },
+  {
+    "id": "q_travailleur_independant_regime",
+    "type_champ": "texte_court",
+    "libelle_plateforme": "Si travailleur indépendant, précise le régime :",
+    "obligatoire": false,
+    "pdf_field_name": "Travailleur indépendant Régime Préciser"
+  },
+  {
+    "id": "q_arret_travail_depuis",
+    "type_champ": "date",
+    "libelle_plateforme": "Si en arrêt de travail, depuis le :",
+    "obligatoire": false,
+    "pdf_field_name": ["Arrêt de travail Depuis le Date Jour", "Arrêt de travail Depuis le Date Mois", "Arrêt de travail Depuis le Date Année"]
+  },
+  {
+    "id": "q_difficultés_handicap",
+    "type_champ": "texte_long",
+    "libelle_plateforme": "Quelles sont les difficultés liées à ton handicap ?",
+    "obligatoire": false,
+    "pdf_field_name": "Difficultés liées à votre handicap Préciser"
+  },
+  {
+    "id": "q_amenagements_poste_preciser",
+    "type_champ": "texte_long",
+    "libelle_plateforme": "Si des aménagements ont été réalisés sur ton poste, précise lesquels :",
+    "obligatoire": false,
+    "pdf_field_name": "Des aménagements ont été réalisés sur votre poste de travail Préciser"
+  }
+]

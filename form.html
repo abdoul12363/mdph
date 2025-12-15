@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CERFA MDPH — Formulaire</title>
+  <meta name="description" content="Parcours guidé pour préparer un dossier MDPH et générer le CERFA." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/form.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <i class="fas fa-wheelchair brand-icon" aria-hidden="true"></i>
+        <span class="brand-title">CERFA MDPH</span>
+      </div>
+      <nav class="nav">
+        <a class="nav-link" href="/">Accueil</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="section">
+      <div class="container">
+        <div class="form-header">
+          <h1 class="form-title">Mon dossier</h1>
+          <p class="muted">Quelques questions simples et votre dossier MDPH sera prêt ! Plus de paperasse, plus de stress.</p>
+        </div>
+
+        <div class="progress">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+          </div>
+          <div class="progress-meta">
+            <span class="muted" id="progressText">0 / 0</span>
+            <span class="muted" id="questionId"></span>
+          </div>
+        </div>
+
+        <div class="card form-card">
+          <div id="questionArea"></div>
+
+          <div class="form-actions">
+            <button class="btn" id="prevBtn" type="button" disabled>Précédent</button>
+            <button class="btn btn-primary" id="nextBtn" type="button">Suivant</button>
+          </div>
+        </div>
+
+        <div class="cta" style="margin-top:14px">
+          <div>
+            <div class="cta-title">Générer le PDF</div>
+            <div class="cta-text">Télécharger mon CERFA.</div>
+          </div>
+          <button class="btn btn-primary" id="generateBtn" type="button">Télécharger</button>
+        </div>
+
+        <p class="muted" id="status" style="margin-top:12px"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/form.js"></script>
+</body>
+</html>
