@@ -331,15 +331,24 @@
       "condition_section": "q_est_pour_enfant === 'true'"
     },
     {
-      "id": "autorite_parentale",
-      "title": "Autorité parentale (pour les mineurs)",
+      "id": "autorite_parentale_parent1",
+      "title": "Parent 1 ou représentant légal 1",
+      "condition_section": "q_est_pour_enfant === 'true'",
       "questions": [
+        {
+          "id": "q_representant_legal_1",
+          "type": "checkbox",
+          "label": "Représentant légal 1",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Représentant légal 1 p2"
+          }
+        },
         {
           "id": "q_parent1_nom",
           "type": "text",
-          "label": "Parent 1 - Nom :",
+          "label": "Nom :",
           "required": false,
-          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
             "field": "Autorite Parent 1  A"
           }
@@ -347,19 +356,105 @@
         {
           "id": "q_parent1_prenom",
           "type": "text",
-          "label": "Parent 1 - Prénom :",
+          "label": "Prénom :",
           "required": false,
-          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
             "field": "Autorite Parent 1  B"
           }
         },
         {
+          "id": "q_parent1_date_naissance",
+          "type": "date",
+          "label": "Date de naissance :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent 1  C"
+          }
+        },
+        {
+          "id": "q_parent1_adresse",
+          "type": "text",
+          "label": "Adresse (numéro et rue) :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent 1  D"
+          }
+        },
+        {
+          "id": "q_parent1_complement_adresse",
+          "type": "text",
+          "label": "Complément d'adresse :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent 1  E"
+          }
+        },
+        {
+          "id": "q_parent1_code_postal",
+          "type": "text",
+          "label": "Code postal :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent 1  F"
+          }
+        },
+        {
+          "id": "q_parent1_commune",
+          "type": "text",
+          "label": "Commune :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent 1  G"
+          }
+        },
+        {
+          "id": "q_parent1_pays",
+          "type": "text",
+          "label": "Pays :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent 1  H"
+          }
+        },
+        {
+          "id": "q_parent1_telephone",
+          "type": "text",
+          "label": "Téléphone :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent 1  I"
+          }
+        },
+        {
+          "id": "q_parent1_email",
+          "type": "email",
+          "label": "Adresse e-mail :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent 1  J"
+          }
+        }
+      ]
+    },
+    {
+      "id": "autorite_parentale_parent2",
+      "title": "Parent 2 ou représentant légal 2",
+      "condition_section": "q_est_pour_enfant === 'true'",
+      "questions": [
+        {
+          "id": "q_representant_legal_2",
+          "type": "checkbox",
+          "label": "Représentant légal 2",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Représentant légal 2 p2"
+          }
+        },
+        {
           "id": "q_parent2_nom",
           "type": "text",
-          "label": "Parent 2 - Nom :",
+          "label": "Nom :",
           "required": false,
-          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
             "field": "Autorite Parent  2 A"
           }
@@ -367,19 +462,96 @@
         {
           "id": "q_parent2_prenom",
           "type": "text",
-          "label": "Parent 2 - Prénom :",
+          "label": "Prénom :",
           "required": false,
-          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
             "field": "Autorite Parent  2 B"
           }
         },
         {
+          "id": "q_parent2_date_naissance",
+          "type": "date",
+          "label": "Date de naissance :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent  2 C"
+          }
+        },
+        {
+          "id": "q_parent2_adresse",
+          "type": "text",
+          "label": "Adresse (numéro et rue) :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent  2 D"
+          }
+        },
+        {
+          "id": "q_parent2_complement_adresse",
+          "type": "text",
+          "label": "Complément d'adresse :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent  2 E"
+          }
+        },
+        {
+          "id": "q_parent2_code_postal",
+          "type": "text",
+          "label": "Code postal :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent  2 F"
+          }
+        },
+        {
+          "id": "q_parent2_commune",
+          "type": "text",
+          "label": "Commune :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent  2 G"
+          }
+        },
+        {
+          "id": "q_parent2_pays",
+          "type": "text",
+          "label": "Pays :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent  2 H"
+          }
+        },
+        {
+          "id": "q_parent2_telephone",
+          "type": "text",
+          "label": "Téléphone :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent  2 I"
+          }
+        },
+        {
+          "id": "q_parent2_email",
+          "type": "email",
+          "label": "Adresse e-mail :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Autorite Parent  2 J"
+          }
+        }
+      ]
+    },
+    {
+      "id": "exercice_autorite_parentale",
+      "title": "Exercice de l'autorité parentale",
+      "condition_section": "q_est_pour_enfant === 'true'",
+      "questions": [
+        {
           "id": "q_qui_exerce_autorite",
           "type": "text",
           "label": "Qui exerce l'autorité parentale :",
           "required": false,
-          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
             "field": "Autorite Parent 1  C"
           }

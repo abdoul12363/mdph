@@ -155,9 +155,13 @@ async function reloadQuestionsWithConditions() {
 
 function updateProgress() {
   const total = visible.length;
-  const current = total ? idx + 1 : 0;
-  $('progressText').textContent = `${current} / ${total}`;
-  $('progressFill').style.width = total ? `${Math.round((current / total) * 100)}%` : '0%';
+  
+  // Calculer le numéro d'étape logique basé sur les sections
+  const currentStep = getCurrentStepNumber();
+  const totalSteps = getTotalSteps();
+  
+  $('progressText').textContent = `${currentStep} / ${totalSteps}`;
+  $('progressFill').style.width = totalSteps ? `${Math.round((currentStep / totalSteps) * 100)}%` : '0%';
   $('questionId').textContent = visible[idx]?.id || '';
 
   $('prevBtn').disabled = idx <= 0;
@@ -168,18 +172,23 @@ function renderInput(q, value) {
   const type = q.type || q.type_champ;
   
   if (type === 'texte_long' || type === 'textarea') {
-    return `<textarea class="input" id="answer" placeholder="Ta réponse...">${value ? String(value) : ''}</textarea>`;
+    return `<textarea class="input" id="answer" name="${q.id}" placeholder="Ta réponse...">${value ? String(value) : ''}</textarea>`;
   }
 
   if (type === 'date') {
-    return `<input class="input" id="answer" type="date" value="${value ? String(value) : ''}" />`;
+    return `<input class="input" id="answer" name="${q.id}" type="date" value="${value ? String(value) : ''}" />`;
   }
 
   if (type === 'checkbox') {
     const defaultVal = q.defaultValue !== undefined ? q.defaultValue : false;
     const currentValue = value !== undefined ? value : defaultVal;
     const checked = currentValue ? 'checked' : '';
-    return `<label class="choice"><input type="checkbox" id="answer" ${checked}/> ${q.label}</label>`;
+    
+    // Ajouter une valeur spécifique pour q_representant_legal_1 pour éviter "on"
+    const checkboxValue = q.id === 'q_representant_legal_1' ? q.id : '';
+    const valueAttr = checkboxValue ? `value="${checkboxValue}"` : '';
+    
+    return `<label class="choice"><input type="checkbox" id="answer" ${valueAttr} ${checked}/> ${q.label}</label>`;
   }
 
   if (type === 'checkbox_multiple' && Array.isArray(q.options)) {
@@ -278,7 +287,7 @@ function renderInput(q, value) {
   }
 
   // défaut texte
-  return `<input class="input" id="answer" type="text" placeholder="Ta réponse..." value="${value ? String(value) : ''}" />`;
+  return `<input class="input" id="answer" name="${q.id}" type="text" placeholder="Ta réponse..." value="${value ? String(value) : ''}" />`;
 }
 
 function getAnswerFromDom(q) {
@@ -286,7 +295,14 @@ function getAnswerFromDom(q) {
   
   if (type === 'checkbox') {
     const el = document.querySelector('#answer');
-    return el ? el.checked : false;
+    if (!el) return false;
+    
+    // Pour q_representant_legal_1, retourner la valeur ou l'ID au lieu de true/false
+    if (q.id === 'q_representant_legal_1') {
+      return el.checked ? (el.value || q.id) : false;
+    }
+    
+    return el.checked;
   }
   
   if (type === 'checkbox_multiple') {
@@ -327,7 +343,14 @@ function getAnswerFromDom(q) {
   }
 
   const el = $('answer');
-  return el ? String(el.value || '').trim() : '';
+  if (!el) return '';
+  
+  // Pour les champs text, vérifier s'il y a une vraie valeur
+  if (el.type === 'text' || el.type === 'textarea' || el.type === 'date') {
+    return String(el.value || '').trim();
+  }
+  
+  return el.value ? String(el.value).trim() : '';
 }
 
 function validateRequired(q, answer) {
@@ -349,14 +372,24 @@ function render() {
   const currentSection = q.sectionTitle;
   const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
   
-  if (sectionQuestions.length > 1 && currentSection === "Type de demande") {
+  if (sectionQuestions.length > 1 && (currentSection === "Type de demande" || 
+      currentSection.includes("Parent") || 
+      currentSection.includes("représentant légal"))) {
     // Afficher toutes les questions de la section ensemble sans titre de section
     let sectionHtml = '';
     
     sectionQuestions.forEach(sectionQ => {
       const value = responses[sectionQ.id];
+      
+      // Afficher le label pour tous les champs dans les sections représentant légal
+      let questionLabel = '';
+      if (currentSection.includes("représentant légal") || currentSection.includes("Parent")) {
+        questionLabel = `<label class="field-label">${sectionQ.label || sectionQ.libelle_plateforme || 'Question sans titre'}</label>`;
+      }
+      
       sectionHtml += `
         <div class="question-item" data-question-id="${sectionQ.id}" style="margin-bottom: 15px;">
+          ${questionLabel}
           ${renderInput(sectionQ, value)}
         </div>
       `;
@@ -426,7 +459,9 @@ function next() {
   const currentSection = q.sectionTitle;
   const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
   
-  if (sectionQuestions.length > 1 && currentSection === "Type de demande") {
+  if (sectionQuestions.length > 1 && (currentSection === "Type de demande" || 
+      currentSection.includes("Parent") || 
+      currentSection.includes("représentant légal"))) {
     // Sauvegarder toutes les réponses de la section
     sectionQuestions.forEach(sectionQ => {
       const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
@@ -483,7 +518,48 @@ function next() {
 
 function prev() {
   if (idx <= 0) return;
-  idx -= 1;
+  
+  const currentQ = visible[idx];
+  if (!currentQ) {
+    idx -= 1;
+    render();
+    return;
+  }
+  
+  const currentSection = currentQ.sectionTitle;
+  const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
+  
+  // Si on est dans une section groupée, revenir au début de la section précédente
+  if (sectionQuestions.length > 1 && (currentSection === "Type de demande" || 
+      currentSection.includes("Parent") || 
+      currentSection.includes("représentant légal"))) {
+    
+    // Trouver l'index de la première question de cette section
+    const currentSectionStartIdx = visible.findIndex(q => q.sectionTitle === currentSection);
+    
+    if (currentSectionStartIdx > 0) {
+      // Trouver la section précédente
+      const prevQ = visible[currentSectionStartIdx - 1];
+      const prevSection = prevQ.sectionTitle;
+      const prevSectionQuestions = visible.filter(question => question.sectionTitle === prevSection);
+      
+      // Si la section précédente est aussi groupée, aller à son début
+      if (prevSectionQuestions.length > 1 && (prevSection === "Type de demande" || 
+          prevSection.includes("Parent") || 
+          prevSection.includes("représentant légal"))) {
+        idx = visible.findIndex(q => q.sectionTitle === prevSection);
+      } else {
+        // Sinon, aller à la question précédente
+        idx = currentSectionStartIdx - 1;
+      }
+    } else {
+      idx = 0;
+    }
+  } else {
+    // Navigation normale pour les questions individuelles
+    idx -= 1;
+  }
+  
   render();
 }
 
@@ -580,5 +656,30 @@ async function boot() {
 $('nextBtn').addEventListener('click', next);
 $('prevBtn').addEventListener('click', prev);
 $('generateBtn').addEventListener('click', generatePdf);
+
+// Fonctions utilitaires pour le calcul des étapes
+function getCurrentStepNumber() {
+  if (!visible[idx]) return 0;
+  
+  const currentQ = visible[idx];
+  const currentSection = currentQ.sectionTitle;
+  
+  // Compter les sections uniques jusqu'à la section actuelle
+  const sectionsBeforeCurrent = new Set();
+  
+  for (let i = 0; i < idx; i++) {
+    const q = visible[i];
+    if (q.sectionTitle !== currentSection) {
+      sectionsBeforeCurrent.add(q.sectionTitle);
+    }
+  }
+  
+  return sectionsBeforeCurrent.size + 1;
+}
+
+function getTotalSteps() {
+  const uniqueSections = new Set(visible.map(q => q.sectionTitle));
+  return uniqueSections.size;
+}
 
 boot();
