@@ -56,8 +56,101 @@ function evaluateCondition(cond) {
 }
 
 function refreshVisible() {
-  visible = allQuestions.filter(q => evaluateCondition(q.condition_affichage));
-  if (idx >= visible.length) idx = Math.max(0, visible.length - 1);
+  visible = allQuestions.filter(q => {
+    // Vérifier d'abord la condition de section
+    if (q.sectionCondition) {
+      const condition = q.sectionCondition;
+      
+      // Vérifier si c'est une comparaison avec des chaînes 'true'/'false'
+      const stringMatch = condition.match(/(\w+)\s*===\s*['"]([^'"]+)['"]/);
+      if (stringMatch) {
+        const [, fieldId, expectedValue] = stringMatch;
+        const actualValue = String(responses[fieldId] || '');
+        
+        if (actualValue !== expectedValue) {
+          return false; // Exclure cette question si la condition de section n'est pas remplie
+        }
+      }
+    }
+    
+    // Ensuite vérifier la condition d'affichage de la question
+    if (!q.condition_affichage) {
+      return true;
+    }
+    
+    const condition = q.condition_affichage;
+    if (condition.includes('===')) {
+      // Vérifier si c'est une comparaison avec des chaînes 'true'/'false'
+      const stringMatch = condition.match(/(\w+)\s*===\s*['"]([^'"]+)['"]/);
+      if (stringMatch) {
+        const [, field, expectedValue] = stringMatch;
+        const fieldValue = String(responses[field] || '');
+        return fieldValue === expectedValue;
+      }
+    }
+    
+    return true;
+  });
+  
+  return visible;
+}
+
+async function reloadQuestionsWithConditions() {
+  try {
+    console.log('🔍 Chargement des questions...');
+    const pagesResponse = await fetch('/data/form_pages.json');
+    const pagesConfig = await pagesResponse.json();
+    
+    allQuestions = [];
+    
+    for (const pageConfig of pagesConfig.pages.sort((a, b) => a.order - b.order)) {
+      try {
+        console.log(`📄 Chargement de la page: ${pageConfig.title}`);
+        const pageResponse = await fetch(`/data/${pageConfig.questionsFile}`);
+        const pageData = await pageResponse.json();
+        
+        if (pageData?.sections) {
+          for (const section of pageData.sections) {
+            console.log(`  📂 Section: ${section.title} (${section.id})`);
+            
+            // Vérifier la condition de section
+            let sectionVisible = true;
+            if (section.condition_section) {
+              const condition = section.condition_section;
+              console.log(`  🔍 Condition de section: ${condition}`);
+              
+              // Vérifier si c'est une comparaison avec des chaînes 'true'/'false'
+              const stringMatch = condition.match(/(\w+)\s*===\s*['"]([^'"]+)['"]/);
+              if (stringMatch) {
+                const [, fieldId, expectedValue] = stringMatch;
+                const actualValue = String(responses[fieldId] || '');
+                console.log(`  🔍 Comparaison chaîne - Champ: ${fieldId}, Valeur actuelle: "${actualValue}", Attendu: "${expectedValue}"`);
+                sectionVisible = actualValue === expectedValue;
+              }
+              console.log(`  ✅ Section visible: ${sectionVisible}`);
+            }
+            
+            if (sectionVisible && section.questions) {
+              console.log(`  ➕ Ajout de ${section.questions.length} questions de la section ${section.title}`);
+              const questionsWithPage = section.questions.map(q => ({
+                ...q,
+                pageId: pageConfig.id,
+                pageTitle: pageConfig.title,
+                sectionTitle: section.title
+              }));
+              allQuestions.push(...questionsWithPage);
+            } else if (!sectionVisible) {
+              console.log(`  ⏭️ Section masquée par condition: ${section.title}`);
+            }
+          }
+        }
+      } catch (pageError) {
+        console.error(`Erreur lors du rechargement de ${pageConfig.title}:`, pageError);
+      }
+    }
+  } catch (error) {
+    console.error('Erreur lors du rechargement des questions :', error);
+  }
 }
 
 function updateProgress() {
@@ -107,14 +200,25 @@ function renderInput(q, value) {
   if (type === 'radio' && Array.isArray(q.options)) {
     const defaultVal = q.defaultValue !== undefined ? q.defaultValue : '';
     const currentValue = value !== undefined ? value : defaultVal;
-    const v = currentValue ? String(currentValue) : '';
+    
+    // Ne pas convertir les booléens en chaînes
+    const v = currentValue;
     
     return `
       <div class="choice-grid" id="answer">
         ${q.options.map(opt => {
           const optValue = opt.value || opt;
           const optLabel = opt.label || opt;
-          const checked = optValue === v ? 'checked' : '';
+          
+          // Comparaison stricte pour les booléens, sinon comparaison de chaînes
+          let isChecked;
+          if (typeof v === 'boolean' && (optValue === true || optValue === false)) {
+            isChecked = v === optValue;
+          } else {
+            isChecked = String(optValue) === String(v);
+          }
+          
+          const checked = isChecked ? 'checked' : '';
           return `<label class="choice"><input type="radio" name="opt" value="${optValue}" ${checked}/> ${optLabel}</label>`;
         }).join('')}
       </div>
@@ -192,7 +296,10 @@ function getAnswerFromDom(q) {
   
   if (type === 'radio') {
     const el = document.querySelector('input[name="opt"]:checked');
-    return el ? el.value : '';
+    if (!el) return '';
+    
+    // Retourner toujours des chaînes de caractères pour les boutons radio
+    return String(el.value);
   }
   
   if (type === 'radio_with_text') {
@@ -353,6 +460,7 @@ function next() {
   } else {
     // Logique normale pour une question seule
     const answer = getAnswerFromDom(q);
+    
     if (!validateRequired(q, answer)) {
       setStatus('Ce champ est obligatoire.');
       return;
@@ -367,7 +475,7 @@ function next() {
 
     idx++;
   }
-
+  
   saveLocal(true);
   render();
   setStatus('');
@@ -435,13 +543,15 @@ async function boot() {
         
         if (pageData?.sections) {
           for (const section of pageData.sections) {
+            // TOUJOURS charger les sections, les conditions seront évaluées dynamiquement
             if (section.questions) {
               // Ajouter l'info de la page à chaque question
               const questionsWithPage = section.questions.map(q => ({
                 ...q,
                 pageId: pageConfig.id,
                 pageTitle: pageConfig.title,
-                sectionTitle: section.title
+                sectionTitle: section.title,
+                sectionCondition: section.condition_section
               }));
               allQuestions.push(...questionsWithPage);
             }
@@ -470,6 +580,5 @@ async function boot() {
 $('nextBtn').addEventListener('click', next);
 $('prevBtn').addEventListener('click', prev);
 $('generateBtn').addEventListener('click', generatePdf);
-// Les boutons saveBtn et resetBtn ont été supprimés de l'interface
 
 boot();

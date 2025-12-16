@@ -2,11 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { PDFDocument } from 'pdf-lib';
-import { normalizeOuiNon, splitDateToDMY } from '../src/utils/utils.js';
-
-// Fonctions exportées pour compatibilité
-// Les implémentations sont maintenant dans src/utils/utils.js
-export { normalizeOuiNon, splitDateToDMY } from '../src/utils/utils.js';
+import { normalizeOuiNon, splitDateToDMY } from '../utils/utils.js';
 
 function readJson(absPath) {
   return JSON.parse(fs.readFileSync(absPath, 'utf8'));
@@ -23,8 +19,8 @@ export default async function handler(req, res) {
   try {
     const root = process.cwd();
 
-    const pdfPath = path.join(root, 'Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
-    const questionsPath = path.join(root, 'public', 'data', 'pages', 'page1', 'questions_cerfa_page1.json');
+    const pdfPath = path.join(root, 'public', 'Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
+    const formPagesPath = path.join(root, 'public', 'data', 'form_pages.json');
 
     if (!fs.existsSync(pdfPath)) {
       res.statusCode = 500;
@@ -33,20 +29,29 @@ export default async function handler(req, res) {
       return;
     }
 
-    const questionsData = readJson(questionsPath);
+    const formPagesData = readJson(formPagesPath);
     const responses = req.body && typeof req.body === 'object' ? req.body : {};
 
     const existingPdfBytes = fs.readFileSync(pdfPath);
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const form = pdfDoc.getForm();
 
-    // Extraire toutes les questions de toutes les sections
+    // Charger toutes les questions de toutes les pages
     const allQuestions = [];
-    if (questionsData.sections) {
-      for (const section of questionsData.sections) {
-        if (section.questions) {
-          allQuestions.push(...section.questions);
+    for (const pageConfig of formPagesData.pages) {
+      try {
+        const pageQuestionsPath = path.join(root, 'public', 'data', pageConfig.questionsFile);
+        const pageData = readJson(pageQuestionsPath);
+        
+        if (pageData.sections) {
+          for (const section of pageData.sections) {
+            if (section.questions) {
+              allQuestions.push(...section.questions);
+            }
+          }
         }
+      } catch (pageError) {
+        console.error(`Erreur lors du chargement de ${pageConfig.questionsFile}:`, pageError);
       }
     }
 
@@ -69,11 +74,13 @@ export default async function handler(req, res) {
           } else {
             if (field.setText) field.setText(String(answer));
           }
-        } catch {}
+        } catch (err) {
+          console.warn(`Champ PDF non trouvé: ${map}`, err.message);
+        }
         continue;
       }
 
-      if (Array.isArray(map) && q.type_champ === 'date' && map.length === 3) {
+      if (Array.isArray(map) && (q.type === 'date' || q.type_champ === 'date') && map.length === 3) {
         const { d, m, y } = splitDateToDMY(String(answer));
         const [fd, fm, fy] = map;
         try { form.getTextField(fd).setText(d); } catch {}
@@ -83,12 +90,29 @@ export default async function handler(req, res) {
       }
 
       if (map && typeof map === 'object' && !Array.isArray(map)) {
-        const chosen = String(answer);
-        const fieldName = map[chosen];
-        if (!fieldName) continue;
-        try {
-          form.getCheckBox(fieldName).check();
-        } catch {}
+        if (q.pdf_mapping?.values) {
+          // Nouveau format avec pdf_mapping.values
+          const chosen = String(answer);
+          const fieldName = q.pdf_mapping.values[chosen];
+          if (fieldName) {
+            try {
+              form.getCheckBox(fieldName).check();
+            } catch (err) {
+              console.warn(`Champ PDF checkbox non trouvé: ${fieldName}`, err.message);
+            }
+          }
+        } else {
+          // Ancien format
+          const chosen = String(answer);
+          const fieldName = map[chosen];
+          if (fieldName) {
+            try {
+              form.getCheckBox(fieldName).check();
+            } catch (err) {
+              console.warn(`Champ PDF checkbox non trouvé: ${fieldName}`, err.message);
+            }
+          }
+        }
         continue;
       }
     }

@@ -215,27 +215,9 @@
       ]
     },
     {
-      "id": "securite_sociale",
-      "title": "Sécurité sociale et organismes",
+      "id": "organismes",
+      "title": "Organismes",
       "questions": [
-        {
-          "id": "q_numero_ss",
-          "type": "text",
-          "label": "Votre numéro de Sécurité Sociale :",
-          "required": false,
-          "pdf_mapping": {
-            "field": "N° SS p2"
-          }
-        },
-        {
-          "id": "q_numero_ss_enfant",
-          "type": "text",
-          "label": "Si c'est votre enfant qui est concerné par la demande, indiquer son numéro de sécurité sociale :",
-          "required": false,
-          "pdf_mapping": {
-            "field": "N° SS Enfant p2"
-          }
-        },
         {
           "id": "q_organisme_assurance",
           "type": "radio_with_text",
@@ -298,43 +280,98 @@
       ]
     },
     {
+      "id": "securite_sociale",
+      "title": "Sécurité sociale",
+      "questions": [
+        {
+          "id": "q_est_pour_enfant",
+          "type": "radio",
+          "label": "Cette demande concerne-t-elle un enfant ?",
+          "required": true,
+          "options": [
+            {
+              "value": "true",
+              "label": "Oui, c'est pour un enfant"
+            },
+            {
+              "value": "false",
+              "label": "Non, c'est pour un adulte"
+            }
+          ],
+          "pdf_mapping": {
+            "field": "Case à cocher Option P2 1"
+          }
+        },
+        {
+          "id": "q_numero_ss",
+          "type": "text",
+          "label": "Numéro de Sécurité Sociale :",
+          "required": false,
+          "condition_affichage": "q_est_pour_enfant === 'false'",
+          "pdf_mapping": {
+            "field": "Numero SS 1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "securite_sociale_enfant",
+      "title": "Sécurité sociale de l'enfant",
+      "questions": [
+        {
+          "id": "q_numero_ss_enfant",
+          "type": "text",
+          "label": "Numéro de Sécurité Sociale de l'enfant :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "N° SS Enfant 1"
+          }
+        }
+      ],
+      "condition_section": "q_est_pour_enfant === 'true'"
+    },
+    {
       "id": "autorite_parentale",
-      "title": "Autorité parentale, délégation d'autorité parentale ou tutelle (pour les mineurs)",
+      "title": "Autorité parentale (pour les mineurs)",
       "questions": [
         {
           "id": "q_parent1_nom",
           "type": "text",
-          "label": "Parent 1 ou représentant légal 1 - Nom :",
+          "label": "Parent 1 - Nom :",
           "required": false,
+          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
-            "field": "Représentant légal 1 Nom p2"
+            "field": "Autorite Parent 1  A"
           }
         },
         {
           "id": "q_parent1_prenom",
           "type": "text",
-          "label": "Parent 1 ou représentant légal 1 - Prénom :",
+          "label": "Parent 1 - Prénom :",
           "required": false,
+          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
-            "field": "Représentant légal 1 Prénom p2"
+            "field": "Autorite Parent 1  B"
           }
         },
         {
           "id": "q_parent2_nom",
           "type": "text",
-          "label": "Parent 2 ou représentant légal 2 - Nom :",
+          "label": "Parent 2 - Nom :",
           "required": false,
+          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
-            "field": "Représentant légal 2 Nom p2"
+            "field": "Autorite Parent  2 A"
           }
         },
         {
           "id": "q_parent2_prenom",
           "type": "text",
-          "label": "Parent 2 ou représentant légal 2 - Prénom :",
+          "label": "Parent 2 - Prénom :",
           "required": false,
+          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
-            "field": "Représentant légal 2 Prénom p2"
+            "field": "Autorite Parent  2 B"
           }
         },
         {
@@ -342,8 +379,9 @@
           "type": "text",
           "label": "Qui exerce l'autorité parentale :",
           "required": false,
+          "condition_affichage": "q_est_pour_enfant === 'true'",
           "pdf_mapping": {
-            "field": "Qui exerce autorité parentale p2"
+            "field": "Autorite Parent 1  C"
           }
         }
       ]
