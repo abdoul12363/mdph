@@ -44,7 +44,6 @@
           "type": "radio",
           "label": "Sexe :",
           "required": true,
-          "defaultValue": "homme",
           "options": [
             {"value": "homme", "label": "Homme"},
             {"value": "femme", "label": "Femme"}
@@ -317,6 +316,7 @@
     {
       "id": "securite_sociale_enfant",
       "title": "Sécurité sociale de l'enfant",
+      "condition_section": "q_est_pour_enfant === 'true'",
       "questions": [
         {
           "id": "q_numero_ss_enfant",
@@ -327,28 +327,32 @@
             "field": "N° SS Enfant 1"
           }
         }
-      ],
-      "condition_section": "q_est_pour_enfant === 'true'"
+      ]
     },
     {
       "id": "autorite_parentale_parent1",
-      "title": "Parent 1 ou représentant légal 1",
+      "title": "Qui exerce l'autorité parentale",
       "condition_section": "q_est_pour_enfant === 'true'",
+      "className": "parent-section",
       "questions": [
         {
           "id": "q_representant_legal_1",
           "type": "checkbox",
-          "label": "Représentant légal 1",
+          "label": "Qui exerce l'autorité parentale",
           "required": false,
+          "className": "parent-checkbox",
           "pdf_mapping": {
             "field": "Représentant légal 1 p2"
-          }
+          },
+          "description": "Cochez cette case si cette personne exerce l'autorité parentale"
         },
         {
           "id": "q_parent1_nom",
           "type": "text",
           "label": "Nom :",
-          "required": false,
+          "required": true,
+          "placeholder": "Entrez le nom du parent 1",
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent 1  A"
           }
@@ -438,23 +442,28 @@
     },
     {
       "id": "autorite_parentale_parent2",
-      "title": "Parent 2 ou représentant légal 2",
+      "title": "Parent 2",
       "condition_section": "q_est_pour_enfant === 'true'",
+      "className": "parent-section",
       "questions": [
         {
           "id": "q_representant_legal_2",
           "type": "checkbox",
-          "label": "Représentant légal 2",
+          "label": "Qui exerce l'autorité parentale",
           "required": false,
+          "className": "parent-checkbox",
           "pdf_mapping": {
             "field": "Représentant légal 2 p2"
-          }
+          },
+          "description": "Cochez cette case si cette personne exerce l'autorité parentale"
         },
         {
           "id": "q_parent2_nom",
           "type": "text",
           "label": "Nom :",
           "required": false,
+          "placeholder": "Entrez le nom du parent 2",
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 A"
           }
@@ -464,6 +473,8 @@
           "type": "text",
           "label": "Prénom :",
           "required": false,
+          "placeholder": "Entrez le prénom du parent 2",
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 B"
           }
@@ -473,6 +484,7 @@
           "type": "date",
           "label": "Date de naissance :",
           "required": false,
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 C"
           }
@@ -482,6 +494,8 @@
           "type": "text",
           "label": "Adresse (numéro et rue) :",
           "required": false,
+          "placeholder": "N° et nom de rue",
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 D"
           }
@@ -491,6 +505,8 @@
           "type": "text",
           "label": "Complément d'adresse :",
           "required": false,
+          "placeholder": "Appartement, étage, bâtiment...",
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 E"
           }
@@ -500,6 +516,8 @@
           "type": "text",
           "label": "Code postal :",
           "required": false,
+          "placeholder": "Code postal",
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 F"
           }
@@ -509,6 +527,8 @@
           "type": "text",
           "label": "Commune :",
           "required": false,
+          "placeholder": "Ville",
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 G"
           }
@@ -518,6 +538,8 @@
           "type": "text",
           "label": "Pays :",
           "required": false,
+          "placeholder": "Pays de résidence",
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 H"
           }
@@ -527,6 +549,8 @@
           "type": "text",
           "label": "Téléphone :",
           "required": false,
+          "placeholder": "Numéro de téléphone",
+          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 I"
           }
@@ -538,22 +562,6 @@
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent  2 J"
-          }
-        }
-      ]
-    },
-    {
-      "id": "exercice_autorite_parentale",
-      "title": "Exercice de l'autorité parentale",
-      "condition_section": "q_est_pour_enfant === 'true'",
-      "questions": [
-        {
-          "id": "q_qui_exerce_autorite",
-          "type": "text",
-          "label": "Qui exerce l'autorité parentale :",
-          "required": false,
-          "pdf_mapping": {
-            "field": "Autorite Parent 1  C"
           }
         }
       ]

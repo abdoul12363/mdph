@@ -48,6 +48,84 @@ body {
 .q-title{font-weight:800;margin:0 0 6px;margin-left:-24px;padding-left:0}
 .q-help{margin:0 0 40px !important;color:var(--muted);font-size:14px;line-height:1.6}
 
+/* Styles pour la section Parent 1 */
+.parent-section {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.parent-section .form-section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px 0 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.parent-section .form-section-header i {
+  font-size: 20px;
+}
+
+.parent-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+.parent-checkbox:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.parent-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.parent-field {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 15px;
+  width: 100%;
+  color: white;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+.parent-field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2);
+  outline: none;
+}
+
+.parent-field::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .parent-section {
+    padding: 15px;
+  }
+  
+  .parent-field {
+    padding: 10px 12px;
+  }
+}
+
 .input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:var(--text);font-size:14px;outline:none}
 .input:focus{border-color:rgba(255,255,255,.28)}
 .input[type="date"]{color-scheme:dark}
