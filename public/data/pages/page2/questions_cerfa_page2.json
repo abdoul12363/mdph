@@ -44,6 +44,7 @@
           "type": "radio",
           "label": "Sexe :",
           "required": true,
+          "defaultValue": "homme",
           "options": [
             {"value": "homme", "label": "Homme"},
             {"value": "femme", "label": "Femme"}
@@ -316,7 +317,6 @@
     {
       "id": "securite_sociale_enfant",
       "title": "Sécurité sociale de l'enfant",
-      "condition_section": "q_est_pour_enfant === 'true'",
       "questions": [
         {
           "id": "q_numero_ss_enfant",
@@ -327,32 +327,31 @@
             "field": "N° SS Enfant 1"
           }
         }
-      ]
+      ],
+      "condition_section": "q_est_pour_enfant === 'true'"
     },
     {
       "id": "autorite_parentale_parent1",
-      "title": "Qui exerce l'autorité parentale",
+      "title": "Parent 1 ou représentant légal 1",
       "condition_section": "q_est_pour_enfant === 'true'",
-      "className": "parent-section",
       "questions": [
         {
           "id": "q_representant_legal_1",
           "type": "checkbox",
-          "label": "Qui exerce l'autorité parentale",
+          "label": "Oui",
+          "description": "Cocher OUI si le parent 1 exerce l'autorité parentale",
           "required": false,
-          "className": "parent-checkbox",
           "pdf_mapping": {
             "field": "Représentant légal 1 p2"
           },
-          "description": "Cochez cette case si cette personne exerce l'autorité parentale"
+          "displayBeforeLabel": true
         },
         {
           "id": "q_parent1_nom",
           "type": "text",
           "label": "Nom :",
-          "required": true,
-          "placeholder": "Entrez le nom du parent 1",
-          "className": "parent-field",
+          "description": "Nom",
+          "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  A"
           }
@@ -361,6 +360,7 @@
           "id": "q_parent1_prenom",
           "type": "text",
           "label": "Prénom :",
+          "description": "Prénom",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  B"
@@ -370,6 +370,7 @@
           "id": "q_parent1_date_naissance",
           "type": "date",
           "label": "Date de naissance :",
+          "description": "Date de naissance",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  C"
@@ -379,6 +380,7 @@
           "id": "q_parent1_adresse",
           "type": "text",
           "label": "Adresse (numéro et rue) :",
+          "description": "Adresse",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  D"
@@ -388,6 +390,7 @@
           "id": "q_parent1_complement_adresse",
           "type": "text",
           "label": "Complément d'adresse :",
+          "description": "Complément d'adresse",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  E"
@@ -397,6 +400,7 @@
           "id": "q_parent1_code_postal",
           "type": "text",
           "label": "Code postal :",
+          "description": "Code postal",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  F"
@@ -406,6 +410,7 @@
           "id": "q_parent1_commune",
           "type": "text",
           "label": "Commune :",
+          "description": "Commune",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  G"
@@ -415,6 +420,7 @@
           "id": "q_parent1_pays",
           "type": "text",
           "label": "Pays :",
+          "description": "Pays",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  H"
@@ -424,6 +430,7 @@
           "id": "q_parent1_telephone",
           "type": "text",
           "label": "Téléphone :",
+          "description": "N° de téléphone",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  I"
@@ -433,6 +440,7 @@
           "id": "q_parent1_email",
           "type": "email",
           "label": "Adresse e-mail :",
+          "description": "e-mail",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent 1  J"
@@ -442,28 +450,26 @@
     },
     {
       "id": "autorite_parentale_parent2",
-      "title": "Parent 2",
+      "title": "Parent 2 ou représentant légal 2",
       "condition_section": "q_est_pour_enfant === 'true'",
-      "className": "parent-section",
       "questions": [
         {
           "id": "q_representant_legal_2",
           "type": "checkbox",
-          "label": "Qui exerce l'autorité parentale",
+          "label": "Oui",
+          "description": "Cocher OUI si le parent 2 exerce l'autorité parentale",
           "required": false,
-          "className": "parent-checkbox",
           "pdf_mapping": {
             "field": "Représentant légal 2 p2"
           },
-          "description": "Cochez cette case si cette personne exerce l'autorité parentale"
+          "displayBeforeLabel": true
         },
         {
           "id": "q_parent2_nom",
           "type": "text",
           "label": "Nom :",
+          "description": "Nom",
           "required": false,
-          "placeholder": "Entrez le nom du parent 2",
-          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 A"
           }
@@ -472,9 +478,8 @@
           "id": "q_parent2_prenom",
           "type": "text",
           "label": "Prénom :",
+          "description": "Prénom",
           "required": false,
-          "placeholder": "Entrez le prénom du parent 2",
-          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 B"
           }
@@ -483,8 +488,8 @@
           "id": "q_parent2_date_naissance",
           "type": "date",
           "label": "Date de naissance :",
+          "description": "Date de naissance",
           "required": false,
-          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 C"
           }
@@ -493,9 +498,8 @@
           "id": "q_parent2_adresse",
           "type": "text",
           "label": "Adresse (numéro et rue) :",
+          "description": "Adresse",
           "required": false,
-          "placeholder": "N° et nom de rue",
-          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 D"
           }
@@ -504,9 +508,8 @@
           "id": "q_parent2_complement_adresse",
           "type": "text",
           "label": "Complément d'adresse :",
+          "description": "Complément d'adresse",
           "required": false,
-          "placeholder": "Appartement, étage, bâtiment...",
-          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 E"
           }
@@ -515,9 +518,8 @@
           "id": "q_parent2_code_postal",
           "type": "text",
           "label": "Code postal :",
+          "description": "Code postal",
           "required": false,
-          "placeholder": "Code postal",
-          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 F"
           }
@@ -526,9 +528,8 @@
           "id": "q_parent2_commune",
           "type": "text",
           "label": "Commune :",
+          "description": "Commune",
           "required": false,
-          "placeholder": "Ville",
-          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 G"
           }
@@ -537,9 +538,8 @@
           "id": "q_parent2_pays",
           "type": "text",
           "label": "Pays :",
+          "description": "Pays",
           "required": false,
-          "placeholder": "Pays de résidence",
-          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 H"
           }
@@ -548,9 +548,8 @@
           "id": "q_parent2_telephone",
           "type": "text",
           "label": "Téléphone :",
+          "description": "N° de téléphone",
           "required": false,
-          "placeholder": "Numéro de téléphone",
-          "className": "parent-field",
           "pdf_mapping": {
             "field": "Autorite Parent  2 I"
           }
@@ -559,6 +558,7 @@
           "id": "q_parent2_email",
           "type": "email",
           "label": "Adresse e-mail :",
+          "description": "e-mail",
           "required": false,
           "pdf_mapping": {
             "field": "Autorite Parent  2 J"

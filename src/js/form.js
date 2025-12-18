@@ -170,25 +170,37 @@ function updateProgress() {
 
 function renderInput(q, value) {
   const type = q.type || q.type_champ;
+  const description = q.description ? `<div class="field-description">${q.description}</div>` : '';
   
   if (type === 'texte_long' || type === 'textarea') {
-    return `<textarea class="input" id="answer" name="${q.id}" placeholder="Ta réponse...">${value ? String(value) : ''}</textarea>`;
+    return `
+      <div class="field-container">
+        <textarea class="input" id="answer" placeholder="Ta réponse...">${value ? String(value) : ''}</textarea>
+        ${description}
+      </div>`;
   }
 
   if (type === 'date') {
-    return `<input class="input" id="answer" name="${q.id}" type="date" value="${value ? String(value) : ''}" />`;
+    return `
+      <div class="field-container">
+        <input class="input" id="answer" type="date" value="${value ? String(value) : ''}" />
+        ${description}
+      </div>`;
   }
 
   if (type === 'checkbox') {
     const defaultVal = q.defaultValue !== undefined ? q.defaultValue : false;
     const currentValue = value !== undefined ? value : defaultVal;
     const checked = currentValue ? 'checked' : '';
-    
-    // Ajouter une valeur spécifique pour q_representant_legal_1 pour éviter "on"
-    const checkboxValue = q.id === 'q_representant_legal_1' ? q.id : '';
-    const valueAttr = checkboxValue ? `value="${checkboxValue}"` : '';
-    
-    return `<label class="choice"><input type="checkbox" id="answer" ${valueAttr} ${checked}/> ${q.label}</label>`;
+    const checkboxValue = q.id || 'checkbox_value';
+    return `
+      <div class="field-container">
+        ${description}
+        <label class="choice">
+          ${q.label}
+          <input type="checkbox" id="answer" value="${checkboxValue}" ${checked}/> 
+        </label>
+      </div>`;
   }
 
   if (type === 'checkbox_multiple' && Array.isArray(q.options)) {
@@ -287,7 +299,11 @@ function renderInput(q, value) {
   }
 
   // défaut texte
-  return `<input class="input" id="answer" name="${q.id}" type="text" placeholder="Ta réponse..." value="${value ? String(value) : ''}" />`;
+  return `
+    <div class="field-container">
+      <input class="input" id="answer" type="text" placeholder="Ta réponse..." value="${value ? String(value) : ''}" />
+      ${description ? `<div class="field-description">${description}</div>` : ''}
+    </div>`;
 }
 
 function getAnswerFromDom(q) {
@@ -295,14 +311,7 @@ function getAnswerFromDom(q) {
   
   if (type === 'checkbox') {
     const el = document.querySelector('#answer');
-    if (!el) return false;
-    
-    // Pour q_representant_legal_1, retourner la valeur ou l'ID au lieu de true/false
-    if (q.id === 'q_representant_legal_1') {
-      return el.checked ? (el.value || q.id) : false;
-    }
-    
-    return el.checked;
+    return el ? el.checked : false;
   }
   
   if (type === 'checkbox_multiple') {
@@ -343,14 +352,7 @@ function getAnswerFromDom(q) {
   }
 
   const el = $('answer');
-  if (!el) return '';
-  
-  // Pour les champs text, vérifier s'il y a une vraie valeur
-  if (el.type === 'text' || el.type === 'textarea' || el.type === 'date') {
-    return String(el.value || '').trim();
-  }
-  
-  return el.value ? String(el.value).trim() : '';
+  return el ? String(el.value || '').trim() : '';
 }
 
 function validateRequired(q, answer) {
@@ -380,16 +382,8 @@ function render() {
     
     sectionQuestions.forEach(sectionQ => {
       const value = responses[sectionQ.id];
-      
-      // Afficher le label pour tous les champs dans les sections représentant légal
-      let questionLabel = '';
-      if (currentSection.includes("représentant légal") || currentSection.includes("Parent")) {
-        questionLabel = `<label class="field-label">${sectionQ.label || sectionQ.libelle_plateforme || 'Question sans titre'}</label>`;
-      }
-      
       sectionHtml += `
         <div class="question-item" data-question-id="${sectionQ.id}" style="margin-bottom: 15px;">
-          ${questionLabel}
           ${renderInput(sectionQ, value)}
         </div>
       `;

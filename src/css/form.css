@@ -48,6 +48,49 @@ body {
 .q-title{font-weight:800;margin:0 0 6px;margin-left:-24px;padding-left:0}
 .q-help{margin:0 0 40px !important;color:var(--muted);font-size:14px;line-height:1.6}
 
+/* Styles pour les descriptions des champs */
+.field-container {
+  margin-bottom: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.field-description {
+  order: 1; /* Place la description en premier */
+  font-size: 0.9em; /* Augmenté de 0.8em à 0.9em */
+  color: var(--muted);
+  margin: 0 0 6px 0; /* Marge légèrement augmentée */
+  font-style: normal;
+  line-height: 1.4; /* Interlignage légèrement augmenté */
+  opacity: 0.9;
+  padding: 0 0 0 4px; /* Padding gauche légèrement augmenté */
+  transition: all 0.2s ease;
+  font-weight: 400; /* Police légèrement plus grasse */
+}
+
+/* Le champ de saisie vient après la description */
+.field-container > .input,
+.field-container > .choice,
+.field-container > .choice-grid {
+  order: 2;
+}
+
+/* Style spécifique pour les descriptions des champs de type checkbox */
+.field-container .choice + .field-description {
+  order: 2;
+  margin: 4px 0 0 24px;
+  font-size: 0.85em; /* Augmenté de 0.75em à 0.85em */
+}
+
+/* Style spécifique pour les descriptions dans les sections parentales */
+.parent-section .field-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85em; /* Augmenté de 0.78em à 0.85em */
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+
 /* Styles pour la section Parent 1 */
 .parent-section {
   background: rgba(255, 255, 255, 0.03);
