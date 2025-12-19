@@ -1,155 +1,93 @@
 import { PDFDocument } from 'pdf-lib';
-import fs from 'fs';
-import path from 'path';
+import { readFileSync, writeFileSync } from 'fs';
+import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
-async function checkMapping() {
+async function analyzePage3() {
   try {
-    const pdfPath = path.join(__dirname, '../public/Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
-    
-    if (!fs.existsSync(pdfPath)) {
-      console.error('PDF non trouvé:', pdfPath);
-      return;
-    }
+    const pdfPath = join(__dirname, '..', 'public', 'Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
+    const outputPath = join(__dirname, 'page3-analysis.json');
 
-    const pdfBytes = fs.readFileSync(pdfPath);
+    console.log('🔍 Analyse de la page 3 du formulaire PDF...');
+
+    // Charger le document PDF
+    const pdfBytes = readFileSync(pdfPath);
     const pdfDoc = await PDFDocument.load(pdfBytes);
     const form = pdfDoc.getForm();
     const fields = form.getFields();
 
-    console.log('🔍 Recherche des champs liés au dossier MDPH...\n');
-
-    // Chercher les champs liés au dossier
-    const relevantFields = fields.filter(field => {
-      const name = field.getName().toLowerCase();
-      return name.includes('dossier') || 
-             name.includes('mdph') || 
-             name.includes('numéro') ||
-             name.includes('département');
-    });
-
-    console.log(`📋 ${relevantFields.length} champs trouvés :\n`);
-
-    relevantFields.forEach((field, index) => {
-      const name = field.getName();
-      const type = field.constructor.name.replace('PDF', '').replace('Field', '');
-      console.log(`${index + 1}. "${name}"`);
-      console.log(`   Type: ${type}`);
-      console.log('');
-    });
-
-    // Vérifier l'ordre des champs de la page 2 selon le PDF
-    console.log('\n🔍 Ordre des champs page 2 dans le PDF :\n');
+    // Filtrer les champs de la page 3
+    const page3Fields = [];
     
-    const page2Fields = fields.filter(field => {
-      const name = field.getName().toLowerCase();
-      return name.includes('p2') || name.includes('page 2');
-    });
+    for (const field of fields) {
+      const fieldName = field.getName();
+      const widgets = field.acroField.getWidgets();
+      
+      // Vérifier si le champ est sur la page 3 (en supposant que les champs de la page 3 contiennent 'p3' ou 'page 3')
+      if (fieldName.toLowerCase().includes('p3') || fieldName.toLowerCase().includes('page 3')) {
+        const fieldInfo = {
+          name: fieldName,
+          type: field.constructor.name.replace('PDF', '').replace('Field', ''),
+          isReadOnly: field.isReadOnly(),
+          isRequired: field.isRequired(),
+          page: 3
+        };
 
-    console.log(`📋 ${page2Fields.length} champs page 2 trouvés :\n`);
-    
-    page2Fields.forEach((field, index) => {
-      const name = field.getName();
-      const type = field.constructor.name.replace('PDF', '').replace('Field', '');
-      console.log(`${index + 1}. "${name}"`);
-      console.log(`   Type: ${type}`);
-      console.log('');
-    });
-
-    // Vérifier notre mapping corrigé
-    console.log('🔧 Vérification du mapping corrigé :\n');
-    
-    // Champs de la page 1
-    const page1Mapping = [
-      'Première demande à la MDPH',
-      'Ma situation a changé',
-      'Réévaluation de ma situation',
-      'Renouvellement droits identiques',
-      'Aidant familial souhaite exprimer sa situation',
-      'Numéro de dossier',
-      'Indiquer dans quel département', 
-      'Oui, j\'ai déja un dossier à la MDPH'
-    ];
-
-    // Champs de la page 2 (échantillon)
-    const page2Mapping = [
-      'Nom de naissance p2',
-      'Nom d\'usage p2',
-      'Prénoms p2',
-      'Sexe H p2',
-      'Sexe F p2',
-      'DN J p2',
-      'DN M p2',
-      'DN A p2',
-      'Commune de naissance p2',
-      'Département de naissance p2',
-      'Pays de naissance France p2',
-      'Nationalité f p2',
-      'Nationalité e p2',
-      'Adresse p2',
-      'Complément d\'adresse p2',
-      'Code postal 1 p2',
-      'Code postal 2 p2',
-      'Code postal 3 p2',
-      'Code postal 4 p2',
-      'Code postal 5 p2',
-      'Commune p2',
-      'Pays p2',
-      'Numéro de téléphone p2',
-      'Adresse e-mail p2',
-      'E-mail p2',
-      'Appel téléphonique p2',
-      'SMS p2',
-      'Courrier p2',
-      'OAM CPAM p2',
-      'OAM MSA p2',
-      'OAM RSI p2',
-      'OAM Autre p2',
-      'Organisme assurance maladie Autre p2',
-      'OP CAF p2',
-      'OP MSA p2',
-      'OP Autre p2',
-      'Numéro d\'allocataire p2',
-      'Nom de l\'organisme p2',
-      'Case à cocher Option P2 1',
-      'Numero SS 1',
-      'N° SS Enfant 1',
-      'Autorite Parent 1  A',
-      'Autorite Parent 1  B',
-      'Autorite Parent  2 A',
-      'Autorite Parent  2 B',
-      'Autorite Parent 1  C'
-    ];
-
-    const ourMapping = [...page1Mapping, ...page2Mapping];
-
-    ourMapping.forEach(fieldName => {
-      try {
-        const field = form.getField(fieldName);
-        console.log(`✅ "${fieldName}" - TROUVÉ`);
-      } catch (e) {
-        console.log(`❌ "${fieldName}" - NON TROUVÉ`);
-        
-        // Chercher des champs similaires
-        const similar = fields.filter(f => {
-          const name = f.getName().toLowerCase();
-          const search = fieldName.toLowerCase().replace(/_/g, ' ');
-          return name.includes(search.split(' ')[0]) || name.includes(search.split(' ')[1]);
-        });
-        
-        if (similar.length > 0) {
-          console.log(`   Champs similaires trouvés:`);
-          similar.forEach(f => console.log(`   - "${f.getName()}"`));
+        // Ajouter des informations spécifiques au type de champ
+        if (field.constructor.name === 'PDFTextField') {
+          fieldInfo.maxLength = field.getMaxLength();
+          fieldInfo.isMultiline = field.isMultiline();
+          fieldInfo.isPassword = field.isPassword();
+        } else if (field.constructor.name === 'PDFRadioGroup' || 
+                  field.constructor.name === 'PDFDropdown' || 
+                  field.constructor.name === 'PDFOptionList') {
+          fieldInfo.options = field.getOptions ? field.getOptions() : [];
+        } else if (field.constructor.name === 'PDFCheckBox') {
+          fieldInfo.isChecked = field.isChecked();
         }
+
+        page3Fields.push(fieldInfo);
       }
+    }
+
+    // Trier par nom de champ
+    page3Fields.sort((a, b) => a.name.localeCompare(b.name));
+
+    // Afficher les résultats
+    console.log(`\n📋 ${page3Fields.length} champs trouvés dans la page 3 :\n`);
+    
+    page3Fields.forEach((field, index) => {
+      console.log(`${index + 1}. "${field.name}"`);
+      console.log(`   Type: ${field.type}`);
+      console.log(`   Obligatoire: ${field.isRequired ? 'Oui' : 'Non'}`);
+      console.log(`   Lecture seule: ${field.isReadOnly ? 'Oui' : 'Non'}`);
+      
+      if (field.type === 'TextField' && field.maxLength) {
+        console.log(`   Longueur max: ${field.maxLength}`);
+      }
+      
+      if (field.options) {
+        console.log(`   Options: ${field.options.length} options disponibles`);
+      }
+      
+      console.log('');
     });
 
+    // Enregistrer les résultats dans un fichier
+    const analysis = {
+      totalFields: page3Fields.length,
+      fields: page3Fields,
+      timestamp: new Date().toISOString()
+    };
+
+    writeFileSync(outputPath, JSON.stringify(analysis, null, 2));
+    console.log(`\n✅ Analyse terminée. Résultats enregistrés dans : ${outputPath}`);
   } catch (error) {
-    console.error('Erreur:', error.message);
+    console.error('❌ Erreur lors de l\'analyse de la page 3:', error);
   }
 }
 
-checkMapping();
+analyzePage3();

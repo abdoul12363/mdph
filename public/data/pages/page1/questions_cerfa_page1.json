@@ -10,6 +10,7 @@
     {
       "id": "type_demande",
       "title": "Type de demande",
+      "description": "Veuillez sélectionner le type de demande qui correspond à votre situation. Vous pouvez cocher plusieurs cases si nécessaire.",
       "questions": [
         {
           "id": "q_premiere_demande",
@@ -66,11 +67,13 @@
     {
       "id": "dossier_existant",
       "title": "Dossier existant à la MDPH",
+      "description": "Ces informations nous permettent de retrouver votre dossier existant et d'accélérer le traitement de votre demande. Si vous avez déjà un numéro de dossier MDPH, veuillez le renseigner ci-dessous.",
       "questions": [
         {
           "id": "q_dossier_existant",
           "type": "oui_non",
           "label": "Avez-vous déjà un dossier à la MDPH ?",
+          "description": "Cochez 'Oui' si vous avez déjà effectué une demande auprès de la MDPH, même si c'était pour une autre demande ou dans un autre département.",
           "required": true,
           "pdf_mapping": {
             "field": "Oui, j'ai déja un dossier à la MDPH"
@@ -80,6 +83,7 @@
           "id": "q_departement",
           "type": "text",
           "label": "Dans quel département ?",
+          "description": "Indiquez le numéro du département (ex: 75 pour Paris, 13 pour les Bouches-du-Rhône, etc.) où se trouve votre dossier MDPH.",
           "required": true,
           "condition_affichage": "q_dossier_existant === 'oui'",
           "pdf_mapping": {
@@ -90,6 +94,7 @@
           "id": "q_numero_dossier",
           "type": "text",
           "label": "Numéro de dossier :",
+          "description": "Votre numéro de dossier MDPH est composé de 10 chiffres (ex: 1234567890). Vous le trouverez sur les courriers que vous avez reçus de la MDPH.",
           "required": true,
           "condition_affichage": "q_dossier_existant === 'oui'",
           "pdf_mapping": {

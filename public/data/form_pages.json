@@ -22,6 +22,15 @@
       "pdfMappingFile": "pages/page2/pdf_fields_order_page2.json",
       "order": 2,
       "required": true
+    },
+    {
+      "id": "page3",
+      "title": "Votre situation et vos besoins",
+      "description": "Aide dans les démarches, situation d'urgence et mesures de protection",
+      "questionsFile": "pages/page3/questions_cerfa_page3.json",
+      "pdfMappingFile": "pages/page3/pdf_fields_order_page3.json",
+      "order": 3,
+      "required": true
     }
   ]
 }

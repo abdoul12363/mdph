@@ -1,0 +1,453 @@
+{
+  "metadata": {
+    "version": "1.2",
+    "description": "Formulaire CERFA MDPH - Page 3 - Contact et situation",
+    "lastUpdated": "2025-12-19",
+    "pageNumber": 3,
+    "pageTitle": "Contact et situation"
+  },
+  "sections": [
+    {
+      "id": "contact_aidant",
+      "title": "Contact des personnes aidantes",
+      "questions": [
+        {
+          "id": "q_contact_aidant",
+          "type": "radio",
+          "label": "Vous acceptez que nous contactions ces personnes afin de mieux évaluer votre situation",
+          "description": "En cochant 'Oui', vous nous autorisez à prendre contact avec les personnes que vous avez désignées comme aidantes. Ces échanges nous permettront de mieux comprendre votre situation et vos besoins spécifiques.\n\nCes contacts seront effectués dans le respect de votre vie privée et uniquement dans le cadre du traitement de votre dossier MDPH. Vos informations resteront strictement confidentielles et ne seront utilisées qu'à des fins d'évaluation de votre situation.",
+          "required": true,
+          "options": [
+            {
+              "value": "proche",
+              "label": "Un proche"
+            },
+            {
+              "value": "association",
+              "label": "Une association"
+            },
+            {
+              "value": "autre",
+              "label": "Autre"
+            }
+          ],
+          "pdf_mapping": {
+            "field": "Vous acceptez que nous contactions ces personnes afin de mieux évaluer votre situation"
+          }
+        }
+      ]
+    },
+    {
+      "id": "personne_contact",
+      "title": "Coordonnées de la personne à contacter",
+      "className": "contact-section",
+      "condition_section": "q_contact_aidant && (q_contact_aidant.includes('proche') || q_contact_aidant.includes('association') || q_contact_aidant.includes('autre'))",
+      "questions": [
+        {
+          "id": "q_nom_organisme_contact",
+          "type": "text",
+          "label": "Nom de l'organisme (si pertinent)",
+          "description": "Si vous avez coché 'Une association', veuillez indiquer son nom complet et officiel tel qu'enregistré en préfecture",
+          "required": false,
+          "condition_affichage": "q_contact_aidant && q_contact_aidant.includes('association')",
+          "pdf_mapping": {
+            "field": "Aide dans vos démarches MDPH Une association"
+          },
+          "displayBeforeLabel": true
+        },
+        {
+          "id": "q_nom_prenom_contact",
+          "type": "text",
+          "label": "Nom et prénom de la personne :",
+          "description": "Indiquez le nom complet (prénom suivi du nom) de la personne à contacter en priorité pour votre dossier",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Nom et prénom de la personne"
+          }
+        },
+        {
+          "id": "q_adresse_contact",
+          "type": "text",
+          "label": "N° et rue :",
+          "description": "Adresse complète (numéro, nom de la rue, complément) où la personne peut être jointe",
+          "required": false,
+          "pdf_mapping": {
+            "field": "N° et rue contact"
+          }
+        },
+        {
+          "id": "q_complement_adresse_contact",
+          "type": "text",
+          "label": "Complément d'adresse :",
+          "description": "Bâtiment, étage, couloir, boîte aux lettres, etc. (facultatif)",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Complément d'adresse contact"
+          }
+        },
+        {
+          "id": "q_code_postal_contact",
+          "type": "text",
+          "label": "Code postal :",
+          "description": "Code postal à 5 chiffres de la commune de résidence",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Code postal contact"
+          }
+        },
+        {
+          "id": "q_ville_contact",
+          "type": "text",
+          "label": "Commune :",
+          "description": "Ville de résidence de la personne à contacter",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Commune contact"
+          }
+        },
+        {
+          "id": "q_telephone_contact",
+          "type": "tel",
+          "label": "Téléphone :",
+          "description": "Numéro de téléphone portable ou fixe où joindre la personne. Format : 0X XX XX XX XX",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Téléphone contact"
+          }
+        }
+      ]
+    },
+    {
+      "id": "urgence",
+      "title": "Situation nécessitant un traitement rapide",
+      "questions": [
+        {
+          "id": "q_situation_urgence",
+          "type": "checkbox",
+          "label": "Vous pensez être dans une situation nécessitant un traitement rapide de votre demande",
+          "description": "Merci de cocher si vous pensez être dans une des situations suivantes :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Vous pensez être dans une situation nécessitant un traitement rapide de votre demande"
+          }
+        },
+        {
+          "id": "q_situation_urgence_options",
+          "type": "checkbox-group",
+          "label": "Situations nécessitant un traitement rapide",
+          "required": false,
+          "condition_affichage": "q_situation_urgence === true",
+          "options": [
+            {
+              "value": "logement_impossible",
+              "label": "Vous n'arrivez plus à vivre chez vous ou vous risquez de ne plus arriver à vivre chez vous"
+            },
+            {
+              "value": "ecole_refus",
+              "label": "Votre école ne peut plus vous accueillir ou votre école risque de ne plus pouvoir vous accueillir"
+            },
+            {
+              "value": "sortie_hospitalisation",
+              "label": "Vous sortez d'hospitalisation et vous ne pouvez pas retourner chez vous ou dans votre établissement"
+            },
+            {
+              "value": "risque_perte_emploi",
+              "label": "Vous risquez rapidement de perdre votre travail"
+            },
+            {
+              "value": "nouvel_emploi_formation",
+              "label": "Vous venez de trouver un emploi ou vous commencez bientôt une nouvelle formation"
+            }
+          ]
+        },
+        {
+          "id": "q_date_entree_prevue",
+          "type": "date",
+          "label": "Date d'entrée prévue",
+          "required": false,
+          "condition_affichage": "q_situation_urgence === true && q_situation_urgence_options && q_situation_urgence_options.includes('nouvel_emploi_formation')",
+          "pdf_mapping": {
+            "field": "Date d'entrée prévue"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mesure_protection",
+      "title": "Mesure de protection",
+      "questions": [
+        {
+          "id": "q_mesure_protection",
+          "type": "checkbox",
+          "label": "Vous bénéficiez d'une mesure de protection",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Vous bénéficiez d'une mesure de protection"
+          }
+        },
+        {
+          "id": "q_type_mesure",
+          "type": "select",
+          "label": "Type de mesure de protection",
+          "required": false,
+          "options": [
+            {"value": "tutelle", "label": "Tutelle"},
+            {"value": "curatelle", "label": "Curatelle"},
+            {"value": "curatelle_renforcee", "label": "Curatelle renforcée"},
+            {"value": "habilitation_familiale", "label": "Habilitation familiale"}
+          ],
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Type de mesure de protection"
+          }
+        },
+        {
+          "id": "q_nom_personne_mesure",
+          "type": "text",
+          "label": "Nom de la personne",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Nom de la personne"
+          }
+        },
+        {
+          "id": "q_date_naissance_mesure",
+          "type": "date",
+          "label": "Date de naissance",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Date de naissance"
+          }
+        },
+        {
+          "id": "q_adresse_mesure",
+          "type": "text",
+          "label": "Adresse",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "N° et rue"
+          }
+        },
+        {
+          "id": "q_complement_adresse_mesure",
+          "type": "text",
+          "label": "Complément d'adresse",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Complément d'adresse"
+          }
+        },
+        {
+          "id": "q_code_postal_mesure",
+          "type": "text",
+          "label": "Code postal",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Code postal"
+          }
+        },
+        {
+          "id": "q_ville_mesure",
+          "type": "text",
+          "label": "Commune",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Commune"
+          }
+        },
+        {
+          "id": "q_telephone_mesure",
+          "type": "tel",
+          "label": "Téléphone",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Téléphone"
+          }
+        },
+        {
+          "id": "q_email_mesure",
+          "type": "email",
+          "label": "Adresse e-mail",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Adresse e-mail"
+          }
+        }
+      ]
+    },
+    {
+      "id": "situation_urgence",
+      "title": "Situation nécessitant un traitement rapide",
+      "questions": [
+        {
+          "id": "q_situation_urgence",
+          "type": "checkbox",
+          "label": "Vous pensez être dans une situation nécessitant un traitement rapide de votre demande",
+          "description": "Merci de cocher si vous pensez être dans une des situations suivantes :",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Vous pensez être dans une situation nécessitant un traitement rapide de votre demande"
+          }
+        },
+        {
+          "id": "q_situation_urgence_options",
+          "type": "checkbox-group",
+          "label": "Situations nécessitant un traitement rapide",
+          "required": false,
+          "condition_affichage": "q_situation_urgence === true",
+          "options": [
+            {
+              "value": "logement_impossible",
+              "label": "Vous n'arrivez plus à vivre chez vous ou vous risquez de ne plus arriver à vivre chez vous"
+            },
+            {
+              "value": "ecole_refus",
+              "label": "Votre école ne peut plus vous accueillir ou votre école risque de ne plus pouvoir vous accueillir"
+            },
+            {
+              "value": "sortie_hospitalisation",
+              "label": "Vous sortez d'hospitalisation et vous ne pouvez pas retourner chez vous ou dans votre établissement"
+            },
+            {
+              "value": "risque_perte_emploi",
+              "label": "Vous risquez rapidement de perdre votre travail"
+            },
+            {
+              "value": "nouvel_emploi_formation",
+              "label": "Vous venez de trouver un emploi ou vous commencez bientôt une nouvelle formation"
+            }
+          ]
+        },
+        {
+          "id": "q_date_entree_prevue",
+          "type": "date",
+          "label": "Date d'entrée prévue",
+          "required": false,
+          "condition_affichage": "q_situation_urgence === true && q_situation_urgence_options && q_situation_urgence_options.includes('nouvel_emploi_formation')",
+          "pdf_mapping": {
+            "field": "Date d'entrée prévue"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mesure_protection",
+      "title": "Mesure de protection",
+      "questions": [
+        {
+          "id": "q_mesure_protection",
+          "type": "checkbox",
+          "label": "Vous bénéficiez d'une mesure de protection",
+          "required": false,
+          "pdf_mapping": {
+            "field": "Vous bénéficiez d'une mesure de protection"
+          }
+        },
+        {
+          "id": "q_type_mesure",
+          "type": "select",
+          "label": "Type de mesure de protection",
+          "required": false,
+          "options": [
+            {"value": "tutelle", "label": "Tutelle"},
+            {"value": "curatelle", "label": "Curatelle"},
+            {"value": "curatelle_renforcee", "label": "Curatelle renforcée"},
+            {"value": "habilitation_familiale", "label": "Habilitation familiale"}
+          ],
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Type de mesure de protection"
+          }
+        },
+        {
+          "id": "q_nom_personne_mesure",
+          "type": "text",
+          "label": "Nom de la personne",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Nom de la personne"
+          }
+        },
+        {
+          "id": "q_date_naissance_mesure",
+          "type": "date",
+          "label": "Date de naissance",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Date de naissance"
+          }
+        },
+        {
+          "id": "q_adresse_mesure",
+          "type": "text",
+          "label": "N° et rue",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "N° et rue"
+          }
+        },
+        {
+          "id": "q_complement_adresse_mesure",
+          "type": "text",
+          "label": "Complément d'adresse",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Complément d'adresse"
+          }
+        },
+        {
+          "id": "q_code_postal_mesure",
+          "type": "text",
+          "label": "Code postal",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Code postal"
+          }
+        },
+        {
+          "id": "q_ville_mesure",
+          "type": "text",
+          "label": "Commune",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Commune"
+          }
+        },
+        {
+          "id": "q_telephone_mesure",
+          "type": "tel",
+          "label": "Téléphone",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Téléphone"
+          }
+        },
+        {
+          "id": "q_email_mesure",
+          "type": "email",
+          "label": "Adresse e-mail",
+          "required": false,
+          "condition_affichage": "q_mesure_protection === true",
+          "pdf_mapping": {
+            "field": "Adresse e-mail"
+          }
+        }
+      ]
+    }
+  ]
+}

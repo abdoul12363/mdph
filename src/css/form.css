@@ -45,8 +45,72 @@ body {
 .progress-fill{height:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));width:0%;transition:width .2s ease}
 .progress-meta{display:flex;justify-content:space-between;margin-top:8px}
 
-.q-title{font-weight:800;margin:0 0 6px;margin-left:-24px;padding-left:0}
-.q-help{margin:0 0 40px !important;color:var(--muted);font-size:14px;line-height:1.6}
+.q-title {
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  padding: 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+/* Styles de texte universels */
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  font-size: 15px; /* Taille de base pour tout le document */
+}
+
+/* Styles pour les descriptions */
+.q-help,
+.section-description,
+.field-description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #cccccc;
+  margin: 0 0 20px 0;
+  padding: 0;
+  font-weight: 400;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Styles spécifiques */
+.q-help {
+  margin-bottom: 30px !important;
+  opacity: 0.9;
+}
+
+.section-description {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 25px;
+}
+
+.field-description {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  opacity: 0.9;
+}
+
+/* Assurer la cohérence des champs de formulaire */
+.input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* Style cohérent pour les labels */
+label {
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 6px;
+  display: block;
+}
 
 /* Styles pour les descriptions des champs */
 .field-container {
@@ -56,17 +120,15 @@ body {
   flex-direction: column;
 }
 
+/* Styles spécifiques pour les descriptions de champs */
 .field-description {
-  order: 1; /* Place la description en premier */
-  font-size: 0.9em; /* Augmenté de 0.8em à 0.9em */
-  color: var(--muted);
-  margin: 0 0 6px 0; /* Marge légèrement augmentée */
-  font-style: normal;
-  line-height: 1.4; /* Interlignage légèrement augmenté */
-  opacity: 0.9;
-  padding: 0 0 0 4px; /* Padding gauche légèrement augmenté */
+  order: 1;
+  font-size: 13px;
+  margin: 0 0 8px 0;
+  padding: 0;
+  line-height: 1.5;
   transition: all 0.2s ease;
-  font-weight: 400; /* Police légèrement plus grasse */
+  color: #b0b0b0;
 }
 
 /* Le champ de saisie vient après la description */
@@ -80,15 +142,39 @@ body {
 .field-container .choice + .field-description {
   order: 2;
   margin: 4px 0 0 24px;
-  font-size: 0.85em; /* Augmenté de 0.75em à 0.85em */
+  font-size: 13px; /* Taille fixe en px */
 }
 
 /* Style spécifique pour les descriptions dans les sections parentales */
 .parent-section .field-description {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.85em; /* Augmenté de 0.78em à 0.85em */
-  margin-bottom: 4px;
-  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+/* Styles pour la section de contact */
+.contact-section {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-section .form-section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-section .form-section-header i {
+  font-size: 20px;
 }
 
 /* Styles pour la section Parent 1 */

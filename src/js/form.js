@@ -206,16 +206,24 @@ function renderInput(q, value) {
   if (type === 'checkbox_multiple' && Array.isArray(q.options)) {
     const selectedValues = Array.isArray(value) ? value : [];
     
+    // Récupérer la description si elle existe
+    const description = q.description ? `
+      <div class="field-description">
+        ${q.description.replace(/\n/g, '<br>')}
+      </div>` : '';
+    
     return `
-      <div class="choice-grid" id="answer">
-        ${q.options.map(opt => {
-          const optValue = opt.value || opt;
-          const optLabel = opt.label || opt;
-          const checked = selectedValues.includes(optValue) ? 'checked' : '';
-          return `<label class="choice"><input type="checkbox" name="multi_check" value="${optValue}" ${checked}/> ${optLabel}</label>`;
-        }).join('')}
-      </div>
-    `;
+      <div class="field-container">
+        ${description}
+        <div class="choice-grid" id="answer">
+          ${q.options.map(opt => {
+            const optValue = opt.value || opt;
+            const optLabel = opt.label || opt;
+            const checked = selectedValues.includes(optValue) ? 'checked' : '';
+            return `<label class="choice"><input type="checkbox" name="multi_check" value="${optValue}" ${checked}/> ${optLabel}</label>`;
+          }).join('')}
+        </div>
+      </div>`;
   }
 
   if (type === 'radio' && Array.isArray(q.options)) {
@@ -225,25 +233,37 @@ function renderInput(q, value) {
     // Ne pas convertir les booléens en chaînes
     const v = currentValue;
     
+    // Récupérer la description si elle existe
+    const description = q.description ? `
+      <div class="field-description">
+        ${q.description.replace(/\n/g, '<br>')}
+      </div>` : '';
+    
     return `
-      <div class="choice-grid" id="answer">
-        ${q.options.map(opt => {
-          const optValue = opt.value || opt;
-          const optLabel = opt.label || opt;
-          
-          // Comparaison stricte pour les booléens, sinon comparaison de chaînes
-          let isChecked;
-          if (typeof v === 'boolean' && (optValue === true || optValue === false)) {
-            isChecked = v === optValue;
-          } else {
-            isChecked = String(optValue) === String(v);
-          }
-          
-          const checked = isChecked ? 'checked' : '';
-          return `<label class="choice"><input type="radio" name="opt" value="${optValue}" ${checked}/> ${optLabel}</label>`;
-        }).join('')}
-      </div>
-    `;
+      <div class="field-container">
+        ${description}
+        <div class="choice-grid" id="answer">
+          ${q.options.map(opt => {
+            const optValue = opt.value || opt;
+            const optLabel = opt.label || opt;
+            
+            // Comparaison stricte pour les booléens, sinon comparaison de chaînes
+            let isChecked;
+            if (typeof v === 'boolean' && (optValue === true || optValue === false)) {
+              isChecked = v === optValue;
+            } else {
+              isChecked = String(optValue) === String(v);
+            }
+            
+            const checked = isChecked ? 'checked' : '';
+            return `
+              <label class="choice">
+                <input type="radio" name="opt" value="${optValue}" ${checked}/>
+                <span>${optLabel}</span>
+              </label>`;
+          }).join('')}
+        </div>
+      </div>`;
   }
 
   if (type === 'radio_with_text' && Array.isArray(q.options)) {
@@ -251,7 +271,11 @@ function renderInput(q, value) {
     const currentValue = value !== undefined ? value : defaultVal;
     const v = currentValue ? String(currentValue) : '';
     
-    let html = '<div class="choice-grid" id="answer">';
+    let html = '<div>';
+    
+    html += q.description ? `<div class="field-description">${q.description}</div>` : '';
+    
+    html += '<div class="choice-grid" id="answer">';
     
     q.options.forEach(opt => {
       const optValue = opt.value || opt;
@@ -271,6 +295,7 @@ function renderInput(q, value) {
     });
     
     html += '</div>';
+    html += '</div>';
     return html;
   }
 
@@ -278,10 +303,14 @@ function renderInput(q, value) {
     const v = normalizeOuiNon(value);
     const checkedOui = v === 'oui' ? 'checked' : '';
     const checkedNon = v === 'non' ? 'checked' : '';
+    
     return `
-      <div class="choice-grid" id="answer">
-        <label class="choice"><input type="radio" name="yn" value="oui" ${checkedOui}/> Oui</label>
-        <label class="choice"><input type="radio" name="yn" value="non" ${checkedNon}/> Non</label>
+      <div>
+        ${q.description ? `<div class="field-description">${q.description}</div>` : ''}
+        <div class="choice-grid" id="answer">
+          <label class="choice"><input type="radio" name="yn" value="oui" ${checkedOui}/> Oui</label>
+          <label class="choice"><input type="radio" name="yn" value="non" ${checkedNon}/> Non</label>
+        </div>
       </div>
     `;
   }
@@ -376,40 +405,51 @@ function render() {
   
   if (sectionQuestions.length > 1 && (currentSection === "Type de demande" || 
       currentSection.includes("Parent") || 
-      currentSection.includes("représentant légal"))) {
-    // Afficher toutes les questions de la section ensemble sans titre de section
-    let sectionHtml = '';
+      currentSection.includes("représentant légal") || 
+      currentSection === "Coordonnées de la personne à contacter")) {
+    // Utiliser la description de la première question de la section
+    const sectionDescription = sectionQuestions[0]?.sectionDescription || '';
     
+    let sectionHtml = `
+      <div class="${q.className || ''} section-container">
+        <h2 class="q-title">${currentSection}</h2>
+        ${sectionDescription ? `<p class="section-description">${sectionDescription}</p>` : ''}
+    `;
+    
+    // Ajouter chaque question de la section
     sectionQuestions.forEach(sectionQ => {
       const value = responses[sectionQ.id];
       sectionHtml += `
-        <div class="question-item" data-question-id="${sectionQ.id}" style="margin-bottom: 15px;">
+        <div class="question-item" data-question-id="${sectionQ.id}">
           ${renderInput(sectionQ, value)}
         </div>
       `;
     });
     
+    sectionHtml += `</div>`;
     $('questionArea').innerHTML = sectionHtml;
     
     // Ajouter les événements pour tous les champs de la section
     sectionQuestions.forEach(sectionQ => {
       if (sectionQ.type === 'radio_with_text') {
         const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
-        const radioInputs = questionDiv.querySelectorAll('input[name="opt"]');
-        radioInputs.forEach(radio => {
-          radio.addEventListener('change', function() {
-            const textFields = questionDiv.querySelectorAll('.text-field-inline');
-            textFields.forEach(field => field.style.display = 'none');
-            
-            const selectedOption = sectionQ.options.find(opt => opt.value === this.value);
-            if (selectedOption && selectedOption.hasTextField) {
-              const textField = this.parentElement.nextElementSibling;
-              if (textField && textField.classList.contains('text-field-inline')) {
-                textField.style.display = 'block';
+        if (questionDiv) {
+          const radioInputs = questionDiv.querySelectorAll('input[name="opt"]');
+          radioInputs.forEach(radio => {
+            radio.addEventListener('change', function() {
+              const textFields = questionDiv.querySelectorAll('.text-field-inline');
+              textFields.forEach(field => field.style.display = 'none');
+              
+              const selectedOption = sectionQ.options.find(opt => opt.value === this.value);
+              if (selectedOption && selectedOption.hasTextField) {
+                const textField = this.parentElement.nextElementSibling;
+                if (textField && textField.classList.contains('text-field-inline')) {
+                  textField.style.display = 'block';
+                }
               }
-            }
+            });
           });
-        });
+        }
       }
     });
     
@@ -621,6 +661,7 @@ async function boot() {
                 pageId: pageConfig.id,
                 pageTitle: pageConfig.title,
                 sectionTitle: section.title,
+                sectionDescription: section.description, // Ajout de la description de la section
                 sectionCondition: section.condition_section
               }));
               allQuestions.push(...questionsWithPage);

@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "version": "1.1",
+    "description": "Ordre des champs PDF pour la page 3 - Votre situation et vos besoins",
+    "lastUpdated": "2025-12-19",
+    "pageNumber": 3
+  },
+  "fields_order": [
+    "Aide dans vos démarches MDPH Un proche",
+    "Aide dans vos démarches MDPH Une association",
+    "Nom de l'organisme",
+    "Nom et prénom de la personne",
+    "N° et rue contact",
+    "Complément d'adresse contact",
+    "Code postal contact",
+    "Commune contact",
+    "Téléphone contact",
+    "Vous acceptez que nous contactions ces personnes afin de mieux évaluer votre situation",
+    "Vous pensez être dans une situation nécessitant un traitement rapide de votre demande",
+    "Date d'entrée prévue",
+    "Vous bénéficiez d'une mesure de protection",
+    "Type de mesure de protection",
+    "Nom de la personne",
+    "Date de naissance",
+    "N° et rue",
+    "Complément d'adresse",
+    "Code postal",
+    "Commune",
+    "Téléphone",
+    "Adresse e-mail"
+  ],
+  "field_mappings": {
+    "Aide dans vos démarches MDPH Un proche": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Cochez si vous êtes aidé par un proche"
+    },
+    "Aide dans vos démarches MDPH Une association": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Cochez si vous êtes aidé par une association"
+    },
+    "Nom de l'organisme": {
+      "type": "text",
+      "required": false,
+      "description": "Nom de l'organisme de la personne à contacter"
+    },
+    "Nom et prénom de la personne": {
+      "type": "text",
+      "required": false,
+      "description": "Nom et prénom de la personne à contacter"
+    },
+    "N° et rue contact": {
+      "type": "text",
+      "required": false,
+      "description": "Numéro et rue de la personne à contacter"
+    },
+    "Complément d'adresse contact": {
+      "type": "text",
+      "required": false,
+      "description": "Complément d'adresse de la personne à contacter"
+    },
+    "Code postal contact": {
+      "type": "text",
+      "required": false,
+      "description": "Code postal de la personne à contacter"
+    },
+    "Commune contact": {
+      "type": "text",
+      "required": false,
+      "description": "Commune de la personne à contacter"
+    },
+    "Téléphone contact": {
+      "type": "tel",
+      "required": false,
+      "description": "Téléphone de la personne à contacter"
+    },
+    "Vous acceptez que nous contactions ces personnes afin de mieux évaluer votre situation": {
+      "type": "checkbox-group",
+      "required": false,
+      "description": "Autorisation de contact des personnes aidantes"
+    },
+    "Vous pensez être dans une situation nécessitant un traitement rapide de votre demande": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Cochez si votre situation nécessite un traitement en urgence"
+    },
+    "Date d'entrée prévue": {
+      "type": "date",
+      "required": false,
+      "description": "Date prévue d'entrée en formation ou en emploi"
+    },
+    "Vous bénéficiez d'une mesure de protection": {
+      "type": "checkbox",
+      "required": false,
+      "description": "Cochez si vous êtes sous mesure de protection"
+    },
+    "Type de mesure de protection": {
+      "type": "select",
+      "required": false,
+      "description": "Type de mesure de protection en cours"
+    },
+    "Nom de la personne": {
+      "type": "text",
+      "required": false,
+      "description": "Nom du tuteur ou curateur"
+    },
+    "Date de naissance": {
+      "type": "date",
+      "required": false,
+      "description": "Date de naissance du tuteur ou curateur"
+    },
+    "N° et rue": {
+      "type": "text",
+      "required": false,
+      "description": "Adresse du tuteur ou curateur"
+    },
+    "Complément d'adresse": {
+      "type": "text",
+      "required": false,
+      "description": "Complément d'adresse du tuteur ou curateur"
+    },
+    "Code postal": {
+      "type": "text",
+      "required": false,
+      "description": "Code postal du tuteur ou curateur"
+    },
+    "Commune": {
+      "type": "text",
+      "required": false,
+      "description": "Ville du tuteur ou curateur"
+    },
+    "Téléphone": {
+      "type": "tel",
+      "required": false,
+      "description": "Téléphone du tuteur ou curateur"
+    },
+    "Adresse e-mail": {
+      "type": "email",
+      "required": false,
+      "description": "Email du tuteur ou curateur"
+    }
+}
