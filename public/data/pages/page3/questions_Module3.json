@@ -1,0 +1,21 @@
+[
+  {
+    "id": "module3_question1",
+    "type": "textarea",
+    "question": "Décrivez votre situation pour le Module 3",
+    "description": "Veuillez fournir des détails sur votre situation pour le module 3.",
+    "required": true,
+    "placeholder": "Saisissez votre réponse ici..."
+  },
+  {
+    "id": "module3_question2",
+    "type": "checkbox",
+    "question": "Sélectionnez les options qui s'appliquent (Module 3)",
+    "options": [
+      {"value": "check1", "label": "Option A"},
+      {"value": "check2", "label": "Option B"},
+      {"value": "check3", "label": "Option C"}
+    ],
+    "required": false
+  }
+]

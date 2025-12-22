@@ -6,12 +6,21 @@
   },
   "pages": [
     {
+      "id": "introduction",
+      "title": "Avant de commencer",
+      "description": "Présentation du formulaire et informations importantes",
+      "questionsFile": "pages/introduction/introduction.json",
+      "isIntroduction": true,
+      "order": 1,
+      "required": false
+    },
+    {
       "id": "page1",
       "title": "Difficultés quotidiennes",
       "description": "Identification des difficultés rencontrées au quotidien",
       "questionsFile": "pages/page1/questions_Module1.json",
       "pdfMappingFile": "pages/page1/pdf_fields_Module1.json",
-      "order": 1,
+      "order": 2,
       "required": true
     },
     {
@@ -20,7 +29,7 @@
       "description": "Deuxième module du formulaire",
       "questionsFile": "pages/page2/questions_Module2.json",
       "pdfMappingFile": "pages/page2/pdf_fields_Module2.json",
-      "order": 2,
+      "order": 3,
       "required": true
     },
     {
@@ -29,7 +38,7 @@
       "description": "Troisième module du formulaire",
       "questionsFile": "pages/page3/questions_Module3.json",
       "pdfMappingFile": "pages/page3/pdf_fields_Module3.json",
-      "order": 3,
+      "order": 4,
       "required": true
     }
   ]

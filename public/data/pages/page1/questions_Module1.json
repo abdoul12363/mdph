@@ -1,14 +1,14 @@
 {
   "sections": [
     {
-      "title": "Difficultés quotidiennes",
+      "step": 1,
+      "title": "Dans quels aspects de votre vie rencontrez-vous des difficultés ?",
       "description": "Sélectionnez les difficultés que vous rencontrez",
       "questions": [
         {
           "id": "difficultes_quotidiennes",
           "type": "checkbox_multiple",
           "question": "Dans quels aspects de votre vie rencontrez-vous des difficultés ?",
-          "description": "Cochez toutes les réponses qui s'appliquent",
           "options": [
             {
               "value": "hygiene",
@@ -69,6 +69,86 @@
             }
           ],
           "required": false
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "title": "Ces difficultés sont présentes…",
+      "description": "Sélectionnez la fréquence de vos difficultés",
+      "questions": [
+        {
+          "id": "frequence_difficultes",
+          "type": "radio",
+          "question": "Ces difficultés sont présentes…",
+          "options": [
+            {
+              "value": "quotidien",
+              "label": "Tous les jours"
+            },
+            {
+              "value": "hebdomadaire",
+              "label": "Plusieurs fois par semaine"
+            },
+            {
+              "value": "fluctuant",
+              "label": "De manière fluctuante"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "title": "Sans aide ou adaptation, cela entraîne…",
+      "description": "Sélectionnez la ou les conséquences",
+      "questions": [
+        {
+          "id": "consequences_difficultes",
+          "type": "checkbox_multiple",
+          "options": [
+            {
+              "value": "ne_pas_y_arriver",
+              "label": "Je n'y arrive pas",
+              "pdfField": "consequence_ne_pas_y_arriver"
+            },
+            {
+              "value": "plus_de_temps",
+              "label": "Je mets beaucoup plus de temps",
+              "pdfField": "consequence_plus_de_temps"
+            },
+            {
+              "value": "dangereux",
+              "label": "C'est dangereux pour moi",
+              "pdfField": "consequence_dangereux"
+            },
+            {
+              "value": "abandon_activites",
+              "label": "J'abandonne certaines activités",
+              "pdfField": "consequence_abandon_activites"
+            },
+            {
+              "value": "demande_aide",
+              "label": "Je dois demander de l'aide",
+              "pdfField": "consequence_demande_aide"
+            }
+          ],
+          "required": false
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "title": "Comment ces difficultés impactent votre vie quotidienne ?",
+      "description": "Expliquez avec vos mots comment ces difficultés impactent votre vie quotidienne.",
+      "questions": [
+        {
+          "id": "impact_quotidien",
+          "type": "textarea",
+          "placeholder": "Exemple : la fatigue m'empêche de tenir une journée complète et je dois souvent m'allonger...",
+          "required": false,
+          "pdfField": "impact_quotidien"
         }
       ]
     }

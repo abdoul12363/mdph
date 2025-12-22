@@ -16,11 +16,6 @@
 }
 
 /* Centrage vertical du contenu du formulaire */
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
 .main {
   flex: 1;
@@ -41,8 +36,72 @@ body {
 .form-card{padding:24px;margin-top:80px}
 
 .progress{margin:24px 0 12px}
-.progress-bar{height:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));width:0%;transition:width .2s ease}
+.progress {
+  position: relative;
+}
+
+.progress-bar{
+  height: 10px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.progress-fill{
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(9, 208, 235, 0.9) 0%, 
+    rgba(0, 212, 255, 0.9) 50%, 
+    rgba(9, 208, 235, 0.9) 100%);
+  background-size: 200% 100%;
+  width: 0%;
+  transition: width .5s ease;
+  position: relative;
+  box-shadow: 
+    0 0 15px rgba(9, 208, 235, 0.5),
+    inset 0 0 10px rgba(255, 255, 255, 0.6);
+  animation: fluid 2s ease-in-out infinite;
+  overflow: hidden;
+}
+
+@keyframes fluid {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Effet de contour lumineux et pulsation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.01);
+  }
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 8px 2px rgba(9, 208, 235, 0.6);
+  opacity: 0.8;
+  animation: pulse 2s ease-in-out infinite;
+}
 .progress-meta{display:flex;justify-content:space-between;margin-top:8px}
 
 .q-title {
@@ -52,18 +111,105 @@ body {
   font-size: 16px;
   color: #ffffff;
 }
+
+/* Styles pour la page d'introduction */
+.is-introduction .form-header,
+.is-introduction .progress,
+.is-introduction .form-actions,
+.is-introduction .progress-meta,
+.is-introduction .form-title,
+.is-introduction .muted {
+  display: none !important;
+}
+
+/* Style spécifique pour le contenu de l'introduction */
+.is-introduction .introduction-page {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.introduction-page h2 {
+  font-size: 24px;
+  margin-bottom: 1.5rem;
+  color: white;
+  color: var(--accent);
+}
+
+.introduction-content {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.introduction-content p {
+  margin: 0 0 1rem 0;
+  color: #ffffff; /* Texte blanc pur pour l'introduction */
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.introduction-page h2 {
+  color: #ffffff; /* Titre en blanc */
+  font-size: 24px;
+  margin-bottom: 1.5rem;
+}
+
+.estimated-time {
+  color: #ffffff !important; /* Temps estimé en blanc */
+}
+
+.introduction-content p:last-child {
+  margin-bottom: 0;
+}
+
+.estimated-time {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 500;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+#startBtn {
+  margin-top: 1.5rem;
+  padding: 0.8rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #0b1020;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  transition: none;
+}
+
+#startBtn:hover {
+  background: #f0f0f0;
+  transform: none;
+}
+
 /* Styles de texte universels */
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
   line-height: 1.6;
   color: var(--text);
   font-size: 15px; /* Taille de base pour tout le document */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Styles pour les descriptions */
-.q-help,
-.section-description,
-.field-description {
+.q-help, .section-description, .field-description {
   font-size: 14px;
   line-height: 1.5;
   color: #cccccc;
@@ -73,6 +219,15 @@ body {
   max-width: 100%;
   width: 100%;
   box-sizing: border-box;
+}
+
+/* Styles spécifiques pour les descriptions sous les champs */
+.field-description {
+  order: 1;
+  font-size: 13px;
+  margin: 4px 0 8px 0;
+  color: #b0b0b0;
+  transition: all 0.2s ease;
 }
 
 /* Styles spécifiques */
@@ -97,19 +252,167 @@ body {
 /* Assurer la cohérence des champs de formulaire */
 .input,
 select,
-textarea {
+textarea,
+input[type="text"],
+input[type="date"],
+input[type="checkbox"],
+input[type="radio"] {
   font-family: inherit;
   font-size: 15px;
   line-height: 1.5;
   color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+/* Style spécifique pour les cases à cocher et boutons radio */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0 8px 0 0;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+/* Style pour les labels des cases à cocher et boutons radio */
+.choice {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  margin: 4px 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.choice:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Style pour les cases à cocher multiples */
+.choice-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+/* Style pour les champs de texte */
+.input,
+input[type="text"],
+input[type="date"],
+textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* Style au focus */
+.input:focus,
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
+  outline: none;
+}
+
+/* Style pour les textarea */
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Style pour les sélecteurs */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
 }
 
 /* Style cohérent pour les labels */
 label {
   font-size: 15px;
   color: var(--text);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   display: block;
+  font-weight: 400;
+}
+
+/* Espacement standard pour tous les conteneurs de champs */
+.field-container,
+.question-item,
+.field-group {
+  margin-bottom: 24px;
+}
+
+/* Espacement après les titres */
+.q-title,
+.section-title,
+.form-title {
+  margin-bottom: 20px !important;
+}
+
+/* Espacement après les descriptions */
+.q-help,
+.section-description,
+.field-description {
+  margin-bottom: 16px !important;
+}
+
+/* Espacement interne des champs */
+.input,
+select,
+textarea,
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="tel"],
+input[type="number"] {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+/* Espacement des groupes de choix */
+.choice-grid,
+.radio-group,
+.checkbox-group {
+  margin: 8px 0 16px 0;
+}
+
+/* Espacement des éléments de choix individuels */
+.choice {
+  margin: 6px 0;
+}
+
+/* Espacement des sections */
+.section-container,
+.form-section {
+  margin-bottom: 32px;
+}
+
+/* Ajustement pour les champs en ligne */
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-row > * {
+  flex: 1;
+  min-width: 0;
 }
 
 /* Styles pour les descriptions des champs */
@@ -120,16 +423,6 @@ label {
   flex-direction: column;
 }
 
-/* Styles spécifiques pour les descriptions de champs */
-.field-description {
-  order: 1;
-  font-size: 13px;
-  margin: 0 0 8px 0;
-  padding: 0;
-  line-height: 1.5;
-  transition: all 0.2s ease;
-  color: #b0b0b0;
-}
 
 /* Le champ de saisie vient après la description */
 .field-container > .input,
@@ -241,6 +534,55 @@ label {
 }
 
 /* Styles pour les champs de texte conditionnels des cases à cocher */
+/* Styles pour les boutons de navigation */
+#prevBtn,
+#nextBtn {
+  display: inline-block !important;
+  min-width: 100px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+#prevBtn {
+  background: #2d3748;
+  color: white;
+  border: 1px solid #4a5568;
+}
+
+#nextBtn {
+  background: #4299e1;
+  color: white;
+  border: 1px solid #3182ce;
+}
+
+#prevBtn:hover {
+  background: #4a5568;
+}
+
+#nextBtn:hover {
+  background: #3182ce;
+}
+
+/* Conteneur des actions du formulaire */
+.form-actions {
+  display: flex !important;
+  justify-content: space-between;
+  margin: 30px 0 10px;
+  padding: 15px 0;
+  gap: 15px;
+}
+
+/* Style pour le bouton désactivé */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .text-field-container {
   margin: 8px 0 16px 24px;
   overflow: hidden;
@@ -296,24 +638,34 @@ label {
   }
 }
 
-.input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:var(--text);font-size:14px;outline:none}
-.input:focus{border-color:rgba(255,255,255,.28)}
-.input[type="date"]{color-scheme:dark}
-.input[type="date"]::-webkit-calendar-picker-indicator{
-  filter:brightness(0) invert(1);
-  cursor:pointer;
-  opacity:0.8;
-}
-input[type="date"]::-webkit-calendar-picker-indicator{
-  filter:brightness(0) invert(1);
-  cursor:pointer;
-  opacity:0.8;
-}
-textarea.input{min-height:110px;resize:vertical}
 
-.choice-grid{display:grid;gap:8px}
-.choice{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(255,255,255,.03);cursor:pointer}
-.choice input{transform:scale(1.05)}
+
+/* Style spécifique pour la section Difficultés quotidiennes */
+#difficultes_quotidiennes .field-description {
+  margin-bottom: 16px;
+  display: block;
+}
+
+#difficultes_quotidiennes .choice {
+  display: inline-flex;
+  white-space: nowrap;
+  margin: 4px;
+  padding: 8px 16px;
+}
+
+#difficultes_quotidiennes .choice-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Style pour les écrans mobiles */
+@media (max-width: 768px) {
+  #difficultes_quotidiennes .choice {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
 
 .cta{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:60px !important}
 

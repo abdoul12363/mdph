@@ -30,7 +30,7 @@ body{
   justify-content:center;
   flex-shrink:0;
 }
-.brand-dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.brand-dot{width:10px;height:10px;border-radius:0;background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .brand-title{font-size:14px}
 .nav{display:flex;gap:14px}
 .nav-link{color:var(--muted);text-decoration:none;font-size:14px}
@@ -48,14 +48,54 @@ body{
 .subtitle{color:var(--muted);font-size:16px;line-height:1.6;max-width:720px;margin:0 0 22px}
 
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 70px}
-.btn{border:1px solid var(--line);background:transparent;color:var(--text);padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:600;font-size:14px;display:inline-flex;align-items:center;justify-content:center;min-height:40px}
+.btn{border:1px solid var(--line);background:transparent;color:var(--text);padding:10px 14px;border-radius:0;text-decoration:none;font-weight:600;font-size:14px;display:inline-flex;align-items:center;justify-content:center;min-height:40px}
 .btn:hover{border-color:rgba(255,255,255,.22)}
-.btn-primary{background:linear-gradient(135deg,var(--accent),#5b8cff);border-color:transparent}
-.btn-primary:hover{filter:brightness(1.05)}
-.btn-secondary{background:rgba(255,255,255,.04)}
+.btn-primary {
+  background: #4299e1;
+  color: white;
+  border: 1px solid #3182ce;
+  border-radius: 4px;
+  padding: 10px 20px;
+  min-height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary:hover {
+  background: #3182ce;
+}
+.btn-secondary {
+  background: #2d3748;
+  color: white;
+  border: 1px solid #4a5568;
+  border-radius: 4px;
+  padding: 10px 20px;
+  min-height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-secondary:hover {
+  background: #4a5568;
+  border-color: #718096;
+}
 
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}
 .stat-value{font-weight:800;font-size:16px}
 .stat-label{color:var(--muted);font-size:13px;margin-top:4px}
 
@@ -63,13 +103,19 @@ section, .section{background:none !important;padding:26px 0}
 .section h2{margin:0 0 14px;font-size:18px}
 .muted{color:var(--muted);line-height:1.7;margin:0}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:40px}
-.card{background:none;border:none;border-radius:0;padding:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:0;padding:20px}
 .card h3{display:flex;align-items:center;gap:10px;margin:0 0 8px;font-size:16px;color:var(--text);font-weight:600}
 .card h3 i{color:white;font-size:1em;width:20px;text-align:center}
 .card p{margin:0;color:var(--muted);line-height:1.5;font-size:14px}
 code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px}
 
-.cta{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
+/* Style de base pour tous les cta */
+.cta{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:0;padding:16px}
+
+/* Style spécifique pour le cta dans la section hero */
+.hero .cta {
+  border-radius: 0;
+}
 .cta-title{font-weight:800;margin-bottom:2px}
 .cta-text{color:var(--muted);font-size:14px}
 

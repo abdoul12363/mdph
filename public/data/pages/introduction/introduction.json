@@ -1,0 +1,10 @@
+{
+  "sections": [
+    {
+      "title": "Comment ça se passe ?",
+      "description": "Vous allez répondre à quelques questions simples.\nCertaines réponses seront reformulées dans un langage administratif, que vous pourrez modifier ou refuser.",
+      "isIntroduction": true,
+      "estimatedTime": "⏱️ Environ 20 minutes au total"
+    }
+  ]
+}

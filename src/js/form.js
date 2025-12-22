@@ -8,7 +8,15 @@ let idx = 0;
 let responses = {};
 let inFlight = false;
 
-function $(id) { return document.getElementById(id); }
+function $(selector) {
+  if (selector.startsWith('#') || selector.startsWith('.')) {
+    // Si le sélecteur commence par # ou ., utiliser querySelector
+    return document.querySelector(selector);
+  } else {
+    // Sinon, supposer que c'est un ID sans le #
+    return document.getElementById(selector);
+  }
+}
 
 function setStatus(msg) {
   const statusEl = $('status');
@@ -46,17 +54,45 @@ function resetAll() {
 }
 
 function evaluateCondition(cond) {
-  // support simple : q_x == 'oui'
   if (!cond) return true;
-  const m = String(cond).match(/(q_[a-zA-Z0-9_]+)\s*==\s*['\"](.*?)['\"]/);
-  if (!m) return true;
-  const [, qid, expected] = m;
-  const val = responses[qid];
-  return String(val || '').trim().toLowerCase() === String(expected).trim().toLowerCase();
+  
+  // Vérifier si c'est une comparaison avec ===
+  const strictMatch = String(cond).match(/(q_[a-zA-Z0-9_]+)\s*===\s*['\"]([^'\"]+)['\"]/);
+  if (strictMatch) {
+    const [, qid, expected] = strictMatch;
+    const val = responses[qid];
+    return String(val || '') === expected;
+  }
+  
+  // Vérifier si c'est une comparaison avec == (insensible à la casse)
+  const looseMatch = String(cond).match(/(q_[a-zA-Z0-9_]+)\s*==\s*['\"]([^'\"]+)['\"]/i);
+  if (looseMatch) {
+    const [, qid, expected] = looseMatch;
+    const val = responses[qid];
+    return String(val || '').trim().toLowerCase() === expected.trim().toLowerCase();
+  }
+  
+  // Vérifier les conditions booléennes simples
+  if (cond === 'true') return true;
+  if (cond === 'false') return false;
+  
+  // Si la condition est un identifiant de question simple
+  if (cond.startsWith('q_') && cond in responses) {
+    return Boolean(responses[cond]);
+  }
+  
+  console.warn('Condition non reconnue:', cond);
+  return true;
 }
 
 function refreshVisible() {
   visible = allQuestions.filter(q => {
+    // Toujours afficher les questions d'introduction
+    if (q.isIntroduction) {
+      console.log('🔍 Question d\'introduction trouvée:', q);
+      return true;
+    }
+    
     // Vérifier d'abord la condition de section
     if (q.sectionCondition) {
       const condition = q.sectionCondition;
@@ -91,6 +127,12 @@ function refreshVisible() {
     
     return true;
   });
+  
+  console.log('🔍 Questions visibles après filtrage:', visible.map(q => ({
+    id: q.id,
+    title: q.title || q.question,
+    isIntroduction: q.isIntroduction
+  })));
   
   return visible;
 }
@@ -136,7 +178,8 @@ async function reloadQuestionsWithConditions() {
                 ...q,
                 pageId: pageConfig.id,
                 pageTitle: pageConfig.title,
-                sectionTitle: section.title
+                sectionTitle: section.title,
+                step: section.step || 1  // Utiliser le step de la section ou 1 par défaut
               }));
               allQuestions.push(...questionsWithPage);
             } else if (!sectionVisible) {
@@ -162,7 +205,7 @@ function updateProgress() {
   
   $('progressText').textContent = `${currentStep} / ${totalSteps}`;
   $('progressFill').style.width = totalSteps ? `${Math.round((currentStep / totalSteps) * 100)}%` : '0%';
-  $('questionId').textContent = visible[idx]?.id || '';
+  $('questionId').textContent = ''; // ID masqué de l'interface
 
   $('prevBtn').disabled = idx <= 0;
   $('nextBtn').textContent = idx >= total - 1 ? 'Terminer' : 'Suivant';
@@ -175,8 +218,9 @@ function renderInput(q, value) {
   if (type === 'texte_long' || type === 'textarea') {
     return `
       <div class="field-container">
-        <textarea class="input" id="answer" placeholder="Ta réponse...">${value ? String(value) : ''}</textarea>
+        ${q.question ? `<div class="question-title">${q.question}</div>` : ''}
         ${description}
+        <textarea class="input" id="answer" placeholder="${q.placeholder || 'Votre réponse...'}">${value ? String(value) : ''}</textarea>
       </div>`;
   }
 
@@ -206,63 +250,32 @@ function renderInput(q, value) {
   if (type === 'checkbox_multiple' && Array.isArray(q.options)) {
     const selectedValues = Array.isArray(value) ? value : [];
     
-    // Récupérer la description si elle existe
-    const description = q.description ? `
-      <div class="field-description">
-        ${q.description.replace(/\n/g, '<br>')}
-      </div>` : '';
+    // Style spécifique pour la section Difficultés quotidiennes
+    const isDifficultesQuotidiennes = q.id === 'difficultes_quotidiennes';
+    const containerClass = isDifficultesQuotidiennes ? 'difficultes-container' : 'choice-grid';
+    const choiceClass = isDifficultesQuotidiennes ? 'difficulte-choice' : 'choice';
     
-    let html = `
+    // Ne pas afficher la question pour Difficultés quotidiennes car elle est déjà dans le titre de section
+    const showQuestion = !isDifficultesQuotidiennes && q.question;
+    
+    return `
       <div class="field-container">
-        ${description}
-        <div class="choice-grid" id="answer">
-    `;
-
-    // Générer les cases à cocher
-    q.options.forEach(opt => {
-      const optValue = opt.value || opt;
-      const optLabel = opt.label || opt;
-      const isChecked = selectedValues.includes(optValue);
-      const textFieldId = `${q.id}_${optValue}_text`;
-      
-      // Ajouter la case à cocher
-      html += `
-        <div class="choice-container">
-          <label class="choice">
-            <input type="checkbox" 
-                   name="multi_check" 
-                   value="${optValue}" 
-                   ${isChecked ? 'checked' : ''} 
-                   data-has-text-field="${!!opt.hasTextField}" 
-                   onchange="this.nextElementSibling.style.display = this.checked ? 'block' : 'none';"/>
-            <span>${optLabel}</span>
-          </label>
-      `;
-      
-      // Ajouter le champ texte si cette option l'a
-      if (opt.hasTextField) {
-        const textFieldValue = responses[textFieldId] || '';
-        html += `
-          <div class="text-field-container" style="display: ${isChecked ? 'block' : 'none'}; margin-left: 20px; margin-top: 5px; margin-bottom: 10px;">
-            <input type="text" 
-                   id="${textFieldId}" 
-                   class="input" 
-                   placeholder="${opt.textFieldLabel || 'Préciser...'}" 
-                   value="${textFieldValue}" 
-                   style="width: 100%; max-width: 300px;"/>
-          </div>
-        `;
-      }
-      
-      html += `</div>`; // Fermeture du conteneur
-    });
-    
-    html += `
+        <div class="question-text">
+          ${showQuestion ? `<div class="question-title">${q.question}</div>` : ''}
+          ${description}
         </div>
-      </div>
-    `;
-    
-    return html;
+        <div class="${containerClass}" id="answer">
+          ${q.options.map(opt => {
+            const optValue = opt.value || opt;
+            const optLabel = opt.label || opt;
+            const checked = selectedValues.includes(optValue) ? 'checked' : '';
+            return `<label class="${choiceClass}" style="display: inline-flex; align-items: center; margin: 4px 8px 4px 0; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; background: rgba(255,255,255,0.03);">
+              <input type="checkbox" name="multi_check" value="${optValue}" ${checked} style="margin-right: 8px;" />
+              ${optLabel}
+            </label>`;
+          }).join('')}
+        </div>
+      </div>`;
   }
 
   if (type === 'radio' && Array.isArray(q.options)) {
@@ -384,31 +397,9 @@ function getAnswerFromDom(q) {
   
   if (type === 'checkbox_multiple') {
     const checkedBoxes = document.querySelectorAll('input[name="multi_check"]:checked');
-    const result = [];
-    
-    // Parcourir toutes les options pour gérer correctement les champs texte
-    q.options.forEach(opt => {
-      const optValue = opt.value || opt;
-      const checkbox = document.querySelector(`input[name="multi_check"][value="${optValue}"]`);
-      
-      if (checkbox && checkbox.checked) {
-        result.push(optValue);
-        
-        // Si cette option a un champ texte, on le sauvegarde
-        if (opt.hasTextField) {
-          const textFieldId = `${q.id}_${optValue}_text`;
-          const textField = document.getElementById(textFieldId);
-          if (textField && textField.value.trim()) {
-            responses[textFieldId] = textField.value.trim();
-          }
-        }
-      }
-    });
-    
-    saveLocal(true);
-    return result;
+    return Array.from(checkedBoxes).map(cb => cb.value);
   }
-
+  
   if (type === 'radio') {
     const el = document.querySelector('input[name="opt"]:checked');
     if (!el) return '';
@@ -451,11 +442,75 @@ function validateRequired(q, answer) {
 }
 
 function render() {
+  console.log('🔄 Rendu de la question/écran actuel...');
   refreshVisible();
   const q = visible[idx];
-
+  
+  console.log('📋 Question/écran actuel:', q);
+  
   if (!q) {
-    $('questionArea').innerHTML = `<p class="muted">Aucune question à afficher.</p>`;
+    console.log('ℹ️ Aucune question à afficher - affichage de l\'écran de fin');
+    const questionArea = $('questionArea');
+    if (questionArea) {
+      questionArea.innerHTML = '<h2>Formulaire terminé !</h2>';
+    } else {
+      console.error('❌ L\'élément avec l\'ID "questionArea" n\'a pas été trouvé dans le DOM');
+    }
+    if ($('nextBtn')) $('nextBtn').style.display = 'none';
+    if ($('prevBtn')) $('prevBtn').style.display = 'inline-block';
+    updateProgress();
+    return;
+  }
+  
+  // Retirer d'abord la classe is-introduction si elle existe
+  const container = document.querySelector('.main .container');
+  if (container) container.classList.remove('is-introduction');
+  
+  // Vérifier si c'est une page d'introduction
+  if (q.isIntroduction) {
+    console.log('🎯 Affichage de la page d\'introduction');
+    console.log('📝 Détails de la page d\'introduction:', {
+      title: q.title,
+      description: q.description,
+      estimatedTime: q.estimatedTime
+    });
+    
+    // Ajouter la classe is-introduction au conteneur principal
+    if (container) container.classList.add('is-introduction');
+    
+    const introductionHTML = `
+      <div class="introduction-page">
+        <h2>${q.title || 'Bienvenue'}</h2>
+        <div class="introduction-content">
+          <p>${(q.description || '').replace(/\n/g, '</p><p>')}</p>
+          ${q.estimatedTime ? `<div class="estimated-time">${q.estimatedTime}</div>` : ''}
+        </div>
+        <button id="startBtn" class="btn primary">Démarrer</button>
+      </div>
+    `;
+    
+    console.log('📄 HTML de la page d\'introduction:', introductionHTML);
+    
+    $('questionArea').innerHTML = introductionHTML;
+    
+    // Cacher les boutons de navigation standard
+    console.log('👁️ Masquage des boutons de navigation standard');
+    if ($('prevBtn')) $('prevBtn').style.display = 'none';
+    if ($('nextBtn')) $('nextBtn').style.display = 'none';
+    
+    // Ajouter le gestionnaire d'événement pour le bouton de démarrage
+    console.log('🖱️ Ajout du gestionnaire d\'événement pour le bouton de démarrage');
+    const startBtn = document.getElementById('startBtn');
+    if (startBtn) {
+      startBtn.addEventListener('click', () => {
+        console.log('👉 Bouton "Démarrer" cliqué');
+        idx++;
+        render();
+      });
+    } else {
+      console.error('❌ Le bouton de démarrage n\'a pas été trouvé dans le DOM');
+    }
+    
     updateProgress();
     return;
   }
@@ -464,84 +519,51 @@ function render() {
   const currentSection = q.sectionTitle;
   const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
   
-  if (sectionQuestions.length > 1 && (currentSection === "Type de demande" || 
-      currentSection.includes("Parent") || 
-      currentSection.includes("représentant légal") || 
-      currentSection === "Coordonnées de la personne à contacter")) {
-    // Utiliser la description de la première question de la section
-    const sectionDescription = sectionQuestions[0]?.sectionDescription || '';
+  // Pour toutes les sections, on utilise le même affichage avec titre et description de section
+  const sectionDescription = q.sectionDescription || '';
     
-    let sectionHtml = `
-      <div class="${q.className || ''} section-container">
-        <h2 class="q-title">${currentSection}</h2>
-        ${sectionDescription ? `<p class="section-description">${sectionDescription}</p>` : ''}
+  let sectionHtml = `
+    <div class="${q.className || ''} section-container">
+      <h2 class="q-title">${currentSection}</h2>
+      ${sectionDescription ? `<p class="section-description">${sectionDescription}</p>` : ''}
+  `;
+    
+  // Ajouter chaque question de la section
+  sectionQuestions.forEach(sectionQ => {
+    const value = responses[sectionQ.id];
+    sectionHtml += `
+      <div class="question-item" data-question-id="${sectionQ.id}">
+        ${renderInput(sectionQ, value)}
+      </div>
     `;
+  });
     
-    // Ajouter chaque question de la section
-    sectionQuestions.forEach(sectionQ => {
-      const value = responses[sectionQ.id];
-      sectionHtml += `
-        <div class="question-item" data-question-id="${sectionQ.id}">
-          ${renderInput(sectionQ, value)}
-        </div>
-      `;
-    });
+  sectionHtml += `</div>`;
+  $('questionArea').innerHTML = sectionHtml;
     
-    sectionHtml += `</div>`;
-    $('questionArea').innerHTML = sectionHtml;
-    
-    // Ajouter les événements pour tous les champs de la section
-    sectionQuestions.forEach(sectionQ => {
-      if (sectionQ.type === 'radio_with_text') {
-        const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
-        if (questionDiv) {
-          const radioInputs = questionDiv.querySelectorAll('input[name="opt"]');
-          radioInputs.forEach(radio => {
-            radio.addEventListener('change', function() {
-              const textFields = questionDiv.querySelectorAll('.text-field-inline');
-              textFields.forEach(field => field.style.display = 'none');
+  // Ajouter les événements pour tous les champs de la section
+  sectionQuestions.forEach(sectionQ => {
+    if (sectionQ.type === 'radio_with_text') {
+      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
+      if (questionDiv) {
+        const radioInputs = questionDiv.querySelectorAll('input[name="opt"]');
+        radioInputs.forEach(radio => {
+          radio.addEventListener('change', function() {
+            const textFields = questionDiv.querySelectorAll('.text-field-inline');
+            textFields.forEach(field => field.style.display = 'none');
               
-              const selectedOption = sectionQ.options.find(opt => opt.value === this.value);
-              if (selectedOption && selectedOption.hasTextField) {
-                const textField = this.parentElement.nextElementSibling;
-                if (textField && textField.classList.contains('text-field-inline')) {
-                  textField.style.display = 'block';
-                }
+            const selectedOption = sectionQ.options.find(opt => opt.value === this.value);
+            if (selectedOption && selectedOption.hasTextField) {
+              const textField = this.parentElement.nextElementSibling;
+              if (textField && textField.classList.contains('text-field-inline')) {
+                textField.style.display = 'block';
               }
-            });
-          });
-        }
-      }
-    });
-    
-  } else {
-    // Affichage normal pour une question seule
-    const value = responses[q.id];
-
-    $('questionArea').innerHTML = `
-      <h2 class="q-title">${q.question || q.label || q.libelle_plateforme || 'Question sans titre'}</h2>
-      ${renderInput(q, value)}
-    `;
-
-    // Ajouter les événements pour les champs radio_with_text
-    if (q.type === 'radio_with_text') {
-      const radioInputs = document.querySelectorAll('input[name="opt"]');
-      radioInputs.forEach(radio => {
-        radio.addEventListener('change', function() {
-          const textFields = document.querySelectorAll('.text-field-inline');
-          textFields.forEach(field => field.style.display = 'none');
-          
-          const selectedOption = q.options.find(opt => opt.value === this.value);
-          if (selectedOption && selectedOption.hasTextField) {
-            const textField = this.parentElement.nextElementSibling;
-            if (textField && textField.classList.contains('text-field-inline')) {
-              textField.style.display = 'block';
             }
-          }
+          });
         });
-      });
+      }
     }
-  }
+  });
 
   updateProgress();
 }
@@ -695,12 +717,18 @@ async function generatePdf() {
 }
 
 async function boot() {
+  console.log('🔍 Démarrage du chargement du formulaire...');
   loadSaved();
 
   try {
     // Charger la configuration des pages
+    console.log('📂 Chargement de la configuration des pages...');
     const pagesResponse = await fetch('/data/form_pages.json');
+    if (!pagesResponse.ok) {
+      throw new Error(`Erreur HTTP: ${pagesResponse.status}`);
+    }
     const pagesConfig = await pagesResponse.json();
+    console.log('✅ Configuration des pages chargée:', pagesConfig);
     
     allQuestions = [];
     
@@ -722,12 +750,34 @@ async function boot() {
                 pageId: pageConfig.id,
                 pageTitle: pageConfig.title,
                 sectionTitle: section.title,
-                sectionDescription: section.description, // Ajout de la description de la section
-                sectionCondition: section.condition_section
+                sectionDescription: section.description,
+                sectionCondition: section.condition_section,
+                isIntroduction: section.isIntroduction || false,
+                estimatedTime: section.estimatedTime
               }));
               allQuestions.push(...questionsWithPage);
+            } else {
+              // Si c'est une section sans questions (comme l'introduction)
+              allQuestions.push({
+                id: `section_${pageConfig.id}_${section.title.toLowerCase().replace(/\s+/g, '_')}`,
+                type: 'section',
+                title: section.title,
+                description: section.description,
+                isIntroduction: section.isIntroduction || false,
+                estimatedTime: section.estimatedTime,
+                pageId: pageConfig.id,
+                pageTitle: pageConfig.title
+              });
             }
           }
+        } else if (Array.isArray(pageData)) {
+          // Si le fichier est directement un tableau de questions
+          const questionsWithPage = pageData.map(q => ({
+            ...q,
+            pageId: pageConfig.id,
+            pageTitle: pageConfig.title
+          }));
+          allQuestions.push(...questionsWithPage);
         }
       } catch (pageError) {
         console.error(`Erreur lors du chargement de ${pageConfig.title}:`, pageError);
@@ -741,41 +791,41 @@ async function boot() {
       allQuestions = [];
     }
   } catch (error) {
-    console.error('Erreur lors du chargement des questions :', error);
-    allQuestions = [];
+    console.error('❌ Erreur lors du chargement des questions :', error);
+    setStatus('Erreur de chargement des questions');
+    // Afficher l'erreur dans la console pour plus de détails
+    console.error('Détails de l\'erreur:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
   }
 
+  // Réinitialiser l'index à 0 pour commencer par la première question (l'introduction)
+  idx = 0;
   refreshVisible();
   render();
 }
 
-$('nextBtn').addEventListener('click', next);
-$('prevBtn').addEventListener('click', prev);
-$('generateBtn').addEventListener('click', generatePdf);
+// Ajouter les écouteurs d'événements uniquement si les éléments existent
+if ($('nextBtn')) $('nextBtn').addEventListener('click', next);
+if ($('prevBtn')) $('prevBtn').addEventListener('click', prev);
 
 // Fonctions utilitaires pour le calcul des étapes
 function getCurrentStepNumber() {
-  if (!visible[idx]) return 0;
+  if (!visible[idx]) return 1;
   
-  const currentQ = visible[idx];
-  const currentSection = currentQ.sectionTitle;
-  
-  // Compter les sections uniques jusqu'à la section actuelle
-  const sectionsBeforeCurrent = new Set();
-  
-  for (let i = 0; i < idx; i++) {
-    const q = visible[i];
-    if (q.sectionTitle !== currentSection) {
-      sectionsBeforeCurrent.add(q.sectionTitle);
-    }
-  }
-  
-  return sectionsBeforeCurrent.size + 1;
+  // Retourner le step de la question courante, ou 1 par défaut
+  return visible[idx].step || 1;
 }
 
 function getTotalSteps() {
-  const uniqueSections = new Set(visible.map(q => q.sectionTitle));
-  return uniqueSections.size;
+  // Si pas de questions, 1 étape par défaut
+  if (visible.length === 0) return 1;
+  
+  // Trouver le step maximum parmi toutes les questions visibles
+  const maxStep = Math.max(...visible.map(q => q.step || 1));
+  return maxStep > 0 ? maxStep : 1;
 }
 
 boot();

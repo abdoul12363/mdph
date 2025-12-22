@@ -1,0 +1,20 @@
+[
+  {
+    "id": "module2_question1",
+    "type": "text",
+    "question": "Question exemple pour le Module 2",
+    "description": "Ceci est un exemple de question pour le module 2.",
+    "required": false
+  },
+  {
+    "id": "module2_question2",
+    "type": "radio",
+    "question": "Choisissez une option pour le Module 2",
+    "options": [
+      {"value": "option1", "label": "Option 1"},
+      {"value": "option2", "label": "Option 2"},
+      {"value": "option3", "label": "Option 3"}
+    ],
+    "required": true
+  }
+]
