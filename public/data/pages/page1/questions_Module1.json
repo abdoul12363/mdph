@@ -1,0 +1,76 @@
+{
+  "sections": [
+    {
+      "title": "Difficultés quotidiennes",
+      "description": "Sélectionnez les difficultés que vous rencontrez",
+      "questions": [
+        {
+          "id": "difficultes_quotidiennes",
+          "type": "checkbox_multiple",
+          "question": "Dans quels aspects de votre vie rencontrez-vous des difficultés ?",
+          "description": "Cochez toutes les réponses qui s'appliquent",
+          "options": [
+            {
+              "value": "hygiene",
+              "label": "Se laver / hygiène",
+              "pdfField": "difficulte_hygiene"
+            },
+            {
+              "value": "habillage",
+              "label": "S'habiller",
+              "pdfField": "difficulte_habillage"
+            },
+            {
+              "value": "repas",
+              "label": "Manger / préparer les repas",
+              "pdfField": "difficulte_repas"
+            },
+            {
+              "value": "deplacement",
+              "label": "Se déplacer",
+              "pdfField": "difficulte_deplacement"
+            },
+            {
+              "value": "fatigue",
+              "label": "Gérer la fatigue",
+              "pdfField": "difficulte_fatigue"
+            },
+            {
+              "value": "douleur",
+              "label": "Gérer la douleur",
+              "pdfField": "difficulte_douleur"
+            },
+            {
+              "value": "concentration",
+              "label": "Se concentrer",
+              "pdfField": "difficulte_concentration"
+            },
+            {
+              "value": "stress",
+              "label": "Gérer le stress / l'anxiété",
+              "pdfField": "difficulte_stress"
+            },
+            {
+              "value": "sommeil",
+              "label": "Dormir",
+              "pdfField": "difficulte_sommeil"
+            },
+            {
+              "value": "taches_quotidiennes",
+              "label": "Gérer les tâches du quotidien",
+              "pdfField": "difficulte_taches_quotidiennes"
+            },
+            {
+              "value": "autre",
+              "label": "Autre (précisez)",
+              "pdfField": "difficulte_autre",
+              "hasTextField": true,
+              "textFieldLabel": "Précisez votre difficulté"
+            }
+          ],
+          "required": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fields": [
+    {
+      "name": "difficulte_hygiene",
+      "type": "checkbox",
+      "description": "Difficulté pour se laver / hygiène"
+    },
+    {
+      "name": "difficulte_habillage",
+      "type": "checkbox",
+      "description": "Difficulté pour s'habiller"
+    },
+    {
+      "name": "difficulte_repas",
+      "type": "checkbox",
+      "description": "Difficulté pour manger / préparer les repas"
+    },
+    {
+      "name": "difficulte_deplacement",
+      "type": "checkbox",
+      "description": "Difficulté pour se déplacer"
+    },
+    {
+      "name": "difficulte_fatigue",
+      "type": "checkbox",
+      "description": "Difficulté à gérer la fatigue"
+    },
+    {
+      "name": "difficulte_douleur",
+      "type": "checkbox",
+      "description": "Difficulté à gérer la douleur"
+    },
+    {
+      "name": "difficulte_concentration",
+      "type": "checkbox",
+      "description": "Difficulté à se concentrer"
+    },
+    {
+      "name": "difficulte_stress",
+      "type": "checkbox",
+      "description": "Difficulté à gérer le stress / l'anxiété"
+    },
+    {
+      "name": "difficulte_sommeil",
+      "type": "checkbox",
+      "description": "Difficulté à dormir"
+    },
+    {
+      "name": "difficulte_taches_quotidiennes",
+      "type": "checkbox",
+      "description": "Difficulté à gérer les tâches du quotidien"
+    },
+    {
+      "name": "difficulte_autre",
+      "type": "text",
+      "description": "Autre difficulté (précisez)"
+    }
+  ]
+}

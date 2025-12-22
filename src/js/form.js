@@ -212,18 +212,57 @@ function renderInput(q, value) {
         ${q.description.replace(/\n/g, '<br>')}
       </div>` : '';
     
-    return `
+    let html = `
       <div class="field-container">
         ${description}
         <div class="choice-grid" id="answer">
-          ${q.options.map(opt => {
-            const optValue = opt.value || opt;
-            const optLabel = opt.label || opt;
-            const checked = selectedValues.includes(optValue) ? 'checked' : '';
-            return `<label class="choice"><input type="checkbox" name="multi_check" value="${optValue}" ${checked}/> ${optLabel}</label>`;
-          }).join('')}
+    `;
+
+    // Générer les cases à cocher
+    q.options.forEach(opt => {
+      const optValue = opt.value || opt;
+      const optLabel = opt.label || opt;
+      const isChecked = selectedValues.includes(optValue);
+      const textFieldId = `${q.id}_${optValue}_text`;
+      
+      // Ajouter la case à cocher
+      html += `
+        <div class="choice-container">
+          <label class="choice">
+            <input type="checkbox" 
+                   name="multi_check" 
+                   value="${optValue}" 
+                   ${isChecked ? 'checked' : ''} 
+                   data-has-text-field="${!!opt.hasTextField}" 
+                   onchange="this.nextElementSibling.style.display = this.checked ? 'block' : 'none';"/>
+            <span>${optLabel}</span>
+          </label>
+      `;
+      
+      // Ajouter le champ texte si cette option l'a
+      if (opt.hasTextField) {
+        const textFieldValue = responses[textFieldId] || '';
+        html += `
+          <div class="text-field-container" style="display: ${isChecked ? 'block' : 'none'}; margin-left: 20px; margin-top: 5px; margin-bottom: 10px;">
+            <input type="text" 
+                   id="${textFieldId}" 
+                   class="input" 
+                   placeholder="${opt.textFieldLabel || 'Préciser...'}" 
+                   value="${textFieldValue}" 
+                   style="width: 100%; max-width: 300px;"/>
+          </div>
+        `;
+      }
+      
+      html += `</div>`; // Fermeture du conteneur
+    });
+    
+    html += `
         </div>
-      </div>`;
+      </div>
+    `;
+    
+    return html;
   }
 
   if (type === 'radio' && Array.isArray(q.options)) {
@@ -345,9 +384,31 @@ function getAnswerFromDom(q) {
   
   if (type === 'checkbox_multiple') {
     const checkedBoxes = document.querySelectorAll('input[name="multi_check"]:checked');
-    return Array.from(checkedBoxes).map(cb => cb.value);
+    const result = [];
+    
+    // Parcourir toutes les options pour gérer correctement les champs texte
+    q.options.forEach(opt => {
+      const optValue = opt.value || opt;
+      const checkbox = document.querySelector(`input[name="multi_check"][value="${optValue}"]`);
+      
+      if (checkbox && checkbox.checked) {
+        result.push(optValue);
+        
+        // Si cette option a un champ texte, on le sauvegarde
+        if (opt.hasTextField) {
+          const textFieldId = `${q.id}_${optValue}_text`;
+          const textField = document.getElementById(textFieldId);
+          if (textField && textField.value.trim()) {
+            responses[textFieldId] = textField.value.trim();
+          }
+        }
+      }
+    });
+    
+    saveLocal(true);
+    return result;
   }
-  
+
   if (type === 'radio') {
     const el = document.querySelector('input[name="opt"]:checked');
     if (!el) return '';
@@ -458,7 +519,7 @@ function render() {
     const value = responses[q.id];
 
     $('questionArea').innerHTML = `
-      <h2 class="q-title">${q.label || q.libelle_plateforme || 'Question sans titre'}</h2>
+      <h2 class="q-title">${q.question || q.label || q.libelle_plateforme || 'Question sans titre'}</h2>
       ${renderInput(q, value)}
     `;
 

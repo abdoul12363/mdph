@@ -1,34 +1,34 @@
 {
   "metadata": {
     "version": "1.0",
-    "description": "Configuration des pages du formulaire CERFA MDPH",
-    "lastUpdated": "2025-12-15"
+    "description": "Configuration des pages du formulaire MDPH",
+    "lastUpdated": "2025-12-22"
   },
   "pages": [
     {
       "id": "page1",
-      "title": "Type de demande et dossier existant",
-      "description": "Type de demande et informations sur un éventuel dossier existant",
-      "questionsFile": "pages/page1/questions_cerfa_page1.json",
-      "pdfMappingFile": "pages/page1/pdf_fields_order_page1.json",
+      "title": "Difficultés quotidiennes",
+      "description": "Identification des difficultés rencontrées au quotidien",
+      "questionsFile": "pages/page1/questions_Module1.json",
+      "pdfMappingFile": "pages/page1/pdf_fields_Module1.json",
       "order": 1,
       "required": true
     },
     {
       "id": "page2",
-      "title": "Votre identité",
-      "description": "Identité et informations personnelles du demandeur",
-      "questionsFile": "pages/page2/questions_cerfa_page2.json",
-      "pdfMappingFile": "pages/page2/pdf_fields_order_page2.json",
+      "title": "Module 2",
+      "description": "Deuxième module du formulaire",
+      "questionsFile": "pages/page2/questions_Module2.json",
+      "pdfMappingFile": "pages/page2/pdf_fields_Module2.json",
       "order": 2,
       "required": true
     },
     {
       "id": "page3",
-      "title": "Votre situation et vos besoins",
-      "description": "Aide dans les démarches, situation d'urgence et mesures de protection",
-      "questionsFile": "pages/page3/questions_cerfa_page3.json",
-      "pdfMappingFile": "pages/page3/pdf_fields_order_page3.json",
+      "title": "Module 3",
+      "description": "Troisième module du formulaire",
+      "questionsFile": "pages/page3/questions_Module3.json",
+      "pdfMappingFile": "pages/page3/pdf_fields_Module3.json",
       "order": 3,
       "required": true
     }

@@ -240,6 +240,47 @@ label {
   outline: none;
 }
 
+/* Styles pour les champs de texte conditionnels des cases à cocher */
+.text-field-container {
+  margin: 8px 0 16px 24px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.text-field-container.visible {
+  max-height: 100px;
+  opacity: 1;
+  margin: 8px 0 16px 24px;
+}
+
+.text-field-container input[type="text"] {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.text-field-container input[type="text"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2);
+  outline: none;
+}
+
+/* Style pour les choix avec champ texte */
+.choice-container {
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .parent-field::placeholder {
   color: rgba(255, 255, 255, 0.3);
 }
