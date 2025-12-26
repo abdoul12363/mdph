@@ -97,7 +97,7 @@
               "label": "De manière fluctuante"
             }
           ],
-          "required": true
+          "required": false
         }
       ]
     },

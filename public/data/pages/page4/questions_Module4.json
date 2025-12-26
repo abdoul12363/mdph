@@ -1,0 +1,58 @@
+{
+  "step": 4,
+  "title": "Projet de vie",
+  "description": "Définissez vos objectifs et priorités pour l'avenir",
+  "sections": [
+    {
+      "title": "Axe principal du projet",
+      "description": "Aujourd'hui, votre projet de vie s'oriente principalement vers…",
+      "questions": [
+        {
+          "id": "axe_principal",
+          "type": "radio",
+          "options": [
+            {"value": "stabilite", "label": "Retrouver ou maintenir une stabilité de vie"},
+            {"value": "sante", "label": "Préserver la santé et le bien-être"},
+            {"value": "adaptation", "label": "Adapter le quotidien à l'état de santé"},
+            {"value": "travail", "label": "Maintenir ou reprendre une activité professionnelle adaptée"},
+            {"value": "autonomie", "label": "Améliorer l'autonomie au quotidien"},
+            {"value": "autre_axe", "label": "Autre axe", "hasTextField": true, "textFieldLabel": "Préciser"}
+          ],
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "Priorités actuelles",
+      "description": "Quelles sont vos priorités aujourd'hui ?",
+      "questions": [
+        {
+          "id": "priorites_actuelles",
+          "type": "checkbox_multiple",
+          "options": [
+            {"value": "sante", "label": "Préserver la santé"},
+            {"value": "fatigue_douleurs", "label": "Réduire la fatigue et les douleurs"},
+            {"value": "finances", "label": "Stabiliser la situation financière"},
+            {"value": "rythme", "label": "Adapter le rythme de vie"},
+            {"value": "accompagnement", "label": "Être accompagné(e)"},
+            {"value": "equilibre", "label": "Maintenir un équilibre personnel"},
+            {"value": "autre_priorite", "label": "Autre priorité", "hasTextField": true, "textFieldLabel": "Préciser"}
+          ],
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "Vos aspirations",
+      "description": "Expliquez avec vos mots ce que vous souhaitez pour votre vie, compte tenu de votre situation actuelle",
+      "questions": [
+        {
+          "id": "projet_vie",
+          "type": "textarea",
+          "placeholder": "Exemple : Je souhaite retrouver un quotidien plus stable, avec un rythme adapté à mon état de santé, afin de préserver mon bien-être et de pouvoir me projeter plus sereinement dans l'avenir…",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

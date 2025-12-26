@@ -19,7 +19,7 @@
             {"value": "carte_mobilite", "label": "Carte mobilité / invalidité"},
             {"value": "autre", "label": "Autre demande", "hasTextField": true, "textFieldLabel": "Préciser"}
           ],
-          "required": true
+          "required": false
         }
       ]
     },
@@ -37,7 +37,7 @@
             {"value": "handicap", "label": "Faire face aux conséquences du handicap"},
             {"value": "autre_objectif", "label": "Autre objectif", "hasTextField": true, "textFieldLabel": "Préciser"}
           ],
-          "required": true
+          "required": false
         }
       ]
     },
@@ -50,7 +50,7 @@
           "id": "explication_demande",
           "type": "textarea",
           "placeholder": "Exemple : À cause de la fatigue et des douleurs quotidiennes, j'ai des difficultés à assurer une activité professionnelle régulière, ce qui fragilise ma situation financière…",
-          "required": true
+          "required": false
         }
       ]
     }
