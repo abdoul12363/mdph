@@ -31,9 +31,41 @@
   width: 100%;
 }
 
-.form-header{margin:4px 0 24px}
-.form-title{margin:0 0 6px;font-size:22px}
-.form-card{padding:24px;margin-top:80px}
+/* Module Header */
+.module-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.module-title {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.module-description {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.form-header {
+  margin: 4px 0 24px;
+}
+
+.form-title {
+  margin: 0 0 6px;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.form-card {
+  padding: 24px;
+  margin-top: 40px;
+}
 
 .progress{margin:24px 0 12px}
 .progress {

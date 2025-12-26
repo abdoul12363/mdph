@@ -1,20 +1,153 @@
-[
-  {
-    "id": "module2_question1",
-    "type": "text",
-    "question": "Question exemple pour le Module 2",
-    "description": "Ceci est un exemple de question pour le module 2.",
-    "required": false
-  },
-  {
-    "id": "module2_question2",
-    "type": "radio",
-    "question": "Choisissez une option pour le Module 2",
-    "options": [
-      {"value": "option1", "label": "Option 1"},
-      {"value": "option2", "label": "Option 2"},
-      {"value": "option3", "label": "Option 3"}
-    ],
-    "required": true
-  }
-]
+{
+  "step": 2,
+  "title": "Situation actuelle",
+  "description": "Décrivez votre situation professionnelle et personnelle actuelle",
+  "sections": [
+    {
+      "title": "Je suis actuellment...",
+      "description": "Sélectionnez votre situation actuelle",
+      "questions": [
+        {
+          "id": "situation_actuelle",
+          "type": "radio",
+          "question": "Quelle est votre situation actuelle ?",
+          "options": [
+            {
+              "value": "emploi",
+              "label": "En emploi"
+            },
+            {
+              "value": "arret_travail",
+              "label": "En arrêt de travail"
+            },
+            {
+              "value": "recherche_emploi",
+              "label": "En recherche d'emploi"
+            },
+            {
+              "value": "formation",
+              "label": "En formation"
+            },
+            {
+              "value": "etudiant",
+              "label": "Étudiant(e) / scolarisé(e)"
+            },
+            {
+              "value": "sans_activite",
+              "label": "Sans activité actuellement"
+            },
+            {
+              "value": "autre_situation",
+              "label": "Autre situation",
+              "hasTextField": true,
+              "textFieldLabel": "Précisez votre situation"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "Difficultés liées au travail",
+      "description": "Cochez les problèmes de santé affectant votre activité professionnelle",
+      "questions": [
+        {
+          "id": "difficultes_travail",
+          "type": "checkbox_multiple",
+          "options": [
+            {
+              "value": "fatigue",
+              "label": "Fatigue importante"
+            },
+            {
+              "value": "douleurs",
+              "label": "Douleurs"
+            },
+            {
+              "value": "concentration",
+              "label": "Difficultés de concentration"
+            },
+            {
+              "value": "rythme",
+              "label": "Difficultés à tenir un rythme"
+            },
+            {
+              "value": "physique",
+              "label": "Difficultés physiques (posture, déplacements...)"
+            },
+            {
+              "value": "stress",
+              "label": "Stress / anxiété"
+            },
+            {
+              "value": "impossible_travailler",
+              "label": "Impossible de travailler actuellement"
+            },
+            {
+              "value": "autre_difficulte",
+              "label": "Autre difficulté",
+              "hasTextField": true,
+              "textFieldLabel": "Précisez la difficulté"
+            }
+          ],
+          "required": false
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "Conséquences au travail",
+      "description": "Ces difficultés entraînent…",
+      "questions": [
+        {
+          "id": "consequences_travail",
+          "type": "checkbox_multiple",
+          "options": [
+            {
+              "value": "absences",
+              "label": "Des absences fréquentes"
+            },
+            {
+              "value": "baisse_performance",
+              "label": "Une baisse de performance"
+            },
+            {
+              "value": "amenagement",
+              "label": "Un besoin d'aménagement"
+            },
+            {
+              "value": "souffrance",
+              "label": "Une souffrance importante"
+            },
+            {
+              "value": "difficulte_rythme",
+              "label": "Une difficulté à tenir le rythme"
+            },
+            {
+              "value": "autre_consequence",
+              "label": "Autre conséquence",
+              "hasTextField": true,
+              "textFieldLabel": "Précisez la conséquence"
+            }
+          ],
+          "required": false
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "Impact sur le travail",
+      "description": "Décrivez l'impact de votre état de santé sur votre travail",
+      "questions": [
+        {
+          "id": "description_impact_travail",
+          "type": "textarea",
+          "placeholder": "Exemple : le stress et la fatigue rendent difficile le maintien d'un rythme de travail régulier...",
+          "required": false,
+          "rows": 4
+        }
+      ]
+    }
+  ]
+}

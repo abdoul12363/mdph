@@ -1,9 +1,11 @@
 {
+  "step": 1,
+  "title": "Difficultés quotidiennes",
+  "description": "Décrivez les difficultés que vous rencontrez dans votre vie quotidienne",
   "sections": [
     {
-      "step": 1,
       "title": "Dans quels aspects de votre vie rencontrez-vous des difficultés ?",
-      "description": "Sélectionnez les difficultés que vous rencontrez",
+      "description": "Cochez les difficultés que vous rencontrez",
       "questions": [
         {
           "id": "difficultes_quotidiennes",
@@ -102,7 +104,7 @@
     {
       "step": 1,
       "title": "Sans aide ou adaptation, cela entraîne…",
-      "description": "Sélectionnez la ou les conséquences",
+      "description": "Cochez la ou les conséquences",
       "questions": [
         {
           "id": "consequences_difficultes",

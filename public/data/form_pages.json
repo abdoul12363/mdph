@@ -25,8 +25,8 @@
     },
     {
       "id": "page2",
-      "title": "Module 2",
-      "description": "Deuxième module du formulaire",
+      "title": "Situation actuelle",
+      "description": "Décrivez votre situation professionnelle et personnelle actuelle",
       "questionsFile": "pages/page2/questions_Module2.json",
       "pdfMappingFile": "pages/page2/pdf_fields_Module2.json",
       "order": 3,
@@ -34,11 +34,20 @@
     },
     {
       "id": "page3",
-      "title": "Module 3",
-      "description": "Troisième module du formulaire",
+      "title": "Demandes et besoins",
+      "description": "Précisez les aides ou reconnaissances que vous souhaitez demander",
       "questionsFile": "pages/page3/questions_Module3.json",
       "pdfMappingFile": "pages/page3/pdf_fields_Module3.json",
       "order": 4,
+      "required": true
+    },
+    {
+      "id": "page4",
+      "title": "Projet de vie",
+      "description": "Définissez vos objectifs et priorités pour l'avenir",
+      "questionsFile": "pages/page4/questions_Module4.json",
+      "pdfMappingFile": "pages/page4/pdf_fields_Module4.json",
+      "order": 5,
       "required": true
     }
   ]

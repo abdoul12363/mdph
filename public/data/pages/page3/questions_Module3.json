@@ -1,21 +1,58 @@
-[
-  {
-    "id": "module3_question1",
-    "type": "textarea",
-    "question": "Décrivez votre situation pour le Module 3",
-    "description": "Veuillez fournir des détails sur votre situation pour le module 3.",
-    "required": true,
-    "placeholder": "Saisissez votre réponse ici..."
-  },
-  {
-    "id": "module3_question2",
-    "type": "checkbox",
-    "question": "Sélectionnez les options qui s'appliquent (Module 3)",
-    "options": [
-      {"value": "check1", "label": "Option A"},
-      {"value": "check2", "label": "Option B"},
-      {"value": "check3", "label": "Option C"}
-    ],
-    "required": false
-  }
-]
+{
+  "step": 3,
+  "title": "Demandes et besoins",
+  "description": "Précisez les aides ou reconnaissances que vous souhaitez demander",
+  "sections": [
+    {
+      "title": "Types de demandes",
+      "description": "Quelles aides ou reconnaissances souhaitez-vous demander ?",
+      "questions": [
+        {
+          "id": "type_demande",
+          "type": "checkbox_multiple",
+          "options": [
+            {"value": "aah", "label": "Allocation (AAH)"},
+            {"value": "rqth", "label": "Reconnaissance travailleur handicapé (RQTH)"},
+            {"value": "amenagement", "label": "Aménagement du poste de travail"},
+            {"value": "aide_humaine", "label": "Aide humaine"},
+            {"value": "orientation", "label": "Orientation / accompagnement"},
+            {"value": "carte_mobilite", "label": "Carte mobilité / invalidité"},
+            {"value": "autre", "label": "Autre demande", "hasTextField": true, "textFieldLabel": "Préciser"}
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "title": "Objectif de la demande",
+      "description": "Cette demande vise principalement à…",
+      "questions": [
+        {
+          "id": "objectif_demande",
+          "type": "radio",
+          "options": [
+            {"value": "securiser", "label": "Sécuriser la situation financière"},
+            {"value": "compenser", "label": "Compenser une perte de revenus"},
+            {"value": "autonomie", "label": "Maintenir une autonomie suffisante"},
+            {"value": "handicap", "label": "Faire face aux conséquences du handicap"},
+            {"value": "autre_objectif", "label": "Autre objectif", "hasTextField": true, "textFieldLabel": "Préciser"}
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "title": "Explication complémentaire",
+      "description": "Expliquez avec vos mots pourquoi cette demande est nécessaire pour vous",
+      "questions": [
+        {
+          "id": "explication_demande",
+          "type": "textarea",
+          "placeholder": "Exemple : À cause de la fatigue et des douleurs quotidiennes, j'ai des difficultés à assurer une activité professionnelle régulière, ce qui fragilise ma situation financière…",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

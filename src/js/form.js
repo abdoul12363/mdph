@@ -174,13 +174,20 @@ async function reloadQuestionsWithConditions() {
             
             if (sectionVisible && section.questions) {
               console.log(`  ➕ Ajout de ${section.questions.length} questions de la section ${section.title}`);
-              const questionsWithPage = section.questions.map(q => ({
-                ...q,
-                pageId: pageConfig.id,
-                pageTitle: pageConfig.title,
-                sectionTitle: section.title,
-                step: section.step || 1  // Utiliser le step de la section ou 1 par défaut
-              }));
+              const questionsWithPage = section.questions.map(q => {
+                // Créer un objet question avec les propriétés de base
+                const question = {
+                  ...q,
+                  pageId: pageConfig.id,
+                  pageTitle: pageConfig.title,
+                  sectionTitle: section.title,
+                  step: section.step || 1,  // Utiliser le step de la section ou 1 par défaut
+                  sectionId: section.id || ''  // Ajouter l'ID de section pour le débogage
+                };
+                
+                console.log(`    ➕ Question: ${q.id || 'sans-id'} - Step: ${question.step}, Section: ${section.title}`);
+                return question;
+              });
               allQuestions.push(...questionsWithPage);
             } else if (!sectionVisible) {
               console.log(`  ⏭️ Section masquée par condition: ${section.title}`);
@@ -199,14 +206,41 @@ async function reloadQuestionsWithConditions() {
 function updateProgress() {
   const total = visible.length;
   
-  // Calculer le numéro d'étape logique basé sur les sections
-  const currentStep = getCurrentStepNumber();
-  const totalSteps = getTotalSteps();
+  // Récupérer la page actuelle
+  const currentQuestion = visible[idx];
+  let currentModule = 1;
+  let currentPageTitle = '';
+  let currentPageDescription = '';
   
-  $('progressText').textContent = `${currentStep} / ${totalSteps}`;
+  if (currentQuestion) {
+    // Extraire le numéro du module à partir de l'ID de la page (ex: 'page1' -> 1)
+    const match = currentQuestion.pageId?.match(/page(\d+)/);
+    if (match) {
+      currentModule = parseInt(match[1], 10);
+    }
+    
+    // Récupérer le titre et la description de la page
+    currentPageTitle = currentQuestion.pageTitle || '';
+    currentPageDescription = currentQuestion.sectionDescription || currentQuestion.pageTitle || '';
+    
+    // Mettre à jour les éléments du DOM s'ils existent
+    const moduleTitle = document.getElementById('moduleTitle');
+    const moduleDescription = document.getElementById('moduleDescription');
+    
+    if (moduleTitle) moduleTitle.textContent = currentPageTitle;
+    if (moduleDescription) moduleDescription.textContent = currentPageDescription;
+  }
+  
+  // Calculer le numéro d'étape actuel
+  const currentStep = currentModule;
+  const totalSteps = 4; // Nombre total de modules
+  
+  // Mettre à jour la barre de progression
+  $('progressText').textContent = `Étape ${currentStep} sur ${totalSteps}`;
   $('progressFill').style.width = totalSteps ? `${Math.round((currentStep / totalSteps) * 100)}%` : '0%';
   $('questionId').textContent = ''; // ID masqué de l'interface
 
+  // Gérer les boutons de navigation
   $('prevBtn').disabled = idx <= 0;
   $('nextBtn').textContent = idx >= total - 1 ? 'Terminer' : 'Suivant';
 }
@@ -441,20 +475,83 @@ function validateRequired(q, answer) {
   return answer && answer.trim().length > 0;
 }
 
+let formPagesData = null;
+
+// Charger les données des pages du formulaire
+async function loadFormPages() {
+  try {
+    const response = await fetch('/data/form_pages.json');
+    if (!response.ok) throw new Error('Erreur de chargement des pages');
+    formPagesData = await response.json();
+  } catch (error) {
+    console.error('Erreur lors du chargement des pages:', error);
+    formPagesData = { pages: [] };
+  }
+  return formPagesData;
+}
+
+// Initialiser le chargement des pages au démarrage
+loadFormPages();
+
+function updateFormHeader(q) {
+  const titleEl = document.getElementById('formTitle');
+  const descEl = document.getElementById('formDescription');
+  
+  if (!q) {
+    if (titleEl) titleEl.textContent = 'Formulaire terminé';
+    if (descEl) descEl.textContent = 'Merci d\'avoir rempli le formulaire';
+    return;
+  }
+  
+  const pageTitle = q.pageTitle || q.sectionTitle || q.title || 'Formulaire';
+  
+  // Mettre à jour le titre
+  if (titleEl) {
+    titleEl.textContent = pageTitle;
+  }
+  
+  // Mettre à jour la description
+  if (descEl) {
+    let description = '';
+    
+    // Chercher la description dans form_pages.json
+    if (formPagesData && formPagesData.pages) {
+      const page = formPagesData.pages.find(p => p.title === pageTitle);
+      if (page && page.description) {
+        description = page.description;
+      } else {
+        // Si pas trouvé, utiliser les valeurs par défaut
+        description = q.sectionDescription || q.description || '';
+      }
+    } else {
+      // Si les données ne sont pas encore chargées, utiliser les valeurs par défaut
+      description = q.sectionDescription || q.description || '';
+    }
+    
+    descEl.textContent = description;
+  }
+  
+  // Mettre à jour le titre de la page
+  document.title = `${pageTitle} — CERFA MDPH`;
+}
+
 function render() {
-  console.log('🔄 Rendu de la question/écran actuel...');
+  console.log('Rendu de la question/écran actuel...');
   refreshVisible();
   const q = visible[idx];
   
-  console.log('📋 Question/écran actuel:', q);
+  // Mettre à jour le titre et la description
+  updateFormHeader(q);
+  
+  console.log('Question/écran actuel:', q);
   
   if (!q) {
-    console.log('ℹ️ Aucune question à afficher - affichage de l\'écran de fin');
+    console.log('Aucune question à afficher - affichage de l\'écran de fin');
     const questionArea = $('questionArea');
     if (questionArea) {
       questionArea.innerHTML = '<h2>Formulaire terminé !</h2>';
     } else {
-      console.error('❌ L\'élément avec l\'ID "questionArea" n\'a pas été trouvé dans le DOM');
+      console.error('L\'élément avec l\'ID "questionArea" n\'a pas été trouvé dans le DOM');
     }
     if ($('nextBtn')) $('nextBtn').style.display = 'none';
     if ($('prevBtn')) $('prevBtn').style.display = 'inline-block';
@@ -468,8 +565,8 @@ function render() {
   
   // Vérifier si c'est une page d'introduction
   if (q.isIntroduction) {
-    console.log('🎯 Affichage de la page d\'introduction');
-    console.log('📝 Détails de la page d\'introduction:', {
+    console.log('Affichage de la page d\'introduction');
+    console.log('Détails de la page d\'introduction:', {
       title: q.title,
       description: q.description,
       estimatedTime: q.estimatedTime
@@ -489,26 +586,26 @@ function render() {
       </div>
     `;
     
-    console.log('📄 HTML de la page d\'introduction:', introductionHTML);
+    console.log('HTML de la page d\'introduction:', introductionHTML);
     
     $('questionArea').innerHTML = introductionHTML;
     
     // Cacher les boutons de navigation standard
-    console.log('👁️ Masquage des boutons de navigation standard');
+    console.log('Masquage des boutons de navigation standard');
     if ($('prevBtn')) $('prevBtn').style.display = 'none';
     if ($('nextBtn')) $('nextBtn').style.display = 'none';
     
     // Ajouter le gestionnaire d'événement pour le bouton de démarrage
-    console.log('🖱️ Ajout du gestionnaire d\'événement pour le bouton de démarrage');
+    console.log('Ajout du gestionnaire d\'événement pour le bouton de démarrage');
     const startBtn = document.getElementById('startBtn');
     if (startBtn) {
       startBtn.addEventListener('click', () => {
-        console.log('👉 Bouton "Démarrer" cliqué');
+        console.log('Bouton "Démarrer" cliqué');
         idx++;
         render();
       });
     } else {
-      console.error('❌ Le bouton de démarrage n\'a pas été trouvé dans le DOM');
+      console.error('Le bouton de démarrage n\'a pas été trouvé dans le DOM');
     }
     
     updateProgress();
@@ -568,167 +665,19 @@ function render() {
   updateProgress();
 }
 
-function next() {
-  const q = visible[idx];
-  if (!q) return;
-
-  // Si on est dans une section avec plusieurs questions, récupérer toutes les réponses
-  const currentSection = q.sectionTitle;
-  const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
-  
-  if (sectionQuestions.length > 1 && (currentSection === "Type de demande" || 
-      currentSection.includes("Parent") || 
-      currentSection.includes("représentant légal"))) {
-    // Sauvegarder toutes les réponses de la section
-    sectionQuestions.forEach(sectionQ => {
-      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
-      if (questionDiv) {
-        // Temporairement définir le contexte pour cette question
-        const originalAnswer = document.querySelector('#answer');
-        const sectionAnswer = questionDiv.querySelector('#answer, input[type="checkbox"]');
-        
-        if (sectionAnswer) {
-          // Créer temporairement un élément avec l'ID answer pour getAnswerFromDom
-          sectionAnswer.id = 'answer';
-          const answer = getAnswerFromDom(sectionQ);
-          responses[sectionQ.id] = answer;
-          
-          // Restaurer l'ID original
-          if (originalAnswer && originalAnswer !== sectionAnswer) {
-            sectionAnswer.removeAttribute('id');
-            originalAnswer.id = 'answer';
-          }
-        }
-      }
-    });
-    
-    // Passer à la section suivante (sauter toutes les questions de cette section)
-    const nextSectionIndex = visible.findIndex((q, i) => i > idx && q.sectionTitle !== currentSection);
-    if (nextSectionIndex !== -1) {
-      idx = nextSectionIndex;
-    } else {
-      idx = visible.length; // Fin du formulaire
-    }
-  } else {
-    // Logique normale pour une question seule
-    const answer = getAnswerFromDom(q);
-    
-    if (!validateRequired(q, answer)) {
-      setStatus('Ce champ est obligatoire.');
-      return;
-    }
-
-    // normalisations
-    if (q.type_champ === 'oui_non') {
-      responses[q.id] = normalizeOuiNon(answer);
-    } else {
-      responses[q.id] = answer;
-    }
-
-    idx++;
-  }
-  
-  saveLocal(true);
-  render();
-  setStatus('');
-}
-
-function prev() {
-  if (idx <= 0) return;
-  
-  const currentQ = visible[idx];
-  if (!currentQ) {
-    idx -= 1;
-    render();
-    return;
-  }
-  
-  const currentSection = currentQ.sectionTitle;
-  const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
-  
-  // Si on est dans une section groupée, revenir au début de la section précédente
-  if (sectionQuestions.length > 1 && (currentSection === "Type de demande" || 
-      currentSection.includes("Parent") || 
-      currentSection.includes("représentant légal"))) {
-    
-    // Trouver l'index de la première question de cette section
-    const currentSectionStartIdx = visible.findIndex(q => q.sectionTitle === currentSection);
-    
-    if (currentSectionStartIdx > 0) {
-      // Trouver la section précédente
-      const prevQ = visible[currentSectionStartIdx - 1];
-      const prevSection = prevQ.sectionTitle;
-      const prevSectionQuestions = visible.filter(question => question.sectionTitle === prevSection);
-      
-      // Si la section précédente est aussi groupée, aller à son début
-      if (prevSectionQuestions.length > 1 && (prevSection === "Type de demande" || 
-          prevSection.includes("Parent") || 
-          prevSection.includes("représentant légal"))) {
-        idx = visible.findIndex(q => q.sectionTitle === prevSection);
-      } else {
-        // Sinon, aller à la question précédente
-        idx = currentSectionStartIdx - 1;
-      }
-    } else {
-      idx = 0;
-    }
-  } else {
-    // Navigation normale pour les questions individuelles
-    idx -= 1;
-  }
-  
-  render();
-}
-
-async function generatePdf() {
-  if (inFlight) return;
-  inFlight = true;
-  setStatus('Génération du PDF en cours...');
-
-  try {
-    const res = await fetch('/api/fill', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(responses),
-    });
-
-    if (!res.ok) {
-      const txt = await res.text();
-      throw new Error(txt || `HTTP ${res.status}`);
-    }
-
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'cerfa_rempli.pdf';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    URL.revokeObjectURL(url);
-    setStatus('PDF généré et téléchargé.');
-  } catch (e) {
-    setStatus(`Erreur: ${e.message}`);
-  } finally {
-    inFlight = false;
-  }
-}
-
 async function boot() {
-  console.log('🔍 Démarrage du chargement du formulaire...');
+  console.log('Démarrage du chargement du formulaire...');
   loadSaved();
 
   try {
     // Charger la configuration des pages
-    console.log('📂 Chargement de la configuration des pages...');
+    console.log('Chargement de la configuration des pages...');
     const pagesResponse = await fetch('/data/form_pages.json');
     if (!pagesResponse.ok) {
       throw new Error(`Erreur HTTP: ${pagesResponse.status}`);
     }
     const pagesConfig = await pagesResponse.json();
-    console.log('✅ Configuration des pages chargée:', pagesConfig);
+    console.log('Configuration des pages chargée:', pagesConfig);
     
     allQuestions = [];
     
@@ -738,7 +687,7 @@ async function boot() {
         const pageResponse = await fetch(`/data/${pageConfig.questionsFile}`);
         const pageData = await pageResponse.json();
         
-        console.log(`📄 Chargement de ${pageConfig.title}...`);
+        console.log(`Chargement de ${pageConfig.title}...`);
         
         if (pageData?.sections) {
           for (const section of pageData.sections) {
@@ -784,14 +733,14 @@ async function boot() {
       }
     }
     
-    console.log(`✅ ${allQuestions.length} questions chargées depuis ${pagesConfig.pages.length} pages`);
+    console.log(`${allQuestions.length} questions chargées depuis ${pagesConfig.pages.length} pages`);
     
     if (!Array.isArray(allQuestions)) {
       console.error('Format de questions invalide :', allQuestions);
       allQuestions = [];
     }
   } catch (error) {
-    console.error('❌ Erreur lors du chargement des questions :', error);
+    console.error('Erreur lors du chargement des questions :', error);
     setStatus('Erreur de chargement des questions');
     // Afficher l'erreur dans la console pour plus de détails
     console.error('Détails de l\'erreur:', {
@@ -805,11 +754,12 @@ async function boot() {
   idx = 0;
   refreshVisible();
   render();
+  
+  // Mettre à jour l'en-tête avec la première question
+  if (visible.length > 0) {
+    updateFormHeader(visible[0]);
+  }
 }
-
-// Ajouter les écouteurs d'événements uniquement si les éléments existent
-if ($('nextBtn')) $('nextBtn').addEventListener('click', next);
-if ($('prevBtn')) $('prevBtn').addEventListener('click', prev);
 
 // Fonctions utilitaires pour le calcul des étapes
 function getCurrentStepNumber() {
@@ -827,5 +777,84 @@ function getTotalSteps() {
   const maxStep = Math.max(...visible.map(q => q.step || 1));
   return maxStep > 0 ? maxStep : 1;
 }
+
+function next() {
+  if (inFlight) return;
+  inFlight = true;
+  
+  try {
+    const q = visible[idx];
+    if (!q) {
+      // Si on est à la fin du formulaire
+      console.log('Fin du formulaire atteinte');
+      return;
+    }
+
+    // Récupérer la réponse actuelle
+    const answer = getAnswerFromDom(q);
+    
+    // Valider si le champ est obligatoire
+    if (q.obligatoire && !validateRequired(q, answer)) {
+      alert('Cette question est obligatoire');
+      return;
+    }
+    
+    // Sauvegarder la réponse
+    if (answer !== undefined && answer !== '') {
+      responses[q.id] = answer;
+      saveLocal(true);
+    }
+    
+    // Passer à la question suivante
+    idx++;
+    
+    // Si on dépasse la dernière question, on reste sur la dernière
+    if (idx >= visible.length) {
+      idx = visible.length - 1;
+      console.log('Dernière question atteinte');
+    }
+    
+    // Afficher la question
+    render();
+  } catch (error) {
+    console.error('Erreur dans next():', error);
+  } finally {
+    inFlight = false;
+  }
+}
+
+function prev() {
+  if (inFlight || idx <= 0) return;
+  inFlight = true;
+  
+  try {
+    // Sauvegarder la réponse actuelle avant de revenir en arrière
+    const q = visible[idx];
+    if (q) {
+      const answer = getAnswerFromDom(q);
+      if (answer !== undefined && answer !== '') {
+        responses[q.id] = answer;
+        saveLocal(true);
+      }
+    }
+    
+    // Revenir à la question précédente
+    idx--;
+    
+    // S'assurer qu'on ne va pas en dessous de 0
+    if (idx < 0) idx = 0;
+    
+    // Afficher la question
+    render();
+  } catch (error) {
+    console.error('Erreur dans prev():', error);
+  } finally {
+    inFlight = false;
+  }
+}
+
+// Ajouter les écouteurs d'événements uniquement si les éléments existent
+if ($('nextBtn')) $('nextBtn').addEventListener('click', next);
+if ($('prevBtn')) $('prevBtn').addEventListener('click', prev);
 
 boot();
