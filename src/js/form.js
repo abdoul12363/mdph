@@ -474,14 +474,17 @@ function validateRequired(q, answer) {
   if (!q.obligatoire) return true;
   return answer && answer.trim().length > 0;
 }
-
-// Système de génération de phrases intelligentes pour les récaps
 function generateIntelligentPhrases(targetQuestionIds, responses) {
   const phrases = [];
   
   targetQuestionIds.forEach(questionId => {
     const answer = responses[questionId];
-    if (answer !== undefined && answer !== '') {
+    if (answer !== undefined && answer !== '' && answer !== null) {
+      // Pour les tableaux, vérifier qu'ils ne sont pas vides
+      if (Array.isArray(answer) && answer.length === 0) {
+        return;
+      }
+      
       const intelligentPhrase = generatePhraseForQuestion(questionId, answer, responses);
       if (intelligentPhrase) {
         phrases.push(intelligentPhrase);
@@ -489,7 +492,15 @@ function generateIntelligentPhrases(targetQuestionIds, responses) {
     }
   });
   
-  return phrases;
+  // S'assurer qu'il y a toujours exactement 3 phrases
+  while (phrases.length < 3) {
+    phrases.push('Situation nécessitant un accompagnement adapté');
+  }
+  
+  // Limiter à 3 phrases maximum si on en a plus
+  const finalPhrases = phrases.slice(0, 3);
+  
+  return finalPhrases;
 }
 
 function generatePhraseForQuestion(questionId, answer, allResponses) {
@@ -583,9 +594,12 @@ function generatePhraseForQuestion(questionId, answer, allResponses) {
       if (Array.isArray(answer) && answer.length > 0) {
         const demands = {
           'aah': 'Besoin de sécurisation financière (AAH)',
-          'rqth': 'Demande de reconnaissance de la qualité de travailleur handicapé',
-          'pch': 'Besoin d\'aide humaine ou technique (PCH)',
-          'carte': 'Demande de carte mobilité inclusion'
+          'rqth': 'Demande de reconnaissance de la qualité de travailleur handicapé (RQTH)',
+          'amenagement': 'Besoin d\'aménagement du poste de travail',
+          'aide_humaine': 'Besoin d\'aide humaine',
+          'orientation': 'Demande d\'orientation et d\'accompagnement',
+          'carte_mobilite': 'Demande de carte mobilité inclusion',
+          'autre': 'Autre demande spécifique'
         };
         
         const mappedDemands = answer.map(val => demands[val]).filter(Boolean);
@@ -599,8 +613,10 @@ function generatePhraseForQuestion(questionId, answer, allResponses) {
     'objectif_demande': (answer) => {
       const objectives = {
         'securiser': 'Besoin de sécurisation financière',
-        'maintenir': 'Volonté de maintenir l\'autonomie',
-        'developper': 'Projet de développement personnel ou professionnel'
+        'compenser': 'Volonté de compenser une perte de revenus',
+        'autonomie': 'Volonté de maintenir l\'autonomie',
+        'handicap': 'Besoin de faire face aux conséquences du handicap',
+        'autre_objectif': 'Autre objectif spécifique'
       };
       return objectives[answer] || null;
     },
@@ -609,9 +625,11 @@ function generatePhraseForQuestion(questionId, answer, allResponses) {
     'axe_principal': (answer) => {
       const axes = {
         'stabilite': 'Recherche de stabilité et d\'équilibre de vie',
-        'autonomie': 'Volonté de préserver l\'autonomie',
-        'insertion': 'Projet d\'insertion sociale ou professionnelle',
-        'sante': 'Priorité donnée à la préservation de la santé'
+        'sante': 'Priorité donnée à la préservation de la santé et du bien-être',
+        'adaptation': 'Volonté d\'adapter le quotidien à l\'état de santé',
+        'travail': 'Projet de maintenir ou reprendre une activité professionnelle adaptée',
+        'autonomie': 'Volonté d\'améliorer l\'autonomie au quotidien',
+        'autre_axe': 'Autre axe de projet de vie spécifique'
       };
       return axes[answer] || null;
     },
@@ -620,9 +638,12 @@ function generatePhraseForQuestion(questionId, answer, allResponses) {
       if (Array.isArray(answer) && answer.length > 0) {
         const priorities = {
           'sante': 'Préservation de la santé',
-          'autonomie': 'Maintien de l\'autonomie',
-          'social': 'Maintien du lien social',
-          'professionnel': 'Stabilité professionnelle'
+          'fatigue_douleurs': 'Réduction de la fatigue et des douleurs',
+          'finances': 'Stabilisation de la situation financière',
+          'rythme': 'Adaptation du rythme de vie',
+          'accompagnement': 'Besoin d\'accompagnement',
+          'equilibre': 'Maintien d\'un équilibre personnel',
+          'autre_priorite': 'Autre priorité spécifique'
         };
         
         const mappedPriorities = answer.map(val => priorities[val]).filter(Boolean);
