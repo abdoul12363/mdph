@@ -48,7 +48,7 @@ function render() {
   }
 
   if (q.isCelebration) {
-    renderCelebrationPage(q, idx, render, visible);
+    renderCelebrationPage(q, idx, render, visible, next, prev);
     return;
   }
 

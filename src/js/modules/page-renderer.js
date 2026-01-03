@@ -17,6 +17,18 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
     estimatedTime: q.estimatedTime
   });
   
+  // Restaurer la barre de progression (au cas où elle aurait été masquée)
+  const progressContainer = document.querySelector('.progress');
+  if (progressContainer) {
+    progressContainer.style.display = '';
+  }
+  
+  // Restaurer l'en-tête du formulaire (au cas où il aurait été masqué)
+  const formHeader = document.querySelector('.form-header');
+  if (formHeader) {
+    formHeader.style.display = '';
+  }
+  
   // Ajouter la classe is-introduction au conteneur principal
   const container = document.querySelector('.main .container');
   if (container) container.classList.add('is-introduction');
@@ -62,7 +74,7 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
   updateProgress(idx, visible);
 }
 
-export function renderCelebrationPage(q, idx, render, visible) {
+export function renderCelebrationPage(q, idx, render, visible, nextCallback, prevCallback) {
   console.log('Affichage de la page de félicitations');
   console.log('Détails de la page félicitations:', {
     title: q.title,
@@ -96,6 +108,13 @@ export function renderCelebrationPage(q, idx, render, visible) {
     $('prevBtn').style.display = 'inline-block';
     $('prevBtn').innerHTML = 'Retour';
     $('prevBtn').className = 'btn';
+    
+    // Ajouter le gestionnaire d'événement pour le bouton Retour
+    const newPrevBtn = $('prevBtn').cloneNode(true);
+    $('prevBtn').parentNode.replaceChild(newPrevBtn, $('prevBtn'));
+    if (prevCallback) {
+      newPrevBtn.addEventListener('click', prevCallback);
+    }
   }
   
   // Modifier le bouton suivant pour "Continuer" ou "Terminer"
@@ -103,9 +122,26 @@ export function renderCelebrationPage(q, idx, render, visible) {
     $('nextBtn').style.display = 'inline-block';
     $('nextBtn').innerHTML = q.continueButtonText || 'Continuer';
     $('nextBtn').className = 'btn btn-primary';
+    
+    // Ajouter le gestionnaire d'événement pour le bouton Continuer
+    const newNextBtn = $('nextBtn').cloneNode(true);
+    $('nextBtn').parentNode.replaceChild(newNextBtn, $('nextBtn'));
+    if (nextCallback) {
+      newNextBtn.addEventListener('click', nextCallback);
+    }
   }
   
-  updateProgress(idx, visible);
+  // Masquer complètement la barre de progression sur les pages de félicitations
+  const progressContainer = document.querySelector('.progress');
+  if (progressContainer) {
+    progressContainer.style.display = 'none';
+  }
+  
+  // Masquer aussi l'en-tête du formulaire (titre et description)
+  const formHeader = document.querySelector('.form-header');
+  if (formHeader) {
+    formHeader.style.display = 'none';
+  }
 }
 
 export function renderRecapPage(q, idx, render, visible, nextCallback) {
@@ -115,6 +151,18 @@ export function renderRecapPage(q, idx, render, visible, nextCallback) {
     description: q.description,
     targetQuestionIds: q.targetQuestionIds
   });
+  
+  // Restaurer la barre de progression (au cas où elle aurait été masquée)
+  const progressContainer = document.querySelector('.progress');
+  if (progressContainer) {
+    progressContainer.style.display = '';
+  }
+  
+  // Restaurer l'en-tête du formulaire (au cas où il aurait été masqué)
+  const formHeader = document.querySelector('.form-header');
+  if (formHeader) {
+    formHeader.style.display = '';
+  }
   
   // Ajouter la classe is-recap au conteneur principal
   const container = document.querySelector('.main .container');
@@ -207,6 +255,18 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
   // Retirer d'abord la classe is-introduction si elle existe
   const container = document.querySelector('.main .container');
   if (container) container.classList.remove('is-introduction');
+  
+  // Restaurer la barre de progression (au cas où elle aurait été masquée sur une page de félicitations)
+  const progressContainer = document.querySelector('.progress');
+  if (progressContainer) {
+    progressContainer.style.display = '';
+  }
+  
+  // Restaurer l'en-tête du formulaire (au cas où il aurait été masqué)
+  const formHeader = document.querySelector('.form-header');
+  if (formHeader) {
+    formHeader.style.display = '';
+  }
   
   // Remettre les boutons visibles pour les pages normales
   document.body.classList.remove('hide-nav-buttons');

@@ -2,7 +2,7 @@
   "sections": [
     {
       "title": "Tu es au bon endroit",
-      "description": "On sait que remplir un dossier MDPH peut être compliqué. Ici, on va t'aider à écrire ton projet de vie, tranquillement.\n\n<hr style=\"border: none; height: 1px; background-color: #f0f0f0; margin: 20px 0;\">\n\nTu vas répondre à quelques questions simples.\nÀ chaque étape, on t'aidera à formuler tes réponses pour qu'elles correspondent aux attentes de la MDPH.\n\n<small>Tu pourras modifier tes réponses à tout moment.<br>Rien n'est envoyé sans ton accord.</small>",
+      "description": "On sait que remplir un dossier MDPH peut être compliqué. Ici, on va t'aider à écrire ton projet de vie, tranquillement.\n\n<hr style=\"border: none; height: 1px; background-color: rgba(255,255,255,0.12); margin: 20px 0;\">\n\nTu vas répondre à quelques questions simples.\nÀ chaque étape, on t'aidera à formuler tes réponses pour qu'elles correspondent aux attentes de la MDPH.\n\n<small>Tu pourras modifier tes réponses à tout moment.<br>Rien n'est envoyé sans ton accord.</small>",
       "isIntroduction": true,
       "buttonText": "Démarrer"
     }

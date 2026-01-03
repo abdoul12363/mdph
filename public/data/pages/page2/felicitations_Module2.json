@@ -1,7 +1,7 @@
 {
-  "title": "Bravo !",
-  "description": "Tu as terminé le module Travail / scolarité.",
-  "nextStepMessage": "Passons maintenant au module suivant.",
-  "continueButtonText": "Continuer",
+  "title": "Tu y es presque ! ",
+  "description": "Parfait ! Tu as décrit ta situation professionnelle. Ton dossier prend forme et devient de plus en plus complet.",
+  "nextStepMessage": "Il ne reste plus qu'à préciser tes demandes concrètes d'aide et d'accompagnement.",
+  "continueButtonText": "Module suivant",
   "isCelebration": true
 }
