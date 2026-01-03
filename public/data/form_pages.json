@@ -42,12 +42,21 @@
       "required": false
     },
     {
+      "id": "page1_celebration",
+      "title": "Félicitations - Module 1",
+      "description": "Bravo ! Vous avez terminé le module Vie quotidienne",
+      "questionsFile": "pages/page1/felicitations_Module1.json",
+      "isCelebration": true,
+      "order": 5,
+      "required": false
+    },
+    {
       "id": "page2_intro",
       "title": "Module 2 : Travail / scolarité",
       "description": "Introduction au module travail et scolarité",
       "questionsFile": "pages/page2/introduction_Module2.json",
       "isIntroduction": true,
-      "order": 5,
+      "order": 6,
       "required": false
     },
     {
@@ -56,7 +65,7 @@
       "description": "Décrivez votre situation professionnelle et personnelle actuelle",
       "questionsFile": "pages/page2/questions_Module2.json",
       "pdfMappingFile": "pages/page2/pdf_fields_Module2.json",
-      "order": 6,
+      "order": 7,
       "required": true
     },
     {
@@ -65,7 +74,16 @@
       "description": "Résumé de votre situation professionnelle",
       "questionsFile": "pages/page2/recap_Module2.json",
       "isRecap": true,
-      "order": 7,
+      "order": 8,
+      "required": false
+    },
+    {
+      "id": "page2_celebration",
+      "title": "Félicitations - Module 2",
+      "description": "Bravo ! Vous avez terminé le module Travail / scolarité",
+      "questionsFile": "pages/page2/felicitations_Module2.json",
+      "isCelebration": true,
+      "order": 9,
       "required": false
     },
     {
@@ -74,7 +92,7 @@
       "description": "Introduction au module des demandes",
       "questionsFile": "pages/page3/introduction_Module3.json",
       "isIntroduction": true,
-      "order": 8,
+      "order": 10,
       "required": false
     },
     {
@@ -83,7 +101,7 @@
       "description": "Précisez les aides ou reconnaissances que vous souhaitez demander",
       "questionsFile": "pages/page3/questions_Module3.json",
       "pdfMappingFile": "pages/page3/pdf_fields_Module3.json",
-      "order": 9,
+      "order": 11,
       "required": true
     },
     {
@@ -92,7 +110,16 @@
       "description": "Résumé de vos demandes",
       "questionsFile": "pages/page3/recap_Module3.json",
       "isRecap": true,
-      "order": 10,
+      "order": 12,
+      "required": false
+    },
+    {
+      "id": "page3_celebration",
+      "title": "Félicitations - Module 3",
+      "description": "Bravo ! Vous avez terminé le module Demandes et besoins",
+      "questionsFile": "pages/page3/felicitations_Module3.json",
+      "isCelebration": true,
+      "order": 13,
       "required": false
     },
     {
@@ -101,7 +128,7 @@
       "description": "Introduction au module du projet de vie",
       "questionsFile": "pages/page4/introduction_Module4.json",
       "isIntroduction": true,
-      "order": 11,
+      "order": 14,
       "required": false
     },
     {
@@ -110,7 +137,7 @@
       "description": "Définissez vos objectifs et priorités pour l'avenir",
       "questionsFile": "pages/page4/questions_Module4.json",
       "pdfMappingFile": "pages/page4/pdf_fields_Module4.json",
-      "order": 12,
+      "order": 15,
       "required": true
     },
     {
@@ -119,7 +146,16 @@
       "description": "Résumé de votre projet de vie",
       "questionsFile": "pages/page4/recap_Module4.json",
       "isRecap": true,
-      "order": 13,
+      "order": 16,
+      "required": false
+    },
+    {
+      "id": "page4_celebration",
+      "title": "Félicitations - Module 4",
+      "description": "Bravo ! Vous avez terminé le module Projet de vie",
+      "questionsFile": "pages/page4/felicitations_Module4.json",
+      "isCelebration": true,
+      "order": 17,
       "required": false
     }
   ]

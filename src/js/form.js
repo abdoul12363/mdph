@@ -749,7 +749,7 @@ function render() {
           <p>${(q.description || '').replace(/\n/g, '</p><p>')}</p>
           ${q.estimatedTime ? `<div class="estimated-time">${q.estimatedTime}</div>` : ''}
         </div>
-        <button id="startBtn" class="btn primary">Démarrer</button>
+        <button id="startBtn" class="btn primary">${q.pageId === 'introduction' ? 'J\'ai compris' : 'Démarrer'}</button>
       </div>
     `;
     
@@ -773,6 +773,53 @@ function render() {
       });
     } else {
       console.error('Le bouton de démarrage n\'a pas été trouvé dans le DOM');
+    }
+    
+    updateProgress();
+    return;
+  }
+
+  // Vérifier si c'est une page de félicitations
+  if (q.isCelebration) {
+    console.log('Affichage de la page de félicitations');
+    console.log('Détails de la page félicitations:', {
+      title: q.title,
+      description: q.description,
+      nextStepMessage: q.nextStepMessage
+    });
+    
+    // Ajouter la classe is-celebration au conteneur principal
+    if (container) container.classList.add('is-celebration');
+    
+    const celebrationHTML = `
+      <div class="celebration-page">
+        <h2>${q.title || 'Bravo !'}</h2>
+        <div class="celebration-content">
+          <p>${q.description || ''}</p>
+          <p>${q.nextStepMessage || ''}</p>
+        </div>
+      </div>
+    `;
+    
+    console.log('HTML de la page félicitations:', celebrationHTML);
+    
+    $('questionArea').innerHTML = celebrationHTML;
+    
+    // Transformer les boutons de navigation pour les pages de félicitations
+    console.log('Transformation des boutons de navigation pour les félicitations');
+    
+    // Modifier le bouton précédent pour "Retour"
+    if ($('prevBtn')) {
+      $('prevBtn').style.display = 'inline-block';
+      $('prevBtn').innerHTML = 'Retour';
+      $('prevBtn').className = 'btn';
+    }
+    
+    // Modifier le bouton suivant pour "Continuer" ou "Terminer"
+    if ($('nextBtn')) {
+      $('nextBtn').style.display = 'inline-block';
+      $('nextBtn').innerHTML = q.continueButtonText || 'Continuer';
+      $('nextBtn').className = 'btn btn-primary';
     }
     
     updateProgress();
@@ -816,53 +863,85 @@ function render() {
           </div>
           <p class="recap-explanation">Ces éléments servent à justifier ta demande auprès de la MDPH.</p>
         </div>
-        <div class="recap-buttons">
-          <button class="btn secondary" data-action="modify">
-            <span class="btn-icon">✏️</span> Modifier un élément
-          </button>
-          <button class="btn primary" data-action="confirm">
-            <span class="btn-icon">✓</span> Confirmer ces éléments
-          </button>
-        </div>
       </div>
     `;
     
     console.log('HTML de la page récap:', recapHTML);
     
-    $('questionArea').innerHTML = recapHTML;
+    // Remove recap buttons from content area
+    recapHTML = recapHTML.replace('<div class="recap-buttons">', '');
+    recapHTML = recapHTML.replace('</div>', '');
     
-    // Cacher les boutons de navigation standard
-    console.log('Masquage des boutons de navigation standard');
-    if ($('prevBtn')) $('prevBtn').style.display = 'none';
-    if ($('nextBtn')) $('nextBtn').style.display = 'none';
+    // Remplacer les boutons de navigation par les boutons récap
+    console.log('Remplacement des boutons de navigation par les boutons récap');
     
-    // Ajouter les gestionnaires d'événements pour les boutons récap
-    const recapButtons = document.querySelectorAll('.recap-buttons button');
-    recapButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
-        const action = e.target.getAttribute('data-action');
-        console.log('Action récap:', action);
+    // Modifier le bouton précédent pour "Modifier un élément"
+    if ($('prevBtn')) {
+      $('prevBtn').style.display = 'inline-block';
+      $('prevBtn').innerHTML = '<span class="btn-icon">✏️</span> Modifier un élément';
+      $('prevBtn').className = 'btn secondary';
+      
+      // Supprimer les anciens gestionnaires et ajouter le nouveau
+      $('prevBtn').replaceWith($('prevBtn').cloneNode(true));
+      $('prevBtn').addEventListener('click', () => {
+        console.log('Action récap: modify');
+        // Retourner à la première question du module actuel
+        const recapPageId = q.pageId; // ex: page1_recap
+        const modulePageId = recapPageId.replace('_recap', ''); // ex: page1
         
-        if (action === 'modify') {
-          // Retourner à la première question du module actuel
-          const currentModule = q.pageId;
-          const moduleStartIdx = visible.findIndex(vq => vq.pageId === currentModule && !vq.isIntroduction && !vq.isRecap);
-          if (moduleStartIdx !== -1) {
-            idx = moduleStartIdx;
-            render();
-          }
-        } else if (action === 'confirm') {
-          // Passer à la page suivante
-          idx++;
+        console.log('Navigation depuis récap:', recapPageId, 'vers module:', modulePageId);
+        
+        const moduleStartIdx = visible.findIndex(vq => 
+          vq.pageId === modulePageId && 
+          !vq.isIntroduction && 
+          !vq.isRecap
+        );
+        
+        if (moduleStartIdx !== -1) {
+          console.log('Index trouvé pour modification:', moduleStartIdx);
+          idx = moduleStartIdx;
           render();
+        } else {
+          console.error('Aucune question trouvée pour le module:', modulePageId);
         }
       });
-    });
+    }
+    
+    // Modifier le bouton suivant pour "Confirmer ces éléments"
+    if ($('nextBtn')) {
+      $('nextBtn').style.display = 'inline-block';
+      $('nextBtn').innerHTML = '<span class="btn-icon">✓</span> Confirmer ces éléments';
+      $('nextBtn').className = 'btn btn-primary';
+      
+      // Supprimer les anciens gestionnaires et ajouter le nouveau
+      $('nextBtn').replaceWith($('nextBtn').cloneNode(true));
+      $('nextBtn').addEventListener('click', () => {
+        console.log('Action récap: confirm');
+        // Passer à la page suivante
+        idx++;
+        render();
+      });
+    }
+    
+    $('questionArea').innerHTML = recapHTML;
     
     updateProgress();
     return;
   }
 
+  // Remettre les boutons visibles pour les pages normales
+  document.body.classList.remove('hide-nav-buttons');
+  
+  // Restaurer les boutons de navigation normaux
+  if ($('prevBtn')) {
+    $('prevBtn').innerHTML = 'Précédent';
+    $('prevBtn').className = 'btn';
+  }
+  if ($('nextBtn')) {
+    $('nextBtn').innerHTML = 'Suivant';
+    $('nextBtn').className = 'btn btn-primary';
+  }
+  
   // Vérifier si cette question fait partie d'une section avec plusieurs questions
   const currentSection = q.sectionTitle;
   const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
@@ -980,6 +1059,19 @@ async function boot() {
             isRecap: true,
             targetQuestionIds: pageData.targetQuestionIds,
             buttons: pageData.buttons,
+            pageId: pageConfig.id,
+            pageTitle: pageConfig.title
+          });
+        } else if (pageData?.isCelebration) {
+          // Gérer les pages de félicitations qui ont une structure directe (pas de sections)
+          allQuestions.push({
+            id: `celebration_${pageConfig.id}`,
+            type: 'celebration',
+            title: pageData.title,
+            description: pageData.description,
+            nextStepMessage: pageData.nextStepMessage,
+            continueButtonText: pageData.continueButtonText,
+            isCelebration: true,
             pageId: pageConfig.id,
             pageTitle: pageConfig.title
           });

@@ -1,0 +1,7 @@
+{
+  "title": "Bravo !",
+  "description": "Tu as terminé le module Travail / scolarité.",
+  "nextStepMessage": "Passons maintenant au module suivant.",
+  "continueButtonText": "Continuer",
+  "isCelebration": true
+}

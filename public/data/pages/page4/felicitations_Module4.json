@@ -1,0 +1,7 @@
+{
+  "title": "Bravo !",
+  "description": "Tu as terminé le module Projet de vie.",
+  "nextStepMessage": "Tu as maintenant terminé tous les modules !",
+  "continueButtonText": "Terminer",
+  "isCelebration": true
+}
