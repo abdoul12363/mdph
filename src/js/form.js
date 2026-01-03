@@ -475,6 +475,173 @@ function validateRequired(q, answer) {
   return answer && answer.trim().length > 0;
 }
 
+// Système de génération de phrases intelligentes pour les récaps
+function generateIntelligentPhrases(targetQuestionIds, responses) {
+  const phrases = [];
+  
+  targetQuestionIds.forEach(questionId => {
+    const answer = responses[questionId];
+    if (answer !== undefined && answer !== '') {
+      const intelligentPhrase = generatePhraseForQuestion(questionId, answer, responses);
+      if (intelligentPhrase) {
+        phrases.push(intelligentPhrase);
+      }
+    }
+  });
+  
+  return phrases;
+}
+
+function generatePhraseForQuestion(questionId, answer, allResponses) {
+  // Phrases intelligentes basées sur les réponses
+  const phraseTemplates = {
+    // Module 1 - Vie quotidienne
+    'difficultes_quotidiennes': (answer) => {
+      if (Array.isArray(answer) && answer.length > 0) {
+        const difficulties = {
+          'hygiene': 'l\'hygiène personnelle',
+          'habillage': 'l\'habillage',
+          'repas': 'la préparation des repas',
+          'deplacement': 'les déplacements',
+          'fatigue': 'la gestion de la fatigue',
+          'douleur': 'la gestion de la douleur',
+          'concentration': 'la concentration',
+          'stress': 'la gestion du stress et de l\'anxiété',
+          'sommeil': 'le sommeil',
+          'taches_quotidiennes': 'les tâches du quotidien'
+        };
+        
+        const mappedDifficulties = answer.map(val => difficulties[val] || val).filter(Boolean);
+        if (mappedDifficulties.length === 1) {
+          return `Difficultés quotidiennes liées à ${mappedDifficulties[0]}`;
+        } else if (mappedDifficulties.length === 2) {
+          return `Difficultés quotidiennes liées à ${mappedDifficulties[0]} et ${mappedDifficulties[1]}`;
+        } else if (mappedDifficulties.length > 2) {
+          const last = mappedDifficulties.pop();
+          return `Difficultés quotidiennes liées à ${mappedDifficulties.join(', ')} et ${last}`;
+        }
+      }
+      return null;
+    },
+    
+    'frequence_difficultes': (answer) => {
+      const frequencies = {
+        'quotidien': 'Impact sur l\'autonomie dans les actes du quotidien',
+        'hebdomadaire': 'Difficultés à maintenir une activité professionnelle ou scolaire',
+        'fluctuant': 'Conséquences sur la stabilité personnelle ou financière'
+      };
+      return frequencies[answer] || null;
+    },
+    
+    'consequences_difficultes': (answer) => {
+      if (Array.isArray(answer) && answer.length > 0) {
+        const consequences = {
+          'ne_pas_y_arriver': 'Impossibilité de réaliser certaines activités sans aide',
+          'plus_de_temps': 'Ralentissement significatif dans les activités quotidiennes',
+          'dangereux': 'Situations dangereuses nécessitant un accompagnement',
+          'abandon_activites': 'Abandon d\'activités importantes pour la qualité de vie',
+          'demande_aide': 'Besoin d\'aide humaine pour les actes essentiels'
+        };
+        
+        const mappedConsequences = answer.map(val => consequences[val]).filter(Boolean);
+        if (mappedConsequences.length > 0) {
+          return mappedConsequences[0]; // Prendre la première conséquence la plus significative
+        }
+      }
+      return null;
+    },
+    
+    // Module 2 - Travail / scolarité
+    'situation_actuelle': (answer) => {
+      const situations = {
+        'emploi': 'Difficultés à maintenir une activité professionnelle ou scolaire',
+        'arret_travail': 'Arrêt de travail lié à l\'état de santé',
+        'recherche_emploi': 'Difficultés d\'insertion professionnelle liées au handicap',
+        'formation': 'Besoin d\'adaptation dans le parcours de formation',
+        'etudiant': 'Difficultés scolaires nécessitant des aménagements',
+        'sans_activite': 'Impossibilité de maintenir une activité régulière'
+      };
+      return situations[answer] || null;
+    },
+    
+    'difficultes_travail': (answer) => {
+      if (Array.isArray(answer) && answer.length > 0) {
+        return 'Difficultés à maintenir une activité professionnelle ou scolaire';
+      }
+      return null;
+    },
+    
+    'consequences_travail': (answer) => {
+      if (Array.isArray(answer) && answer.length > 0) {
+        return 'Conséquences sur la stabilité personnelle ou financière';
+      }
+      return null;
+    },
+    
+    // Module 3 - Demandes et besoins
+    'type_demande': (answer) => {
+      if (Array.isArray(answer) && answer.length > 0) {
+        const demands = {
+          'aah': 'Besoin de sécurisation financière (AAH)',
+          'rqth': 'Demande de reconnaissance de la qualité de travailleur handicapé',
+          'pch': 'Besoin d\'aide humaine ou technique (PCH)',
+          'carte': 'Demande de carte mobilité inclusion'
+        };
+        
+        const mappedDemands = answer.map(val => demands[val]).filter(Boolean);
+        if (mappedDemands.length > 0) {
+          return mappedDemands.join(' et ');
+        }
+      }
+      return null;
+    },
+    
+    'objectif_demande': (answer) => {
+      const objectives = {
+        'securiser': 'Besoin de sécurisation financière',
+        'maintenir': 'Volonté de maintenir l\'autonomie',
+        'developper': 'Projet de développement personnel ou professionnel'
+      };
+      return objectives[answer] || null;
+    },
+    
+    // Module 4 - Projet de vie
+    'axe_principal': (answer) => {
+      const axes = {
+        'stabilite': 'Recherche de stabilité et d\'équilibre de vie',
+        'autonomie': 'Volonté de préserver l\'autonomie',
+        'insertion': 'Projet d\'insertion sociale ou professionnelle',
+        'sante': 'Priorité donnée à la préservation de la santé'
+      };
+      return axes[answer] || null;
+    },
+    
+    'priorites_actuelles': (answer) => {
+      if (Array.isArray(answer) && answer.length > 0) {
+        const priorities = {
+          'sante': 'Préservation de la santé',
+          'autonomie': 'Maintien de l\'autonomie',
+          'social': 'Maintien du lien social',
+          'professionnel': 'Stabilité professionnelle'
+        };
+        
+        const mappedPriorities = answer.map(val => priorities[val]).filter(Boolean);
+        if (mappedPriorities.length > 0) {
+          return `Priorités : ${mappedPriorities.join(' et ')}`;
+        }
+      }
+      return null;
+    }
+  };
+  
+  const template = phraseTemplates[questionId];
+  if (template && typeof template === 'function') {
+    return template(answer);
+  }
+  
+  return null;
+}
+
 let formPagesData = null;
 
 // Charger les données des pages du formulaire
@@ -612,6 +779,90 @@ function render() {
     return;
   }
 
+  // Vérifier si c'est une page récapitulative
+  if (q.isRecap) {
+    console.log('Affichage de la page récapitulative');
+    console.log('Détails de la page récap:', {
+      title: q.title,
+      description: q.description,
+      targetQuestionIds: q.targetQuestionIds
+    });
+    
+    // Ajouter la classe is-recap au conteneur principal
+    if (container) container.classList.add('is-recap');
+    
+    let recapHTML = `
+      <div class="recap-page">
+        <h2>Tes demandes sont en lien avec ta situation</h2>
+        <div class="recap-content">
+          <p>Voici les éléments qui ressortent de ce que tu as indiqué jusqu'à présent:</p>
+          <div class="recap-answers">
+    `;
+    
+    // Afficher les réponses des questions ciblées avec des phrases intelligentes
+    if (q.targetQuestionIds && Array.isArray(q.targetQuestionIds)) {
+      const intelligentPhrases = generateIntelligentPhrases(q.targetQuestionIds, responses);
+      intelligentPhrases.forEach(phrase => {
+        recapHTML += `
+          <div class="recap-item">
+            <span class="recap-check">✅</span>
+            <span class="recap-text">${phrase}</span>
+          </div>
+        `;
+      });
+    }
+    
+    recapHTML += `
+          </div>
+          <p class="recap-explanation">Ces éléments servent à justifier ta demande auprès de la MDPH.</p>
+        </div>
+        <div class="recap-buttons">
+          <button class="btn secondary" data-action="modify">
+            <span class="btn-icon">✏️</span> Modifier un élément
+          </button>
+          <button class="btn primary" data-action="confirm">
+            <span class="btn-icon">✓</span> Confirmer ces éléments
+          </button>
+        </div>
+      </div>
+    `;
+    
+    console.log('HTML de la page récap:', recapHTML);
+    
+    $('questionArea').innerHTML = recapHTML;
+    
+    // Cacher les boutons de navigation standard
+    console.log('Masquage des boutons de navigation standard');
+    if ($('prevBtn')) $('prevBtn').style.display = 'none';
+    if ($('nextBtn')) $('nextBtn').style.display = 'none';
+    
+    // Ajouter les gestionnaires d'événements pour les boutons récap
+    const recapButtons = document.querySelectorAll('.recap-buttons button');
+    recapButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const action = e.target.getAttribute('data-action');
+        console.log('Action récap:', action);
+        
+        if (action === 'modify') {
+          // Retourner à la première question du module actuel
+          const currentModule = q.pageId;
+          const moduleStartIdx = visible.findIndex(vq => vq.pageId === currentModule && !vq.isIntroduction && !vq.isRecap);
+          if (moduleStartIdx !== -1) {
+            idx = moduleStartIdx;
+            render();
+          }
+        } else if (action === 'confirm') {
+          // Passer à la page suivante
+          idx++;
+          render();
+        }
+      });
+    });
+    
+    updateProgress();
+    return;
+  }
+
   // Vérifier si cette question fait partie d'une section avec plusieurs questions
   const currentSection = q.sectionTitle;
   const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
@@ -719,6 +970,19 @@ async function boot() {
               });
             }
           }
+        } else if (pageData?.isRecap) {
+          // Gérer les pages récap qui ont une structure directe (pas de sections)
+          allQuestions.push({
+            id: `recap_${pageConfig.id}`,
+            type: 'recap',
+            title: pageData.title,
+            description: pageData.description,
+            isRecap: true,
+            targetQuestionIds: pageData.targetQuestionIds,
+            buttons: pageData.buttons,
+            pageId: pageConfig.id,
+            pageTitle: pageConfig.title
+          });
         } else if (Array.isArray(pageData)) {
           // Si le fichier est directement un tableau de questions
           const questionsWithPage = pageData.map(q => ({

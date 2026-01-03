@@ -1,0 +1,11 @@
+{
+  "title": "Récapitulatif - Travail / scolarité",
+  "description": "Vérifiez vos réponses concernant votre situation professionnelle et scolaire avant de passer au module suivant.",
+  "isRecap": true,
+  "targetQuestionIds": [
+    "situation_actuelle",
+    "difficultes_travail",
+    "consequences_travail",
+    "description_impact_travail"
+  ]
+}

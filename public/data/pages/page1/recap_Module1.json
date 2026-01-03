@@ -1,0 +1,11 @@
+{
+  "title": "Récapitulatif - Vie quotidienne",
+  "description": "Vérifiez vos réponses concernant vos difficultés quotidiennes avant de passer au module suivant.",
+  "isRecap": true,
+  "targetQuestionIds": [
+    "difficultes_quotidiennes",
+    "frequence_difficultes",
+    "consequences_difficultes",
+    "impact_quotidien"
+  ]
+}

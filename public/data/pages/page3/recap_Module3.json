@@ -1,0 +1,10 @@
+{
+  "title": "Récapitulatif - Demandes et besoins",
+  "description": "Vérifiez vos demandes d'aides et de reconnaissances avant de passer au module suivant.",
+  "isRecap": true,
+  "targetQuestionIds": [
+    "type_demande",
+    "objectif_demande",
+    "explication_demande"
+  ]
+}

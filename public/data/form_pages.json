@@ -33,12 +33,21 @@
       "required": true
     },
     {
+      "id": "page1_recap",
+      "title": "Récapitulatif - Vie quotidienne",
+      "description": "Résumé de vos difficultés quotidiennes",
+      "questionsFile": "pages/page1/recap_Module1.json",
+      "isRecap": true,
+      "order": 4,
+      "required": false
+    },
+    {
       "id": "page2_intro",
       "title": "Module 2 : Travail / scolarité",
       "description": "Introduction au module travail et scolarité",
       "questionsFile": "pages/page2/introduction_Module2.json",
       "isIntroduction": true,
-      "order": 4,
+      "order": 5,
       "required": false
     },
     {
@@ -47,8 +56,17 @@
       "description": "Décrivez votre situation professionnelle et personnelle actuelle",
       "questionsFile": "pages/page2/questions_Module2.json",
       "pdfMappingFile": "pages/page2/pdf_fields_Module2.json",
-      "order": 5,
+      "order": 6,
       "required": true
+    },
+    {
+      "id": "page2_recap",
+      "title": "Récapitulatif - Travail / scolarité",
+      "description": "Résumé de votre situation professionnelle",
+      "questionsFile": "pages/page2/recap_Module2.json",
+      "isRecap": true,
+      "order": 7,
+      "required": false
     },
     {
       "id": "page3_intro",
@@ -56,7 +74,7 @@
       "description": "Introduction au module des demandes",
       "questionsFile": "pages/page3/introduction_Module3.json",
       "isIntroduction": true,
-      "order": 6,
+      "order": 8,
       "required": false
     },
     {
@@ -65,8 +83,17 @@
       "description": "Précisez les aides ou reconnaissances que vous souhaitez demander",
       "questionsFile": "pages/page3/questions_Module3.json",
       "pdfMappingFile": "pages/page3/pdf_fields_Module3.json",
-      "order": 7,
+      "order": 9,
       "required": true
+    },
+    {
+      "id": "page3_recap",
+      "title": "Récapitulatif - Demandes et besoins",
+      "description": "Résumé de vos demandes",
+      "questionsFile": "pages/page3/recap_Module3.json",
+      "isRecap": true,
+      "order": 10,
+      "required": false
     },
     {
       "id": "page4_intro",
@@ -74,7 +101,7 @@
       "description": "Introduction au module du projet de vie",
       "questionsFile": "pages/page4/introduction_Module4.json",
       "isIntroduction": true,
-      "order": 8,
+      "order": 11,
       "required": false
     },
     {
@@ -83,8 +110,17 @@
       "description": "Définissez vos objectifs et priorités pour l'avenir",
       "questionsFile": "pages/page4/questions_Module4.json",
       "pdfMappingFile": "pages/page4/pdf_fields_Module4.json",
-      "order": 9,
+      "order": 12,
       "required": true
+    },
+    {
+      "id": "page4_recap",
+      "title": "Récapitulatif - Projet de vie",
+      "description": "Résumé de votre projet de vie",
+      "questionsFile": "pages/page4/recap_Module4.json",
+      "isRecap": true,
+      "order": 13,
+      "required": false
     }
   ]
 }

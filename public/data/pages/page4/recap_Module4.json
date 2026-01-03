@@ -1,0 +1,10 @@
+{
+  "title": "Récapitulatif - Projet de vie",
+  "description": "Vérifiez vos objectifs et votre projet de vie avant de finaliser votre dossier MDPH.",
+  "isRecap": true,
+  "targetQuestionIds": [
+    "axe_principal",
+    "priorites_actuelles",
+    "projet_vie"
+  ]
+}
