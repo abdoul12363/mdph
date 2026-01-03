@@ -1,0 +1,10 @@
+{
+  "sections": [
+    {
+      "title": "Projet de vie",
+      "description": "Pour finir, on va parler de tes projets et de tes objectifs. Ce que tu aimerais faire, où tu veux aller, comment tu vois ton avenir.\n\nC'est ta vision qui compte. Il n'y a pas de bon ou mauvais projet de vie.",
+      "isIntroduction": true,
+      "estimatedTime": "⏱️ Environ 10 minutes"
+    }
+  ]
+}

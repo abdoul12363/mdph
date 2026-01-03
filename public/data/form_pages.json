@@ -15,22 +15,49 @@
       "required": false
     },
     {
+      "id": "page1_intro",
+      "title": "Module 1 : Vie quotidienne",
+      "description": "Introduction au module des difficultés quotidiennes",
+      "questionsFile": "pages/page1/introduction_Module1.json",
+      "isIntroduction": true,
+      "order": 2,
+      "required": false
+    },
+    {
       "id": "page1",
-      "title": "Difficultés quotidiennes",
+      "title": "Vie quotidienne",
       "description": "Identification des difficultés rencontrées au quotidien",
       "questionsFile": "pages/page1/questions_Module1.json",
       "pdfMappingFile": "pages/page1/pdf_fields_Module1.json",
-      "order": 2,
+      "order": 3,
       "required": true
     },
     {
+      "id": "page2_intro",
+      "title": "Module 2 : Travail / scolarité",
+      "description": "Introduction au module travail et scolarité",
+      "questionsFile": "pages/page2/introduction_Module2.json",
+      "isIntroduction": true,
+      "order": 4,
+      "required": false
+    },
+    {
       "id": "page2",
-      "title": "Situation actuelle",
+      "title": "Travail / scolarité",
       "description": "Décrivez votre situation professionnelle et personnelle actuelle",
       "questionsFile": "pages/page2/questions_Module2.json",
       "pdfMappingFile": "pages/page2/pdf_fields_Module2.json",
-      "order": 3,
+      "order": 5,
       "required": true
+    },
+    {
+      "id": "page3_intro",
+      "title": "Module 3 : Demandes et besoins",
+      "description": "Introduction au module des demandes",
+      "questionsFile": "pages/page3/introduction_Module3.json",
+      "isIntroduction": true,
+      "order": 6,
+      "required": false
     },
     {
       "id": "page3",
@@ -38,8 +65,17 @@
       "description": "Précisez les aides ou reconnaissances que vous souhaitez demander",
       "questionsFile": "pages/page3/questions_Module3.json",
       "pdfMappingFile": "pages/page3/pdf_fields_Module3.json",
-      "order": 4,
+      "order": 7,
       "required": true
+    },
+    {
+      "id": "page4_intro",
+      "title": "Module 4 : Projet de vie",
+      "description": "Introduction au module du projet de vie",
+      "questionsFile": "pages/page4/introduction_Module4.json",
+      "isIntroduction": true,
+      "order": 8,
+      "required": false
     },
     {
       "id": "page4",
@@ -47,7 +83,7 @@
       "description": "Définissez vos objectifs et priorités pour l'avenir",
       "questionsFile": "pages/page4/questions_Module4.json",
       "pdfMappingFile": "pages/page4/pdf_fields_Module4.json",
-      "order": 5,
+      "order": 9,
       "required": true
     }
   ]

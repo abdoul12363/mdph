@@ -1,6 +1,6 @@
 {
   "step": 2,
-  "title": "Situation actuelle",
+  "title": "Travail / scolarité",
   "description": "Décrivez votre situation professionnelle et personnelle actuelle",
   "sections": [
     {
@@ -97,7 +97,7 @@
     },
     {
       "step": 2,
-      "title": "Conséquences au travail",
+      "title": "Conséquences concrètes au travail",
       "description": "Ces difficultés entraînent…",
       "questions": [
         {
@@ -138,7 +138,7 @@
     {
       "step": 2,
       "title": "Impact sur le travail",
-      "description": "Décrivez l'impact de votre état de santé sur votre travail",
+      "description": "Expliquez avec vos mots comment votre état de santé impacte votre travail.",
       "questions": [
         {
           "id": "description_impact_travail",
