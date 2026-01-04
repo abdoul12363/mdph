@@ -153,7 +153,7 @@ export function renderCelebrationPage(q, idx, render, visible, nextCallback, pre
   }, 300);
 }
 
-export function renderRecapPage(q, idx, render, visible, nextCallback) {
+export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallback) {
   console.log('Affichage de la page récapitulative');
   console.log('Détails de la page récap:', {
     title: q.title,
@@ -217,24 +217,9 @@ export function renderRecapPage(q, idx, render, visible, nextCallback) {
     $('prevBtn').replaceWith($('prevBtn').cloneNode(true));
     $('prevBtn').addEventListener('click', () => {
       console.log('Action récap: modify');
-      // Retourner à la première question du module actuel
-      const recapPageId = q.pageId; // ex: page1_recap
-      const modulePageId = recapPageId.replace('_recap', ''); // ex: page1
-      
-      console.log('Navigation depuis récap:', recapPageId, 'vers module:', modulePageId);
-      
-      const moduleStartIdx = visible.findIndex(vq => 
-        vq.pageId === modulePageId && 
-        !vq.isIntroduction && 
-        !vq.isRecap
-      );
-      
-      if (moduleStartIdx !== -1) {
-        console.log('Index trouvé pour modification:', moduleStartIdx);
-        idx = moduleStartIdx;
-        render();
-      } else {
-        console.error('Aucune question trouvée pour le module:', modulePageId);
+      // Utiliser prevCallback pour retourner à la question précédente
+      if (prevCallback) {
+        prevCallback();
       }
     });
   }

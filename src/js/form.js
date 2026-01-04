@@ -53,7 +53,7 @@ function render() {
   }
 
   if (q.isRecap) {
-    renderRecapPage(q, idx, render, visible, next);
+    renderRecapPage(q, idx, render, visible, next, prev);
     return;
   }
 
