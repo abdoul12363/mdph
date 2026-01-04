@@ -8,6 +8,7 @@ import { renderInput } from './input-renderer.js';
 import { generateIntelligentPhrases } from './phrase-generator.js';
 import { updateProgress } from './progress.js';
 import { updateFormHeader } from './form-header.js';
+import { createConfetti, addConfettiStyles } from './confetti.js';
 
 export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
   console.log('Affichage de la page d\'introduction');
@@ -86,6 +87,9 @@ export function renderCelebrationPage(q, idx, render, visible, nextCallback, pre
   const container = document.querySelector('.main .container');
   if (container) container.classList.add('is-celebration');
   
+  // Ajouter les styles CSS pour les confettis
+  addConfettiStyles();
+  
   const celebrationHTML = `
     <div class="celebration-page">
       <h2>${q.title || 'Bravo !'}</h2>
@@ -142,6 +146,11 @@ export function renderCelebrationPage(q, idx, render, visible, nextCallback, pre
   if (formHeader) {
     formHeader.style.display = 'none';
   }
+  
+  // Déclencher l'animation de confettis après un court délai
+  setTimeout(() => {
+    createConfetti();
+  }, 300);
 }
 
 export function renderRecapPage(q, idx, render, visible, nextCallback) {
