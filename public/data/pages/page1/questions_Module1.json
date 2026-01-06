@@ -10,7 +10,6 @@
         {
           "id": "difficultes_quotidiennes",
           "type": "checkbox_multiple_with_frequency",
-          "question": "Cochez les difficultés que vous rencontrez en lien avec votre situation de santé ou de handicap.",
           "options": [
             {
               "value": "hygiene",
@@ -123,6 +122,14 @@
               "value": "demande_aide",
               "label": "Je dois demander de l'aide",
               "pdfField": "consequence_demande_aide"
+            },
+            {
+              "value": "autre_consequence",
+              "label": "Autre conséquence",
+              "pdfField": "consequence_autre",
+              "hasTextField": true,
+              "textFieldLabel": "Précisez la conséquence",
+              "textFieldPlaceholder": "Décrivez votre conséquence..."
             }
           ],
           "required": false

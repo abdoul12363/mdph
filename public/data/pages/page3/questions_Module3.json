@@ -11,13 +11,20 @@
           "id": "type_demande",
           "type": "checkbox_multiple",
           "options": [
-            {"value": "aah", "label": "Allocation (AAH)"},
-            {"value": "rqth", "label": "Reconnaissance travailleur handicapé (RQTH)"},
-            {"value": "amenagement", "label": "Aménagement du poste de travail"},
-            {"value": "aide_humaine", "label": "Aide humaine"},
-            {"value": "orientation", "label": "Orientation / accompagnement"},
-            {"value": "carte_mobilite", "label": "Carte mobilité / invalidité"},
-            {"value": "autre", "label": "Autre demande", "hasTextField": true, "textFieldLabel": "Préciser"}
+            {"value": "aah", "label": "Allocation (AAH)", "pdfField": "demande_aah"},
+            {"value": "rqth", "label": "Reconnaissance travailleur handicapé (RQTH)", "pdfField": "demande_rqth"},
+            {"value": "pch", "label": "Prestation de compensation du handicap (PCH)", "pdfField": "demande_pch"},
+            {"value": "orientation_pro", "label": "Orientation professionnelle / formation adaptée", "pdfField": "demande_orientation_pro"},
+            {"value": "orientation_scolaire", "label": "Orientation scolaire / aménagement des études", "pdfField": "demande_orientation_scolaire"},
+            {"value": "aides_techniques", "label": "Aides techniques (matériel, équipements)", "pdfField": "demande_aides_techniques"},
+            {"value": "amenagement_logement", "label": "Aménagement du logement", "pdfField": "demande_amenagement_logement"},
+            {"value": "aide_transports", "label": "Aide aux transports / déplacements", "pdfField": "demande_aide_transports"},
+            {"value": "reconnaissance_handicap", "label": "Reconnaissance du handicap / taux d'incapacité", "pdfField": "demande_reconnaissance_handicap"},
+            {"value": "amenagement", "label": "Aménagement du poste de travail", "pdfField": "demande_amenagement"},
+            {"value": "aide_humaine", "label": "Aide humaine", "pdfField": "demande_aide_humaine"},
+            {"value": "orientation", "label": "Orientation / accompagnement", "pdfField": "demande_orientation"},
+            {"value": "carte_mobilite", "label": "Carte mobilité / invalidité", "pdfField": "demande_carte_mobilite"},
+            {"value": "autre", "label": "Autre demande", "pdfField": "demande_autre"}
           ],
           "required": false
         }
@@ -35,7 +42,7 @@
             {"value": "compenser", "label": "Compenser une perte de revenus"},
             {"value": "autonomie", "label": "Maintenir une autonomie suffisante"},
             {"value": "handicap", "label": "Faire face aux conséquences du handicap"},
-            {"value": "autre_objectif", "label": "Autre objectif", "hasTextField": true, "textFieldLabel": "Préciser"}
+            {"value": "autre_objectif", "label": "Autre objectif"}
           ],
           "required": false
         }

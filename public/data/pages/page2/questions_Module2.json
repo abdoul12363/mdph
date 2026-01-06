@@ -38,9 +38,7 @@
             },
             {
               "value": "autre_situation",
-              "label": "Autre situation",
-              "hasTextField": true,
-              "textFieldLabel": "Précisez votre situation"
+              "label": "Autre situation"
             }
           ],
           "required": false
@@ -50,7 +48,7 @@
     {
       "step": 2,
       "title": "Difficultés liées au travail",
-      "description": "Cochez les problèmes de santé affectant votre activité professionnelle",
+      "description": "Cochez les difficultés rencontrées dans votre travail ou votre scolarité",
       "questions": [
         {
           "id": "difficultes_travail",
@@ -86,9 +84,7 @@
             },
             {
               "value": "autre_difficulte",
-              "label": "Autre difficulté",
-              "hasTextField": true,
-              "textFieldLabel": "Précisez la difficulté"
+              "label": "Autre difficulté"
             }
           ],
           "required": false
@@ -126,9 +122,7 @@
             },
             {
               "value": "autre_consequence",
-              "label": "Autre conséquence",
-              "hasTextField": true,
-              "textFieldLabel": "Précisez la conséquence"
+              "label": "Autre conséquence"
             }
           ],
           "required": false

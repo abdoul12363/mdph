@@ -410,6 +410,51 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
         });
       }
     }
+    
+    // Gestion des checkbox_multiple avec champs texte
+    if (sectionQ.type === 'checkbox_multiple') {
+      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
+      if (questionDiv) {
+        const checkboxes = questionDiv.querySelectorAll('input[name="multi_check"][data-has-text="true"]');
+        
+        checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', function() {
+            const value = this.value;
+            const textDiv = document.getElementById(`text_${value}`);
+            
+            if (textDiv) {
+              if (this.checked) {
+                textDiv.style.display = 'block';
+              } else {
+                textDiv.style.display = 'none';
+                // Vider le champ texte quand on décoche
+                const textInput = textDiv.querySelector('input[type="text"]');
+                if (textInput) {
+                  textInput.value = '';
+                  const fieldId = textInput.getAttribute('data-field');
+                  if (fieldId && responses[fieldId]) {
+                    delete responses[fieldId];
+                    saveLocal(true);
+                  }
+                }
+              }
+            }
+          });
+        });
+        
+        // Gestion des champs texte pour checkbox_multiple
+        const textInputs = questionDiv.querySelectorAll('.text-field-checkbox input[type="text"][data-field]');
+        textInputs.forEach(input => {
+          input.addEventListener('input', function() {
+            const fieldId = this.getAttribute('data-field');
+            if (fieldId) {
+              responses[fieldId] = this.value;
+              saveLocal(true);
+            }
+          });
+        });
+      }
+    }
   });
 
   updateProgress(idx, visible);

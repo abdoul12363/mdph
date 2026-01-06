@@ -16,7 +16,7 @@
             {"value": "adaptation", "label": "Adapter le quotidien à l'état de santé"},
             {"value": "travail", "label": "Maintenir ou reprendre une activité professionnelle adaptée"},
             {"value": "autonomie", "label": "Améliorer l'autonomie au quotidien"},
-            {"value": "autre_axe", "label": "Autre axe", "hasTextField": true, "textFieldLabel": "Préciser"}
+            {"value": "autre_axe", "label": "Autre axe"}
           ],
           "required": false
         }
@@ -36,7 +36,7 @@
             {"value": "rythme", "label": "Adapter le rythme de vie"},
             {"value": "accompagnement", "label": "Être accompagné(e)"},
             {"value": "equilibre", "label": "Maintenir un équilibre personnel"},
-            {"value": "autre_priorite", "label": "Autre priorité", "hasTextField": true, "textFieldLabel": "Préciser"}
+            {"value": "autre_priorite", "label": "Autre priorité"}
           ],
           "required": false
         }

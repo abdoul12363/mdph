@@ -114,6 +114,46 @@
       "name": "freq_autre",
       "type": "text",
       "description": "Fréquence de l'autre difficulté"
+    },
+    {
+      "name": "consequence_ne_pas_y_arriver",
+      "type": "checkbox",
+      "description": "Conséquence : Je n'y arrive pas"
+    },
+    {
+      "name": "consequence_plus_de_temps",
+      "type": "checkbox",
+      "description": "Conséquence : Je mets beaucoup plus de temps"
+    },
+    {
+      "name": "consequence_dangereux",
+      "type": "checkbox",
+      "description": "Conséquence : C'est dangereux pour moi"
+    },
+    {
+      "name": "consequence_abandon_activites",
+      "type": "checkbox",
+      "description": "Conséquence : J'abandonne certaines activités"
+    },
+    {
+      "name": "consequence_demande_aide",
+      "type": "checkbox",
+      "description": "Conséquence : Je dois demander de l'aide"
+    },
+    {
+      "name": "consequence_autre",
+      "type": "checkbox",
+      "description": "Autre conséquence"
+    },
+    {
+      "name": "consequence_autre_text",
+      "type": "text",
+      "description": "Précision de l'autre conséquence"
+    },
+    {
+      "name": "impact_quotidien",
+      "type": "text",
+      "description": "Impact sur la vie quotidienne"
     }
   ]
 }

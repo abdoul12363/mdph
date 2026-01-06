@@ -125,10 +125,32 @@ export function renderInput(q, value) {
             const optValue = opt.value || opt;
             const optLabel = opt.label || opt;
             const checked = selectedValues.includes(optValue) ? 'checked' : '';
-            return `<label class="${choiceClass}" style="display: inline-flex; align-items: center; margin: 4px 8px 4px 0; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; background: rgba(255,255,255,0.03);">
-              <input type="checkbox" name="multi_check" value="${optValue}" ${checked} style="margin-right: 8px;" />
-              ${optLabel}
-            </label>`;
+            
+            let optionHtml = `
+              <div class="checkbox-option-container" data-value="${optValue}">
+                <label class="${choiceClass}" style="display: inline-flex; align-items: center; margin: 4px 8px 4px 0; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; background: rgba(255,255,255,0.03);">
+                  <input type="checkbox" name="multi_check" value="${optValue}" ${checked} 
+                         data-has-text="${opt.hasTextField ? 'true' : 'false'}" 
+                         style="margin-right: 8px;" />
+                  ${optLabel}
+                </label>`;
+            
+            // Ajouter le champ texte si cette option l'a
+            if (opt.hasTextField) {
+              const textFieldId = opt.pdfField ? `${opt.pdfField}_text` : `${optValue}_text`;
+              const textFieldValue = responses[textFieldId] || '';
+              optionHtml += `
+                <div class="text-field-checkbox" id="text_${optValue}" style="display: ${checked ? 'block' : 'none'}; margin: 8px 0 8px 24px;">
+                  <input type="text" 
+                         placeholder="${opt.textFieldPlaceholder || 'Précisez...'}" 
+                         value="${textFieldValue}" 
+                         data-field="${textFieldId}"
+                         style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+                </div>`;
+            }
+            
+            optionHtml += `</div>`;
+            return optionHtml;
           }).join('')}
         </div>
       </div>`;

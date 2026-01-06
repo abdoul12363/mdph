@@ -1,0 +1,94 @@
+{
+  "fields": [
+    {
+      "name": "demande_aah",
+      "type": "checkbox",
+      "description": "Allocation (AAH)"
+    },
+    {
+      "name": "demande_rqth",
+      "type": "checkbox",
+      "description": "Reconnaissance travailleur handicapé (RQTH)"
+    },
+    {
+      "name": "demande_pch",
+      "type": "checkbox",
+      "description": "Prestation de compensation du handicap (PCH)"
+    },
+    {
+      "name": "demande_orientation_pro",
+      "type": "checkbox",
+      "description": "Orientation professionnelle / formation adaptée"
+    },
+    {
+      "name": "demande_orientation_scolaire",
+      "type": "checkbox",
+      "description": "Orientation scolaire / aménagement des études"
+    },
+    {
+      "name": "demande_aides_techniques",
+      "type": "checkbox",
+      "description": "Aides techniques (matériel, équipements)"
+    },
+    {
+      "name": "demande_amenagement_logement",
+      "type": "checkbox",
+      "description": "Aménagement du logement"
+    },
+    {
+      "name": "demande_aide_transports",
+      "type": "checkbox",
+      "description": "Aide aux transports / déplacements"
+    },
+    {
+      "name": "demande_reconnaissance_handicap",
+      "type": "checkbox",
+      "description": "Reconnaissance du handicap / taux d'incapacité"
+    },
+    {
+      "name": "demande_amenagement",
+      "type": "checkbox",
+      "description": "Aménagement du poste de travail"
+    },
+    {
+      "name": "demande_aide_humaine",
+      "type": "checkbox",
+      "description": "Aide humaine"
+    },
+    {
+      "name": "demande_orientation",
+      "type": "checkbox",
+      "description": "Orientation / accompagnement"
+    },
+    {
+      "name": "demande_carte_mobilite",
+      "type": "checkbox",
+      "description": "Carte mobilité / invalidité"
+    },
+    {
+      "name": "demande_autre",
+      "type": "checkbox",
+      "description": "Autre demande"
+    },
+    {
+      "name": "demande_autre_text",
+      "type": "text",
+      "description": "Précision de l'autre demande"
+    },
+    {
+      "name": "objectif_demande",
+      "type": "text",
+      "description": "Objectif principal de la demande"
+    },
+    {
+      "name": "objectif_demande_text",
+      "type": "text",
+      "description": "Précision de l'autre objectif"
+    },
+    {
+      "name": "explication_demande",
+      "type": "text",
+      "description": "Explication complémentaire de la demande"
+    }
+  ]
+}

@@ -52,8 +52,9 @@ export function updateProgress(idx, visible) {
   const currentStep = currentModule;
   const totalSteps = 4; // Nombre total de modules
   
-  // Mettre à jour la barre de progression
-  $('progressText').textContent = `Étape ${currentStep} sur ${totalSteps}`;
+  // Mettre à jour la barre de progression avec le nouveau format
+  const partieText = `Partie ${currentStep} sur ${totalSteps} – ${currentPageTitle}`;
+  $('progressText').textContent = partieText;
   $('progressFill').style.width = totalSteps ? `${Math.round((currentStep / totalSteps) * 100)}%` : '0%';
   $('questionId').textContent = ''; // ID masqué de l'interface
 
