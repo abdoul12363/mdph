@@ -4,105 +4,94 @@
   "description": "Décrivez les difficultés que vous rencontrez dans votre vie quotidienne",
   "sections": [
     {
-      "title": "Dans quels aspects de votre vie rencontrez-vous des difficultés ?",
-      "description": "Cochez les difficultés que vous rencontrez",
+      "title": "Cochez les difficultés que vous rencontrez en lien avec votre situation de santé ou de handicap.",
+      "description": "Pour chaque difficulté cochée, indiquez sa fréquence",
       "questions": [
         {
           "id": "difficultes_quotidiennes",
-          "type": "checkbox_multiple",
-          "question": "Dans quels aspects de votre vie rencontrez-vous des difficultés ?",
+          "type": "checkbox_multiple_with_frequency",
+          "question": "Cochez les difficultés que vous rencontrez en lien avec votre situation de santé ou de handicap.",
           "options": [
             {
               "value": "hygiene",
               "label": "Se laver / hygiène",
-              "pdfField": "difficulte_hygiene"
+              "pdfField": "difficulte_hygiene",
+              "frequencyField": "freq_hygiene"
             },
             {
               "value": "habillage",
               "label": "S'habiller",
-              "pdfField": "difficulte_habillage"
+              "pdfField": "difficulte_habillage",
+              "frequencyField": "freq_habillage"
             },
             {
               "value": "repas",
               "label": "Manger / préparer les repas",
-              "pdfField": "difficulte_repas"
+              "pdfField": "difficulte_repas",
+              "frequencyField": "freq_repas"
             },
             {
               "value": "deplacement",
               "label": "Se déplacer",
-              "pdfField": "difficulte_deplacement"
+              "pdfField": "difficulte_deplacement",
+              "frequencyField": "freq_deplacement"
             },
             {
               "value": "fatigue",
               "label": "Gérer la fatigue",
-              "pdfField": "difficulte_fatigue"
+              "pdfField": "difficulte_fatigue",
+              "frequencyField": "freq_fatigue"
             },
             {
               "value": "douleur",
               "label": "Gérer la douleur",
-              "pdfField": "difficulte_douleur"
+              "pdfField": "difficulte_douleur",
+              "frequencyField": "freq_douleur"
             },
             {
               "value": "concentration",
               "label": "Se concentrer",
-              "pdfField": "difficulte_concentration"
+              "pdfField": "difficulte_concentration",
+              "frequencyField": "freq_concentration"
             },
             {
               "value": "stress",
               "label": "Gérer le stress / l'anxiété",
-              "pdfField": "difficulte_stress"
+              "pdfField": "difficulte_stress",
+              "frequencyField": "freq_stress"
             },
             {
               "value": "sommeil",
               "label": "Dormir",
-              "pdfField": "difficulte_sommeil"
+              "pdfField": "difficulte_sommeil",
+              "frequencyField": "freq_sommeil"
             },
             {
               "value": "taches_quotidiennes",
               "label": "Gérer les tâches du quotidien",
-              "pdfField": "difficulte_taches_quotidiennes"
+              "pdfField": "difficulte_taches_quotidiennes",
+              "frequencyField": "freq_taches_quotidiennes"
             },
             {
               "value": "autre",
               "label": "Autre (précisez)",
               "pdfField": "difficulte_autre",
               "hasTextField": true,
-              "textFieldLabel": "Précisez votre difficulté"
+              "textFieldLabel": "Précisez votre difficulté",
+              "textFieldPlaceholder": "Décrivez votre difficulté... ___________________________",
+              "frequencyField": "freq_autre"
             }
+          ],
+          "frequencyOptions": [
+            {"value": "quotidien", "label": "Tous les jours"},
+            {"value": "fluctuant", "label": "Fluctuant"},
+            {"value": "hebdomadaire", "label": "Plusieurs fois par semaine"}
           ],
           "required": false
         }
       ]
     },
     {
-      "step": 1,
-      "title": "Ces difficultés sont présentes…",
-      "description": "Sélectionnez la fréquence de vos difficultés",
-      "questions": [
-        {
-          "id": "frequence_difficultes",
-          "type": "radio",
-          "question": "Ces difficultés sont présentes…",
-          "options": [
-            {
-              "value": "quotidien",
-              "label": "Tous les jours"
-            },
-            {
-              "value": "hebdomadaire",
-              "label": "Plusieurs fois par semaine"
-            },
-            {
-              "value": "fluctuant",
-              "label": "De manière fluctuante"
-            }
-          ],
-          "required": false
-        }
-      ]
-    },
-    {
-      "step": 1,
       "title": "Sans aide ou adaptation, cela entraîne…",
       "description": "Cochez la ou les conséquences",
       "questions": [
@@ -141,7 +130,6 @@
       ]
     },
     {
-      "step": 1,
       "title": "Comment ces difficultés impactent votre vie quotidienne ?",
       "description": "Expliquez avec vos mots comment ces difficultés impactent votre vie quotidienne.",
       "questions": [

@@ -47,3 +47,11 @@ export function setResponse(questionId, value) {
 export function getResponse(questionId) {
   return responses[questionId];
 }
+
+// Exposer les fonctions globalement pour le JavaScript inline
+if (typeof window !== 'undefined') {
+  window.responses = responses;
+  window.saveLocal = saveLocal;
+  window.setResponse = setResponse;
+  window.getResponse = getResponse;
+}

@@ -54,6 +54,66 @@
       "name": "difficulte_autre",
       "type": "text",
       "description": "Autre difficulté (précisez)"
+    },
+    {
+      "name": "difficulte_autre_text",
+      "type": "text",
+      "description": "Précision de l'autre difficulté"
+    },
+    {
+      "name": "freq_hygiene",
+      "type": "text",
+      "description": "Fréquence des difficultés d'hygiène"
+    },
+    {
+      "name": "freq_habillage",
+      "type": "text",
+      "description": "Fréquence des difficultés d'habillage"
+    },
+    {
+      "name": "freq_repas",
+      "type": "text",
+      "description": "Fréquence des difficultés pour les repas"
+    },
+    {
+      "name": "freq_deplacement",
+      "type": "text",
+      "description": "Fréquence des difficultés de déplacement"
+    },
+    {
+      "name": "freq_fatigue",
+      "type": "text",
+      "description": "Fréquence des difficultés de fatigue"
+    },
+    {
+      "name": "freq_douleur",
+      "type": "text",
+      "description": "Fréquence des difficultés de douleur"
+    },
+    {
+      "name": "freq_concentration",
+      "type": "text",
+      "description": "Fréquence des difficultés de concentration"
+    },
+    {
+      "name": "freq_stress",
+      "type": "text",
+      "description": "Fréquence des difficultés de stress/anxiété"
+    },
+    {
+      "name": "freq_sommeil",
+      "type": "text",
+      "description": "Fréquence des difficultés de sommeil"
+    },
+    {
+      "name": "freq_taches_quotidiennes",
+      "type": "text",
+      "description": "Fréquence des difficultés pour les tâches quotidiennes"
+    },
+    {
+      "name": "freq_autre",
+      "type": "text",
+      "description": "Fréquence de l'autre difficulté"
     }
   ]
 }

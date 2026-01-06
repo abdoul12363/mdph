@@ -3,7 +3,7 @@
  */
 
 import { $ } from './dom-utils.js';
-import { responses } from './storage.js';
+import { responses, saveLocal } from './storage.js';
 import { renderInput } from './input-renderer.js';
 import { generateIntelligentPhrases } from './phrase-generator.js';
 import { updateProgress } from './progress.js';
@@ -332,6 +332,79 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
               if (textField && textField.classList.contains('text-field-inline')) {
                 textField.style.display = 'block';
               }
+            }
+          });
+        });
+      }
+    }
+    
+    // Gestion des difficultés avec fréquences
+    if (sectionQ.type === 'checkbox_multiple_with_frequency') {
+      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
+      if (questionDiv) {
+        const checkboxes = questionDiv.querySelectorAll('input[name="multi_check"]');
+        
+        checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', function() {
+            const difficulty = this.getAttribute('data-difficulty');
+            const frequencyDiv = document.getElementById(`freq_${difficulty}`);
+            const textDiv = document.getElementById(`text_${difficulty}`);
+            
+            if (frequencyDiv) {
+              if (this.checked) {
+                frequencyDiv.style.display = 'block';
+                if (textDiv) textDiv.style.display = 'block';
+              } else {
+                frequencyDiv.style.display = 'none';
+                if (textDiv) textDiv.style.display = 'none';
+                
+                // Réinitialiser les sélections de fréquence
+                const radios = frequencyDiv.querySelectorAll('input[type="radio"]');
+                radios.forEach(radio => {
+                  radio.checked = false;
+                  // Supprimer la valeur du stockage
+                  const fieldId = radio.getAttribute('data-frequency-field');
+                  if (fieldId && responses[fieldId]) {
+                    delete responses[fieldId];
+                  }
+                });
+                
+                // Supprimer le texte si présent
+                if (textDiv) {
+                  const textInput = textDiv.querySelector('input[type="text"]');
+                  if (textInput) {
+                    textInput.value = '';
+                    const fieldId = textInput.getAttribute('data-field');
+                    if (fieldId && responses[fieldId]) {
+                      delete responses[fieldId];
+                    }
+                  }
+                }
+              }
+            }
+          });
+        });
+        
+        // Gestion des boutons radio de fréquence
+        const frequencyRadios = questionDiv.querySelectorAll('input[type="radio"][data-frequency-field]');
+        frequencyRadios.forEach(radio => {
+          radio.addEventListener('change', function() {
+            const fieldId = this.getAttribute('data-frequency-field');
+            if (fieldId) {
+              responses[fieldId] = this.value;
+              saveLocal(true);
+            }
+          });
+        });
+        
+        // Gestion des champs texte
+        const textInputs = questionDiv.querySelectorAll('input[type="text"][data-field]');
+        textInputs.forEach(input => {
+          input.addEventListener('input', function() {
+            const fieldId = this.getAttribute('data-field');
+            if (fieldId) {
+              responses[fieldId] = this.value;
+              saveLocal(true);
             }
           });
         });

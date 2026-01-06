@@ -41,6 +41,68 @@ export function renderInput(q, value) {
       </div>`;
   }
 
+  if (type === 'checkbox_multiple_with_frequency' && Array.isArray(q.options)) {
+    const selectedValues = Array.isArray(value) ? value : [];
+    const frequencyOptions = q.frequencyOptions || [
+      {"value": "quotidien", "label": "Tous les jours"},
+      {"value": "fluctuant", "label": "Fluctuant"},
+      {"value": "hebdomadaire", "label": "Plusieurs fois par semaine"}
+    ];
+    
+    return `
+      <div class="field-container">
+        <div class="question-text">
+          ${q.question ? `<div class="question-title">${q.question}</div>` : ''}
+          ${description}
+        </div>
+        <div class="difficultes-with-frequency" id="answer">
+          ${q.options.map(opt => {
+            const optValue = opt.value || opt;
+            const optLabel = opt.label || opt;
+            const checked = selectedValues.includes(optValue) ? 'checked' : '';
+            const frequencyFieldId = opt.frequencyField || `freq_${optValue}`;
+            const currentFrequency = responses[frequencyFieldId] || '';
+            
+            return `
+              <div class="difficulte-item" data-value="${optValue}">
+                <label class="difficulte-choice" style="display: flex; align-items: center; margin: 8px 0; padding: 12px; border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; background: rgba(255,255,255,0.03);">
+                  <input type="checkbox" name="multi_check" value="${optValue}" ${checked} 
+                         data-difficulty="${optValue}" style="margin-right: 12px;" />
+                  <span style="flex: 1;">${optLabel}</span>
+                </label>
+                
+                ${opt.hasTextField ? `
+                  <div class="text-field" id="text_${optValue}" style="display: ${checked ? 'block' : 'none'}; margin: 8px 0 8px 24px;">
+                    <input type="text" placeholder="${opt.textFieldPlaceholder || 'Précisez...'}" 
+                           value="${responses[opt.pdfField + '_text'] || ''}" 
+                           data-field="${opt.pdfField}_text"
+                           style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+                  </div>
+                ` : ''}
+                
+                <div class="frequency-options" id="freq_${optValue}" style="display: ${checked ? 'block' : 'none'}; margin: 8px 0 8px 24px;">
+                  <div style="font-weight: bold; margin-bottom: 8px; color: #666;">→ Fréquence :</div>
+                  <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    ${frequencyOptions.map(freqOpt => `
+                      <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="radio" name="freq_${optValue}" value="${freqOpt.value}" 
+                               ${currentFrequency === freqOpt.value ? 'checked' : ''}
+                               data-frequency-field="${frequencyFieldId}"
+                               style="margin-right: 6px;" />
+                        <span>${freqOpt.label}</span>
+                      </label>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+      
+`;
+  }
+
   if (type === 'checkbox_multiple' && Array.isArray(q.options)) {
     const selectedValues = Array.isArray(value) ? value : [];
     

@@ -13,6 +13,11 @@ export function getAnswerFromDom(q) {
     return el ? el.checked : false;
   }
   
+  if (type === 'checkbox_multiple_with_frequency') {
+    const checkedBoxes = document.querySelectorAll('input[name="multi_check"]:checked');
+    return Array.from(checkedBoxes).map(cb => cb.value);
+  }
+
   if (type === 'checkbox_multiple') {
     const checkedBoxes = document.querySelectorAll('input[name="multi_check"]:checked');
     return Array.from(checkedBoxes).map(cb => cb.value);
