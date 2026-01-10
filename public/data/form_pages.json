@@ -42,15 +42,6 @@
       "required": false
     },
     {
-      "id": "page1_celebration",
-      "title": "Félicitations - Module 1",
-      "description": "Bravo ! Vous avez terminé le module Vie quotidienne",
-      "questionsFile": "pages/page1/felicitations_Module1.json",
-      "isCelebration": true,
-      "order": 5,
-      "required": false
-    },
-    {
       "id": "page2_intro",
       "title": "Module 2 : Travail / scolarité",
       "description": "Introduction au module travail et scolarité",
@@ -75,15 +66,6 @@
       "questionsFile": "pages/page2/recap_Module2.json",
       "isRecap": true,
       "order": 8,
-      "required": false
-    },
-    {
-      "id": "page2_celebration",
-      "title": "Félicitations - Module 2",
-      "description": "Bravo ! Vous avez terminé le module Travail / scolarité",
-      "questionsFile": "pages/page2/felicitations_Module2.json",
-      "isCelebration": true,
-      "order": 9,
       "required": false
     },
     {
@@ -114,15 +96,6 @@
       "required": false
     },
     {
-      "id": "page3_celebration",
-      "title": "Félicitations - Module 3",
-      "description": "Bravo ! Vous avez terminé le module Demandes et besoins",
-      "questionsFile": "pages/page3/felicitations_Module3.json",
-      "isCelebration": true,
-      "order": 13,
-      "required": false
-    },
-    {
       "id": "page4_intro",
       "title": "Module 4 : Projet de vie",
       "description": "Introduction au module du projet de vie",
@@ -147,15 +120,6 @@
       "questionsFile": "pages/page4/recap_Module4.json",
       "isRecap": true,
       "order": 16,
-      "required": false
-    },
-    {
-      "id": "page4_celebration",
-      "title": "Félicitations - Module 4",
-      "description": "Bravo ! Vous avez terminé le module Projet de vie",
-      "questionsFile": "pages/page4/felicitations_Module4.json",
-      "isCelebration": true,
-      "order": 17,
       "required": false
     }
   ]

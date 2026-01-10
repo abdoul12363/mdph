@@ -5,7 +5,6 @@
 import { $ } from './dom-utils.js';
 import { responses, saveLocal } from './storage.js';
 import { renderInput } from './input-renderer.js';
-import { generateIntelligentPhrases } from './phrase-generator.js';
 import { updateProgress } from './progress.js';
 import { updateFormHeader } from './form-header.js';
 import { createConfetti, addConfettiStyles } from './confetti.js';
@@ -161,56 +160,53 @@ export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallb
     targetQuestionIds: q.targetQuestionIds
   });
   
-  // Restaurer la barre de progression (au cas où elle aurait été masquée)
+  // Masquer la barre de progression sur les pages de récapitulatif
   const progressContainer = document.querySelector('.progress');
   if (progressContainer) {
-    progressContainer.style.display = '';
+    progressContainer.style.display = 'none';
   }
   
-  // Restaurer l'en-tête du formulaire (au cas où il aurait été masqué)
+  // Masquer l'en-tête du formulaire sur les pages de récapitulatif pour éviter le double titre
   const formHeader = document.querySelector('.form-header');
-  if (formHeader) {
-    formHeader.style.display = '';
+  const formTitle = document.getElementById('formTitle');
+  const formDescription = document.getElementById('formDescription');
+  
+  if (formHeader && formTitle && formDescription) {
+    formHeader.style.display = 'none';
+    // S'assurer que le titre et la description sont vides
+    formTitle.textContent = '';
+    formDescription.textContent = '';
   }
   
   // Ajouter la classe is-recap au conteneur principal
   const container = document.querySelector('.main .container');
   if (container) container.classList.add('is-recap');
   
-  let recapHTML = `
+  // Traiter la description pour gérer correctement le mot 'tranquillité'
+  const descriptionHtml = q.description
+    .replace(/en toute\s*\n\s*tranquillité\./g, 'en toute tranquillité.')
+    .split('\n')
+    .filter(line => line.trim() !== '')
+    .map(line => `<p>${line}</p>`)
+    .join('');
+
+  const recapHTML = `
     <div class="recap-page">
-      <h2>Tes demandes sont en lien avec ta situation</h2>
+      <h1>${q.title}</h1>
       <div class="recap-content">
-        <p>Voici les éléments qui ressortent de ce que tu as indiqué jusqu'à présent:</p>
-        <div class="recap-answers">
-  `;
-  
-  // Afficher les réponses des questions ciblées avec des phrases intelligentes
-  if (q.targetQuestionIds && Array.isArray(q.targetQuestionIds)) {
-    const intelligentPhrases = generateIntelligentPhrases(q.targetQuestionIds, responses);
-    intelligentPhrases.forEach(phrase => {
-      recapHTML += `
-        <div class="recap-item">
-          <span class="recap-check">✅</span>
-          <span class="recap-text">${phrase}</span>
+        <div class="recap-description">
+          ${descriptionHtml}
         </div>
-      `;
-    });
-  }
-  
-  recapHTML += `
-        </div>
-        <p class="recap-explanation">Ces éléments servent à justifier ta demande auprès de la MDPH.</p>
       </div>
     </div>
   `;
   
   console.log('HTML de la page récap:', recapHTML);
   
-  // Modifier le bouton précédent pour "Modifier un élément"
+  // Modifier le bouton précédent pour "Modifier mes réponses"
   if ($('prevBtn')) {
     $('prevBtn').style.display = 'inline-block';
-    $('prevBtn').innerHTML = '<span class="btn-icon">✏️</span> Modifier un élément';
+    $('prevBtn').innerHTML = '✏️ Modifier mes réponses';
     $('prevBtn').className = 'btn secondary';
     
     // Supprimer les anciens gestionnaires et ajouter le nouveau
@@ -224,10 +220,10 @@ export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallb
     });
   }
   
-  // Modifier le bouton suivant pour "Confirmer ces éléments"
+  // Modifier le bouton suivant pour "Continuer"
   if ($('nextBtn')) {
     $('nextBtn').style.display = 'inline-block';
-    $('nextBtn').innerHTML = '<span class="btn-icon">✓</span> Confirmer ces éléments';
+    $('nextBtn').innerHTML = 'Continuer';
     $('nextBtn').className = 'btn btn-primary';
     
     // Supprimer les anciens gestionnaires et ajouter le nouveau

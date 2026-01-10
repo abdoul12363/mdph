@@ -1,6 +1,6 @@
 {
-  "title": "Récapitulatif - Vie quotidienne",
-  "description": "Vérifiez vos réponses concernant vos difficultés quotidiennes avant de passer au module suivant.",
+  "title": "Vie quotidienne – Récapitulatif",
+  "description": "✨ Bravo, c'est fait !\nNos experts MDPH ont bien pris en compte tout ce que vous avez partagé sur votre vie quotidienne. Vous avancez !\nSi vous le souhaitez, vous pouvez encore ajuster vos réponses avant de continuer, en toute tranquillité.",
   "isRecap": true,
   "targetQuestionIds": [
     "difficultes_quotidiennes",

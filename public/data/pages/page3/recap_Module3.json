@@ -1,6 +1,6 @@
 {
-  "title": "Récapitulatif - Demandes et besoins",
-  "description": "Vérifiez vos demandes d'aides et de reconnaissances avant de passer au module suivant.",
+  "title": "Demandes et besoins – Récapitulatif",
+  "description": "✔️ Parfait, c'est noté.\nVos demandes et vos besoins sont bien enregistrés.\n\nSi vous souhaitez préciser quelque chose, vous pouvez le faire maintenant avant de continuer",
   "isRecap": true,
   "targetQuestionIds": [
     "type_demande",

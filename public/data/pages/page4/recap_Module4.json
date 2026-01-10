@@ -1,6 +1,6 @@
 {
-  "title": "Récapitulatif - Projet de vie",
-  "description": "Vérifiez vos objectifs et votre projet de vie avant de finaliser votre dossier MDPH.",
+  "title": "Projet de vie – Récapitulatif",
+  "description": "Projet de vie\n✨ Bravo, c'est fait !\nNos experts MDPH ont bien pris en compte tout ce que vous avez partagé sur votre projet de vie.\nVous avancez !\nSi vous le souhaitez, vous pouvez encore ajuster vos réponses avant de continuer, en toute tranquillité.",
   "isRecap": true,
   "targetQuestionIds": [
     "axe_principal",

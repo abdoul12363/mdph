@@ -1,6 +1,6 @@
 {
-  "title": "Récapitulatif - Travail / scolarité",
-  "description": "Vérifiez vos réponses concernant votre situation professionnelle et scolaire avant de passer au module suivant.",
+  "title": "Travail / scolarité – Récapitulatif",
+  "description": "✨ C'est enregistré !\nCette partie est bien prise en compte.\n\nPrenez un instant pour relire : vous pouvez encore modifier vos réponses si besoin avant de passer à la suite.",
   "isRecap": true,
   "targetQuestionIds": [
     "situation_actuelle",

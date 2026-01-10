@@ -65,30 +65,29 @@ export function renderInput(q, value) {
             
             return `
               <div class="difficulte-item" data-value="${optValue}">
-                <label class="difficulte-choice" style="display: flex; align-items: center; margin: 8px 0; padding: 12px; border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; background: rgba(255,255,255,0.03);">
+                <label class="choice">
                   <input type="checkbox" name="multi_check" value="${optValue}" ${checked} 
-                         data-difficulty="${optValue}" style="margin-right: 12px;" />
-                  <span style="flex: 1;">${optLabel}</span>
+                         data-difficulty="${optValue}" />
+                  <span>${optLabel}</span>
                 </label>
                 
                 ${opt.hasTextField ? `
-                  <div class="text-field" id="text_${optValue}" style="display: ${checked ? 'block' : 'none'}; margin: 8px 0 8px 24px;">
+                  <div class="text-field" id="text_${optValue}" ${checked ? '' : 'hidden'}>
                     <input type="text" placeholder="${opt.textFieldPlaceholder || 'Précisez...'}" 
                            value="${responses[opt.pdfField + '_text'] || ''}" 
                            data-field="${opt.pdfField}_text"
-                           style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+                           class="text-input" />
                   </div>
                 ` : ''}
                 
-                <div class="frequency-options" id="freq_${optValue}" style="display: ${checked ? 'block' : 'none'}; margin: 8px 0 8px 24px;">
-                  <div style="font-weight: bold; margin-bottom: 8px; color: #666;">→ Fréquence :</div>
-                  <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <div class="frequency-options" id="freq_${optValue}" ${checked ? '' : 'hidden'}>
+                  <div class="frequency-label">→ Fréquence :</div>
+                  <div class="frequency-choices">
                     ${frequencyOptions.map(freqOpt => `
-                      <label style="display: flex; align-items: center; cursor: pointer;">
+                      <label class="frequency-choice">
                         <input type="radio" name="freq_${optValue}" value="${freqOpt.value}" 
                                ${currentFrequency === freqOpt.value ? 'checked' : ''}
-                               data-frequency-field="${frequencyFieldId}"
-                               style="margin-right: 6px;" />
+                               data-frequency-field="${frequencyFieldId}" />
                         <span>${freqOpt.label}</span>
                       </label>
                     `).join('')}
@@ -128,10 +127,9 @@ export function renderInput(q, value) {
             
             let optionHtml = `
               <div class="checkbox-option-container" data-value="${optValue}">
-                <label class="${choiceClass}" style="display: inline-flex; align-items: center; margin: 4px 8px 4px 0; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; background: rgba(255,255,255,0.03);">
+                <label class="choice">
                   <input type="checkbox" name="multi_check" value="${optValue}" ${checked} 
-                         data-has-text="${opt.hasTextField ? 'true' : 'false'}" 
-                         style="margin-right: 8px;" />
+                         data-has-text="${opt.hasTextField ? 'true' : 'false'}" />
                   ${optLabel}
                 </label>`;
             
@@ -140,12 +138,12 @@ export function renderInput(q, value) {
               const textFieldId = opt.pdfField ? `${opt.pdfField}_text` : `${optValue}_text`;
               const textFieldValue = responses[textFieldId] || '';
               optionHtml += `
-                <div class="text-field-checkbox" id="text_${optValue}" style="display: ${checked ? 'block' : 'none'}; margin: 8px 0 8px 24px;">
+                <div class="text-field-checkbox" id="text_${optValue}" ${checked ? '' : 'hidden'}>
                   <input type="text" 
                          placeholder="${opt.textFieldPlaceholder || 'Précisez...'}" 
                          value="${textFieldValue}" 
                          data-field="${textFieldId}"
-                         style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+                         class="text-input" />
                 </div>`;
             }
             
@@ -218,8 +216,8 @@ export function renderInput(q, value) {
       if (opt.hasTextField) {
         const textFieldValue = responses[q.id + '_text'] || '';
         const textFieldVisible = optValue === v ? 'block' : 'none';
-        html += `<div class="text-field-inline" style="display: ${textFieldVisible}; margin-left: 20px; margin-top: 5px;">
-          <input type="text" name="opt_text" placeholder="${opt.textFieldLabel || 'Préciser...'}" value="${textFieldValue}" class="input" style="width: 200px;"/>
+        html += `<div class="text-field-inline" ${textFieldVisible === 'block' ? '' : 'hidden'}>
+          <input type="text" name="opt_text" placeholder="${opt.textFieldLabel || 'Préciser...'}" value="${textFieldValue}" class="text-input"/>
         </div>`;
       }
     });

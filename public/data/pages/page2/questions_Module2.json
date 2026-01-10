@@ -1,7 +1,4 @@
 {
-  "step": 2,
-  "title": "Travail / scolarité",
-  "description": "Décrivez votre situation professionnelle et personnelle actuelle",
   "sections": [
     {
       "title": "Je suis actuellment...",
@@ -46,7 +43,6 @@
       ]
     },
     {
-      "step": 2,
       "title": "Difficultés liées au travail",
       "description": "Cochez les difficultés rencontrées dans votre travail ou votre scolarité",
       "questions": [
@@ -84,7 +80,10 @@
             },
             {
               "value": "autre_difficulte",
-              "label": "Autre difficulté"
+              "label": "Autre difficulté (précisez)",
+              "hasTextField": true,
+              "textFieldLabel": "Précisez la difficulté",
+              "textFieldPlaceholder": "Décrivez votre difficulté..."
             }
           ],
           "required": false
@@ -92,7 +91,6 @@
       ]
     },
     {
-      "step": 2,
       "title": "Conséquences concrètes au travail",
       "description": "Ces difficultés entraînent…",
       "questions": [
@@ -122,7 +120,10 @@
             },
             {
               "value": "autre_consequence",
-              "label": "Autre conséquence"
+              "label": "Autre conséquence (précisez)",
+              "hasTextField": true,
+              "textFieldLabel": "Précisez la conséquence",
+              "textFieldPlaceholder": "Décrivez la conséquence..."
             }
           ],
           "required": false
@@ -130,7 +131,6 @@
       ]
     },
     {
-      "step": 2,
       "title": "Impact sur le travail",
       "description": "Expliquez avec vos mots comment votre état de santé impacte votre travail.",
       "questions": [
