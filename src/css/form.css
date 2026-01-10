@@ -26,6 +26,7 @@
 /* Largeur élargie pour le formulaire */
 body {
   background-color: #f5f5f0; /* Fond beige clair pour le body du formulaire */
+  min-width: 320px; /* Largeur minimale pour éviter le débordement sur très petits écrans */
 }
 
 .main .container {
@@ -39,6 +40,81 @@ body {
   box-shadow: none;
   margin: 20px auto;
   border: 1px solid rgba(255, 255, 255, 0.15); /* Bordure plus discrète */
+}
+
+/* Media Queries pour la réactivité */
+/* Styles pour la zone de questions */
+#questionArea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* Ajustements pour les cartes de formulaire sur mobile */
+@media (max-width: 768px) {
+  .main .container {
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .form-card {
+    padding: 30px 15px !important;
+    margin: 10px 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* Ajustement pour les champs de formulaire */
+  .form-group {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  /* Ajustement pour les champs de saisie */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* Ajustement pour les boutons radio et cases à cocher */
+  .radio-group,
+  .checkbox-group {
+    width: 100%;
+  }
+
+  /* Ajustement pour les libellés */
+  label {
+    width: 100%;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* Ajustement pour les boutons d'action */
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    margin: 5px 0;
+  }
+  
+  .progress-meta {
+    flex-direction: column;
+    gap: 5px;
+  }
 }
 
 /* Module Header */
@@ -627,10 +703,14 @@ label,
 select,
 textarea,
 input[type="text"],
-input[type="date"],
 input[type="email"],
 input[type="tel"],
-input[type="number"] {
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
   margin-top: 4px;
   margin-bottom: 4px;
 }
