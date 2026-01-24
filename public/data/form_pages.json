@@ -121,6 +121,15 @@
       "isRecap": true,
       "order": 16,
       "required": false
+    },
+    {
+      "id": "payment_consent",
+      "title": "Avant le paiement",
+      "description": "Confirmation obligatoire avant paiement",
+      "questionsFile": "pages/payment/final_question.json",
+      "isIntroduction": true,
+      "order": 17,
+      "required": true
     }
   ]
 }

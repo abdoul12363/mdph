@@ -1,68 +1,189 @@
 /**
- * Page rendering for different page types (introduction, celebration, recap, normal)
+ * Centralise le rendu des différents écrans (intro / félicitations / récap / formulaire).
+ * Important: les écrans intro gèrent eux-mêmes leurs inputs et le bouton (les nav boutons sont masqués).
  */
 
 import { $ } from './dom-utils.js';
 import { responses, saveLocal } from './storage.js';
 import { renderInput } from './input-renderer.js';
 import { updateProgress } from './progress.js';
-import { updateFormHeader } from './form-header.js';
 import { createConfetti, addConfettiStyles } from './confetti.js';
 
 export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
-  console.log('Affichage de la page d\'introduction');
-  console.log('Détails de la page d\'introduction:', {
-    title: q.title,
-    description: q.description,
-    estimatedTime: q.estimatedTime
-  });
-  
-  // Restaurer la barre de progression (au cas où elle aurait été masquée)
   const progressContainer = document.querySelector('.progress');
   if (progressContainer) {
     progressContainer.style.display = '';
   }
   
-  // Restaurer l'en-tête du formulaire (au cas où il aurait été masqué)
   const formHeader = document.querySelector('.form-header');
   if (formHeader) {
     formHeader.style.display = '';
   }
   
-  // Ajouter la classe is-introduction au conteneur principal
   const container = document.querySelector('.main .container');
   if (container) container.classList.add('is-introduction');
   
+  const checkboxId = `intro_checkbox_${q.id}`;
+  const savedCheckboxValue = responses[checkboxId] === true;
+  const requiresCheckbox = q.requireCheckbox === true;
+  const shouldDisableCheckbox = q.hasCheckbox && requiresCheckbox && !savedCheckboxValue;
+
+  const shouldShowTitle = q.hideTitle !== true;
+  const shouldShowDescription = q.hideDescription !== true && (!!q.description || !!q.estimatedTime);
+
+  const radioKey = q.id || 'intro_radio';
+  const selectedRadioValue = responses[radioKey];
+  const selectedRadioOption = Array.isArray(q.options)
+    ? q.options.find(opt => opt && opt.value === selectedRadioValue)
+    : null;
+  const followUp = (selectedRadioOption && selectedRadioOption.followUp ? selectedRadioOption.followUp : null);
+  const followUpKey = followUp && followUp.id ? followUp.id : null;
+  const followUpValue = followUpKey ? responses[followUpKey] : undefined;
+
+  const shouldDisableRadio = (q.type === 'radio' && q.obligatoire === true && !selectedRadioValue)
+    || (followUp && followUp.obligatoire === true && !followUpValue);
+  const shouldDisableStart = shouldDisableCheckbox || shouldDisableRadio;
+
+  let radioOptions = '';
+  if (q.type === 'radio' && q.options) {
+    radioOptions = `
+      <div class="field-container">
+        <div class="choice-grid">
+          ${q.options.map(option => `
+            <label class="choice">
+              <input type="radio" 
+                     name="${radioKey}" 
+                     value="${option.value}" 
+                     ${responses[radioKey] === option.value ? 'checked' : ''}>
+              <span>${option.label}</span>
+            </label>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    if (followUp && followUpKey && followUp.type === 'text') {
+      const savedText = typeof responses[followUpKey] === 'string' ? responses[followUpKey] : '';
+      radioOptions += `
+        <div class="field-container intro-followup">
+          <div class="introduction-content">
+            <p>${followUp.prompt || ''}</p>
+          </div>
+          <input type="text" data-intro-followup="text" id="intro_text_${followUpKey}" name="${followUpKey}" value="${savedText}" ${followUp.placeholder ? `placeholder="${followUp.placeholder}"` : ''} />
+        </div>
+      `;
+    } else if (followUp && followUpKey && Array.isArray(followUp.options)) {
+      radioOptions += `
+        <div class="field-container intro-followup">
+          <div class="introduction-content">
+            <p>${followUp.prompt || ''}</p>
+          </div>
+          <div class="choice-grid">
+            ${followUp.options.map(option => `
+              <label class="choice">
+                <input type="radio"
+                       name="${followUpKey}"
+                       value="${option.value}"
+                       ${responses[followUpKey] === option.value ? 'checked' : ''}>
+                <span>${option.label}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+  }
+
   const introductionHTML = `
-    <div class="introduction-page">
-      <h2>${q.title || 'Bienvenue'}</h2>
+    <div class="introduction-page${q.type === 'radio' ? ' intro-radio' : ''}">
+      ${shouldShowTitle ? `<h2>${q.title || 'Bienvenue'}</h2>` : ''}
+      ${shouldShowDescription ? `
       <div class="introduction-content">
         <p>${(q.description || '').replace(/\n/g, '</p><p>')}</p>
         ${q.estimatedTime ? `<div class="estimated-time">${q.estimatedTime}</div>` : ''}
       </div>
-      <button id="startBtn" class="btn primary">${q.pageId === 'introduction' ? 'J\'ai compris' : 'Démarrer'}</button>
+      ` : ''}
+      ${q.type === 'radio' ? radioOptions : ''}
+      ${q.hasCheckbox ? `
+        <div class="field-container">
+          <label class="choice">
+            <input type="checkbox" id="${checkboxId}" ${savedCheckboxValue ? 'checked' : ''} />
+            <span>${q.checkboxLabel || ''}</span>
+          </label>
+        </div>
+      ` : ''}
+      <button id="startBtn" class="btn primary" ${shouldDisableStart ? 'disabled' : ''}>${q.buttonText || (q.isIntroduction ? 'J\'ai compris' : 'Démarrer')}</button>
     </div>
   `;
   
-  console.log('HTML de la page d\'introduction:', introductionHTML);
-  
   $('questionArea').innerHTML = introductionHTML;
+
+  // UX: le follow-up n'apparaît qu'après interaction utilisateur (évite un affichage dû à une valeur persistée).
+  if (q.type === 'radio') {
+    const selectedEl = document.querySelector(`.introduction-page input[type="radio"][name="${radioKey}"]:checked`);
+    const followUps = document.querySelectorAll('.introduction-page .intro-followup');
+    const touchedKey = `intro_touched_${radioKey}`;
+    const hasTouched = typeof sessionStorage !== 'undefined' && sessionStorage.getItem(touchedKey) === '1';
+
+    followUps.forEach(el => {
+      el.style.display = 'none';
+    });
+
+    // N'afficher qu'après interaction utilisateur (évite un affichage permanent via une valeur persistée)
+    if (selectedEl && hasTouched) {
+      followUps.forEach(el => {
+        el.style.display = 'block';
+      });
+    }
+  }
   
-  // Cacher les boutons de navigation standard
-  console.log('Masquage des boutons de navigation standard');
   if ($('prevBtn')) $('prevBtn').style.display = 'none';
   if ($('nextBtn')) $('nextBtn').style.display = 'none';
   
-  // Ajouter le gestionnaire d'événement pour le bouton de démarrage
-  console.log('Ajout du gestionnaire d\'événement pour le bouton de démarrage');
   const startBtn = document.getElementById('startBtn');
   if (startBtn) {
-    // Supprimer les anciens gestionnaires d'événements
+    // Remplacement par clone: évite l'accumulation d'event listeners sur re-render.
     const newBtn = startBtn.cloneNode(true);
     startBtn.parentNode.replaceChild(newBtn, startBtn);
     
+    if (q.type === 'radio') {
+      const radioInputs = document.querySelectorAll('.introduction-page input[type="radio"]');
+      radioInputs.forEach(radio => {
+        radio.addEventListener('change', () => {
+          try {
+            const touchedKey = `intro_touched_${radioKey}`;
+            if (typeof sessionStorage !== 'undefined') {
+              sessionStorage.setItem(touchedKey, '1');
+            }
+          } catch (_) {
+          }
+          responses[radio.name] = radio.value;
+          saveLocal(true);
+          render();
+        });
+      });
+
+      const followUpTextInputs = document.querySelectorAll('.introduction-page input[data-intro-followup="text"]');
+      followUpTextInputs.forEach(input => {
+        input.addEventListener('input', () => {
+          responses[input.name] = String(input.value || '');
+          saveLocal(true);
+        });
+      });
+    } else if (q.hasCheckbox) {
+      const checkboxEl = document.getElementById(checkboxId);
+      if (checkboxEl) {
+        checkboxEl.addEventListener('change', () => {
+          responses[checkboxId] = checkboxEl.checked;
+          saveLocal(true);
+          if (requiresCheckbox) {
+            newBtn.disabled = !checkboxEl.checked;
+          }
+        });
+      }
+    }
+
     newBtn.addEventListener('click', () => {
-      console.log('Bouton "Démarrer" cliqué');
       if (nextCallback) {
         nextCallback();
       }
@@ -75,18 +196,9 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
 }
 
 export function renderCelebrationPage(q, idx, render, visible, nextCallback, prevCallback) {
-  console.log('Affichage de la page de félicitations');
-  console.log('Détails de la page félicitations:', {
-    title: q.title,
-    description: q.description,
-    nextStepMessage: q.nextStepMessage
-  });
-  
-  // Ajouter la classe is-celebration au conteneur principal
   const container = document.querySelector('.main .container');
   if (container) container.classList.add('is-celebration');
   
-  // Ajouter les styles CSS pour les confettis
   addConfettiStyles();
   
   const celebrationHTML = `
@@ -99,20 +211,13 @@ export function renderCelebrationPage(q, idx, render, visible, nextCallback, pre
     </div>
   `;
   
-  console.log('HTML de la page félicitations:', celebrationHTML);
-  
   $('questionArea').innerHTML = celebrationHTML;
-  
-  // Transformer les boutons de navigation pour les pages de félicitations
-  console.log('Transformation des boutons de navigation pour les félicitations');
-  
-  // Modifier le bouton précédent pour "Retour"
+
   if ($('prevBtn')) {
     $('prevBtn').style.display = 'inline-block';
     $('prevBtn').innerHTML = 'Retour';
     $('prevBtn').className = 'btn';
     
-    // Ajouter le gestionnaire d'événement pour le bouton Retour
     const newPrevBtn = $('prevBtn').cloneNode(true);
     $('prevBtn').parentNode.replaceChild(newPrevBtn, $('prevBtn'));
     if (prevCallback) {
@@ -120,13 +225,11 @@ export function renderCelebrationPage(q, idx, render, visible, nextCallback, pre
     }
   }
   
-  // Modifier le bouton suivant pour "Continuer" ou "Terminer"
   if ($('nextBtn')) {
     $('nextBtn').style.display = 'inline-block';
     $('nextBtn').innerHTML = q.continueButtonText || 'Continuer';
     $('nextBtn').className = 'btn btn-primary';
     
-    // Ajouter le gestionnaire d'événement pour le bouton Continuer
     const newNextBtn = $('nextBtn').cloneNode(true);
     $('nextBtn').parentNode.replaceChild(newNextBtn, $('nextBtn'));
     if (nextCallback) {
@@ -134,55 +237,40 @@ export function renderCelebrationPage(q, idx, render, visible, nextCallback, pre
     }
   }
   
-  // Masquer complètement la barre de progression sur les pages de félicitations
   const progressContainer = document.querySelector('.progress');
   if (progressContainer) {
     progressContainer.style.display = 'none';
   }
   
-  // Masquer aussi l'en-tête du formulaire (titre et description)
   const formHeader = document.querySelector('.form-header');
   if (formHeader) {
     formHeader.style.display = 'none';
   }
   
-  // Déclencher l'animation de confettis après un court délai
   setTimeout(() => {
     createConfetti();
   }, 300);
 }
 
 export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallback) {
-  console.log('Affichage de la page récapitulative');
-  console.log('Détails de la page récap:', {
-    title: q.title,
-    description: q.description,
-    targetQuestionIds: q.targetQuestionIds
-  });
-  
-  // Masquer la barre de progression sur les pages de récapitulatif
   const progressContainer = document.querySelector('.progress');
   if (progressContainer) {
     progressContainer.style.display = 'none';
   }
   
-  // Masquer l'en-tête du formulaire sur les pages de récapitulatif pour éviter le double titre
   const formHeader = document.querySelector('.form-header');
   const formTitle = document.getElementById('formTitle');
   const formDescription = document.getElementById('formDescription');
   
   if (formHeader && formTitle && formDescription) {
     formHeader.style.display = 'none';
-    // S'assurer que le titre et la description sont vides
     formTitle.textContent = '';
     formDescription.textContent = '';
   }
   
-  // Ajouter la classe is-recap au conteneur principal
   const container = document.querySelector('.main .container');
   if (container) container.classList.add('is-recap');
   
-  // Traiter la description pour gérer correctement le mot 'tranquillité'
   const descriptionHtml = q.description
     .replace(/en toute\s*\n\s*tranquillité\./g, 'en toute tranquillité.')
     .split('\n')
@@ -201,18 +289,13 @@ export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallb
     </div>
   `;
   
-  console.log('HTML de la page récap:', recapHTML);
-  
-  // Modifier le bouton précédent pour "Modifier mes réponses"
   if ($('prevBtn')) {
     $('prevBtn').style.display = 'inline-block';
     $('prevBtn').innerHTML = '✏️ Modifier mes réponses';
     $('prevBtn').className = 'btn secondary';
     
-    // Supprimer les anciens gestionnaires et ajouter le nouveau
     $('prevBtn').replaceWith($('prevBtn').cloneNode(true));
     $('prevBtn').addEventListener('click', () => {
-      console.log('Action récap: modify');
       // Utiliser prevCallback pour retourner à la question précédente
       if (prevCallback) {
         prevCallback();
@@ -220,16 +303,13 @@ export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallb
     });
   }
   
-  // Modifier le bouton suivant pour "Continuer"
   if ($('nextBtn')) {
     $('nextBtn').style.display = 'inline-block';
     $('nextBtn').innerHTML = 'Continuer';
     $('nextBtn').className = 'btn btn-primary';
     
-    // Supprimer les anciens gestionnaires et ajouter le nouveau
     $('nextBtn').replaceWith($('nextBtn').cloneNode(true));
     $('nextBtn').addEventListener('click', () => {
-      console.log('Action récap: confirm');
       if (nextCallback) {
         nextCallback();
       }

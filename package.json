@@ -4,8 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "fill": "node scripts/fill_cerfa_pdf.js",
-    "dev": "node scripts/dev_server.js"
+    "fill": "node scripts/fill-cerfa-pdf.js",
+    "dev": "node scripts/dev-server.js",
+    "tools:analyze-pdf": "node scripts/tools/analyze-pdf-form.js",
+    "tools:check-mapping": "node scripts/tools/check-mapping.js"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",

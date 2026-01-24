@@ -1,12 +1,17 @@
 :root{
   /* Variables basées sur le design fourni */
+  --color-primary: #29b8c596;
+  --color-primary-hover: #58cdd8e5;
+  --color-accent: #33d7e6e5;
+  --color-highlight: #FFBC48;
+
   --form-bg: #f8f4e5;
-  --form-border: #f45702;
-  --form-shadow: #dfae4b;
-  --form-focus: #6bd4b1;
+  --form-border: var(--color-primary);
+  --form-shadow: var(--color-highlight);
+  --form-focus: var(--color-accent);
   --font-color: #2A293E;
   --font-size: 10pt;
-  --font-face: 'Spartan', sans-serif;
+  --font-face: 'Heebo', sans-serif;
   
   /* Variables adaptées pour le thème sombre existant */
   --bg: #0b1020;
@@ -14,11 +19,11 @@
   --text: #2A293E;
   --text-light: rgba(42, 41, 62, 0.8);
   --muted: rgba(42, 41, 62, 0.65);
-  --line: rgba(244, 87, 2, 0.2);
-  --accent: #f45702;
-  --accent2: #6bd4b1;
+  --line: rgba(83, 95, 215, 0.2);
+  --accent: var(--color-primary);
+  --accent2: var(--color-accent);
   --success: #6bd4b1;
-  --warning: #dfae4b;
+  --warning: var(--color-highlight);
 }
 *{box-sizing:border-box}
 html, body {
@@ -124,7 +129,7 @@ body.home-page .btn-primary {
 }
 
 body.home-page .btn-primary:hover {
-  background-color: #e04d00;
+  background-color: var(--color-primary-hover);
   transform: translateY(-2px);
 }
 
@@ -157,20 +162,8 @@ body.home-page .card {
 body.home-page .card h3 {
   color: var(--font-color);
   margin: 0 0 10px 0;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-}
-
-body.home-page .card p {
-  color: var(--font-color);
-  margin: 0;
-  line-height: 1.6;
-  opacity: 0.9;
-}
-
-body.home-page .card h3 {
-  color: var(--font-color);
-  margin-top: 0;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -182,33 +175,26 @@ body.home-page .card h3 i {
 
 body.home-page .card p {
   color: var(--text-light);
-  margin-bottom: 0;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2044837-jpeg.jpg") center center no-repeat;
-  background-size: cover;
-  filter: blur(1px);
-  z-index: -1;
+  margin: 0;
+  line-height: 1.6;
+  opacity: 0.9;
 }
 
 .main {
   flex: 1 0 auto;
   width: 100%;
-  padding: 20px 0;
+  padding: 20px 0 80px;
   position: relative;
   z-index: 1;
+  background: transparent;
 }
+
 .container{max-width:980px;margin:0 auto;padding:0 20px;background:none}
 
 .header {
   padding: 15px 0;
+  position: relative;
+  z-index: 1;
 }
 .header-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
@@ -229,14 +215,14 @@ body::before {
 }
 
 .nav-link {
-  color: #000000; /* Texte en noir */
+  color: #000000;
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
   font-family: var(--font-face);
   padding: 8px 0;
   position: relative;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .nav-link:hover {
@@ -249,8 +235,8 @@ body::before {
   content: '';
   position: absolute;
   width: 0;
-  height: 2px;
-  bottom: 0;
+  height: 1px;
+  bottom: 6px;
   left: 0;
   background-color: var(--form-focus);
   transition: width 0.3s ease;
@@ -260,12 +246,6 @@ body::before {
   width: 100%;
 }
 
-.main {
-  padding-bottom: 80px;
-  background: transparent;
-  position: relative;
-  z-index: 1;
-}
 .hero{padding:64px 0 48px}
 .kicker{color:var(--muted);font-size:13px;letter-spacing:.4px;text-transform:uppercase;margin:0 0 10px}
 .title{font-size:42px;line-height:1.1;margin:0 0 14px}
@@ -275,9 +255,9 @@ body::before {
 .btn{border:1px solid var(--line);background:transparent;color:var(--text);padding:10px 14px;border-radius:0;text-decoration:none;font-weight:600;font-size:14px;display:inline-flex;align-items:center;justify-content:center;min-height:40px}
 .btn:hover{border-color:rgba(255,255,255,.22)}
 .btn-primary {
-  background: #4299e1;
+  background: var(--color-primary);
   color: white;
-  border: 1px solid #3182ce;
+  border: 1px solid var(--color-primary);
   border-radius: 4px;
   padding: 10px 20px;
   min-height: 40px;
@@ -293,7 +273,8 @@ body::before {
 }
 
 .btn-primary:hover {
-  background: #3182ce;
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
 }
 .btn-secondary {
   background: #2d3748;
@@ -343,7 +324,7 @@ section, .section{background:none !important;padding:26px 0}
 .fa-file-alt {
   color: #9c27b0 !important; /* Violet pour les documents */
 }
-.card p{margin:0;color:var(--muted);line-height:1.5;font-size:14px}
+.card p{margin:0;color:var(--muted);line-height:1.5;font-size:15px}
 code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px}
 
 /* Style de base pour tous les cta */
@@ -442,7 +423,7 @@ code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberat
 }
 
 #securite p {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
 }
 

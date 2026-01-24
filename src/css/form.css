@@ -24,9 +24,31 @@
 /* Centrage vertical du contenu du formulaire - main défini dans styles.css */
 
 /* Largeur élargie pour le formulaire */
-body {
+body.form-page {
   background-color: #f5f5f0; /* Fond beige clair pour le body du formulaire */
+  --font-size: 12pt;
   min-width: 320px; /* Largeur minimale pour éviter le débordement sur très petits écrans */
+}
+
+body.form-page {
+  position: relative;
+}
+
+body.form-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("/dist/images/vecteezy_blue-background-photos-and-cyan-wallpaper-for-free-download_28620189.svg") center center no-repeat;
+  background-size: cover;
+  filter: none;
+  z-index: 0;
+  pointer-events: none;
+}
+
+body.form-page .header,
+body.form-page .main {
+  position: relative;
+  z-index: 1;
 }
 
 .main .container {
@@ -158,9 +180,15 @@ body {
 .form-card {
   background: var(--form-bg);
   padding: 50px 100px;
-  border-top: 10px solid var(--form-border);
+  border: 1px solid rgba(255, 188, 72, 0.5);
   margin-top: 40px;
   border-radius: 2px;
+}
+
+.is-introduction .form-card,
+.is-recap .form-card,
+.main .container.is-recap .form-card {
+  border-top: 10px solid var(--color-highlight);
 }
 
 .progress {
@@ -283,14 +311,14 @@ input {
 
 h3 {
   font-weight: normal;
-  font-size: 10pt;
+  font-size: 12pt;
   line-height: calc(var(--font-size) * 2);
   font-style: italic;
   margin: 0 0 .5em 0;
 }
 
 span {
-  font-size: 8pt;
+  font-size: 10pt;
 }
 
 em {
@@ -401,6 +429,32 @@ textarea:-webkit-autofill:focus {
   border-radius: 2px;
 }
 
+ .is-introduction .introduction-page .field-container {
+  margin: 0 auto 1.5rem;
+  max-width: 600px;
+  text-align: left;
+ }
+
+ .is-introduction .introduction-page label.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: auto;
+ }
+
+ .is-introduction .introduction-page .field-container a {
+  color: inherit;
+  text-decoration: none;
+ }
+
+ .is-introduction .introduction-page .field-container a:visited {
+  color: inherit;
+ }
+
+ .is-introduction .introduction-page .intro-followup {
+  display: none;
+ }
+
 .introduction-page h2 {
   font-size: 24px;
   margin-bottom: 1.5rem;
@@ -417,6 +471,13 @@ textarea:-webkit-autofill:focus {
   margin-bottom: 2rem;
   text-align: left;
   line-height: 1.6;
+}
+
+.is-introduction .introduction-page.intro-radio .introduction-content {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-bottom: 1rem;
 }
 
 .introduction-content p {
@@ -472,7 +533,7 @@ textarea:-webkit-autofill:focus {
 
 /* Styles pour les descriptions */
 .q-help, .section-description, .field-description {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   color: var(--font-color);
   margin: 0 0 20px 0;
@@ -487,7 +548,7 @@ textarea:-webkit-autofill:focus {
 /* Styles spécifiques pour les descriptions sous les champs */
 .field-description {
   order: 1;
-  font-size: 13px;
+  font-size: 15px;
   margin: 4px 0 8px 0;
   color: var(--font-color);
   transition: all 0.2s ease;
@@ -765,13 +826,13 @@ textarea {
 .field-container .choice + .field-description {
   order: 2;
   margin: 4px 0 0 24px;
-  font-size: 13px; /* Taille fixe en px */
+  font-size: 15px; /* Taille fixe en px */
 }
 
 /* Style spécifique pour les descriptions dans les sections parentales */
 .parent-section .field-description {
   color: var(--font-color);
-  font-size: 13px;
+  font-size: 15px;
   margin-bottom: 6px;
   opacity: 0.85;
 }
@@ -790,7 +851,7 @@ textarea {
   align-items: center;
   gap: 10px;
   color: var(--accent);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   margin: 0 0 15px 0;
   padding-bottom: 8px;
@@ -816,7 +877,7 @@ textarea {
   align-items: center;
   gap: 10px;
   color: var(--accent);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   margin: 20px 0 15px;
   padding-bottom: 8px;
@@ -877,7 +938,7 @@ textarea {
   border-radius: 4px;
   font-weight: 500;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   transition: all 0.2s;
   text-align: center;
 }
@@ -889,9 +950,9 @@ textarea {
 }
 
 #nextBtn {
-  background: var(--form-focus);
+  background: var(--color-primary);
   color: white;
-  border: 1px solid var(--form-focus);
+  border: 1px solid var(--color-primary);
 }
 
 #prevBtn:hover {
@@ -899,7 +960,8 @@ textarea {
 }
 
 #nextBtn:hover {
-  background: #5bc0a3;
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
 }
 
 /* Conteneur des actions du formulaire */
@@ -1029,20 +1091,20 @@ h2.q-title,
 }
 
 /* FORÇAGE ULTIME - GARANTIT QUE TOUS LES CHAMPS ONT DES RECTANGLES */
-body .form-card input[type="text"],
-body .form-card input[type="date"],
-body .form-card input[type="email"],
-body .form-card input[type="tel"],
-body .form-card input[type="number"],
-body .form-card textarea,
-body .form-card select,
-body .main input[type="text"],
-body .main input[type="date"],
-body .main input[type="email"],
-body .main input[type="tel"],
-body .main input[type="number"],
-body .main textarea,
-body .main select {
+body.form-page .form-card input[type="text"],
+body.form-page .form-card input[type="date"],
+body.form-page .form-card input[type="email"],
+body.form-page .form-card input[type="tel"],
+body.form-page .form-card input[type="number"],
+body.form-page .form-card textarea,
+body.form-page .form-card select,
+body.form-page .main input[type="text"],
+body.form-page .main input[type="date"],
+body.form-page .main input[type="email"],
+body.form-page .main input[type="tel"],
+body.form-page .main input[type="number"],
+body.form-page .main textarea,
+body.form-page .main select {
   border: 2px solid rgba(0,0,0,.2) !important;
   border-radius: 6px !important;
   padding: 14px 18px !important;
@@ -1057,14 +1119,14 @@ body .main select {
 }
 
 /* Focus ultra-spécifique */
-body .form-card input[type="text"]:focus,
-body .form-card input[type="date"]:focus,
-body .form-card textarea:focus,
-body .form-card select:focus,
-body .main input[type="text"]:focus,
-body .main input[type="date"]:focus,
-body .main textarea:focus,
-body .main select:focus {
+body.form-page .form-card input[type="text"]:focus,
+body.form-page .form-card input[type="date"]:focus,
+body.form-page .form-card textarea:focus,
+body.form-page .form-card select:focus,
+body.form-page .main input[type="text"]:focus,
+body.form-page .main input[type="date"]:focus,
+body.form-page .main textarea:focus,
+body.form-page .main select:focus {
   border-color: var(--form-focus) !important;
   outline: none !important;
   box-shadow: 0 0 0 2px rgba(107, 212, 177, 0.2) !important;

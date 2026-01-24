@@ -1,17 +1,14 @@
 /**
- * Confetti animation for celebration pages
+ * Crée et gère l'animation de confettis pour les pages de célébration.
+ * Gère le nettoyage des conteneurs, le timing des animations et le nettoyage automatique.
  */
 
 export function createConfetti() {
-  // Supprimer les anciens conteneurs de confettis s'ils existent
-  const existingContainers = document.querySelectorAll('.confetti-container');
-  existingContainers.forEach(container => {
-    if (container.parentNode) {
-      container.parentNode.removeChild(container);
-    }
+  // Nettoyer les conteneurs de confettis existants
+  document.querySelectorAll('.confetti-container').forEach(container => {
+    container.parentNode?.removeChild(container);
   });
   
-  // Créer le conteneur de confettis
   const confettiContainer = document.createElement('div');
   confettiContainer.className = 'confetti-container';
   confettiContainer.style.cssText = `
@@ -27,21 +24,17 @@ export function createConfetti() {
   
   document.body.appendChild(confettiContainer);
   
-  // Couleurs des confettis
+  // Palette de couleurs pour les confettis
   const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
   
-  // Créer les confettis avec un délai plus court
+  // Créer des confettis avec un décalage temporel
   for (let i = 0; i < 30; i++) {
-    setTimeout(() => {
-      createSingleConfetti(confettiContainer, colors);
-    }, i * 50);
+    setTimeout(() => createSingleConfetti(confettiContainer, colors), i * 50);
   }
   
-  // Supprimer le conteneur après l'animation
+  // Nettoyage automatique après la fin de l'animation
   setTimeout(() => {
-    if (confettiContainer && confettiContainer.parentNode) {
-      confettiContainer.parentNode.removeChild(confettiContainer);
-    }
+    confettiContainer.parentNode?.removeChild(confettiContainer);
   }, 4000);
 }
 
@@ -67,19 +60,13 @@ function createSingleConfetti(container, colors) {
   
   container.appendChild(confetti);
   
-  // Supprimer le confetti après l'animation
-  setTimeout(() => {
-    if (confetti && confetti.parentNode) {
-      confetti.parentNode.removeChild(confetti);
-    }
-  }, duration * 1000 + 500);
+  // Nettoyer l'élément confetti après la fin de l'animation
+  setTimeout(() => confetti.parentNode?.removeChild(confetti), duration * 1000 + 500);
 }
 
 export function addConfettiStyles() {
-  // Vérifier si les styles existent déjà
-  if (document.getElementById('confetti-styles')) {
-    return;
-  }
+  // Ne pas ajouter les styles s'ils existent déjà
+  if (document.getElementById('confetti-styles')) return;
   
   const style = document.createElement('style');
   style.id = 'confetti-styles';

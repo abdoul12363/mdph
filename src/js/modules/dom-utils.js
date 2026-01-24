@@ -1,5 +1,6 @@
 /**
- * DOM utility functions
+ * Helpers DOM.
+ * `$()` accepte soit un sélecteur CSS (#/.), soit un id nu.
  */
 
 export function $(selector) {

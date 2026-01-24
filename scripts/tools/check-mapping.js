@@ -8,8 +8,8 @@ const __dirname = dirname(__filename);
 
 async function analyzePage3() {
   try {
-    const pdfPath = join(__dirname, '..', 'public', 'Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
-    const outputPath = join(__dirname, 'page3-analysis.json');
+    const pdfPath = join(__dirname, '..', '..', 'public', 'Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
+    const outputPath = join(__dirname, '..', '_generated', 'page3-analysis.json');
 
     console.log('🔍 Analyse de la page 3 du formulaire PDF...');
 

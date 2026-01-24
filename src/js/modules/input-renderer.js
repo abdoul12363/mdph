@@ -1,5 +1,6 @@
 /**
- * Input rendering for different question types
+ * Renders form inputs based on question type and configuration.
+ * Handles various input types including text, radio, checkboxes, and custom components.
  */
 
 import { normalizeOuiNon } from '../../utils/utils.js';
@@ -105,12 +106,12 @@ export function renderInput(q, value) {
   if (type === 'checkbox_multiple' && Array.isArray(q.options)) {
     const selectedValues = Array.isArray(value) ? value : [];
     
-    // Style spécifique pour la section Difficultés quotidiennes
+    // Special styling for Daily Difficulties section
     const isDifficultesQuotidiennes = q.id === 'difficultes_quotidiennes';
     const containerClass = isDifficultesQuotidiennes ? 'difficultes-container' : 'choice-grid';
     const choiceClass = isDifficultesQuotidiennes ? 'difficulte-choice' : 'choice';
     
-    // Ne pas afficher la question pour Difficultés quotidiennes car elle est déjà dans le titre de section
+    // Skip question display for Daily Difficulties as it's in the section title
     const showQuestion = !isDifficultesQuotidiennes && q.question;
     
     return `
@@ -158,10 +159,10 @@ export function renderInput(q, value) {
     const defaultVal = q.defaultValue !== undefined ? q.defaultValue : '';
     const currentValue = value !== undefined ? value : defaultVal;
     
-    // Ne pas convertir les booléens en chaînes
+    // Preserve boolean values without string conversion
     const v = currentValue;
     
-    // Récupérer la description si elle existe
+    // Format description with line breaks if it exists
     const description = q.description ? `
       <div class="field-description">
         ${q.description.replace(/\n/g, '<br>')}
@@ -175,7 +176,7 @@ export function renderInput(q, value) {
             const optValue = opt.value || opt;
             const optLabel = opt.label || opt;
             
-            // Comparaison stricte pour les booléens, sinon comparaison de chaînes
+            // Handle both boolean and string comparisons
             let isChecked;
             if (typeof v === 'boolean' && (optValue === true || optValue === false)) {
               isChecked = v === optValue;
@@ -212,9 +213,9 @@ export function renderInput(q, value) {
       
       html += `<label class="choice"><input type="radio" name="opt" value="${optValue}" ${checked}/> ${optLabel}</label>`;
       
-      // Ajouter le champ texte si cette option l'a
+      // Add text field if the option requires it
       if (opt.hasTextField) {
-        const textFieldValue = responses[q.id + '_text'] || '';
+        const textFieldValue = responses[`${q.id}_text`] || '';
         const textFieldVisible = optValue === v ? 'block' : 'none';
         html += `<div class="text-field-inline" ${textFieldVisible === 'block' ? '' : 'hidden'}>
           <input type="text" name="opt_text" placeholder="${opt.textFieldLabel || 'Préciser...'}" value="${textFieldValue}" class="text-input"/>
@@ -255,7 +256,7 @@ export function renderInput(q, value) {
     `;
   }
 
-  // défaut texte
+  // Default to text input for unknown types
   return `
     <div class="field-container">
       <input class="input" id="answer" type="text" placeholder="Ta réponse..." value="${value ? String(value) : ''}" />

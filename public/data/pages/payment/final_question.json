@@ -1,0 +1,26 @@
+{
+  "sections": [
+    {
+      "id": "final_payment_consent",
+      "title": "Renonciation au droit de rétractation",
+      "isIntroduction": true,
+      "hasCheckbox": true,
+      "checkboxLabel": "Je demande l’exécution immédiate de la prestation et reconnais renoncer à mon droit de rétractation.",
+      "requireCheckbox": true,
+      "buttonText": "Continuer"
+    },
+    {
+      "id": "final_payment_expert",
+      "title": "J'ai besoins d'un expert MDPH",
+      "description": "Voulez-vous qu’un expert MDPH cadre votre projet de vie ?",
+      "isIntroduction": true,
+      "type": "radio",
+      "obligatoire": true,
+      "options": [
+        { "value": "oui", "label": "Oui" },
+        { "value": "non", "label": "Non" }
+      ],
+      "buttonText": "Payer"
+    }
+  ]
+}

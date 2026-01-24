@@ -1,5 +1,6 @@
 /**
- * Navigation functions (next/prev)
+ * Navigation helpers.
+ * `inFlight` évite les doubles clics rapides (next/prev) qui peuvent désynchroniser l'index.
  */
 
 import { responses, saveLocal } from './storage.js';
@@ -14,33 +15,25 @@ export function next(idx, render, visible) {
   try {
     const q = visible[idx];
     if (!q) {
-      // Si on est à la fin du formulaire
-      console.log('Fin du formulaire atteinte');
       return idx;
     }
 
-    // Récupérer la réponse actuelle
     const answer = getAnswerFromDom(q);
     
-    // Valider si le champ est obligatoire
     if (q.obligatoire && !validateRequired(q, answer)) {
       alert('Cette question est obligatoire');
       return idx;
     }
     
-    // Sauvegarder la réponse
     if (answer !== undefined && answer !== '') {
       responses[q.id] = answer;
       saveLocal(true);
     }
     
-    // Passer à la question suivante
     idx++;
     
-    // Si on dépasse la dernière question, on reste sur la dernière
     if (idx >= visible.length) {
       idx = visible.length - 1;
-      console.log('Dernière question atteinte');
     }
     
     return idx;
@@ -57,7 +50,6 @@ export function prev(idx, render, visible) {
   inFlight = true;
   
   try {
-    // Sauvegarder la réponse actuelle avant de revenir en arrière
     const q = visible[idx];
     if (q) {
       const answer = getAnswerFromDom(q);
@@ -67,10 +59,8 @@ export function prev(idx, render, visible) {
       }
     }
     
-    // Revenir à la question précédente
     idx--;
     
-    // S'assurer qu'on ne va pas en dessous de 0
     if (idx < 0) idx = 0;
     
     return idx;

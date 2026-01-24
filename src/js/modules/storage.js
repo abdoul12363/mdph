@@ -1,5 +1,5 @@
 /**
- * Local storage management
+ * Persistance locale des réponses (localStorage).
  */
 
 import { setStatus } from './dom-utils.js';
@@ -8,7 +8,6 @@ const storageKey = 'cerfa_responses_v1';
 
 export let responses = {};
 
-// Fonction pour mettre à jour les responses depuis les modules
 export function updateResponses(newResponses) {
   responses = newResponses;
 }
@@ -48,7 +47,7 @@ export function getResponse(questionId) {
   return responses[questionId];
 }
 
-// Exposer les fonctions globalement pour le JavaScript inline
+// Exposition minimale pour d'éventuels handlers inline (éviter d'étendre plus que nécessaire).
 if (typeof window !== 'undefined') {
   window.responses = responses;
   window.saveLocal = saveLocal;

@@ -1,10 +1,136 @@
 {
   "sections": [
     {
-      "title": "Tu es au bon endroit",
-      "description": "On sait que remplir un dossier MDPH peut être compliqué. Ici, on va t'aider à écrire ton projet de vie, tranquillement.\n\n<hr style=\"border: none; height: 1px; background-color: rgba(255,255,255,0.12); margin: 20px 0;\">\n\nTu vas répondre à quelques questions simples.\nÀ chaque étape, on t'aidera à formuler tes réponses pour qu'elles correspondent aux attentes de la MDPH.\n\n<small>Tu pourras modifier tes réponses à tout moment.<br>Rien n'est envoyé sans ton accord.</small>",
+      "title": "Comment ça va se passer",
+      "description": "Vous allez répondre à des questions simples sur votre quotidien.Ces réponses servent de base pour vous aider à formuler un texte clair et structuré.",
       "isIntroduction": true,
-      "buttonText": "Démarrer"
+      "buttonText": "Ok, mais encore ?"
+    },
+    {
+      "title": "Est-ce que c’est payant ?",
+      "description": "Non.La génération et la mise en forme de votre texte sont 100 % gratuites.Aucun paiement ne vous sera demandé pour utiliser ce parcours.",
+      "isIntroduction": true,
+      "buttonText": "D’accord, et à la fin j’obtiens quoi ?"
+    },
+    {
+      "title": "Ce que vous obtenez",
+      "description": "À la fin du questionnaire, vous recevez un texte clair et structuré, prêt à être utilisé dans la partie “Projet de vie / Vie quotidienne” du dossier MDPH.",
+      "isIntroduction": true,
+      "buttonText": "J’ai compris"
+    },
+    {
+      "title": "Conditions d'utilisation",
+      "description": "",
+      "isIntroduction": true,
+      "hideTitle": true,
+      "hideDescription": true,
+      "hasCheckbox": true,
+      "checkboxLabel": "J’ai lu et j’accepte les conditions d'utilisation et la politique de confidentialité.",
+      "requireCheckbox": true,
+      "buttonText": "Continuer"
+    },
+    {
+      "id": "type_demande",
+      "title": "Type de demande",
+      "description": "Est-ce votre première demande auprès de la MDPH, ou un renouvellement ?",
+      "isIntroduction": true,
+      "type": "radio",
+      "options": [
+        {
+          "value": "premiere",
+          "label": "Première demande"
+        },
+        {
+          "value": "renouvellement",
+          "label": "Renouvellement"
+        }
+      ],
+      "obligatoire": true,
+      "buttonText": "continuer"
+    },
+    {
+      "id": "qui_est_concerne",
+      "title": "Qui est concerné ?",
+      "description": "Pour qui remplissez-vous ce projet de vie ?",
+      "isIntroduction": true,
+      "type": "radio",
+      "options": [
+        {
+          "value": "moi",
+          "label": "Pour moi"
+        },
+        {
+          "value": "enfant",
+          "label": "Pour mon enfant",
+          "followUp": {
+            "id": "enfant_scolarise",
+            "prompt": "L’enfant est-il scolarisé actuellement ?",
+            "obligatoire": true,
+            "options": [
+              {
+                "value": "oui",
+                "label": "Oui"
+              },
+              {
+                "value": "non",
+                "label": "Non"
+              },
+              {
+                "value": "partiellement",
+                "label": "Partiellement"
+              }
+            ]
+          }
+        },
+        {
+          "value": "proche",
+          "label": "Pour un proche que j’accompagne"
+        }
+      ],
+      "obligatoire": true,
+      "buttonText": "continuer"
+    },
+    {
+      "id": "situation_generale",
+      "title": "Situation générale",
+      "description": "Comment décririez-vous votre situation de manière générale ?",
+      "isIntroduction": true,
+      "type": "radio",
+      "options": [
+        {
+          "value": "maladie_chronique",
+          "label": "Maladie chronique"
+        },
+        {
+          "value": "handicap_visible",
+          "label": "Handicap visible"
+        },
+        {
+          "value": "handicap_invisible",
+          "label": "Handicap invisible"
+        },
+        {
+          "value": "troubles_cognitifs_psychiques",
+          "label": "Troubles cognitifs / psychiques"
+        },
+        {
+          "value": "evaluation",
+          "label": "Situation en cours d’évaluation"
+        },
+        {
+          "value": "autre",
+          "label": "Autre / je ne sais pas",
+          "followUp": {
+            "id": "situation_precisions",
+            "type": "text",
+            "prompt": "Souhaitez-vous préciser le nom de la maladie ou du trouble ?",
+            "obligatoire": false,
+            "placeholder": "Ex : fibromyalgie, sclérose en plaques, TSA, TDAH..."
+          }
+        }
+      ],
+      "obligatoire": true,
+      "buttonText": "continuer"
     }
   ]
 }

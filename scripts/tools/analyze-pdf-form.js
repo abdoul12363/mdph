@@ -24,8 +24,8 @@ function getPageNumber(widget) {
 
 async function analyzePdfForm() {
     try {
-        const pdfPath = join(__dirname, '..', 'public', 'Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
-        const outputPath = join(__dirname, 'pdf-form-analysis.json');
+        const pdfPath = join(__dirname, '..', '..', 'public', 'Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
+        const outputPath = join(__dirname, '..', '_generated', 'pdf-form-analysis.json');
         const outputDir = dirname(outputPath);
         ensureDirectoryExists(outputDir);
 

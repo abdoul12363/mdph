@@ -1,5 +1,6 @@
 /**
- * Answer extraction from DOM elements
+ * Extraction des réponses depuis le DOM.
+ * Important: pour les radios, on retourne toujours des chaînes (compatibilité conditions).
  */
 
 import { $ } from './dom-utils.js';
@@ -24,21 +25,19 @@ export function getAnswerFromDom(q) {
   }
   
   if (type === 'radio') {
-    const el = document.querySelector('input[name="opt"]:checked');
+    const el = document.querySelector('input[name="opt"]:checked')
+      || (q && q.id ? document.querySelector(`input[name="${q.id}"]:checked`) : null);
     if (!el) return '';
-    
-    // Retourner toujours des chaînes de caractères pour les boutons radio
+
     return String(el.value);
   }
   
   if (type === 'radio_with_text') {
     const el = document.querySelector('input[name="opt"]:checked');
     const radioValue = el ? el.value : '';
-    
-    // Si l'option sélectionnée a un champ texte, récupérer aussi sa valeur
+
     const textEl = document.querySelector('input[name="opt_text"]');
     if (textEl && textEl.value.trim()) {
-      // Sauvegarder aussi la valeur du champ texte séparément
       responses[q.id + '_text'] = textEl.value.trim();
     }
     
@@ -61,5 +60,8 @@ export function getAnswerFromDom(q) {
 
 export function validateRequired(q, answer) {
   if (!q.obligatoire) return true;
-  return answer && answer.trim().length > 0;
+  if (typeof answer === 'boolean') return answer === true;
+  if (Array.isArray(answer)) return answer.length > 0;
+  if (answer === null || answer === undefined) return false;
+  return String(answer).trim().length > 0;
 }

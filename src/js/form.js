@@ -1,6 +1,6 @@
 // Imports des modules
 import { $, setStatus } from './modules/dom-utils.js';
-import { responses, loadSaved, saveLocal, resetAll } from './modules/storage.js';
+import { loadSaved, resetAll } from './modules/storage.js';
 import { allQuestions, visible, refreshVisible, loadAllQuestions } from './modules/question-loader.js';
 import { updateProgress } from './modules/progress.js';
 import { updateFormHeader } from './modules/form-header.js';
@@ -12,17 +12,13 @@ let idx = 0;
 
 // Fonction principale de rendu
 function render() {
-  console.log('Rendu de la question/écran actuel...');
   refreshVisible();
   const q = visible[idx];
   
   // Mettre à jour le titre et la description
   updateFormHeader(q);
   
-  console.log('Question/écran actuel:', q);
-  
   if (!q) {
-    console.log('Aucune question à afficher - affichage de l\'écran de fin');
     const questionArea = $('questionArea');
     if (questionArea) {
       questionArea.innerHTML = '<h2>Formulaire terminé !</h2>';
@@ -84,12 +80,10 @@ function resetAllResponses() {
 
 // Fonction d'initialisation
 async function boot() {
-  console.log('Démarrage du chargement du formulaire...');
   loadSaved();
 
   try {
     await loadAllQuestions();
-    console.log(`${allQuestions.length} questions chargées`);
     
     if (!Array.isArray(allQuestions)) {
       console.error('Format de questions invalide :', allQuestions);
