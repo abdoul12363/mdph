@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>— Projet de vie MDPH</title>
     <link href="https://fonts.googleapis.com/css?family=Heebo:400,700|IBM+Plex+Sans:600" rel="stylesheet">
-    <link rel="stylesheet" href="dist/css/style.css">
-    <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+    <link rel="stylesheet" href="/src/css/mdph-landing.css">
+    <script src="https://unpkg.com/scrollreveal@4.0.0/scrollreveal.min.js"></script>
     <style>
         .body-wrap { max-width: none !important; }
         .container, .container-sm {
@@ -25,10 +25,10 @@
         .cta.section {
             position: relative;
             overflow: hidden;
-            min-height: 60vh; /* Hauteur minimale de 60% de la hauteur de la vue */
+            min-height: 60vh;
             display: flex;
             align-items: center;
-            background: url("/dist/images/cta-illustration-light.svg") center center no-repeat !important;
+            background: none !important;
             background-size: 100% 100%;
             width: 100vw;
             margin-left: calc(50% - 50vw);
@@ -37,60 +37,9 @@
             position: relative;
             width: 100%;
         }
-        .header {
-            padding: 15px 0;
-            position: relative;
-            z-index: 1;
-        }
-        .header-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-            gap: 16px;
-        }
-        .nav {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-        .nav-link {
-            color: #000000;
-            text-decoration: none !important;
-            font-weight: 600;
-            font-size: 14px;
-            font-family: 'Heebo', sans-serif;
-            padding: 8px 0;
-            position: relative;
-            transition: color 0.2s ease;
-            border-bottom: none !important;
-        }
-
-        .nav-link:hover {
-            color: #33d7e6e5;
-            background: transparent;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: 12px;
-            left: 0;
-            background-color: #33d7e6e5;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
         @media (max-width: 640px) {
             .hero > .container {
                 padding-left: 12px;
-            }
-            .nav {
-                gap: 12px;
             }
         }
         @media (min-width: 768px) {
@@ -164,16 +113,16 @@
         }
     </style>
 </head>
-<body class="has-animations">
-    <div class="body-wrap">
+<body class="home-page is-boxed has-animations">
+    <div class="body-wrap boxed-container">
         <header class="header">
             <div class="container header-inner">
                 <div class="brand">
                 </div>
                 <nav class="nav">
-                    <a class="nav-link" href="index.html">Accueil</a>
-                    <a class="nav-link" href="donnees-confidentialite.html">Données & confidentialité</a>
-                    <a class="nav-link" href="qui-sommes-nous.html">Qui sommes-nous</a>
+                    <a class="nav-link" href="/">Accueil</a>
+                    <a class="nav-link" href="/donnees-confidentialite.html">Données & confidentialité</a>
+                    <a class="nav-link" href="/qui-sommes-nous.html">Qui sommes-nous</a>
                 </nav>
             </div>
         </header>
@@ -198,14 +147,15 @@
                 <div class="container">
                     <div class="features-inner section-inner has-bottom-divider">
                         <div class="features-header text-center">
+                            <span class="glass-badge">Processus simple</span>
                             <h2 class="section-title mt-0">Comment ça marche ?</h2>
-                            <p class="section-paragraph">Cet outil vous aide à mettre des mots clairs survos difficultés quotidiennes, afin de rédiger la partie “Projet de vie / B - Viequotidienne” du dossier MDPH</p>
+                            <p class="section-paragraph">Cet outil vous aide à mettre des mots clairs sur vos difficultés quotidiennes, afin de rédiger la partie “Projet de vie / B - Vie quotidienne” du dossier MDPH</p>
                             <div class="features-image">
                                 <div class="landing-carousel" data-carousel>
                                     <button class="carousel-btn prev" type="button" aria-label="Image précédente">‹</button>
                                     <div class="carousel-viewport">
-                                        <img class="carousel-slide is-active" src="/dist/images/cerfaillusatration.svg" alt="Illustration CERFA">
-                                        <img class="carousel-slide" src="/dist/images/form-illustration.svg" alt="Illustration formulaire">
+                                        <img class="carousel-slide is-active" src="/fauteuil-roulant.png" alt="Illustration CERFA">
+                                        <img class="carousel-slide" src="/fauteuil-roulant.png" alt="Illustration formulaire">
                                     </div>
                                     <button class="carousel-btn next" type="button" aria-label="Image suivante">›</button>
                                 </div>
@@ -215,8 +165,8 @@
                             <div class="feature is-revealing">
                                 <div class="feature-inner">
                                     <div class="feature-icon">
-                                        <img class="asset-light" src="dist/images/feature-01-light.svg" alt="Feature 01">
-                                        <img class="asset-dark" src="dist/images/feature-01-dark.svg" alt="Feature 01">
+                                        <img class="asset-light" src="/feature-01-light.svg" alt="Feature 01">
+                                        <img class="asset-dark" src="/feature-01-dark.svg" alt="Feature 01">
                                     </div>
                                     <div class="feature-content">
                                         <h3 class="feature-title mt-0">1. Remplis le formulaire</h3>
@@ -227,8 +177,8 @@
                             <div class="feature is-revealing">
                                 <div class="feature-inner">
                                     <div class="feature-icon">
-                                        <img class="asset-light" src="dist/images/feature-02-light.svg" alt="Feature 02">
-                                        <img class="asset-dark" src="dist/images/feature-02-dark.svg" alt="Feature 02">
+                                        <img class="asset-light" src="/feature-02-light.svg" alt="Feature 02">
+                                        <img class="asset-dark" src="/feature-02-dark.svg" alt="Feature 02">
                                     </div>
                                     <div class="feature-content">
                                         <h3 class="feature-title mt-0">2. Valide tes réponses</h3>
@@ -239,8 +189,8 @@
                             <div class="feature is-revealing">
                                 <div class="feature-inner">
                                     <div class="feature-icon">
-                                        <img class="asset-light" src="dist/images/feature-03-light.svg" alt="Feature 03">
-                                        <img class="asset-dark" src="dist/images/feature-03-dark.svg" alt="Feature 03">
+                                        <img class="asset-light" src="/feature-03-light.svg" alt="Feature 03">
+                                        <img class="asset-dark" src="/feature-03-dark.svg" alt="Feature 03">
                                     </div>
                                     <div class="feature-content">
                                         <h3 class="feature-title mt-0">3. Reçois ton dossier</h3>
@@ -257,6 +207,7 @@
                 <div class="container">
                     <div class="cta-inner section-inner">
                         <div class="cta-header text-center">
+                            <span class="glass-badge">Commencez gratuitement</span>
                             <h2 class="section-title mt-0">Prêt à commencer ?</h2>
                             <p class="section-paragraph">Vos informations restent sur votre appareil. Aucune donnée n'est stockée sur nos serveurs. Le formulaire est traité localement pour générer votre PDF, garantissant une confidentialité maximale.</p>
                             <div class="cta-cta">
@@ -273,7 +224,7 @@
                 <div class="site-footer-inner">
                     <div class="brand footer-brand">
                         <a href="#">
-                            <img class="asset-dark" src="dist/images/logo-dark.svg" alt="Logo">
+                            <img class="asset-dark" src="/fauteuil-roulant.png" alt="Logo">
                         </a>
                     </div>
                     <ul class="footer-links list-reset">
@@ -373,7 +324,5 @@
             startAuto();
         })();
     </script>
-
-    <script src="dist/js/main.min.js"></script>
 </body>
 </html>

@@ -33,6 +33,14 @@
       "dest": "/src/pages/index.html"
     },
     {
+      "src": "/(donnees-confidentialite|qui-sommes-nous|mentions-legales|charte-ethique|conditions-generales-vente)$",
+      "dest": "/src/pages/$1.html"
+    },
+    {
+      "src": "/(donnees-confidentialite|qui-sommes-nous|mentions-legales|charte-ethique|conditions-generales-vente)\\.html$",
+      "dest": "/src/pages/$1.html"
+    },
+    {
       "src": "/data/(.*)",
       "dest": "/public/data/$1"
     },

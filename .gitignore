@@ -13,7 +13,7 @@ node_modules/
 # Build output
 .next/
 out/
-dist/
+/dist/
 build/
 
 # Debug logs

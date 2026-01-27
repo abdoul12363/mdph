@@ -38,9 +38,11 @@ body.form-page::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("/dist/images/vecteezy_blue-background-photos-and-cyan-wallpaper-for-free-download_28620189.svg") center center no-repeat;
+  background-image: url('/public/34886429_8239756.svg');
   background-size: cover;
-  filter: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.9);
   z-index: 0;
   pointer-events: none;
 }
@@ -180,7 +182,7 @@ body.form-page .main {
 .form-card {
   background: var(--form-bg);
   padding: 50px 100px;
-  border: 1px solid rgba(255, 188, 72, 0.5);
+  border: 1px solid #ebc6b9;
   margin-top: 40px;
   border-radius: 2px;
 }

@@ -124,6 +124,26 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  // Pages additionnelles depuis src/pages
+  // - /mentions-legales ou /mentions-legales.html
+  // - /charte-ethique ou /charte-ethique.html
+  // - etc.
+  if (urlPath.endsWith('.html') && urlPath !== '/index.html' && urlPath !== '/form.html') {
+    const pageFile = path.basename(urlPath);
+    const pagePath = path.join(ROOT, 'src', 'pages', pageFile);
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath.match(/^\/[a-z0-9-]+$/i) && urlPath !== '/' && urlPath !== '/form') {
+    const pageFile = `${urlPath.slice(1)}.html`;
+    const pagePath = path.join(ROOT, 'src', 'pages', pageFile);
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  }
+
   // Local API routing (simulate Vercel serverless)
   if (urlPath.startsWith('/api/fill')) {
     console.log('→ routing to local api/fill handler');

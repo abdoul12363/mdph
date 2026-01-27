@@ -1,9 +1,9 @@
 :root{
   /* Variables basées sur le design fourni */
-  --color-primary: #29b8c596;
-  --color-primary-hover: #58cdd8e5;
-  --color-accent: #33d7e6e5;
-  --color-highlight: #FFBC48;
+  --color-primary: #9fd0d3;
+  --color-primary-hover: #9fd0d3;;
+  --color-accent: #2596be;
+  --color-highlight: #ebc6b9;
 
   --form-bg: #f8f4e5;
   --form-border: var(--color-primary);
@@ -66,7 +66,7 @@ body.home-page .nav-link {
   color: var(--font-color);
   text-decoration: none;
   margin-left: 20px;
-  font-weight: 500;
+  font-weight: 400;
   transition: color 0.2s;
 }
 
@@ -217,7 +217,7 @@ body.home-page .card p {
 .nav-link {
   color: #000000;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 14px;
   font-family: var(--font-face);
   padding: 8px 0;
