@@ -53,6 +53,12 @@ body.form-page .main {
   z-index: 1;
 }
 
+@media (min-width: 1024px) {
+  body.form-page .header .container {
+    padding-right: 0;
+  }
+}
+
 .main .container {
   max-width: 800px;
   width: 100%;
@@ -451,6 +457,26 @@ textarea:-webkit-autofill:focus {
 
  .is-introduction .introduction-page .field-container a:visited {
   color: inherit;
+ }
+
+ .is-introduction .introduction-page .field-container .choice span a {
+  color: var(--form-focus);
+  text-decoration: underline;
+  cursor: pointer;
+  pointer-events: auto;
+ }
+
+ .is-introduction .introduction-page .field-container .choice span {
+  display: block !important;
+  white-space: normal;
+ }
+
+ .is-introduction .introduction-page .field-container .choice span a {
+  display: inline;
+ }
+
+ .is-introduction .introduction-page .field-container .choice span a:visited {
+  color: var(--form-focus);
  }
 
  .is-introduction .introduction-page .intro-followup {

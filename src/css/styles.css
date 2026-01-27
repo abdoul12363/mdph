@@ -5,7 +5,7 @@
   --color-accent: #2596be;
   --color-highlight: #ebc6b9;
 
-  --form-bg: #f8f4e5;
+  --form-bg: #f0eee9;
   --form-border: var(--color-primary);
   --form-shadow: var(--color-highlight);
   --form-focus: var(--color-accent);
@@ -57,8 +57,8 @@ body.home-page::before {
 
 /* Header de la page d'accueil */
 body.home-page .header {
-  background-color: var(--form-bg);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: transparent;
+  border-bottom: none;
   padding: 15px 0;
 }
 

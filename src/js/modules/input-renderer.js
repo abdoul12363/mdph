@@ -82,7 +82,7 @@ export function renderInput(q, value) {
                 ` : ''}
                 
                 <div class="frequency-options" id="freq_${optValue}" ${checked ? '' : 'hidden'}>
-                  <div class="frequency-label">→ Fréquence :</div>
+                  <div class="frequency-label">Fréquence :</div>
                   <div class="frequency-choices">
                     ${frequencyOptions.map(freqOpt => `
                       <label class="frequency-choice">

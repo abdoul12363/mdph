@@ -7,7 +7,6 @@
     <title>— Projet de vie MDPH</title>
     <link href="https://fonts.googleapis.com/css?family=Heebo:400,700|IBM+Plex+Sans:600" rel="stylesheet">
     <link rel="stylesheet" href="/src/css/mdph-landing.css">
-    <script src="https://unpkg.com/scrollreveal@4.0.0/scrollreveal.min.js"></script>
     <style>
         .body-wrap { max-width: none !important; }
         .container, .container-sm {
@@ -111,6 +110,154 @@
                 transition: none;
             }
         }
+
+        /* Styles des modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            max-width: 90vw;
+            max-height: 90vh;
+            width: 700px;
+            height: 80vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: #2A293E;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background-color: #f5f5f5;
+        }
+
+        .modal-content {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-section {
+            margin-bottom: 24px;
+        }
+
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-section h4 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2A293E;
+        }
+
+        .modal-section p {
+            margin: 0 0 12px 0;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .modal-section ul {
+            margin: 0 0 12px 0;
+            padding-left: 20px;
+            color: #666;
+        }
+
+        .modal-section li {
+            margin-bottom: 4px;
+            line-height: 1.5;
+        }
+
+        .modal-section a {
+            color: #2596be;
+            text-decoration: none;
+        }
+
+        .modal-section a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .modal {
+                width: 95vw;
+                max-height: 95vh;
+            }
+            
+            .modal-header {
+                padding: 16px 20px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body class="home-page is-boxed has-animations">
@@ -132,8 +279,8 @@
                 <div class="container">
                     <div class="hero-inner">
                         <div class="hero-copy">
-                            <h1 class="hero-title mt-0">Vous ne savez pas quoi écrire dans la partie “Projet de vie” de la MDPH ? Faites confiance à notre outil !</h1>
-                            <p class="hero-paragraph">Disposez d'un outil qui vous aide à mettre des mots clairs sur vos difficultés quotidiennes, afin de rédiger la partie “Projet de vie / B - Vie quotidienne” du dossier MDPH (cerfa n°15692*01).</p>
+                            <h1 class="hero-title mt-0">Vous ne savez pas quoi écrire dans la partie “Projet de vie” de la MDPH ? Faites confiance à Handi’Accés !</h1>
+                            <p class="hero-paragraph">Handi’Accés vous aide à mettre des mots clairs sur vos difficultés quotidiennes, afin de rédiger la partie “Projet de vie / B - Vie quotidienne” du dossier MDPH (cerfa n°15692*01).</p>
                             <div class="hero-cta">
                                 <a class="button button-primary" href="/form">Commencer</a>
                                 <a class="button" href="#comment-ca-marche" onclick="event.preventDefault(); document.querySelector('#comment-ca-marche').scrollIntoView({ behavior: 'smooth' });">Comment ça marche</a>
@@ -149,7 +296,7 @@
                         <div class="features-header text-center">
                             <span class="glass-badge">Processus simple</span>
                             <h2 class="section-title mt-0">Comment ça marche ?</h2>
-                            <p class="section-paragraph">Cet outil vous aide à mettre des mots clairs sur vos difficultés quotidiennes, afin de rédiger la partie “Projet de vie / B - Vie quotidienne” du dossier MDPH</p>
+                            <p class="section-paragraph">Handi’Accés vous aide à mettre des mots clairs sur vos difficultés quotidiennes, afin de rédiger la partie “Projet de vie / B - Vie quotidienne” du dossier MDPH</p>
                             <div class="features-image">
                                 <div class="landing-carousel" data-carousel>
                                     <button class="carousel-btn prev" type="button" aria-label="Image précédente">‹</button>
@@ -165,8 +312,7 @@
                             <div class="feature is-revealing">
                                 <div class="feature-inner">
                                     <div class="feature-icon">
-                                        <img class="asset-light" src="/feature-01-light.svg" alt="Feature 01">
-                                        <img class="asset-dark" src="/feature-01-dark.svg" alt="Feature 01">
+                                        <span class="feature-icon-text" aria-hidden="true">📝</span>
                                     </div>
                                     <div class="feature-content">
                                         <h3 class="feature-title mt-0">1. Remplis le formulaire</h3>
@@ -177,8 +323,7 @@
                             <div class="feature is-revealing">
                                 <div class="feature-inner">
                                     <div class="feature-icon">
-                                        <img class="asset-light" src="/feature-02-light.svg" alt="Feature 02">
-                                        <img class="asset-dark" src="/feature-02-dark.svg" alt="Feature 02">
+                                        <span class="feature-icon-text" aria-hidden="true">✅</span>
                                     </div>
                                     <div class="feature-content">
                                         <h3 class="feature-title mt-0">2. Valide tes réponses</h3>
@@ -189,8 +334,7 @@
                             <div class="feature is-revealing">
                                 <div class="feature-inner">
                                     <div class="feature-icon">
-                                        <img class="asset-light" src="/feature-03-light.svg" alt="Feature 03">
-                                        <img class="asset-dark" src="/feature-03-dark.svg" alt="Feature 03">
+                                        <span class="feature-icon-text" aria-hidden="true">📄</span>
                                     </div>
                                     <div class="feature-content">
                                         <h3 class="feature-title mt-0">3. Reçois ton dossier</h3>
@@ -219,6 +363,131 @@
             </section>
         </main>
 
+        <!-- Modales -->
+        <div class="modal-overlay" id="modal-overlay"></div>
+        
+        <!-- Modale Données & confidentialité -->
+        <div class="modal" id="modal-donnees-confidentialite">
+            <div class="modal-inner">
+                <div class="modal-header">
+                    <h3>Données & confidentialité</h3>
+                    <button class="modal-close" aria-label="Fermer">&times;</button>
+                </div>
+                <div class="modal-content">
+                    <div class="modal-section">
+                        <h4>1. Responsable du traitement</h4>
+                        <p>Le présent site est édité par Gassama Abdoul Hadiri, entrepreneur individuel, immatriculé au RCS de Rennes sous le numéro 899 824 494.</p>
+                        <p>Le responsable du traitement des données personnelles est :<br>
+                        Gassama Abdoul Hadiri,<br>
+                        16 rue Louis et René Moine, 35000 Rennes.</p>
+                        <p>Les informations légales complètes figurent dans la page <a href="/mentions-legales.html" target="_blank">Mentions légales</a>.</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>2. Présentation du service</h4>
+                        <p>Le site propose un outil d'aide à la rédaction du projet de vie – partie "Vie quotidienne" du dossier MDPH.<br>
+                        Ce service est indépendant, non affilié à la MDPH, et n'intervient en aucun cas dans l'instruction ou la décision administrative.</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>3. Données personnelles collectées</h4>
+                        <p>Dans le cadre de l'utilisation du service, les données suivantes peuvent être collectées et conservées :</p>
+                        <ul>
+                            <li>prénom ou pseudonyme</li>
+                            <li>âge ou tranche d'âge</li>
+                            <li>département de résidence</li>
+                            <li>adresse email</li>
+                            <li>numéro de téléphone (le cas échéant)</li>
+                            <li>informations déclaratives relatives à la situation personnelle et au vécu quotidien, pouvant inclure des données de santé déclarées par l'utilisateur</li>
+                        </ul>
+                        <p>Ces données sont fournies volontairement par l'utilisateur. Aucun document médical, diagnostic officiel ou justificatif n'est exigé.</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>4. Finalités du traitement</h4>
+                        <p>Les données personnelles sont traitées pour les finalités suivantes :</p>
+                        <ul>
+                            <li>permettre le fonctionnement du parcours de rédaction</li>
+                            <li>générer un contenu personnalisé destiné à la partie "Projet de vie / Vie quotidienne" du dossier MDPH</li>
+                            <li>transmettre le contenu généré à l'utilisateur</li>
+                            <li>assurer le suivi et l'amélioration du service</li>
+                            <li>proposer, avec l'accord de l'utilisateur, des services ou projets connexes développés par l'éditeur</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>5. Base légale du traitement</h4>
+                        <p>Les traitements sont fondés sur :</p>
+                        <ul>
+                            <li>le consentement explicite de l'utilisateur</li>
+                            <li>l'exécution du service demandé par l'utilisateur</li>
+                        </ul>
+                        <p>Toute utilisation à des fins commerciales ou de prospection fait l'objet d'un consentement distinct, facultatif et révocable.</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>6. Traitements automatisés et outils technologiques</h4>
+                        <p>Certaines données peuvent être traitées de manière automatisée à l'aide d'outils technologiques fournis par des prestataires spécialisés, dans le seul but de générer le contenu demandé par l'utilisateur.</p>
+                        <p>Ces traitements ne constituent pas une décision automatisée au sens de l'article 22 du RGPD et n'emportent aucun effet juridique à l'égard de l'utilisateur.</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>7. Réutilisation à des fins commerciales</h4>
+                        <p>Avec l'accord explicite et facultatif de l'utilisateur, certaines données (notamment les coordonnées) peuvent être utilisées afin de :</p>
+                        <ul>
+                            <li>informer l'utilisateur de projets, services ou outils développés par l'éditeur</li>
+                            <li>proposer des accompagnements ou offres en lien avec les thématiques du handicap, des maladies chroniques ou de l'accompagnement administratif</li>
+                        </ul>
+                        <p>Ce consentement peut être retiré à tout moment.</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>8. Durée de conservation</h4>
+                        <p>Les données personnelles sont conservées pour une durée compatible avec les finalités du service. Elles peuvent être conservées jusqu'à demande de suppression de la part de l'utilisateur, sauf obligation légale imposant une conservation plus longue.</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>9. Prestataires techniques</h4>
+                        <p>Les données peuvent être hébergées ou traitées par des prestataires techniques agissant pour le compte de l'éditeur (hébergement, maintenance, envoi d'emails, outils automatisés).</p>
+                        <p>Aucune donnée n'est transmise à la MDPH ni à des tiers non autorisés.</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>10. Droits des utilisateurs</h4>
+                        <p>Conformément à la réglementation en vigueur, l'utilisateur dispose des droits suivants :</p>
+                        <ul>
+                            <li>droit d'accès</li>
+                            <li>droit de rectification</li>
+                            <li>droit à l'effacement</li>
+                            <li>droit à la limitation du traitement</li>
+                            <li>droit d'opposition</li>
+                            <li>droit au retrait du consentement</li>
+                        </ul>
+                        <p>Ces droits peuvent être exercés en contactant l'éditeur via les coordonnées figurant dans les <a href="/mentions-legales.html" target="_blank">Mentions légales</a>.</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>11. Modification de la politique</h4>
+                        <p>La présente politique de confidentialité peut être modifiée à tout moment afin de rester conforme aux évolutions légales ou fonctionnelles du service.</p>
+                        <p>La version applicable est celle en vigueur au moment de l'utilisation du site.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modale Qui sommes-nous (vide pour l'instant) -->
+        <div class="modal" id="modal-qui-sommes-nous">
+            <div class="modal-inner">
+                <div class="modal-header">
+                    <h3>Qui sommes-nous</h3>
+                    <button class="modal-close" aria-label="Fermer">&times;</button>
+                </div>
+                <div class="modal-content">
+                    <p>Contenu à venir...</p>
+                </div>
+            </div>
+        </div>
+
         <footer class="site-footer has-top-divider">
             <div class="container">
                 <div class="site-footer-inner">
@@ -232,39 +501,10 @@
                             <a href="#">Contact</a>
                         </li>
                         <li>
-                            <a href="#">About us</a>
+                            <a href="#">À propos de nous</a>
                         </li>
                         <li>
-                            <a href="#">FAQ's</a>
-                        </li>
-                        <li>
-                            <a href="#">Support</a>
-                        </li>
-                    </ul>
-                    <ul class="footer-social-links list-reset">
-                        <li>
-                            <a href="#">
-                                <span class="screen-reader-text">Facebook</span>
-                                <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6.023 16L6 9H3V6h3V4c0-2.7 1.672-4 4.08-4 1.153 0 2.144.086 2.433.124v2.821h-1.67c-1.31 0-1.563.623-1.563 1.536V6H13l-1 3H9.28v7H6.023z" fill="#FFF"/>
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="screen-reader-text">Twitter</span>
-                                <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M16 3c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-1.7 0-3.2 1.5-3.2 3.3 0 .3 0 .5.1.7-2.7-.1-5.2-1.4-6.8-3.4-.3.5-.4 1-.4 1.7 0 1.1.6 2.1 1.5 2.7-.5 0-1-.2-1.5-.4C.7 7.7 1.8 9 3.3 9.3c-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.3 3.1 2.3-1.1.9-2.5 1.4-4.1 1.4H0c1.5.9 3.2 1.5 5 1.5 6 0 9.3-5 9.3-9.3v-.4C15 4.3 15.6 3.7 16 3z" fill="#FFF"/>
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="screen-reader-text">Google</span>
-                                <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z" fill="#FFF"/>
-                                </svg>
-                            </a>
+                            <a href="/charte-ethique.html">Charte éthique</a>
                         </li>
                     </ul>
                     <div class="footer-copyright">&copy; 2026 Projet de vie MDPH, tous droits réservés</div>
@@ -322,6 +562,53 @@
             carousel.addEventListener('focusout', startAuto);
 
             startAuto();
+        })();
+
+        // Gestion des modales
+        (function() {
+            const modalTriggers = document.querySelectorAll('[data-modal]');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modals = document.querySelectorAll('.modal');
+            const closeButtons = document.querySelectorAll('.modal-close');
+
+            function openModal(modalId) {
+                const modal = document.getElementById('modal-' + modalId);
+                if (modal) {
+                    modalOverlay.classList.add('active');
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                modals.forEach(modal => modal.classList.remove('active'));
+                document.body.style.overflow = '';
+            }
+
+            // Ouverture des modales
+            modalTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const modalId = this.getAttribute('data-modal');
+                    openModal(modalId);
+                });
+            });
+
+            // Fermeture avec les boutons X
+            closeButtons.forEach(button => {
+                button.addEventListener('click', closeModal);
+            });
+
+            // Fermeture en cliquant sur l'overlay
+            modalOverlay.addEventListener('click', closeModal);
+
+            // Fermeture avec la touche Échap
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
         })();
     </script>
 </body>

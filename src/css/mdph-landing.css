@@ -293,6 +293,19 @@ body.home-page {
   flex-shrink: 0;
 }
 
+.feature-icon-text {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  line-height: 1;
+  border-radius: 12px;
+  background: rgba(235, 198, 185, 0.25);
+  border: 1px solid rgba(235, 198, 185, 0.3);
+}
+
 .feature-icon img {
   max-width: 48px;
   height: auto;
@@ -464,6 +477,20 @@ body.home-page {
   color: #9fd0d3;
 }
 
+.social-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #2A293E;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .footer-copyright {
   font-size: 12px;
   color: #6B7A90;
@@ -543,9 +570,16 @@ body.home-page {
   }
   
   .hero-cta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .hero-cta .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .features-wrap {
@@ -635,6 +669,11 @@ body.home-page {
     margin-right: 0;
     margin-bottom: 0;
     flex-shrink: 0;
+  }
+
+  .feature-icon-text {
+    width: 48px;
+    height: 48px;
   }
 
   .feature-icon img {

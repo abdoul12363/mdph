@@ -1,7 +1,7 @@
 {
   "sections": [
     {
-      "title": "Comment ça va se passer",
+      "title": "Comment ça marche ?",
       "description": "Vous allez répondre à des questions simples sur votre quotidien.Ces réponses servent de base pour vous aider à formuler un texte clair et structuré.",
       "isIntroduction": true,
       "buttonText": "Ok, mais encore ?"
@@ -14,20 +14,9 @@
     },
     {
       "title": "Ce que vous obtenez",
-      "description": "À la fin du questionnaire, vous recevez un texte clair et structuré, prêt à être utilisé dans la partie “Projet de vie / Vie quotidienne” du dossier MDPH.",
+      "description": "⦁ une première version structurée de votre projet de vie,\n⦁ basée sur vos réponses.\nCette version peut servir de base de travail pour un accompagnement personnalisé.",
       "isIntroduction": true,
       "buttonText": "J’ai compris"
-    },
-    {
-      "title": "Conditions d'utilisation",
-      "description": "",
-      "isIntroduction": true,
-      "hideTitle": true,
-      "hideDescription": true,
-      "hasCheckbox": true,
-      "checkboxLabel": "J’ai lu et j’accepte les conditions d'utilisation et la politique de confidentialité.",
-      "requireCheckbox": true,
-      "buttonText": "Continuer"
     },
     {
       "id": "type_demande",

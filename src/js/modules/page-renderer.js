@@ -184,6 +184,38 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
     }
 
     newBtn.addEventListener('click', () => {
+      try {
+        if (q && q.type === 'radio') {
+          const checked = document.querySelector(`.introduction-page input[type="radio"][name="${radioKey}"]:checked`);
+          if (checked && checked.value !== undefined) {
+            responses[radioKey] = checked.value;
+          }
+
+          if (followUp && followUpKey && followUp.type === 'text') {
+            const followUpEl = document.getElementById(`intro_text_${followUpKey}`);
+            if (followUpEl) {
+              responses[followUpKey] = String(followUpEl.value || '');
+            }
+          } else if (followUp && followUpKey && Array.isArray(followUp.options)) {
+            const checkedFollowUp = document.querySelector(`.introduction-page input[type="radio"][name="${followUpKey}"]:checked`);
+            if (checkedFollowUp && checkedFollowUp.value !== undefined) {
+              responses[followUpKey] = checkedFollowUp.value;
+            }
+          }
+
+          saveLocal(true);
+        }
+
+        if (q && q.hasCheckbox) {
+          const checkboxEl = document.getElementById(checkboxId);
+          if (checkboxEl) {
+            responses[checkboxId] = checkboxEl.checked;
+            saveLocal(true);
+          }
+        }
+      } catch (e) {
+      }
+
       if (nextCallback) {
         nextCallback();
       }

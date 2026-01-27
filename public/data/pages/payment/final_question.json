@@ -1,6 +1,18 @@
 {
   "sections": [
     {
+      "id": "terms_acceptance",
+      "title": "Conditions d'utilisation",
+      "description": "",
+      "isIntroduction": true,
+      "hideTitle": true,
+      "hideDescription": true,
+      "hasCheckbox": true,
+      "checkboxLabel": "J’ai lu et j’accepte les <a href=\"/conditions-generales-vente.html\" target=\"_blank\" rel=\"noopener noreferrer\">conditions d'utilisation</a> et la <a href=\"/donnees-confidentialite.html\" target=\"_blank\" rel=\"noopener noreferrer\">politique de confidentialité</a>.",
+      "requireCheckbox": true,
+      "buttonText": "Continuer"
+    },
+    {
       "id": "final_payment_consent",
       "title": "Renonciation au droit de rétractation",
       "isIntroduction": true,
