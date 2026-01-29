@@ -10,6 +10,16 @@ export function renderInput(q, value) {
   const type = q.type || q.type_champ;
   const description = q.description ? `<div class="field-description">${q.description}</div>` : '';
   
+  if (type === 'text' || type === 'email') {
+    const inputType = type === 'email' ? 'email' : 'text';
+    return `
+      <div class="field-container">
+        ${q.question ? `<div class="question-title">${q.question}</div>` : ''}
+        ${description}
+        <input class="input" id="answer" type="${inputType}" placeholder="${q.placeholder || ''}" value="${value ? String(value) : ''}" />
+      </div>`;
+  }
+  
   if (type === 'texte_long' || type === 'textarea') {
     return `
       <div class="field-container">
@@ -187,7 +197,7 @@ export function renderInput(q, value) {
             const checked = isChecked ? 'checked' : '';
             return `
               <label class="choice">
-                <input type="radio" name="opt" value="${optValue}" ${checked}/>
+                <input type="radio" name="${q.id}" value="${optValue}" ${checked}/>
                 <span>${optLabel}</span>
               </label>`;
           }).join('')}
@@ -200,32 +210,18 @@ export function renderInput(q, value) {
     const currentValue = value !== undefined ? value : defaultVal;
     const v = currentValue ? String(currentValue) : '';
     
-    let html = '<div>';
-    
-    html += q.description ? `<div class="field-description">${q.description}</div>` : '';
-    
-    html += '<div class="choice-grid" id="answer">';
-    
-    q.options.forEach(opt => {
-      const optValue = opt.value || opt;
-      const optLabel = opt.label || opt;
-      const checked = optValue === v ? 'checked' : '';
-      
-      html += `<label class="choice"><input type="radio" name="opt" value="${optValue}" ${checked}/> ${optLabel}</label>`;
-      
-      // Add text field if the option requires it
-      if (opt.hasTextField) {
-        const textFieldValue = responses[`${q.id}_text`] || '';
-        const textFieldVisible = optValue === v ? 'block' : 'none';
-        html += `<div class="text-field-inline" ${textFieldVisible === 'block' ? '' : 'hidden'}>
-          <input type="text" name="opt_text" placeholder="${opt.textFieldLabel || 'Préciser...'}" value="${textFieldValue}" class="text-input"/>
-        </div>`;
-      }
-    });
-    
-    html += '</div>';
-    html += '</div>';
-    return html;
+    return `
+      <div>
+        ${q.description ? `<div class="field-description">${q.description}</div>` : ''}
+        <div class="choice-grid" id="answer">
+          ${q.options.map(opt => {
+            const optValue = opt.value || opt;
+            const optLabel = opt.label || opt;
+            const checked = String(optValue) === v ? 'checked' : '';
+            return `<label class="choice"><input type="radio" name="opt_${q.id}" value="${optValue}" ${checked}/> ${optLabel}</label>`;
+          }).join('')}
+        </div>
+      </div>`;
   }
 
   if (type === 'oui_non') {
@@ -237,11 +233,10 @@ export function renderInput(q, value) {
       <div>
         ${q.description ? `<div class="field-description">${q.description}</div>` : ''}
         <div class="choice-grid" id="answer">
-          <label class="choice"><input type="radio" name="yn" value="oui" ${checkedOui}/> Oui</label>
-          <label class="choice"><input type="radio" name="yn" value="non" ${checkedNon}/> Non</label>
+          <label class="choice"><input type="radio" name="yn_${q.id}" value="oui" ${checkedOui}/> Oui</label>
+          <label class="choice"><input type="radio" name="yn_${q.id}" value="non" ${checkedNon}/> Non</label>
         </div>
-      </div>
-    `;
+      </div>`;
   }
 
   if (type === 'choix_multiple' && Array.isArray(q.valeurs_possibles)) {
@@ -250,7 +245,7 @@ export function renderInput(q, value) {
       <div class="choice-grid" id="answer">
         ${q.valeurs_possibles.map(opt => {
           const checked = opt === v ? 'checked' : '';
-          return `<label class="choice"><input type="radio" name="opt" value="${opt}" ${checked}/> ${opt}</label>`;
+          return `<label class="choice"><input type="radio" name="opt_${q.id}" value="${opt}" ${checked}/> ${opt}</label>`;
         }).join('')}
       </div>
     `;

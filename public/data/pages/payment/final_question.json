@@ -32,7 +32,7 @@
         { "value": "oui", "label": "Oui" },
         { "value": "non", "label": "Non" }
       ],
-      "buttonText": "Payer"
+      "buttonText": "Continuer"
     }
   ]
 }

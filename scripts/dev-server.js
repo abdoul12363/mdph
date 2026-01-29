@@ -69,6 +69,44 @@ async function handleApiFill(req, res) {
   });
 }
 
+async function handleApiProjetDeVie(req, res) {
+  if (req.method !== 'POST') {
+    res.writeHead(405, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({ error: 'Method not allowed. Use POST.' }));
+    return;
+  }
+
+  let body = '';
+  req.on('data', (chunk) => {
+    body += chunk;
+    if (body.length > 2_000_000) {
+      res.writeHead(413, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Payload too large' }));
+      req.destroy();
+    }
+  });
+
+  req.on('end', async () => {
+    try {
+      req.body = body ? JSON.parse(body) : {};
+    } catch {
+      res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Invalid JSON body' }));
+      return;
+    }
+
+    try {
+      const apiModulePath = path.join(ROOT, 'src', 'api', 'projet-de-vie.js');
+      const apiModuleUrl = pathToFileURL(apiModulePath);
+      const { default: handler } = await import(`${apiModuleUrl.href}?t=${Date.now()}`);
+      await handler(req, res);
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Local API error', details: String(e?.message || e) }));
+    }
+  });
+}
+
 function serveFile(filePath, res) {
   const ext = path.extname(filePath).toLowerCase();
   const contentType = MIME[ext] || 'application/octet-stream';
@@ -148,6 +186,12 @@ const server = http.createServer((req, res) => {
   if (urlPath.startsWith('/api/fill')) {
     console.log('→ routing to local api/fill handler');
     handleApiFill(req, res);
+    return;
+  }
+
+  if (urlPath.startsWith('/api/projet-de-vie')) {
+    console.log('→ routing to local api/projet-de-vie handler');
+    handleApiProjetDeVie(req, res);
     return;
   }
 

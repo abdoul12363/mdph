@@ -10,6 +10,7 @@
     "tools:check-mapping": "node scripts/tools/check-mapping.js"
   },
   "dependencies": {
+    "fontkit": "^2.0.4",
     "pdf-lib": "^1.17.1",
     "pdf2json": "^4.0.0"
   }

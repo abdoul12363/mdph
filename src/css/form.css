@@ -787,6 +787,28 @@ label,
   margin-bottom: 16px !important;
 }
 
+ .coordonnees-page .question-title {
+  font-size: calc(var(--font-size) * 0.95) !important;
+  margin-bottom: 6px !important;
+ }
+
+ .coordonnees-page .field-container {
+  margin-bottom: 10px !important;
+ }
+
+ .coordonnees-page .question-item {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+ }
+
+ .coordonnees-page .field-container .input,
+ .coordonnees-page .field-container input[type="text"],
+ .coordonnees-page .field-container input[type="email"] {
+  padding: 10px 12px !important;
+  margin: 4px 0 !important;
+ }
+
 /* Espacement interne des champs */
 .input,
 select,

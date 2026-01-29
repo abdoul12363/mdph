@@ -1,0 +1,34 @@
+{
+  "sections": [
+    {
+      "title": "Vos coordonnées",
+      "description": "Veuillez remplir correctement vos coordonnées afin de finaliser votre formulaire MDPH.",
+      "questions": [
+        {
+          "id": "prenom",
+          "type": "text",
+          "className": "coordonnees-page",
+          "question": "Prénom:",
+          "placeholder": "Ex : Jean",
+          "obligatoire": true
+        },
+        {
+          "id": "nom",
+          "type": "text",
+          "className": "coordonnees-page",
+          "question": "Nom:",
+          "placeholder": "Ex : Dupont",
+          "obligatoire": true
+        },
+        {
+          "id": "email",
+          "type": "email",
+          "className": "coordonnees-page",
+          "question": "Email:",
+          "placeholder": "Ex : jean.dupont@gmail.com",
+          "obligatoire": true
+        }
+      ]
+    }
+  ]
+}

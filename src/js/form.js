@@ -80,6 +80,14 @@ function resetAllResponses() {
 
 // Fonction d'initialisation
 async function boot() {
+  try {
+    const qs = typeof window !== 'undefined' ? window.location.search : '';
+    if (qs && qs.includes('reset=1')) {
+      localStorage.removeItem('cerfa_responses_v1');
+    }
+  } catch {
+  }
+
   loadSaved();
 
   try {

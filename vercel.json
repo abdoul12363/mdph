@@ -16,6 +16,10 @@
     {
       "src": "src/api/fill.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "src/api/projet-de-vie.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -23,6 +27,15 @@
       "src": "/api/fill",
       "dest": "/src/api/fill.js",
       "methods": ["POST"]
+    },
+    {
+      "src": "/api/projet-de-vie",
+      "dest": "/src/api/projet-de-vie.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/telecharger-le-pdf",
+      "dest": "/src/pages/telecharger-le-pdf.html"
     },
     {
       "src": "/form",
