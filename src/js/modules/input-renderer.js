@@ -11,7 +11,7 @@ export function renderInput(q, value) {
   const description = q.description ? `<div class="field-description">${q.description}</div>` : '';
   
   if (type === 'text' || type === 'email') {
-    const inputType = type === 'email' ? 'email' : 'text';
+    const inputType = type === 'email' && q.className !== 'coordonnees-page' ? 'email' : 'text';
     return `
       <div class="field-container">
         ${q.question ? `<div class="question-title">${q.question}</div>` : ''}

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import { generateProjetDeViePdf } from './lib/projet-de-vie-pdf.js';
 
 function pickString(obj, key) {
   if (!obj || typeof obj !== 'object') return '';
@@ -180,136 +181,54 @@ export default async function handler(req, res) {
   }
 
   try {
-    const root = process.cwd();
-    const pdfPath = path.join(root, 'public', 'pdf', 'mdph-projet-de-vie.pdf');
+    const pdvRoot = process.cwd();
+    const pdvPdfPath = path.join(pdvRoot, 'public', 'pdf', 'mdph-projet-de-vie.pdf');
+    const pdvBody = req.body && typeof req.body === 'object' ? req.body : {};
 
-    if (!fs.existsSync(pdfPath)) {
+    if (!fs.existsSync(pdvPdfPath)) {
       res.statusCode = 500;
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.end(JSON.stringify({ error: 'PDF introuvable sur le serveur.' }));
       return;
     }
 
-    const body = req.body && typeof req.body === 'object' ? req.body : {};
+    const pdvPrenom = pickFirstString(pdvBody, ['prenom', 'prenom:']);
+    const pdvNom = pickFirstString(pdvBody, ['nom', 'nom:']);
 
-    const prenom = pickFirstString(body, ['prenom', 'prenom:']);
-    const nom = pickFirstString(body, ['nom', 'nom:']);
+    const pdvImpactQuotidien = pickString(pdvBody, 'impact_quotidien');
+    const pdvImpactTravail = pickString(pdvBody, 'description_impact_travail');
+    const pdvExplicationComplementaire = pickString(pdvBody, 'explication_demande');
+    const pdvAspirations = pickString(pdvBody, 'projet_vie');
 
-    const impactQuotidien = pickString(body, 'impact_quotidien');
-    const impactTravail = pickString(body, 'description_impact_travail');
-    const explicationComplementaire = pickString(body, 'explication_demande');
-    const aspirations = pickString(body, 'projet_vie');
-
-    const existingPdfBytes = fs.readFileSync(pdfPath);
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const form = pdfDoc.getForm();
-
-    const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-
-    // Charger fontkit seulement si disponible (requis pour embed une police .ttf)
-    try {
-      const fontkitModule = await import('fontkit');
-      const fontkitInstance = fontkitModule?.default || fontkitModule;
-      if (fontkitInstance) pdfDoc.registerFontkit(fontkitInstance);
-    } catch {
-    }
-
-    // Charger Poppins-Bold pour Text1
-    let fontPoppinsBold = fontBold;
-    try {
-      const poppinsBoldPath = path.join(process.cwd(), 'src/fonts/Poppins-Bold.ttf');
-      if (fs.existsSync(poppinsBoldPath)) {
-        const poppinsBoldBytes = fs.readFileSync(poppinsBoldPath);
-        fontPoppinsBold = await pdfDoc.embedFont(poppinsBoldBytes);
-      }
-    } catch {
-      // En cas d'erreur, on garde HelveticaBold
-    }
-
-    const text1Target = getFieldBoxAndPageIndex(pdfDoc, form, 'Text1');
-    const text2Target = getFieldBoxAndPageIndex(pdfDoc, form, 'Text2');
-    const text4Target = getFieldBoxAndPageIndex(pdfDoc, form, 'Text4');
-
-    if (!text2Target || !text4Target) {
-      res.statusCode = 500;
-      res.setHeader('Content-Type', 'application/json; charset=utf-8');
-      res.end(JSON.stringify({ error: 'Champs PDF Text2/Text4 introuvables ou non exploitables.' }));
-      return;
-    }
-
-    // On vide les champs, on les "flatten" (pour éviter l’édition) et on dessine par-dessus.
-    try {
-      form.getTextField('Text1').setText('');
-      form.getTextField('Text2').setText('');
-      form.getTextField('Text4').setText('');
-    } catch {
-    }
-
-    try {
-      form.updateFieldAppearances(fontRegular);
-    } catch {
-    }
-
-    try {
-      form.flatten();
-    } catch {
-    }
-
-    const blocks = [
-      { title: 'Comment ces difficultés impactent votre vie quotidienne ?', body: impactQuotidien },
-      { title: 'Impact sur le travail', body: impactTravail },
-      { title: 'Explication complémentaire', body: explicationComplementaire },
-      { title: 'Vos aspirations', body: aspirations },
+    const pdvBlocks = [
+      { title: 'Comment ces difficultés impactent votre vie quotidienne ?', body: pdvImpactQuotidien },
+      { title: 'Impact sur le travail', body: pdvImpactTravail },
+      { title: 'Explication complémentaire', body: pdvExplicationComplementaire },
+      { title: 'Vos aspirations', body: pdvAspirations },
     ];
 
-    const titleSize = 12;
-    const bodySize = 11;
-    const maxWidthText2 = Math.max(10, text2Target.box.width - 8);
-    const lines = buildStyledLines(fontRegular, fontBold, maxWidthText2, titleSize, bodySize, blocks);
+    try {
+      const pdvPdfBytes = await generateProjetDeViePdf({
+        pdfPath: pdvPdfPath,
+        prenom: pdvPrenom,
+        nom: pdvNom,
+        blocks: pdvBlocks,
+      });
 
-    const pages = pdfDoc.getPages();
-    if (text1Target) {
-      const page1 = pages[text1Target.pageIndex] || pages[0];
-      const nameParts = [String(nom || '').trim(), String(prenom || '').trim()].filter(Boolean);
-      const raw = nameParts.join(' ').trim();
-      const text1 = raw ? `${raw},` : '';
-
-      if (text1) {
-        const padding = 4;
-        const maxWidth = Math.max(10, text1Target.box.width - padding * 2);
-        let size = 28;
-        const measureFont = fontPoppinsBold || fontBold;
-        while (size > 12 && measureFont.widthOfTextAtSize(text1, size) > maxWidth) {
-          size -= 1;
-        }
-
-        const x = text1Target.box.x + padding;
-        const y = text1Target.box.y + (text1Target.box.height - size) / 2;
-
-        page1.drawText(text1, {
-          x,
-          y,
-          size,
-          font: fontPoppinsBold,
-          color: rgb(0 / 255, 45 / 255, 95 / 255),
-        });
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename="mdph-projet-de-vie-rempli.pdf"');
+      res.end(Buffer.from(pdvPdfBytes));
+      return;
+    } catch (e) {
+      if (String(e?.message || e).includes('Champs PDF Text2/Text4')) {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.end(JSON.stringify({ error: 'Champs PDF Text2/Text4 introuvables ou non exploitables.' }));
+        return;
       }
+      throw e;
     }
-    const page2 = pages[text2Target.pageIndex] || pages[0];
-    const page4 = pages[text4Target.pageIndex] || pages[0];
-
-    const remaining = drawLinesIntoBox(page2, text2Target.box, lines, { regular: fontRegular, bold: fontBold });
-    if (remaining.length > 0) {
-      drawLinesIntoBox(page4, text4Target.box, remaining, { regular: fontRegular, bold: fontBold });
-    }
-
-    const pdfBytes = await pdfDoc.save();
-
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename="mdph-projet-de-vie-rempli.pdf"');
-    res.end(Buffer.from(pdfBytes));
   } catch (err) {
     console.error('PDF generation error:', err);
     res.statusCode = 500;
@@ -317,3 +236,4 @@ export default async function handler(req, res) {
     res.end(JSON.stringify({ error: 'PDF generation failed', details: String(err?.message || err) }));
   }
 }
+

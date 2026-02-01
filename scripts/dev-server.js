@@ -30,7 +30,7 @@ function safeJoin(root, requestPath) {
   return candidate;
 }
 
-async function handleApiFill(req, res) {
+async function handleApiJsonPost(req, res, apiRelPath) {
   if (req.method !== 'POST') {
     res.writeHead(405, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify({ error: 'Method not allowed. Use POST.' }));
@@ -57,7 +57,7 @@ async function handleApiFill(req, res) {
     }
 
     try {
-      const apiModulePath = path.join(ROOT, 'src', 'api', 'fill.js');
+      const apiModulePath = path.join(ROOT, ...apiRelPath);
       const apiModuleUrl = pathToFileURL(apiModulePath);
       // Cache-bust pour éviter un module figé pendant le dev
       const { default: handler } = await import(`${apiModuleUrl.href}?t=${Date.now()}`);
@@ -69,42 +69,16 @@ async function handleApiFill(req, res) {
   });
 }
 
+async function handleApiFill(req, res) {
+  return handleApiJsonPost(req, res, ['src', 'api', 'fill.js']);
+}
+
+async function handleApiProjetDeViePremium(req, res) {
+  return handleApiJsonPost(req, res, ['src', 'api', 'projet-de-vie-premium.js']);
+}
+
 async function handleApiProjetDeVie(req, res) {
-  if (req.method !== 'POST') {
-    res.writeHead(405, { 'Content-Type': 'application/json; charset=utf-8' });
-    res.end(JSON.stringify({ error: 'Method not allowed. Use POST.' }));
-    return;
-  }
-
-  let body = '';
-  req.on('data', (chunk) => {
-    body += chunk;
-    if (body.length > 2_000_000) {
-      res.writeHead(413, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ error: 'Payload too large' }));
-      req.destroy();
-    }
-  });
-
-  req.on('end', async () => {
-    try {
-      req.body = body ? JSON.parse(body) : {};
-    } catch {
-      res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ error: 'Invalid JSON body' }));
-      return;
-    }
-
-    try {
-      const apiModulePath = path.join(ROOT, 'src', 'api', 'projet-de-vie.js');
-      const apiModuleUrl = pathToFileURL(apiModulePath);
-      const { default: handler } = await import(`${apiModuleUrl.href}?t=${Date.now()}`);
-      await handler(req, res);
-    } catch (e) {
-      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ error: 'Local API error', details: String(e?.message || e) }));
-    }
-  });
+  return handleApiJsonPost(req, res, ['src', 'api', 'projet-de-vie.js']);
 }
 
 function serveFile(filePath, res) {
@@ -186,6 +160,12 @@ const server = http.createServer((req, res) => {
   if (urlPath.startsWith('/api/fill')) {
     console.log('→ routing to local api/fill handler');
     handleApiFill(req, res);
+    return;
+  }
+
+  if (urlPath.startsWith('/api/projet-de-vie-premium')) {
+    console.log('→ routing to local api/projet-de-vie-premium handler');
+    handleApiProjetDeViePremium(req, res);
     return;
   }
 

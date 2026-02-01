@@ -8,6 +8,37 @@ import { getAnswerFromDom, validateRequired } from './answer-extractor.js';
 
 let inFlight = false;
 
+function getSectionRange(visible, idx) {
+  try {
+    const q = visible[idx];
+    if (!q || !q.sectionTitle) return null;
+
+    const sectionTitle = q.sectionTitle;
+    const pageId = q.pageId;
+
+    let start = idx;
+    while (start > 0) {
+      const prev = visible[start - 1];
+      if (!prev || prev.sectionTitle !== sectionTitle) break;
+      if (pageId && prev.pageId && prev.pageId !== pageId) break;
+      start -= 1;
+    }
+
+    let end = idx;
+    while (end + 1 < visible.length) {
+      const next = visible[end + 1];
+      if (!next || next.sectionTitle !== sectionTitle) break;
+      if (pageId && next.pageId && next.pageId !== pageId) break;
+      end += 1;
+    }
+
+    if (start === end) return null;
+    return { start, end };
+  } catch {
+    return null;
+  }
+}
+
 export function next(idx, render, visible) {
   if (inFlight) return idx;
   inFlight = true;
@@ -18,19 +49,39 @@ export function next(idx, render, visible) {
       return idx;
     }
 
-    const answer = getAnswerFromDom(q);
-    
-    if (q.obligatoire && !validateRequired(q, answer)) {
-      alert('Cette question est obligatoire');
-      return idx;
-    }
-    
-    if (answer !== undefined && answer !== '') {
-      responses[q.id] = answer;
+    const range = getSectionRange(visible, idx);
+    if (range) {
+      for (let i = range.start; i <= range.end; i += 1) {
+        const qi = visible[i];
+        if (!qi) continue;
+        const ans = getAnswerFromDom(qi);
+
+        if (qi.obligatoire && !validateRequired(qi, ans)) {
+          alert('Cette question est obligatoire');
+          return idx;
+        }
+
+        if (ans !== undefined) {
+          responses[qi.id] = ans;
+        }
+      }
       saveLocal(true);
+      idx = range.end + 1;
+    } else {
+      const answer = getAnswerFromDom(q);
+      
+      if (q.obligatoire && !validateRequired(q, answer)) {
+        alert('Cette question est obligatoire');
+        return idx;
+      }
+      
+      if (answer !== undefined) {
+        responses[q.id] = answer;
+        saveLocal(true);
+      }
+      
+      idx++;
     }
-    
-    idx++;
     
     if (idx >= visible.length) {
       idx = visible.length - 1;
@@ -52,14 +103,37 @@ export function prev(idx, render, visible) {
   try {
     const q = visible[idx];
     if (q) {
-      const answer = getAnswerFromDom(q);
-      if (answer !== undefined && answer !== '') {
-        responses[q.id] = answer;
+      const range = getSectionRange(visible, idx);
+      if (range) {
+        for (let i = range.start; i <= range.end; i += 1) {
+          const qi = visible[i];
+          if (!qi) continue;
+          const ans = getAnswerFromDom(qi);
+          if (ans !== undefined) {
+            responses[qi.id] = ans;
+          }
+        }
         saveLocal(true);
+        idx = range.start - 1;
+      } else {
+        const answer = getAnswerFromDom(q);
+        if (answer !== undefined) {
+          responses[q.id] = answer;
+          saveLocal(true);
+        }
+        idx--;
+      }
+    } else {
+      idx--;
+    }
+
+    // Si on tombe au milieu d'une section, revenir au début de la section précédente
+    if (idx > 0) {
+      const prevRange = getSectionRange(visible, idx);
+      if (prevRange) {
+        idx = prevRange.start;
       }
     }
-    
-    idx--;
     
     if (idx < 0) idx = 0;
     

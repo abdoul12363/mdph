@@ -27,6 +27,22 @@
           "question": "Email:",
           "placeholder": "Ex : jean.dupont@gmail.com",
           "obligatoire": true
+        },
+        {
+          "id": "numero",
+          "type": "text",
+          "className": "coordonnees-page",
+          "question": "Numero de téléphone:",
+          "placeholder": "Ex : 076167...",
+          "obligatoire": true
+        },
+        {
+          "id": "département",
+          "type": "text",
+          "className": "coordonnees-page",
+          "question": "Département de résidence:",
+          "placeholder": "Ex : 35200",
+          "obligatoire": true
         }
       ]
     }

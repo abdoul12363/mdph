@@ -160,9 +160,15 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
           responses[radio.name] = radio.value;
           saveLocal(true);
 
-          if (q && q.id === 'final_payment_expert' && radio.value === 'non') {
-            window.location.href = '/telecharger-le-pdf';
-            return;
+          if (q && q.id === 'final_payment_expert') {
+            if (radio.value === 'oui') {
+              window.location.href = '/telecharger-le-pdf-premium';
+              return;
+            }
+            if (radio.value === 'non') {
+              window.location.href = '/telecharger-le-pdf';
+              return;
+            }
           }
           render();
         });
@@ -221,9 +227,15 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
       } catch (e) {
       }
 
-      if (q && q.id === 'final_payment_expert' && responses[radioKey] === 'non') {
-        window.location.href = '/telecharger-le-pdf';
-        return;
+      if (q && q.id === 'final_payment_expert') {
+        if (responses[radioKey] === 'oui') {
+          window.location.href = '/telecharger-le-pdf-premium';
+          return;
+        }
+        if (responses[radioKey] === 'non') {
+          window.location.href = '/telecharger-le-pdf';
+          return;
+        }
       }
 
       if (nextCallback) {
@@ -435,6 +447,20 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
     
   // Ajouter les événements pour tous les champs de la section
   sectionQuestions.forEach(sectionQ => {
+    // Sauvegarde live pour les champs texte (utile quand plusieurs questions sont affichées sur une même page)
+    if (sectionQ.type === 'text' || sectionQ.type === 'email' || sectionQ.type === 'texte_long' || sectionQ.type === 'textarea') {
+      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
+      if (questionDiv) {
+        const input = questionDiv.querySelector('#answer');
+        if (input) {
+          input.addEventListener('input', function () {
+            responses[sectionQ.id] = String(this.value ?? '');
+            saveLocal(true);
+          });
+        }
+      }
+    }
+
     if (sectionQ.type === 'radio_with_text') {
       const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
       if (questionDiv) {

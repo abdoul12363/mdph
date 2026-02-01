@@ -20,6 +20,10 @@
     {
       "src": "src/api/projet-de-vie.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "src/api/projet-de-vie-premium.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -31,6 +35,11 @@
     {
       "src": "/api/projet-de-vie",
       "dest": "/src/api/projet-de-vie.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/projet-de-vie-premium",
+      "dest": "/src/api/projet-de-vie-premium.js",
       "methods": ["POST"]
     },
     {
