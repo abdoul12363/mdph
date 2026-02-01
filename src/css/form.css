@@ -186,9 +186,9 @@ body.form-page .main {
 }
 
 .form-card {
-  background: var(--form-bg);
+  background: var(--form-card-bg);
   padding: 50px 100px;
-  border: 1px solid #ebc6b9;
+  border: 1px solid var(--form-card-border);
   margin-top: 40px;
   border-radius: 2px;
 }
@@ -196,7 +196,7 @@ body.form-page .main {
 .is-introduction .form-card,
 .is-recap .form-card,
 .main .container.is-recap .form-card {
-  border-top: 10px solid var(--color-highlight);
+  border-top: 10px solid var(--form-card-border-top);
 }
 
 .progress {
@@ -206,12 +206,12 @@ body.form-page .main {
 
 .progress-bar{
   height: 10px;
-  background: rgba(0,0,0,0.1);
-  border: 1px solid rgba(0,0,0,0.2);
+  background: var(--form-progress-track-bg);
+  border: 1px solid var(--form-progress-track-border);
   border-radius: 999px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  box-shadow: 0 0 0 1px var(--form-progress-track-shadow);
 }
 
 /* Style pour le titre du récapitulatif */
@@ -253,16 +253,16 @@ body.form-page .main {
 .progress-fill{
   height: 100%;
   background: linear-gradient(90deg, 
-    var(--form-border) 0%, 
-    var(--form-focus) 50%, 
-    var(--form-border) 100%);
+    var(--form-progress-fill-start) 0%, 
+    var(--form-progress-fill-mid) 50%, 
+    var(--form-progress-fill-end) 100%);
   background-size: 200% 100%;
   width: 0%;
   transition: width .5s ease;
   position: relative;
   box-shadow: 
-    0 0 15px rgba(244, 87, 2, 0.5),
-    inset 0 0 10px rgba(244, 87, 2, 0.3);
+    0 0 15px var(--form-progress-glow-outer),
+    inset 0 0 10px var(--form-progress-glow-inner);
   animation: fluid 2s ease-in-out infinite;
   overflow: hidden;
 }
@@ -298,7 +298,7 @@ body.form-page .main {
   right: 0;
   bottom: 0;
   border-radius: 999px;
-  box-shadow: 0 0 8px 2px rgba(244, 87, 2, 0.6);
+  box-shadow: 0 0 8px 2px var(--form-progress-glow-after);
   opacity: 0.8;
   animation: pulse 2s ease-in-out infinite;
 }
@@ -357,8 +357,8 @@ button {
   line-height: calc(var(--font-size) * 2);
   padding: 0 20px;
   border: none;
-  background: var(--form-border);
-  color: white;
+  background: var(--form-button-bg);
+  color: var(--form-button-text);
   letter-spacing: 2px;
   transition: .2s all ease-in-out;
   border-bottom: 2px solid transparent;
@@ -366,9 +366,9 @@ button {
 }
 
 button:hover {
-  background: inherit;
-  color: var(--form-border);
-  border-bottom: 2px solid var(--form-border);
+  background: var(--form-button-hover-bg);
+  color: var(--form-button-hover-text);
+  border-bottom: 2px solid var(--form-button-hover-border-bottom);
 }
 
 /* Style spécifique pour le bouton 'J'ai compris' */
@@ -381,13 +381,13 @@ button:hover {
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: var(--form-border);
-  color: white;
+  background: var(--form-button-bg);
+  color: var(--form-button-text);
   border: none;
 }
 
 #startBtn:hover {
-  background: var(--form-focus);
+  background: var(--form-button-hover-bg);
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -539,8 +539,8 @@ textarea:-webkit-autofill:focus {
   font-size: var(--font-size);
   font-weight: 600;
   border-radius: 2px;
-  background: var(--form-border);
-  color: white;
+  background: var(--form-button-bg);
+  color: var(--form-button-text);
   border: none;
   cursor: pointer;
   transition: .2s all ease-in-out;
@@ -551,9 +551,9 @@ textarea:-webkit-autofill:focus {
 }
 
 #startBtn:hover {
-  background: inherit;
-  color: var(--form-border);
-  border-bottom: 2px solid var(--form-border);
+  background: var(--form-button-hover-bg);
+  color: var(--form-button-hover-text);
+  border-bottom: 2px solid var(--form-button-hover-border-bottom);
   transform: none;
 }
 

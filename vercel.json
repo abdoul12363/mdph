@@ -47,6 +47,10 @@
       "dest": "/src/pages/telecharger-le-pdf.html"
     },
     {
+      "src": "/telecharger-le-pdf-premium",
+      "dest": "/src/pages/telecharger-le-pdf-premium.html"
+    },
+    {
       "src": "/form",
       "dest": "/src/pages/form.html"
     },

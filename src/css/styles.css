@@ -1,14 +1,11 @@
 :root{
   /* Variables basées sur le design fourni */
-  --color-primary: #ec9d5c;
-  --color-primary-hover: #ec9d5c;;
-  --color-accent: #6bd4b1;
-  --color-highlight: #ebc6b9;
-
+  --color-primary: #EC9D5C;
+  --color-primary-hover: #ffcba0;
+  
   --form-bg: #f0eee9;
   --form-border: var(--color-primary);
-  --form-shadow: var(--color-highlight);
-  --form-focus: var(--color-accent);
+  --form-focus: #000;
   --font-color: #2A293E;
   --font-size: 10pt;
   --font-face: 'Heebo', sans-serif;
@@ -20,10 +17,26 @@
   --text-light: rgba(42, 41, 62, 0.8);
   --muted: rgba(42, 41, 62, 0.65);
   --line: rgba(83, 95, 215, 0.2);
-  --accent: var(--color-primary);
-  --accent2: var(--color-accent);
-  --success: #6bd4b1;
-  --warning: var(--color-highlight);
+  
+  --form-card-bg: var(--form-bg);
+  --form-card-border: #EBC6B9;
+  --form-card-border-top: #EBC6B9;
+  
+  --form-progress-track-bg: rgba(0,0,0,0.1);
+  --form-progress-track-border: rgba(0,0,0,0.2);
+  --form-progress-track-shadow: rgba(0,0,0,0.1);
+  --form-progress-fill-start: var(--form-border);
+  --form-progress-fill-mid: #000;
+  --form-progress-fill-end: var(--form-border);
+  --form-progress-glow-outer: rgba(244, 87, 2, 0.5);
+  --form-progress-glow-inner: rgba(244, 87, 2, 0.3);
+  --form-progress-glow-after: rgba(244, 87, 2, 0.6);
+  
+  --form-button-bg: var(--form-border);
+  --form-button-text: white;
+  --form-button-hover-bg: inherit;
+  --form-button-hover-text: var(--form-border);
+  --form-button-hover-border-bottom: var(--form-border);
 }
 *{box-sizing:border-box}
 html, body {
