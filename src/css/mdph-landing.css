@@ -574,7 +574,11 @@ body.home-page main > * {
 @media (max-width: 768px) {
   .hero-inner {
     flex-direction: column;
-    text-align: left;
+    text-align: center;
+  }
+  
+  .hero-copy {
+    text-align: center;
   }
   
   .hero-title {
@@ -590,11 +594,24 @@ body.home-page main > * {
   .section-title {
     font-size: 22px;
     line-height: 30px;
+    text-align: center;
   }
 
   .section-paragraph {
     font-size: 14px;
     line-height: 20px;
+    text-align: center;
+  }
+
+  .feature {
+    text-align: center;
+    padding: 16px;
+  }
+  
+  .feature-inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
   }
 
   .feature-title {
