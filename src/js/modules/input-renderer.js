@@ -34,11 +34,26 @@ export function renderInput(q, value) {
   }
   
   if (type === 'texte_long' || type === 'textarea') {
+    const charCount = q.showCharCount ? `
+      <div class="char-counter">
+        <span class="char-count">0</span> / ${q.maxLength || 600} caractères
+        ${q.minLength ? `<span class="char-min">(minimum ${q.minLength})</span>` : ''}
+      </div>
+    ` : '';
+
+    const textareaClass = q.showCharCount ? 'input textarea-large' : 'input';
+    const rowsAttr = q.rows ? `rows="${q.rows}"` : (q.showCharCount ? 'rows="10"' : '');
+    
     return `
       <div class="field-container">
         ${q.question ? `<div class="question-title">${q.question}</div>` : ''}
         ${description}
-        <textarea class="input" id="answer" placeholder="${q.placeholder || 'Votre réponse...'}">${value ? String(value) : ''}</textarea>
+        <textarea class="${textareaClass}" id="answer" ${rowsAttr}
+                  placeholder="${q.placeholder || 'Votre réponse...'}"
+                  ${q.minLength ? `minlength="${q.minLength}"` : ''}
+                  ${q.maxLength ? `maxlength="${q.maxLength}"` : ''}
+                  ${q.showCharCount ? 'data-char-counter="true"' : ''}>${value ? String(value) : ''}</textarea>
+        ${charCount}
       </div>`;
   }
 
@@ -86,6 +101,8 @@ export function renderInput(q, value) {
             const checked = selectedValues.includes(optValue) ? 'checked' : '';
             const frequencyFieldId = opt.frequencyField || `freq_${optValue}`;
             const currentFrequency = responses[frequencyFieldId] || '';
+            const textFieldId = opt.pdfField ? `${opt.pdfField}_text` : `${optValue}_text`;
+            const textFieldValue = responses[textFieldId] || '';
             
             return `
               <div class="difficulte-item" data-value="${optValue}">
@@ -96,10 +113,10 @@ export function renderInput(q, value) {
                 </label>
                 
                 ${opt.hasTextField ? `
-                  <div class="text-field" id="text_${optValue}" ${checked ? '' : 'hidden'}>
+                  <div class="text-field-checkbox" id="text_${optValue}" ${checked ? '' : 'hidden'}>
                     <input type="text" placeholder="${opt.textFieldPlaceholder || 'Précisez...'}" 
-                           value="${responses[opt.pdfField + '_text'] || ''}" 
-                           data-field="${opt.pdfField}_text"
+                           value="${textFieldValue}" 
+                           data-field="${textFieldId}"
                            class="text-input" />
                   </div>
                 ` : ''}

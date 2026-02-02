@@ -47,7 +47,10 @@
           "id": "projet_vie",
           "type": "textarea",
           "placeholder": "Exemple : Je souhaite retrouver un quotidien plus stable, avec un rythme adapté à mon état de santé, afin de préserver mon bien-être et de pouvoir me projeter plus sereinement dans l'avenir…",
-          "required": false
+          "required": false,
+          "minLength": 300,
+          "maxLength": 600,
+          "showCharCount": true
         }
       ]
     }

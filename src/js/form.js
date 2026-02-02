@@ -6,6 +6,7 @@ import { updateProgress } from './modules/progress.js';
 import { updateFormHeader } from './modules/form-header.js';
 import { renderIntroductionPage, renderCelebrationPage, renderRecapPage, renderNormalPage } from './modules/page-renderer.js';
 import { next as navNext, prev as navPrev } from './modules/navigation.js';
+import { initCharCounters } from './modules/char-counter.js';
 
 // Variables globales
 let idx = 0;
@@ -55,6 +56,9 @@ function render() {
 
   // Page normale
   renderNormalPage(q, idx, visible, next, prev);
+  
+  // Initialiser les compteurs de caractères après le rendu
+  setTimeout(initCharCounters, 0);
 }
 
 // Fonctions de navigation

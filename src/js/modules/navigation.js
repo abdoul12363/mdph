@@ -5,6 +5,7 @@
 
 import { responses, saveLocal } from './storage.js';
 import { getAnswerFromDom, validateRequired } from './answer-extractor.js';
+import { validateMinLength, getMinLengthErrorMessage } from './min-length-validator.js';
 
 let inFlight = false;
 
@@ -61,6 +62,12 @@ export function next(idx, render, visible) {
           return idx;
         }
 
+        // Validation de la longueur minimale
+        if (!validateMinLength(qi, ans)) {
+          alert(getMinLengthErrorMessage(qi, ans));
+          return idx;
+        }
+
         if (ans !== undefined) {
           responses[qi.id] = ans;
         }
@@ -72,6 +79,12 @@ export function next(idx, render, visible) {
       
       if (q.obligatoire && !validateRequired(q, answer)) {
         alert('Cette question est obligatoire');
+        return idx;
+      }
+      
+      // Validation de la longueur minimale
+      if (!validateMinLength(q, answer)) {
+        alert(getMinLengthErrorMessage(q, answer));
         return idx;
       }
       

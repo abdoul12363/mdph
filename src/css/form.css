@@ -6,6 +6,49 @@
   cursor:pointer;
 }
 
+/* Compteurs de caractères */
+.char-counter {
+  font-size: 12px;
+  color: #6B7A90;
+  margin-top: 8px;
+  text-align: right;
+  transition: color 0.2s ease;
+}
+
+.char-counter .char-count {
+  font-weight: 600;
+}
+
+.char-counter .char-min {
+  font-size: 11px;
+  margin-left: 8px;
+  color: #999;
+}
+
+.char-counter--too-short {
+  color: #E53E3E;
+}
+
+.char-counter--too-short .char-count {
+  color: #E53E3E;
+}
+
+.char-counter--valid {
+  color: #38A169;
+}
+
+.char-counter--valid .char-count {
+  color: #38A169;
+}
+
+.char-counter--too-long {
+  color: #E53E3E;
+}
+
+.char-counter--too-long .char-count {
+  color: #E53E3E;
+}
+
 /* Masquer les boutons de navigation sur les pages récap */
 .hide-nav-buttons #prevBtn,
 .hide-nav-buttons #nextBtn {
@@ -27,6 +70,7 @@
 body.form-page {
   background-color: #f5f5f0; /* Fond beige clair pour le body du formulaire */
   --font-size: 12pt;
+  --option-followup-indent: 38px;
   min-width: 320px; /* Largeur minimale pour éviter le débordement sur très petits écrans */
 }
 
@@ -496,20 +540,22 @@ textarea:-webkit-autofill:focus {
 /* Style spécifique pour le contenu de l'introduction */
 .is-introduction .introduction-page {
   text-align: center;
-  max-width: 600px;
+  max-width: none;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem 1rem;
   background: var(--form-bg);
   border-radius: 2px;
 }
 
- .is-introduction .introduction-page .field-container {
+.is-introduction .introduction-page .field-container {
   margin: 0 auto 1.5rem;
-  max-width: 600px;
+  max-width: none;
+  width: 100%;
   text-align: left;
- }
+}
 
- .is-introduction .introduction-page label.choice {
+.is-introduction .introduction-page label.choice {
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -563,9 +609,9 @@ textarea:-webkit-autofill:focus {
 
  .is-introduction .introduction-page .intro-followup input[type="text"] {
   margin-top: 8px;
-  margin-left: 28px;
-  width: calc(100% - 28px);
-  max-width: 400px;
+  margin-left: 0;
+  width: 100%;
+  max-width: none;
  }
 
 .introduction-page h2 {
@@ -822,6 +868,19 @@ textarea:focus {
 textarea {
   min-height: 120px;
   resize: vertical;
+}
+
+textarea[data-char-counter="true"] {
+  min-height: 320px !important;
+  width: 100% !important;
+  resize: vertical !important;
+}
+
+body.form-page .form-card textarea.textarea-large {
+  height: 320px !important;
+  min-height: 320px !important;
+  width: 100% !important;
+  resize: vertical !important;
 }
 
 /* Style pour les sélecteurs */
@@ -1115,7 +1174,10 @@ textarea {
 }
 
 .text-field-container {
-  margin: 8px 0 16px 24px;
+  margin: 8px 0 16px 0;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: none;
   overflow: hidden;
   max-height: 0;
   opacity: 0;
@@ -1125,7 +1187,10 @@ textarea {
 .text-field-container.visible {
   max-height: 100px;
   opacity: 1;
-  margin: 8px 0 16px 24px;
+  margin: 8px 0 16px 0;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: none;
 }
 
 .radio-option-container {
@@ -1134,28 +1199,57 @@ textarea {
 }
 
 .text-field-inline {
-  margin: 8px 0 0 28px;
+  margin: 8px 0 0 0;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: none;
 }
 
 .text-field-inline input[type="text"] {
   width: 100%;
-  max-width: 400px;
 }
 
 .text-field,
 .text-field-checkbox {
-  margin: 8px 0 0 28px;
+  margin: 8px 0 0 0;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: none;
+}
+
+.difficulte-item .frequency-options {
+  margin: 8px 0 0 0;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: none;
+}
+
+body.form-page .difficultes-with-frequency .text-field {
+  margin-left: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+body.form-page .difficultes-with-frequency .text-field-checkbox {
+  margin: 8px 0 0 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  max-width: none !important;
+}
+
+body.form-page .difficultes-with-frequency .difficulte-item .frequency-options {
+  margin-left: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
 }
 
 .text-field input[type="text"],
 .text-field-checkbox input[type="text"] {
   width: 100%;
-  max-width: 400px;
 }
 
 .text-field-container input[type="text"] {
   width: 100%;
-  max-width: 400px;
   padding: 10px 12px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 2px;

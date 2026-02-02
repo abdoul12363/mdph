@@ -52,8 +52,11 @@
         {
           "id": "explication_demande",
           "type": "textarea",
-          "placeholder": "Exemple : À cause de la fatigue et des douleurs quotidiennes, j'ai des difficultés à assurer une activité professionnelle régulière, ce qui fragilise ma situation financière…",
-          "required": false
+          "placeholder": "Exemple : À cause de la fatigue et des douleurs quotidiennes, j'ai des difficultés à assurer une activité professionnelle régulière, ce qui fragilise ma situation financière…",
+          "required": false,
+          "minLength": 300,
+          "maxLength": 600,
+          "showCharCount": true
         }
       ]
     }
