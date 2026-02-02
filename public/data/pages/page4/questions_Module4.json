@@ -13,7 +13,7 @@
             {"value": "adaptation", "label": "Adapter le quotidien à l'état de santé"},
             {"value": "travail", "label": "Maintenir ou reprendre une activité professionnelle adaptée"},
             {"value": "autonomie", "label": "Améliorer l'autonomie au quotidien"},
-            {"value": "autre_axe", "label": "Autre axe", "hasTextField": true, "textFieldLabel": "Précisez l'axe", "textFieldPlaceholder": "Décrivez votre axe..."}
+            {"value": "autre_axe", "label": "Autre axe (précisez)", "hasTextField": true, "textFieldLabel": "Précisez l'axe", "textFieldPlaceholder": "Décrivez votre axe..."}
           ],
           "required": false
         }

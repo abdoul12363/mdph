@@ -1,6 +1,7 @@
 {
   "title": "Vie quotidienne – Récapitulatif",
-  "description": "✨ Bravo, c'est fait !\nNos experts MDPH ont bien pris en compte tout ce que vous avez partagé sur votre vie quotidienne. Vous avancez !\nSi vous le souhaitez, vous pouvez encore ajuster vos réponses avant de continuer, en toute tranquillité.",
+  "description": "✨ Bravo, c'est fait !",
+  "description2": "Nos experts MDPH ont bien pris en compte tout ce que vous avez partagé sur votre vie quotidienne. Vous avancez !\nSi vous le souhaitez, vous pouvez encore ajuster vos réponses avant de continuer, en toute tranquillité.",
   "isRecap": true,
   "targetQuestionIds": [
     "difficultes_quotidiennes",

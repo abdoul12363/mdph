@@ -47,7 +47,7 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
   let radioOptions = '';
   if (q.type === 'radio' && q.options) {
     radioOptions = `
-      <div class="field-container">
+      <div class="field-container intro-radio-options">
         <div class="choice-grid">
           ${q.options.map(option => `
             <label class="choice">
@@ -66,18 +66,22 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
       const savedText = typeof responses[followUpKey] === 'string' ? responses[followUpKey] : '';
       radioOptions += `
         <div class="field-container intro-followup">
+          ${followUp.prompt ? `
           <div class="introduction-content">
-            <p>${followUp.prompt || ''}</p>
+            <p>${followUp.prompt}</p>
           </div>
+          ` : ''}
           <input type="text" data-intro-followup="text" id="intro_text_${followUpKey}" name="${followUpKey}" value="${savedText}" ${followUp.placeholder ? `placeholder="${followUp.placeholder}"` : ''} />
         </div>
       `;
     } else if (followUp && followUpKey && Array.isArray(followUp.options)) {
       radioOptions += `
         <div class="field-container intro-followup">
+          ${followUp.prompt ? `
           <div class="introduction-content">
-            <p>${followUp.prompt || ''}</p>
+            <p>${followUp.prompt}</p>
           </div>
+          ` : ''}
           <div class="choice-grid">
             ${followUp.options.map(option => `
               <label class="choice">
@@ -324,18 +328,29 @@ export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallb
   
   const container = document.querySelector('.main .container');
   if (container) container.classList.add('is-recap');
-  
-  const descriptionHtml = q.description
-    .replace(/en toute\s*\n\s*tranquillité\./g, 'en toute tranquillité.')
-    .split('\n')
-    .filter(line => line.trim() !== '')
-    .map(line => `<p>${line}</p>`)
-    .join('');
+
+  const toParagraphsHtml = (text) => {
+    const safeText = String(text || '').replace(/en toute\s*\n\s*tranquillité\./g, 'en toute tranquillité.');
+    return safeText
+      .split('\n')
+      .filter(line => line.trim() !== '')
+      .map(line => `<p>${line}</p>`)
+      .join('');
+  };
+
+  const hasDescription2 = typeof q.description2 === 'string' && q.description2.trim() !== '';
+  const leadHtml = hasDescription2 ? toParagraphsHtml(q.description) : '';
+  const descriptionHtml = hasDescription2 ? toParagraphsHtml(q.description2) : toParagraphsHtml(q.description);
 
   const recapHTML = `
-    <div class="recap-page">
+    <div class="recap-page${hasDescription2 ? ' has-recap-lead' : ''}">
       <h1>${q.title}</h1>
       <div class="recap-content">
+        ${hasDescription2 ? `
+          <div class="recap-lead">
+            ${leadHtml}
+          </div>
+        ` : ''}
         <div class="recap-description">
           ${descriptionHtml}
         </div>
@@ -479,6 +494,54 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
             }
           });
         });
+      }
+    }
+
+    if (sectionQ.type === 'radio') {
+      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
+      if (questionDiv) {
+        const radioInputs = questionDiv.querySelectorAll(`input[type="radio"][name="${sectionQ.id}"]`);
+        const textInputs = questionDiv.querySelectorAll('.text-field-inline input[type="text"][data-field]');
+
+        const syncRadioTextFields = () => {
+          const checked = questionDiv.querySelector(`input[type="radio"][name="${sectionQ.id}"]:checked`);
+          const selectedValue = checked ? String(checked.value) : '';
+
+          const wrappers = questionDiv.querySelectorAll('.text-field-inline');
+          wrappers.forEach(wrapper => {
+            const forValue = wrapper.getAttribute('data-text-for') || '';
+            const shouldShow = selectedValue && String(forValue) === String(selectedValue);
+            wrapper.style.display = shouldShow ? 'block' : 'none';
+
+            if (!shouldShow) {
+              const input = wrapper.querySelector('input[type="text"][data-field]');
+              if (input) {
+                const fieldId = input.getAttribute('data-field');
+                input.value = '';
+                if (fieldId && responses[fieldId] !== undefined) {
+                  delete responses[fieldId];
+                }
+              }
+            }
+          });
+          saveLocal(true);
+        };
+
+        radioInputs.forEach(radio => {
+          radio.addEventListener('change', syncRadioTextFields);
+        });
+
+        textInputs.forEach(input => {
+          input.addEventListener('input', function() {
+            const fieldId = this.getAttribute('data-field');
+            if (fieldId) {
+              responses[fieldId] = String(this.value || '');
+              saveLocal(true);
+            }
+          });
+        });
+
+        syncRadioTextFields();
       }
     }
     

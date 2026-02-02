@@ -1,6 +1,6 @@
 .nav-button{
   background:transparent;
-  border:1px solid rgba(255,255,255,.12);
+  border:1px solid #ffffff1f;
   padding:8px 10px;
   border-radius:10px;
   cursor:pointer;
@@ -34,23 +34,44 @@ body.form-page {
   position: relative;
 }
 
-body.form-page::before {
+body.form-page .main {
+  position: relative;
+}
+
+body.form-page .main::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
-  background-image: url('/public/34886429_8239756.svg');
+  background-image: url('/34886429_8239756.svg');
   background-size: cover;
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
   filter: brightness(0.9);
   z-index: 0;
   pointer-events: none;
 }
 
-body.form-page .header,
-body.form-page .main {
+body.form-page .main > * {
   position: relative;
   z-index: 1;
+}
+
+body.form-page .header {
+  position: relative;
+  z-index: 1;
+}
+
+body.form-page .header {
+  background-color: #FFFEFD;
+}
+
+body.form-page .nav-link:hover {
+  color: #EC9D5C;
+  background: transparent;
+}
+
+body.form-page .nav-link::after {
+  background-color: #EC9D5C;
 }
 
 @media (min-width: 1024px) {
@@ -90,7 +111,24 @@ body.form-page .main {
     max-width: 100%;
     box-sizing: border-box;
   }
-  
+
+  body.form-page .header {
+    padding: 10px 0;
+  }
+
+  body.form-page .header-inner {
+    height: 52px;
+  }
+
+  body.form-page .nav {
+    gap: 12px;
+  }
+
+  body.form-page .nav-link {
+    font-size: 12px;
+    padding: 6px 0;
+  }
+
   .form-card {
     padding: 30px 15px !important;
     margin: 10px 0 !important;
@@ -245,9 +283,37 @@ body.form-page .main {
 }
 
 .recap-description p:first-child {
-  font-size: 1.1em;
-  color: var(--form-focus);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary) !important;
+  margin-top: 0;
   margin-bottom: 1rem;
+}
+
+.recap-page.has-recap-lead .recap-lead p {
+  margin: 0.75rem 0;
+  padding: 0;
+}
+
+.recap-page.has-recap-lead .recap-lead p:first-child {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary) !important;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.recap-page.has-recap-lead .recap-description {
+  font-size: 1.1rem !important;
+  line-height: 1.6;
+}
+
+.recap-page.has-recap-lead .recap-description p:first-child {
+  font-size: inherit;
+  font-weight: inherit;
+  color: var(--font-color) !important;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
 }
 
 .progress-fill{
@@ -483,6 +549,25 @@ textarea:-webkit-autofill:focus {
   display: none;
  }
 
+ .is-introduction .introduction-page .intro-radio-options {
+  margin-bottom: 0.25rem;
+ }
+
+ .is-introduction .introduction-page .intro-radio-options .choice-grid {
+  margin-bottom: 0;
+ }
+
+ .is-introduction .introduction-page .intro-followup {
+  margin-top: 0;
+ }
+
+ .is-introduction .introduction-page .intro-followup input[type="text"] {
+  margin-top: 8px;
+  margin-left: 28px;
+  width: calc(100% - 28px);
+  max-width: 400px;
+ }
+
 .introduction-page h2 {
   font-size: 24px;
   margin-bottom: 1.5rem;
@@ -707,13 +792,13 @@ textarea {
   border: 1px solid rgba(0,0,0,.1) !important;
   border-radius: 4px !important;
   color: var(--font-color) !important;
-  padding: 8px 12px !important;
+  padding: 12px 14px !important;
   margin: 4px 0 !important;
   font-family: var(--font-face) !important;
   font-size: var(--font-size) !important;
   transition: all 0.2s ease !important;
   box-sizing: border-box !important;
-  min-height: 36px !important;
+  min-height: 44px !important;
 }
 
 /* Style au focus - FORCE L'APPLICATION */
@@ -805,7 +890,7 @@ label,
  .coordonnees-page .field-container .input,
  .coordonnees-page .field-container input[type="text"],
  .coordonnees-page .field-container input[type="email"] {
-  padding: 10px 12px !important;
+  padding: 12px 14px !important;
   margin: 4px 0 !important;
  }
 
@@ -1043,6 +1128,31 @@ textarea {
   margin: 8px 0 16px 24px;
 }
 
+.radio-option-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.text-field-inline {
+  margin: 8px 0 0 28px;
+}
+
+.text-field-inline input[type="text"] {
+  width: 100%;
+  max-width: 400px;
+}
+
+.text-field,
+.text-field-checkbox {
+  margin: 8px 0 0 28px;
+}
+
+.text-field input[type="text"],
+.text-field-checkbox input[type="text"] {
+  width: 100%;
+  max-width: 400px;
+}
+
 .text-field-container input[type="text"] {
   width: 100%;
   max-width: 400px;
@@ -1186,7 +1296,7 @@ body.form-page .main select:focus {
 .text-input {
   border: 2px solid rgba(0,0,0,.2) !important;
   border-radius: 6px !important;
-  padding: 14px 18px !important;
+  padding: 16px 18px !important;
   margin: 8px 0 !important;
   background: var(--form-bg) !important;
   font-family: var(--font-face) !important;

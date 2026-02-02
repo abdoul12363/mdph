@@ -74,7 +74,7 @@
               "pdfField": "difficulte_autre",
               "hasTextField": true,
               "textFieldLabel": "Précisez votre difficulté",
-              "textFieldPlaceholder": "Décrivez votre difficulté... ___________________________",
+              "textFieldPlaceholder": "Décrivez votre difficulté...",
               "frequencyField": "freq_autre"
             }
           ],

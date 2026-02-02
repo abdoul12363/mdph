@@ -124,6 +124,7 @@ export async function loadAllQuestions() {
             type: 'recap',
             title: pageData.title,
             description: pageData.description,
+            description2: pageData.description2,
             isRecap: true,
             targetQuestionIds: pageData.targetQuestionIds,
             buttons: pageData.buttons,

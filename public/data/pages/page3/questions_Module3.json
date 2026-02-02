@@ -39,7 +39,7 @@
             {"value": "compenser", "label": "Compenser une perte de revenus"},
             {"value": "autonomie", "label": "Maintenir une autonomie suffisante"},
             {"value": "handicap", "label": "Faire face aux conséquences du handicap"},
-            {"value": "autre_objectif", "label": "Autre objectif", "hasTextField": true, "textFieldLabel": "Précisez votre objectif", "textFieldPlaceholder": "Décrivez votre objectif..."}
+            {"value": "autre_objectif", "label": "Autre objectif (précisez)", "hasTextField": true, "textFieldLabel": "Précisez votre objectif", "textFieldPlaceholder": "Décrivez votre objectif..."}
           ],
           "required": false
         }

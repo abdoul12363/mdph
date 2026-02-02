@@ -1,6 +1,7 @@
 {
   "title": "Demandes et besoins – Récapitulatif",
-  "description": "✔️ Parfait, c'est noté.\nVos demandes et vos besoins sont bien enregistrés.\n\nSi vous souhaitez préciser quelque chose, vous pouvez le faire maintenant avant de continuer",
+  "description": "✔️ Parfait, c'est noté.",
+  "description2": "Vos demandes et vos besoins sont bien enregistrés.\n\nSi vous souhaitez préciser quelque chose, vous pouvez le faire maintenant avant de continuer",
   "isRecap": true,
   "targetQuestionIds": [
     "type_demande",

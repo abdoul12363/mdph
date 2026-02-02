@@ -9,6 +9,19 @@ import { responses } from './storage.js';
 export function renderInput(q, value) {
   const type = q.type || q.type_champ;
   const description = q.description ? `<div class="field-description">${q.description}</div>` : '';
+
+  const shouldAutoAddTextField = (optValue, optLabel, opt) => {
+    if (!opt || opt.hasTextField) return false;
+    if (typeof optLabel === 'string' && /^\s*autre\b/i.test(optLabel)) return true;
+    if (typeof optValue === 'string' && /^autre/i.test(optValue)) return true;
+    return false;
+  };
+
+  const withPrecisez = (label) => {
+    const base = String(label || '');
+    if (/pr\s*é\s*c\s*i\s*s\s*e\s*z/i.test(base)) return base;
+    return `${base} (précisez)`;
+  };
   
   if (type === 'text' || type === 'email') {
     const inputType = type === 'email' && q.className !== 'coordonnees-page' ? 'email' : 'text';
@@ -185,6 +198,11 @@ export function renderInput(q, value) {
           ${q.options.map(opt => {
             const optValue = opt.value || opt;
             const optLabel = opt.label || opt;
+
+            const autoAddText = shouldAutoAddTextField(optValue, optLabel, opt);
+            const hasTextField = !!(opt && opt.hasTextField) || autoAddText;
+            const textFieldId = (opt && opt.pdfField) ? `${opt.pdfField}_text` : `${optValue}_text`;
+            const textFieldValue = responses[textFieldId] || '';
             
             // Handle both boolean and string comparisons
             let isChecked;
@@ -195,11 +213,20 @@ export function renderInput(q, value) {
             }
             
             const checked = isChecked ? 'checked' : '';
+
+            const finalLabel = autoAddText ? withPrecisez(optLabel) : String(optLabel);
             return `
-              <label class="choice">
-                <input type="radio" name="${q.id}" value="${optValue}" ${checked}/>
-                <span>${optLabel}</span>
-              </label>`;
+              <div class="radio-option-container" data-value="${optValue}">
+                <label class="choice">
+                  <input type="radio" name="${q.id}" value="${optValue}" ${checked} data-has-text="${hasTextField ? 'true' : 'false'}" />
+                  <span>${finalLabel}</span>
+                </label>
+                ${hasTextField ? `
+                  <div class="text-field-inline" data-text-for="${optValue}" style="${isChecked ? '' : 'display:none'}">
+                    <input type="text" placeholder="${(opt && opt.textFieldPlaceholder) ? opt.textFieldPlaceholder : 'Précisez...'}" value="${textFieldValue}" data-field="${textFieldId}" class="text-input" />
+                  </div>
+                ` : ''}
+              </div>`;
           }).join('')}
         </div>
       </div>`;
