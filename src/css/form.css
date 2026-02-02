@@ -1204,6 +1204,7 @@ body.form-page .main select:focus {
 }
 
 .frequency-label {
+  font-size: calc(var(--font-size) * 0.85) !important;
   font-weight: bold;
   margin-bottom: 8px;
   color: var(--font-color);
@@ -1217,6 +1218,7 @@ body.form-page .main select:focus {
 }
 
 .frequency-choice {
+  font-size: calc(var(--font-size) * 0.85) !important;
   display: flex;
   align-items: center;
   cursor: pointer;

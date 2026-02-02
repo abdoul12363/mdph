@@ -1,7 +1,7 @@
 :root{
   /* Variables basées sur le design fourni */
   --color-primary: #EC9D5C;
-  --color-primary-hover: #ffcba0;
+  --color-primary-hover: #f7a765;
   
   --form-bg: #f0eee9;
   --form-border: var(--color-primary);
@@ -22,15 +22,15 @@
   --form-card-border: #EBC6B9;
   --form-card-border-top: #EBC6B9;
   
-  --form-progress-track-bg: rgba(0,0,0,0.1);
-  --form-progress-track-border: rgba(0,0,0,0.2);
-  --form-progress-track-shadow: rgba(0,0,0,0.1);
-  --form-progress-fill-start: var(--form-border);
-  --form-progress-fill-mid: #000;
-  --form-progress-fill-end: var(--form-border);
-  --form-progress-glow-outer: rgba(244, 87, 2, 0.5);
-  --form-progress-glow-inner: rgba(244, 87, 2, 0.3);
-  --form-progress-glow-after: rgba(244, 87, 2, 0.6);
+  --form-progress-track-bg: #ebf3f3;
+  --form-progress-track-border: rgba(197, 228, 228, 0.95);
+  --form-progress-track-shadow: rgba(150, 179, 179, 0.7);
+  --form-progress-fill-start: #A7D3D3;
+  --form-progress-fill-mid: #9ECACA;
+  --form-progress-fill-end: #A7D3D3;
+  --form-progress-glow-outer: rgba(206, 228, 228, 0.55);
+  --form-progress-glow-inner: rgba(206, 228, 228, 0.35);
+  --form-progress-glow-after: rgba(206, 228, 228, 0.65);
   
   --form-button-bg: var(--form-border);
   --form-button-text: white;
@@ -327,15 +327,15 @@ section, .section{background:none !important;padding:26px 0}
 
 /* Styles pour les icônes de la section d'accueil */
 .fa-check-circle {
-  color: #28a745 !important; /* Vert de succès pour la vérification */
+  color: #EC9D5C !important; /* Vert de succès pour la vérification */
 }
 
 .fa-comments {
-  color: #4a6baf !important; /* Bleu pour la communication */
+  color: #EC9D5C !important; /* Bleu pour la communication */
 }
 
 .fa-file-alt {
-  color: #9c27b0 !important; /* Violet pour les documents */
+  color: #EC9D5C !important; /* Violet pour les documents */
 }
 .card p{margin:0;color:var(--muted);line-height:1.5;font-size:15px}
 code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px}

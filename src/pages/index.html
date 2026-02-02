@@ -47,70 +47,6 @@
             .hero-title, .hero-paragraph { max-width: none !important; }
         }
 
-        .landing-carousel {
-            position: relative;
-            width: 100%;
-            max-width: 720px;
-            margin: 24px auto 0;
-            aspect-ratio: 16 / 9;
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        .landing-carousel .carousel-viewport {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .landing-carousel .carousel-slide {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity 260ms ease;
-        }
-
-        .landing-carousel .carousel-slide.is-active {
-            opacity: 1;
-        }
-
-        .landing-carousel .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 44px;
-            height: 44px;
-            border-radius: 999px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.85);
-            color: rgba(0, 0, 0, 0.8);
-            cursor: pointer;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            line-height: 1;
-        }
-
-        .landing-carousel .carousel-btn:hover {
-            background: rgba(255, 255, 255, 1);
-        }
-
-        .landing-carousel .carousel-btn.prev { left: 12px; }
-        .landing-carousel .carousel-btn.next { right: 12px; }
-
-        @media (prefers-reduced-motion: reduce) {
-            .landing-carousel .carousel-slide {
-                transition: none;
-            }
-        }
-
         /* Styles des modales */
         .modal-overlay {
             position: fixed;
@@ -236,7 +172,7 @@
         }
 
         .modal-section a {
-            color: #2596be;
+            color: #EC9D5C;
             text-decoration: none;
         }
 
@@ -283,64 +219,6 @@
                             <p class="hero-paragraph">Handi’Accés vous aide à mettre des mots clairs sur vos difficultés quotidiennes, afin de rédiger la partie “Projet de vie / B - Vie quotidienne” du dossier MDPH (cerfa n°15692*01).</p>
                             <div class="hero-cta">
                                 <a class="button button-primary" href="/form">Commencer</a>
-                                <a class="button" href="#comment-ca-marche" onclick="event.preventDefault(); document.querySelector('#comment-ca-marche').scrollIntoView({ behavior: 'smooth' });">Comment ça marche</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="features section" id="comment-ca-marche">
-                <div class="container">
-                    <div class="features-inner section-inner has-bottom-divider">
-                        <div class="features-header text-center">
-                            <span class="glass-badge">Processus simple</span>
-                            <h2 class="section-title mt-0">Comment ça marche ?</h2>
-                            <p class="section-paragraph">Handi’Accés vous aide à mettre des mots clairs sur vos difficultés quotidiennes, afin de rédiger la partie “Projet de vie / B - Vie quotidienne” du dossier MDPH</p>
-                            <div class="features-image">
-                                <div class="landing-carousel" data-carousel>
-                                    <button class="carousel-btn prev" type="button" aria-label="Image précédente">‹</button>
-                                    <div class="carousel-viewport">
-                                        <img class="carousel-slide is-active" src="/fauteuil-roulant.png" alt="Illustration CERFA">
-                                        <img class="carousel-slide" src="/fauteuil-roulant.png" alt="Illustration formulaire">
-                                    </div>
-                                    <button class="carousel-btn next" type="button" aria-label="Image suivante">›</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="features-wrap">
-                            <div class="feature is-revealing">
-                                <div class="feature-inner">
-                                    <div class="feature-icon">
-                                        <span class="feature-icon-text" aria-hidden="true">📝</span>
-                                    </div>
-                                    <div class="feature-content">
-                                        <h3 class="feature-title mt-0">1. Remplis le formulaire</h3>
-                                        <p class="text-sm mb-0">Réponds aux questions une par une, simplement et sans te presser.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="feature is-revealing">
-                                <div class="feature-inner">
-                                    <div class="feature-icon">
-                                        <span class="feature-icon-text" aria-hidden="true">✅</span>
-                                    </div>
-                                    <div class="feature-content">
-                                        <h3 class="feature-title mt-0">2. Valide tes réponses</h3>
-                                        <p class="text-sm mb-0">On vérifie que tout est bien rempli et on te guide si quelque chose manque.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="feature is-revealing">
-                                <div class="feature-inner">
-                                    <div class="feature-icon">
-                                        <span class="feature-icon-text" aria-hidden="true">📄</span>
-                                    </div>
-                                    <div class="feature-content">
-                                        <h3 class="feature-title mt-0">3. Reçois ton dossier</h3>
-                                        <p class="text-sm mb-0">Télécharge ton CERFA prêt à l'emploi, parfaitement mis en page et conforme.</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -351,11 +229,11 @@
                 <div class="container">
                     <div class="cta-inner section-inner">
                         <div class="cta-header text-center">
-                            <span class="glass-badge">Commencez gratuitement</span>
-                            <h2 class="section-title mt-0">Prêt à commencer ?</h2>
-                            <p class="section-paragraph">Vos informations restent sur votre appareil. Aucune donnée n'est stockée sur nos serveurs. Le formulaire est traité localement pour générer votre PDF, garantissant une confidentialité maximale.</p>
+                            <span class="glass-badge">Gratuit rapide et confidentiel</span>
+                            <h2 class="section-title mt-0">Commencez maintenant</h2>
+                            <p class="section-paragraph">Répondez à quelques questions, puis téléchargez votre PDF prêt à être joint à votre dossier MDPH. Vos réponses restent sur votre appareil : aucune donnée n'est stockée sur nos serveurs.</p>
                             <div class="cta-cta">
-                                <a class="button button-primary" href="/form">Commencer</a>
+                                <a class="button button-primary" href="/form">Démarrer mon parcours</a>
                             </div>
                         </div>
                     </div>
@@ -514,56 +392,6 @@
     </div>
 
     <script>
-        (function () {
-            var carousel = document.querySelector('[data-carousel]');
-            if (!carousel) return;
-
-            var slides = Array.prototype.slice.call(carousel.querySelectorAll('.carousel-slide'));
-            if (!slides.length) return;
-
-            var prevBtn = carousel.querySelector('.carousel-btn.prev');
-            var nextBtn = carousel.querySelector('.carousel-btn.next');
-            var index = slides.findIndex(function (el) { return el.classList.contains('is-active'); });
-            if (index < 0) index = 0;
-
-            function show(i) {
-                slides.forEach(function (s) { s.classList.remove('is-active'); });
-                slides[i].classList.add('is-active');
-                index = i;
-            }
-
-            function next() {
-                show((index + 1) % slides.length);
-            }
-
-            function prev() {
-                show((index - 1 + slides.length) % slides.length);
-            }
-
-            if (prevBtn) prevBtn.addEventListener('click', prev);
-            if (nextBtn) nextBtn.addEventListener('click', next);
-
-            var intervalId = null;
-            function startAuto() {
-                stopAuto();
-                intervalId = window.setInterval(next, 6500);
-            }
-
-            function stopAuto() {
-                if (intervalId) {
-                    window.clearInterval(intervalId);
-                    intervalId = null;
-                }
-            }
-
-            carousel.addEventListener('mouseenter', stopAuto);
-            carousel.addEventListener('mouseleave', startAuto);
-            carousel.addEventListener('focusin', stopAuto);
-            carousel.addEventListener('focusout', startAuto);
-
-            startAuto();
-        })();
-
         // Gestion des modales
         (function() {
             const modalTriggers = document.querySelectorAll('[data-modal]');

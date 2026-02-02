@@ -112,7 +112,7 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
           </label>
         </div>
       ` : ''}
-      <button id="startBtn" class="btn primary" ${shouldDisableStart ? 'disabled' : ''}>${q.buttonText || (q.isIntroduction ? 'J\'ai compris' : 'Démarrer')}</button>
+      <button id="startBtn" class="btn btn-primary" ${shouldDisableStart ? 'disabled' : ''}>${q.buttonText || (q.isIntroduction ? 'J\'ai compris' : 'Démarrer')}</button>
     </div>
   `;
   
