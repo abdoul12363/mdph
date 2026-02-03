@@ -163,17 +163,6 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
           }
           responses[radio.name] = radio.value;
           saveLocal(true);
-
-          if (q && q.id === 'final_payment_expert') {
-            if (radio.value === 'oui') {
-              window.location.href = '/telecharger-le-pdf-premium';
-              return;
-            }
-            if (radio.value === 'non') {
-              window.location.href = '/telecharger-le-pdf';
-              return;
-            }
-          }
           render();
         });
       });
@@ -229,17 +218,6 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
           }
         }
       } catch (e) {
-      }
-
-      if (q && q.id === 'final_payment_expert') {
-        if (responses[radioKey] === 'oui') {
-          window.location.href = '/telecharger-le-pdf-premium';
-          return;
-        }
-        if (responses[radioKey] === 'non') {
-          window.location.href = '/telecharger-le-pdf';
-          return;
-        }
       }
 
       if (nextCallback) {

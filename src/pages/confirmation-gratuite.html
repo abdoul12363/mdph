@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Votre récapitulatif est prêt</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Heebo:400,700|IBM+Plex+Sans:600" />
+  <link rel="stylesheet" href="/src/css/styles.css" />
+</head>
+<body class="home-page">
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand"></div>
+      <nav class="nav">
+        <a class="nav-link" href="/">Accueil</a>
+        <a class="nav-link" href="/form">Formulaire</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="section">
+      <div class="container">
+        <div class="card form-card">
+          <div id="freeConfirmArea" style="padding: 10px 2px;">
+            <h1 style="margin-top: 0;">Votre récapitulatif est prêt</h1>
+            <p class="muted">Vous pouvez télécharger votre projet de vie tel que vous l’avez rédigé.</p>
+
+            <div class="form-actions" style="justify-content: flex-start; gap: 12px;">
+              <a class="btn btn-primary" id="downloadBtn" href="#">Télécharger le PDF</a>
+              <a class="btn" href="/finaliser-projet-de-vie">Retour</a>
+            </div>
+
+            <div style="margin-top: 18px;">
+              <p class="muted" style="margin-bottom: 10px;">Nous restons disponibles si vous souhaitez un accompagnement plus tard.</p>
+              <p class="muted" style="margin-bottom: 0;">Email : support@exemple.fr</p>
+              <p class="muted" style="margin-top: 6px;">Téléphone : 00 00 00 00 00</p>
+            </div>
+
+            <p class="muted" id="downloadStatus" style="margin-top:12px"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/src/js/confirmation-gratuite.js" type="module"></script>
+</body>
+</html>

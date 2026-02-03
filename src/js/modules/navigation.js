@@ -50,6 +50,8 @@ export function next(idx, render, visible) {
       return idx;
     }
 
+    const isLastQuestion = idx === visible.length - 1;
+
     const range = getSectionRange(visible, idx);
     if (range) {
       for (let i = range.start; i <= range.end; i += 1) {
@@ -73,6 +75,17 @@ export function next(idx, render, visible) {
         }
       }
       saveLocal(true);
+
+      if (range.end === visible.length - 1) {
+        try {
+          if (typeof window !== 'undefined') {
+            window.location.href = '/finaliser-projet-de-vie';
+          }
+        } catch {
+        }
+        return idx;
+      }
+
       idx = range.end + 1;
     } else {
       const answer = getAnswerFromDom(q);
@@ -91,6 +104,16 @@ export function next(idx, render, visible) {
       if (answer !== undefined) {
         responses[q.id] = answer;
         saveLocal(true);
+      }
+
+      if (isLastQuestion) {
+        try {
+          if (typeof window !== 'undefined') {
+            window.location.href = '/finaliser-projet-de-vie';
+          }
+        } catch {
+        }
+        return idx;
       }
       
       idx++;

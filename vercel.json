@@ -24,6 +24,14 @@
     {
       "src": "src/api/projet-de-vie-premium.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "src/api/create-checkout-session.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "src/api/send-paid-pdf.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -43,12 +51,38 @@
       "methods": ["POST"]
     },
     {
+      "src": "/api/create-checkout-session",
+      "dest": "/src/api/create-checkout-session.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/send-paid-pdf",
+      "dest": "/src/api/send-paid-pdf.js",
+      "methods": ["POST"]
+    },
+    {
       "src": "/telecharger-le-pdf",
       "dest": "/src/pages/telecharger-le-pdf.html"
     },
     {
       "src": "/telecharger-le-pdf-premium",
       "dest": "/src/pages/telecharger-le-pdf-premium.html"
+    },
+    {
+      "src": "/finaliser-projet-de-vie",
+      "dest": "/src/pages/finaliser-projet-de-vie.html"
+    },
+    {
+      "src": "/confirmation-gratuite",
+      "dest": "/src/pages/confirmation-gratuite.html"
+    },
+    {
+      "src": "/paiement",
+      "dest": "/src/pages/paiement.html"
+    },
+    {
+      "src": "/paiement-success",
+      "dest": "/src/pages/paiement-success.html"
     },
     {
       "src": "/form",
