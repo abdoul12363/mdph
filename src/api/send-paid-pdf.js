@@ -114,6 +114,8 @@ export default async function handler(req, res) {
     return json(res, 405, { error: 'Method not allowed. Use POST.' });
   }
 
+  return json(res, 410, { error: 'Endpoint deprecated. Use Mollie flow and /api/download-paid-pdf.' });
+
   try {
     const payload = req.body && typeof req.body === 'object' ? req.body : {};
     const sessionId = String(payload.sessionId || '');

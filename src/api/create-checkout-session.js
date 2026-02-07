@@ -1,6 +1,7 @@
 function asOrigin(req) {
-  const proto = req.headers['x-forwarded-proto'] || 'https';
-  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  const host = req.headers['x-forwarded-host'] || req.headers.host || 'localhost';
+  const isLocal = /localhost|127\.0\.0\.1|\[::1\]/i.test(host);
+  const proto = isLocal ? 'http' : (req.headers['x-forwarded-proto'] || 'https');
   return `${proto}://${host}`;
 }
 
@@ -10,25 +11,26 @@ function json(res, statusCode, body) {
   res.end(JSON.stringify(body));
 }
 
-async function stripeRequest({ method, path, body }) {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) throw new Error('Missing STRIPE_SECRET_KEY');
+async function mollieCreatePayment({ amountValue, description, redirectUrl, webhookUrl, metadata }) {
+  const apiKeyRaw = process.env.MOLLIE_API_KEY;
+  const apiKey = String(apiKeyRaw || '').replace(/[\r\n]+/g, '').trim();
+  if (!apiKey) throw new Error('Missing MOLLIE_API_KEY');
 
-  const url = `https://api.stripe.com${path}`;
-  const headers = {
-    Authorization: `Bearer ${key}`,
-  };
+  const resp = await fetch('https://api.mollie.com/v2/payments', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(Object.assign(
+      { amount: { currency: 'EUR', value: amountValue }, description, redirectUrl, metadata },
+      webhookUrl ? { webhookUrl } : {}
+    )),
+  });
 
-  let payload;
-  if (body) {
-    headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    payload = body.toString();
-  }
-
-  const resp = await fetch(url, { method, headers, body: payload });
   const text = await resp.text().catch(() => '');
   if (!resp.ok) {
-    throw new Error(`Stripe error ${resp.status}: ${text || resp.statusText}`);
+    throw new Error(`Mollie error ${resp.status}: ${text || resp.statusText}`);
   }
   try {
     return JSON.parse(text);
@@ -45,15 +47,10 @@ export default async function handler(req, res) {
   try {
     const payload = req.body && typeof req.body === 'object' ? req.body : {};
     const offer = String(payload.offer || '');
-    const email = String(payload.email || '');
     const advisor = payload.advisor ? String(payload.advisor) : '';
 
     if (offer !== '49' && offer !== '79') {
       return json(res, 400, { error: 'Invalid offer' });
-    }
-
-    if (!email || !email.includes('@')) {
-      return json(res, 400, { error: 'Missing email' });
     }
 
     if (offer === '79' && !advisor) {
@@ -62,38 +59,39 @@ export default async function handler(req, res) {
 
     const origin = asOrigin(req);
 
-    const amount = offer === '49' ? 4900 : 7900;
+    const amountCents = offer === '49' ? 4900 : 7900;
     const productName = offer === '49'
       ? 'Projet de vie structuré pour la MDPH'
       : 'Accompagnement personnalisé (projet de vie + échange)';
 
-    const params = new URLSearchParams();
-    params.set('mode', 'payment');
-    params.set('payment_method_types[0]', 'card');
-    params.set('customer_email', email);
+    const amountValue = (amountCents / 100).toFixed(2);
+    const redirectUrl = offer === '79'
+      ? `${origin}/prendre-rendez_vous`
+      : `${origin}/telecharger-votre-pdf`;
+    const isLocal = /localhost|127\.0\.0\.1|\[::1\]/i.test(origin);
+    const webhookUrl = isLocal ? undefined : `${origin}/api/mollie-webhook`;
 
-    params.set('line_items[0][quantity]', '1');
-    params.set('line_items[0][price_data][currency]', 'eur');
-    params.set('line_items[0][price_data][unit_amount]', String(amount));
-    params.set('line_items[0][price_data][product_data][name]', productName);
-
-    params.set('metadata[offer]', offer);
-    if (advisor) params.set('metadata[advisor]', advisor);
-
-    params.set('success_url', `${origin}/paiement-success?session_id={CHECKOUT_SESSION_ID}`);
-    params.set('cancel_url', `${origin}/paiement?offer=${encodeURIComponent(offer)}${advisor ? `&advisor=${encodeURIComponent(advisor)}` : ''}`);
-
-    const session = await stripeRequest({
-      method: 'POST',
-      path: '/v1/checkout/sessions',
-      body: params,
+    const payment = await mollieCreatePayment({
+      amountValue,
+      description: productName,
+      redirectUrl,
+      webhookUrl,
+      metadata: {
+        offer,
+        advisor: advisor || undefined,
+      },
     });
 
-    if (!session || !session.url) {
-      return json(res, 500, { error: 'Stripe session creation failed' });
+    const checkoutUrl = payment?._links?.checkout?.href;
+    const paymentId = payment?.id;
+    if (!checkoutUrl || !paymentId) {
+      return json(res, 500, { error: 'Mollie payment creation failed' });
     }
 
-    return json(res, 200, { url: session.url });
+    return json(res, 200, {
+      url: checkoutUrl,
+      paymentId,
+    });
   } catch (e) {
     console.error(e);
     return json(res, 500, { error: 'Checkout session failed', details: String(e?.message || e) });

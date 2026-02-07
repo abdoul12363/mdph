@@ -298,6 +298,8 @@ body.home-page .card p {
 .pricing-body .form-actions .btn{font-size:12px;padding:8px 10px;min-height:36px;white-space:normal;line-height:1.25}
 .pricing-body .form-actions .btn-primary{font-size:12px;padding:8px 10px;min-height:36px}
 .pricing-body .form-actions .btn-secondary{font-size:12px;padding:8px 10px;min-height:36px}
+.pricing-body .form-actions .btn{width:100%;justify-content:center;text-align:center}
+
 .pricing-body .choice{padding:6px 8px}
 .pricing-body .choice img{width:28px;height:28px}
 .pricing-body .choice div{font-size:12px}

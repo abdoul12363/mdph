@@ -30,17 +30,83 @@ function setSelectedAdvisor(advisor) {
   }
 }
 
+async function startPayment(offer, advisor) {
+  try {
+    setStatus('Redirection vers le paiement…');
+    const resp = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ offer, advisor }),
+    });
+    if (!resp.ok) {
+      let details = '';
+      try { details = await resp.text(); } catch {}
+      throw new Error(details || `Erreur HTTP: ${resp.status}`);
+    }
+    const data = await resp.json();
+    if (!data || !data.url) throw new Error('URL de paiement manquante');
+    try {
+      if (data.paymentId) sessionStorage.setItem('mollie_payment_id', String(data.paymentId));
+    } catch {}
+    window.location.href = data.url;
+  } catch (e) {
+    try { console.error(e); } catch {}
+    setStatus('Impossible de démarrer le paiement.');
+  }
+}
+
+async function downloadFilledPdf() {
+  try {
+    setStatus('Génération du PDF…');
+    const payload = responses && typeof responses === 'object' ? responses : {};
+
+    const resp = await fetch('/api/fill', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!resp.ok) {
+      let details = '';
+      try {
+        details = await resp.text();
+      } catch {
+      }
+      throw new Error(details || `Erreur HTTP: ${resp.status}`);
+    }
+
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'cerfa_rempli.pdf';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setStatus('PDF prêt.');
+  } catch (e) {
+    try {
+      console.error(e);
+    } catch {
+    }
+    setStatus('Impossible de générer le PDF.');
+  }
+}
+
 function renderAccordion(openOfferId = null) {
   const root = document.getElementById('pricingAccordion');
   if (!root) return;
 
   const advisors = [
-    { id: 'lola', prenom: 'Lola', role: 'Conseillère', score: 'Clarté 10/10', img: '/ilustration1.png' },
-    { id: 'nina', prenom: 'Nina', role: 'Conseillère', score: 'Clarté 9/10', img: '/ilustration1.png' },
-    { id: 'adam', prenom: 'Adam', role: 'Conseiller', score: 'Clarté 8/10', img: '/ilustration1.png' },
+    { id: 'conseiller', prenom: 'Conseiller', role: 'Conseiller', score: 'Clarté 10/10', img: '/photo_5783179550492659090_y.jpg' },
   ];
 
-  const selected = getSelectedAdvisor();
+  let selected = getSelectedAdvisor();
+  if (!selected) {
+    selected = advisors[0];
+    setSelectedAdvisor(selected);
+  }
 
   root.innerHTML = `
     <div class="pricing-item" data-offer="free">
@@ -58,7 +124,7 @@ function renderAccordion(openOfferId = null) {
           <li>Aucun accompagnement</li>
         </ul>
         <div class="form-actions">
-          <a class="btn btn-primary" href="/confirmation-gratuite">Continuer</a>
+          <button class="btn btn-primary" id="downloadFreePdfBtn" type="button">Continuer</button>
         </div>
       </div>
     </div>
@@ -77,10 +143,10 @@ function renderAccordion(openOfferId = null) {
           <li>Mise en cohérence de l’ensemble</li>
           <li>PDF final prêt à être utilisé</li>
           <li>Aucun rendez-vous inclus</li>
-          <li>Envoi par email après paiement</li>
+          <li>Téléchargement du PDF après paiement</li>
         </ul>
         <div class="form-actions">
-          <a class="btn btn-primary" href="/paiement?offer=49">Continuer</a>
+          <button class="btn btn-primary" id="pay49Btn" type="button">Continuer</button>
         </div>
       </div>
     </div>
@@ -101,7 +167,7 @@ function renderAccordion(openOfferId = null) {
           <li>Un échange individuel de 30 minutes</li>
           <li>Réponses adaptées à la situation</li>
           <li>Ajustements complémentaires si besoin</li>
-          <li>PDF envoyé immédiatement après paiement</li>
+          <li>PDF final prêt à être utilisé</li>
         </ul>
 
         <div style="border-top: 1px solid rgba(0,0,0,.08); padding-top: 12px; margin-top: 12px;">
@@ -110,11 +176,18 @@ function renderAccordion(openOfferId = null) {
         </div>
 
         <div class="form-actions" style="justify-content:flex-start; gap:12px; margin-top: 14px;">
-          <a class="btn btn-primary" id="pay79Btn" href="#" style="display:${selected ? 'inline-flex' : 'none'};">Continuer</a>
+          <button class="btn btn-primary" id="pay79Btn" type="button">Continuer</button>
         </div>
       </div>
     </div>
   `;
+
+  const downloadFreePdfBtn = document.getElementById('downloadFreePdfBtn');
+  if (downloadFreePdfBtn) {
+    downloadFreePdfBtn.addEventListener('click', () => {
+      window.location.href = '/telecharger-votre-correction';
+    });
+  }
 
   const advisorList = document.getElementById('advisorList');
   if (advisorList) {
@@ -145,10 +218,16 @@ function renderAccordion(openOfferId = null) {
     const pay79Btn = document.getElementById('pay79Btn');
     if (pay79Btn) {
       if (selected) {
-        pay79Btn.href = `/paiement?offer=79&advisor=${encodeURIComponent(selected.id)}`;
+        pay79Btn.style.display = 'inline-flex';
+        pay79Btn.addEventListener('click', () => startPayment('79', selected.id));
       } else {
-        pay79Btn.href = '#';
+        pay79Btn.style.display = 'none';
       }
+    }
+
+    const pay49Btn = document.getElementById('pay49Btn');
+    if (pay49Btn) {
+      pay49Btn.addEventListener('click', () => startPayment('49'));
     }
   }
 

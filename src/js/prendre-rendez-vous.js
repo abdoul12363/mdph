@@ -1,13 +1,9 @@
 import { loadSaved, responses } from './modules/storage.js';
+import { createConfetti, addConfettiStyles } from './modules/confetti.js';
 
 function setStatus(msg) {
-  const el = document.getElementById('successStatus');
-  if (el) el.textContent = msg || '';
-}
-
-function setDetails(html) {
-  const el = document.getElementById('successDetails');
-  if (el) el.innerHTML = html || '';
+  const el = document.getElementById('downloadStatus');
+  if (el) el.textContent = msg;
 }
 
 function getQueryParam(name) {
@@ -22,7 +18,6 @@ function getQueryParam(name) {
 async function pollPaymentStatus(paymentId) {
   try {
     setStatus('Vérification du paiement…');
-
     for (let i = 0; i < 20; i += 1) {
       const resp = await fetch(`/api/payment-status?payment_id=${encodeURIComponent(paymentId)}`, { method: 'GET' });
       if (!resp.ok) {
@@ -30,44 +25,64 @@ async function pollPaymentStatus(paymentId) {
         try { details = await resp.text(); } catch {}
         throw new Error(details || `Erreur HTTP: ${resp.status}`);
       }
-
       const data = await resp.json();
       if (data && data.isPaid) {
         setStatus('Paiement confirmé.');
 
-        const downloadBtn = document.getElementById('downloadPaidBtn');
-        if (downloadBtn) downloadBtn.style.display = 'inline-flex';
-
-        try {
-          window.location.href = `/telecharger-votre-pdf?payment_id=${encodeURIComponent(paymentId)}`;
-        } catch {
+        const calendlyBlock = document.getElementById('calendlyBlock');
+        if (calendlyBlock) {
+          calendlyBlock.style.display = 'block';
         }
 
-        return;
+        return true;
       }
-
       setStatus('Paiement en cours de confirmation…');
       await new Promise(r => setTimeout(r, 1500));
     }
-
     setStatus('Paiement non confirmé (patientez puis rechargez la page).');
+    return false;
   } catch (e) {
     try { console.error(e); } catch {}
-    setStatus('Impossible de finaliser pour le moment.');
+    setStatus('Impossible de vérifier le paiement pour le moment.');
+    return false;
   }
 }
 
-async function downloadPaidPdf(paymentId) {
+async function downloadPdf() {
+  const btn = document.getElementById('downloadBtn');
   try {
-    setStatus('Génération du PDF…');
+    setStatus('Génération en cours…');
+
+    loadSaved();
+
+    let paymentId = getQueryParam('payment_id') || '';
+    if (!paymentId) {
+      try {
+        paymentId = sessionStorage.getItem('mollie_payment_id') || '';
+      } catch {
+      }
+    }
+    if (!paymentId) {
+      setStatus('Paramètre payment_id manquant.');
+      return;
+    }
+
+    const ok = await pollPaymentStatus(paymentId);
+    if (!ok) return;
+
     const resp = await fetch('/api/download-paid-pdf', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ paymentId, responses: responses || {} }),
     });
+
     if (!resp.ok) {
       let details = '';
-      try { details = await resp.text(); } catch {}
+      try {
+        details = await resp.text();
+      } catch {
+      }
+      console.error('Erreur API /api/download-paid-pdf:', resp.status, details);
       throw new Error(details || `Erreur HTTP: ${resp.status}`);
     }
 
@@ -80,17 +95,38 @@ async function downloadPaidPdf(paymentId) {
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
+
     setStatus('Téléchargement démarré.');
   } catch (e) {
-    try { console.error(e); } catch {}
+    try {
+      console.error(e);
+    } catch {
+    }
     setStatus('Impossible de télécharger le PDF pour le moment.');
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
-    loadSaved();
+    addConfettiStyles();
+    setTimeout(() => {
+      try {
+        createConfetti();
+      } catch {
+      }
+    }, 250);
   } catch {
+  }
+
+  const btn = document.getElementById('downloadBtn');
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      try {
+        e.preventDefault();
+      } catch {
+      }
+      downloadPdf();
+    });
   }
 
   let paymentId = getQueryParam('payment_id') || '';
@@ -100,22 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch {
     }
   }
-  if (!paymentId) {
-    setStatus('Paramètre payment_id manquant.');
-    return;
+  if (paymentId) {
+    downloadPdf();
   }
-
-  setDetails(`
-    <p style="margin: 0;"><strong>Référence :</strong> ${paymentId}</p>
-  `);
-
-  const downloadBtn = document.getElementById('downloadPaidBtn');
-  if (downloadBtn) {
-    downloadBtn.addEventListener('click', (e) => {
-      try { e.preventDefault(); } catch {}
-      downloadPaidPdf(paymentId);
-    });
-  }
-
-  pollPaymentStatus(paymentId);
 });

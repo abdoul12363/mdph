@@ -6,6 +6,42 @@ function setStatus(msg) {
   if (el) el.textContent = msg;
 }
 
+function getQueryParam(name) {
+  try {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name);
+  } catch {
+    return null;
+  }
+}
+
+async function pollPaymentStatus(paymentId) {
+  try {
+    setStatus('Vérification du paiement…');
+    for (let i = 0; i < 20; i += 1) {
+      const resp = await fetch(`/api/payment-status?payment_id=${encodeURIComponent(paymentId)}`, { method: 'GET' });
+      if (!resp.ok) {
+        let details = '';
+        try { details = await resp.text(); } catch {}
+        throw new Error(details || `Erreur HTTP: ${resp.status}`);
+      }
+      const data = await resp.json();
+      if (data && data.isPaid) {
+        setStatus('Paiement confirmé.');
+        return true;
+      }
+      setStatus('Paiement en cours de confirmation…');
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    setStatus('Paiement non confirmé (patientez puis rechargez la page).');
+    return false;
+  } catch (e) {
+    try { console.error(e); } catch {}
+    setStatus('Impossible de vérifier le paiement pour le moment.');
+    return false;
+  }
+}
+
 async function downloadPdf() {
   const btn = document.getElementById('downloadBtn');
   try {
@@ -13,10 +49,25 @@ async function downloadPdf() {
 
     loadSaved();
 
-    const resp = await fetch('/api/projet-de-vie-premium', {
+    let paymentId = getQueryParam('payment_id') || '';
+    if (!paymentId) {
+      try {
+        paymentId = sessionStorage.getItem('mollie_payment_id') || '';
+      } catch {
+      }
+    }
+    if (!paymentId) {
+      setStatus('Paramètre payment_id manquant.');
+      return;
+    }
+
+    const ok = await pollPaymentStatus(paymentId);
+    if (!ok) return;
+
+    const resp = await fetch('/api/download-paid-pdf', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(responses || {}),
+      body: JSON.stringify({ paymentId, responses: responses || {} }),
     });
 
     if (!resp.ok) {
@@ -70,5 +121,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       downloadPdf();
     });
+  }
+
+  // Auto-start download if payment_id is present
+  let paymentId = getQueryParam('payment_id') || '';
+  if (!paymentId) {
+    try {
+      paymentId = sessionStorage.getItem('mollie_payment_id') || '';
+    } catch {
+    }
+  }
+  if (paymentId) {
+    downloadPdf();
   }
 });

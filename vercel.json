@@ -32,6 +32,18 @@
     {
       "src": "src/api/send-paid-pdf.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "src/api/mollie-webhook.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "src/api/payment-status.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "src/api/download-paid-pdf.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -61,12 +73,31 @@
       "methods": ["POST"]
     },
     {
-      "src": "/telecharger-le-pdf",
-      "dest": "/src/pages/telecharger-le-pdf.html"
+      "src": "/api/mollie-webhook",
+      "dest": "/src/api/mollie-webhook.js",
+      "methods": ["POST"]
     },
     {
-      "src": "/telecharger-le-pdf-premium",
-      "dest": "/src/pages/telecharger-le-pdf-premium.html"
+      "src": "/api/payment-status",
+      "dest": "/src/api/payment-status.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/download-paid-pdf",
+      "dest": "/src/api/download-paid-pdf.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/telecharger-votre-correction",
+      "dest": "/src/pages/telecharger-votre-correction.html"
+    },
+    {
+      "src": "/telecharger-votre-pdf",
+      "dest": "/src/pages/telecharger-votre-pdf.html"
+    },
+    {
+      "src": "/prendre-rendez_vous",
+      "dest": "/src/pages/prendre-rendez_vous.html"
     },
     {
       "src": "/finaliser-projet-de-vie",

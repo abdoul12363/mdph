@@ -81,6 +81,34 @@ async function handleApiProjetDeVie(req, res) {
   return handleApiJsonPost(req, res, ['src', 'api', 'projet-de-vie.js']);
 }
 
+async function handleApiCreateCheckoutSession(req, res) {
+  return handleApiJsonPost(req, res, ['src', 'api', 'create-checkout-session.js']);
+}
+
+async function handleApiPassthrough(req, res, apiRelPath) {
+  try {
+    const apiModulePath = path.join(ROOT, ...apiRelPath);
+    const apiModuleUrl = pathToFileURL(apiModulePath);
+    const { default: handler } = await import(`${apiModuleUrl.href}?t=${Date.now()}`);
+    await handler(req, res);
+  } catch (e) {
+    res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({ error: 'Local API error', details: String(e?.message || e) }));
+  }
+}
+
+async function handleApiMollieWebhook(req, res) {
+  return handleApiPassthrough(req, res, ['src', 'api', 'mollie-webhook.js']);
+}
+
+async function handleApiPaymentStatus(req, res) {
+  return handleApiPassthrough(req, res, ['src', 'api', 'payment-status.js']);
+}
+
+async function handleApiDownloadPaidPdf(req, res) {
+  return handleApiJsonPost(req, res, ['src', 'api', 'download-paid-pdf.js']);
+}
+
 function serveFile(filePath, res) {
   const ext = path.extname(filePath).toLowerCase();
   const contentType = MIME[ext] || 'application/octet-stream';
@@ -147,7 +175,7 @@ const server = http.createServer((req, res) => {
       serveFile(pagePath, res);
       return;
     }
-  } else if (urlPath.match(/^\/[a-z0-9-]+$/i) && urlPath !== '/' && urlPath !== '/form') {
+  } else if (urlPath.match(/^\/[a-z0-9_-]+$/i) && urlPath !== '/' && urlPath !== '/form') {
     const pageFile = `${urlPath.slice(1)}.html`;
     const pagePath = path.join(ROOT, 'src', 'pages', pageFile);
     if (fs.existsSync(pagePath)) {
@@ -172,6 +200,30 @@ const server = http.createServer((req, res) => {
   if (urlPath.startsWith('/api/projet-de-vie')) {
     console.log('→ routing to local api/projet-de-vie handler');
     handleApiProjetDeVie(req, res);
+    return;
+  }
+
+  if (urlPath.startsWith('/api/create-checkout-session')) {
+    console.log('→ routing to local api/create-checkout-session handler');
+    handleApiCreateCheckoutSession(req, res);
+    return;
+  }
+
+  if (urlPath.startsWith('/api/mollie-webhook')) {
+    console.log('→ routing to local api/mollie-webhook handler');
+    handleApiMollieWebhook(req, res);
+    return;
+  }
+
+  if (urlPath.startsWith('/api/payment-status')) {
+    console.log('→ routing to local api/payment-status handler');
+    handleApiPaymentStatus(req, res);
+    return;
+  }
+
+  if (urlPath.startsWith('/api/download-paid-pdf')) {
+    console.log('→ routing to local api/download-paid-pdf handler');
+    handleApiDownloadPaidPdf(req, res);
     return;
   }
 

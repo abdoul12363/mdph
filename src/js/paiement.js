@@ -50,16 +50,10 @@ async function startPayment(offer, advisor) {
   try {
     setStatus('Redirection vers le paiement…');
 
-    const email = responses && typeof responses === 'object' ? responses.email : '';
-    if (!email) {
-      setStatus("Votre email n'est pas renseigné. Retournez au formulaire pour le compléter.");
-      return;
-    }
-
     const resp = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ offer, email, advisor }),
+      body: JSON.stringify({ offer, advisor }),
     });
 
     if (!resp.ok) {
@@ -74,6 +68,13 @@ async function startPayment(offer, advisor) {
     const data = await resp.json();
     if (!data || !data.url) {
       throw new Error('URL de paiement manquante');
+    }
+
+    try {
+      if (data.paymentId) {
+        sessionStorage.setItem('mollie_payment_id', String(data.paymentId));
+      }
+    } catch {
     }
 
     window.location.href = data.url;
@@ -111,20 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setRecap(buildRecap(offer, advisor));
 
-  // Vérifier si l'email est présent (utile pour l'envoi après paiement)
-  try {
-    const email = responses && typeof responses === 'object' ? responses.email : null;
-    if (!email) {
-      setStatus("Votre email n'est pas renseigné. Retournez au formulaire pour le compléter.");
-    }
-  } catch {
-  }
-
   const payBtn = document.getElementById('payBtn');
   if (payBtn) {
+    payBtn.style.display = 'none';
     payBtn.addEventListener('click', (e) => {
       try { e.preventDefault(); } catch {}
       startPayment(offer, advisor);
     });
   }
+
+  // Redirection automatique vers Mollie
+  startPayment(offer, advisor);
 });
