@@ -170,7 +170,8 @@ export function renderInput(q, value) {
               <div class="checkbox-option-container" data-value="${optValue}">
                 <label class="choice">
                   <input type="checkbox" name="multi_check" value="${optValue}" ${checked} 
-                         data-has-text="${opt.hasTextField ? 'true' : 'false'}" />
+                         data-has-text="${opt.hasTextField ? 'true' : 'false'}" 
+                         data-has-suboptions="${opt.subOptions && opt.subOptions.length > 0 ? 'true' : 'false'}" />
                   ${optLabel}
                 </label>`;
             
@@ -186,6 +187,29 @@ export function renderInput(q, value) {
                          data-field="${textFieldId}"
                          class="text-input" />
                 </div>`;
+            }
+            
+            // Ajouter les sous-choix si présents
+            if (opt.subOptions && Array.isArray(opt.subOptions) && opt.subOptions.length > 0) {
+              const subOptionsFieldId = `${optValue}_suboptions`;
+              const selectedSubOptions = Array.isArray(responses[subOptionsFieldId]) ? responses[subOptionsFieldId] : [];
+              
+              optionHtml += `
+                <div class="sub-options-container" id="suboptions_${optValue}" ${checked ? '' : 'hidden'}>
+                  <div class="sub-options-grid">
+                    ${opt.subOptions.map(subOpt => {
+                      const subChecked = selectedSubOptions.includes(subOpt.value) ? 'checked' : '';
+                      return `
+                        <label class="sub-choice">
+                          <input type="checkbox" name="sub_check" value="${subOpt.value}" ${subChecked}
+                                 data-parent="${optValue}" data-suboptions-field="${subOptionsFieldId}" />
+                          <span>${subOpt.label}</span>
+                        </label>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              `;
             }
             
             optionHtml += `</div>`;
@@ -232,18 +256,45 @@ export function renderInput(q, value) {
             const checked = isChecked ? 'checked' : '';
 
             const finalLabel = autoAddText ? withPrecisez(optLabel) : String(optLabel);
-            return `
+            let radioHtml = `
               <div class="radio-option-container" data-value="${optValue}">
                 <label class="choice">
-                  <input type="radio" name="${q.id}" value="${optValue}" ${checked} data-has-text="${hasTextField ? 'true' : 'false'}" />
+                  <input type="radio" name="${q.id}" value="${optValue}" ${checked} 
+                         data-has-text="${hasTextField ? 'true' : 'false'}" 
+                         data-has-suboptions="${opt.subOptions && opt.subOptions.length > 0 ? 'true' : 'false'}" />
                   <span>${finalLabel}</span>
-                </label>
-                ${hasTextField ? `
-                  <div class="text-field-inline" data-text-for="${optValue}" style="${isChecked ? '' : 'display:none'}">
-                    <input type="text" placeholder="${(opt && opt.textFieldPlaceholder) ? opt.textFieldPlaceholder : 'Précisez...'}" value="${textFieldValue}" data-field="${textFieldId}" class="text-input" />
+                </label>`;
+            
+            if (hasTextField) {
+              radioHtml += `
+                <div class="text-field-inline" data-text-for="${optValue}" style="${isChecked ? '' : 'display:none'}">
+                  <input type="text" placeholder="${(opt && opt.textFieldPlaceholder) ? opt.textFieldPlaceholder : 'Précisez...'}" value="${textFieldValue}" data-field="${textFieldId}" class="text-input" />
+                </div>`;
+            }
+            
+            if (opt.subOptions && Array.isArray(opt.subOptions) && opt.subOptions.length > 0) {
+              const subOptionsFieldId = `${optValue}_suboptions`;
+              const selectedSubOptions = Array.isArray(responses[subOptionsFieldId]) ? responses[subOptionsFieldId] : [];
+              
+              radioHtml += `
+                <div class="sub-options-container" id="suboptions_${optValue}" style="${isChecked ? '' : 'display:none'}">
+                  <div class="sub-options-grid">
+                    ${opt.subOptions.map(subOpt => {
+                      const subChecked = selectedSubOptions.includes(subOpt.value) ? 'checked' : '';
+                      return `
+                        <label class="sub-choice">
+                          <input type="checkbox" name="sub_check" value="${subOpt.value}" ${subChecked}
+                                 data-parent="${optValue}" data-suboptions-field="${subOptionsFieldId}" />
+                          <span>${subOpt.label}</span>
+                        </label>
+                      `;
+                    }).join('')}
                   </div>
-                ` : ''}
-              </div>`;
+                </div>`;
+            }
+            
+            radioHtml += `</div>`;
+            return radioHtml;
           }).join('')}
         </div>
       </div>`;

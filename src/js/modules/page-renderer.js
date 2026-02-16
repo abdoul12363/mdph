@@ -372,6 +372,89 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
   // Retirer d'abord la classe is-introduction si elle existe
   const container = document.querySelector('.main .container');
   if (container) container.classList.remove('is-introduction');
+
+  let __nextBtnEl = null;
+
+  const selectionLimitRules = {
+    situation_generale: {
+      max: 2,
+      message: 'Choisissez 1 ou 2 situations maximum.'
+    },
+    difficultes_quotidiennes: {
+      max: 3,
+      message: 'Essayez de garder uniquement les 3 difficultés les plus importantes.'
+    },
+    difficultes_travail: {
+      max: 2,
+      message: 'Choisissez jusqu’à 2 difficultés principales.'
+    },
+    consequences_difficultes: {
+      max: 2,
+      message: 'Indiquez uniquement les 2 conséquences les plus marquantes.'
+    },
+    consequences_travail: {
+      max: 2,
+      message: 'Indiquez uniquement les 2 conséquences les plus marquantes.'
+    },
+    type_demande: {
+      max: 3,
+      message: 'Pour plus de clarté, choisissez jusqu’à 3 aides utiles.'
+    },
+    priorites_actuelles: {
+      max: 4,
+      message: 'Concentrez-vous sur 4 priorités maximum.'
+    }
+  };
+
+  const getOrCreateGlobalLimitBox = () => {
+    const root = $('questionArea');
+    if (!root) return null;
+    const existing = root.querySelector('.selection-limit-box');
+    if (existing) return existing;
+
+    const box = document.createElement('div');
+    box.className = 'selection-limit-box';
+    box.style.display = 'none';
+    root.appendChild(box);
+    return box;
+  };
+
+  const updateSelectionLimitUI = () => {
+    const box = getOrCreateGlobalLimitBox();
+    if (!box) return;
+
+    const violations = [];
+    try {
+      const currentSection = q.sectionTitle;
+      const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
+      sectionQuestions.forEach(qi => {
+        const rule = selectionLimitRules[qi.id];
+        if (!rule) return;
+        const div = document.querySelector(`[data-question-id="${qi.id}"]`);
+        if (!div) return;
+        if (isSelectionOverLimit(div, qi.id)) {
+          violations.push(rule.message);
+        }
+      });
+    } catch {
+    }
+
+    if (violations.length) {
+      box.innerHTML = violations.map(msg => `<div class="selection-limit-message">${msg}</div>`).join('');
+      box.style.display = 'block';
+    } else {
+      box.innerHTML = '';
+      box.style.display = 'none';
+    }
+  };
+
+  const isSelectionOverLimit = (questionDiv, questionId) => {
+    const rule = selectionLimitRules[questionId];
+    if (!rule || !questionDiv) return false;
+    const checked = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
+    const count = checked ? checked.length : 0;
+    return count > rule.max;
+  };
   
   // Restaurer la barre de progression (au cas où elle aurait été masquée sur une page de félicitations)
   const progressContainer = document.querySelector('.progress');
@@ -410,6 +493,8 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
     if (nextCallback) {
       newNextBtn.addEventListener('click', nextCallback);
     }
+
+    __nextBtnEl = newNextBtn;
   }
   
   // Vérifier si cette question fait partie d'une section avec plusieurs questions
@@ -437,9 +522,26 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
     
   sectionHtml += `</div>`;
   $('questionArea').innerHTML = sectionHtml;
+
+  // Zone unique d'erreurs en bas du formulaire (emplacement constant)
+  getOrCreateGlobalLimitBox();
     
   // Ajouter les événements pour tous les champs de la section
   sectionQuestions.forEach(sectionQ => {
+    const updateNextButtonDisabledState = () => {
+      try {
+        if (typeof __nextBtnEl === 'undefined' || !__nextBtnEl) return;
+        const hasViolation = sectionQuestions.some(qi => {
+          const rule = selectionLimitRules[qi.id];
+          if (!rule) return false;
+          const div = document.querySelector(`[data-question-id="${qi.id}"]`);
+          return isSelectionOverLimit(div, qi.id);
+        });
+        __nextBtnEl.disabled = hasViolation;
+      } catch {
+      }
+    };
+
     // Sauvegarde live pour les champs texte (utile quand plusieurs questions sont affichées sur une même page)
     if (sectionQ.type === 'text' || sectionQ.type === 'email' || sectionQ.type === 'texte_long' || sectionQ.type === 'textarea') {
       const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
@@ -502,6 +604,31 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
               }
             }
           });
+          
+          // Gérer l'affichage/masquage des sous-choix pour radio
+          const subOptionsContainers = questionDiv.querySelectorAll('.sub-options-container');
+          subOptionsContainers.forEach(container => {
+            const containerId = container.getAttribute('id');
+            if (containerId && containerId.startsWith('suboptions_')) {
+              const optValue = containerId.replace('suboptions_', '');
+              const shouldShow = selectedValue && String(optValue) === String(selectedValue);
+              container.style.display = shouldShow ? 'block' : 'none';
+              
+              if (!shouldShow) {
+                // Décocher tous les sous-choix
+                const subChecks = container.querySelectorAll('input[name="sub_check"]');
+                subChecks.forEach(subCb => {
+                  subCb.checked = false;
+                });
+                // Supprimer les sous-choix du storage
+                const subOptionsFieldId = container.querySelector('input[name="sub_check"]')?.getAttribute('data-suboptions-field');
+                if (subOptionsFieldId && responses[subOptionsFieldId]) {
+                  delete responses[subOptionsFieldId];
+                }
+              }
+            }
+          });
+          
           saveLocal(true);
         };
 
@@ -518,6 +645,29 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
             }
           });
         });
+        
+        // Gestion des sous-choix pour radio
+        const subCheckboxes = questionDiv.querySelectorAll('input[name="sub_check"]');
+        subCheckboxes.forEach(subCb => {
+          subCb.addEventListener('change', function() {
+            const subOptionsFieldId = this.getAttribute('data-suboptions-field');
+            if (!subOptionsFieldId) return;
+            
+            const parent = this.getAttribute('data-parent');
+            const container = document.getElementById(`suboptions_${parent}`);
+            if (!container) return;
+            
+            const checkedSubs = container.querySelectorAll('input[name="sub_check"]:checked');
+            const selectedValues = Array.from(checkedSubs).map(cb => cb.value);
+            
+            if (selectedValues.length > 0) {
+              responses[subOptionsFieldId] = selectedValues;
+            } else {
+              delete responses[subOptionsFieldId];
+            }
+            saveLocal(true);
+          });
+        });
 
         syncRadioTextFields();
       }
@@ -531,6 +681,25 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
         
         checkboxes.forEach(checkbox => {
           checkbox.addEventListener('change', function() {
+            const rule = selectionLimitRules[sectionQ.id];
+            if (rule && this.checked) {
+              const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
+              if (checkedNow && checkedNow.length > rule.max) {
+                // Rejeter la sélection en trop
+                if (this.dataset && this.dataset.reverting === '1') {
+                  delete this.dataset.reverting;
+                } else {
+                  this.dataset.reverting = '1';
+                  this.checked = false;
+                  try {
+                    this.dispatchEvent(new Event('change', { bubbles: true }));
+                  } catch {
+                  }
+                  return;
+                }
+              }
+            }
+
             const difficulty = this.getAttribute('data-difficulty');
             const frequencyDiv = document.getElementById(`freq_${difficulty}`);
             const textDiv = document.getElementById(`text_${difficulty}`);
@@ -568,6 +737,11 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
               }
             }
           });
+
+          checkbox.addEventListener('change', function() {
+            updateSelectionLimitUI();
+            updateNextButtonDisabledState();
+          });
         });
         
         // Gestion des boutons radio de fréquence
@@ -593,6 +767,9 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
             }
           });
         });
+
+        updateSelectionLimitUI();
+        updateNextButtonDisabledState();
       }
     }
     
@@ -602,6 +779,9 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
       if (questionDiv) {
         const checkboxes = questionDiv.querySelectorAll('input[name="multi_check"][data-has-text="true"]');
         
+        const allCheckboxes = questionDiv.querySelectorAll('input[name="multi_check"]');
+        const max1AutoDeselect = selectionLimitRules[sectionQ.id] && selectionLimitRules[sectionQ.id].max === 1;
+
         checkboxes.forEach(checkbox => {
           checkbox.addEventListener('change', function() {
             const value = this.value;
@@ -626,6 +806,95 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
             }
           });
         });
+
+        if (allCheckboxes && allCheckboxes.length) {
+          allCheckboxes.forEach(cb => {
+            cb.addEventListener('change', function(e) {
+              const rule = selectionLimitRules[sectionQ.id];
+
+              // Limite > 1 : rejeter la sélection si on dépasse
+              if (rule && rule.max > 1 && cb.checked) {
+                const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
+                if (checkedNow && checkedNow.length > rule.max) {
+                  if (cb.dataset && cb.dataset.reverting === '1') {
+                    delete cb.dataset.reverting;
+                  } else {
+                    cb.dataset.reverting = '1';
+                    cb.checked = false;
+                    try {
+                      cb.dispatchEvent(new Event('change', { bubbles: true }));
+                    } catch {
+                    }
+                    return;
+                  }
+                }
+              }
+
+              if (max1AutoDeselect && cb.checked) {
+                const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
+                if (checkedNow && checkedNow.length > 1) {
+                  checkedNow.forEach(other => {
+                    if (other !== cb && other.checked) {
+                      other.checked = false;
+                      try {
+                        other.dispatchEvent(new Event('change', { bubbles: true }));
+                      } catch {
+                      }
+                    }
+                  });
+                }
+              }
+
+              // Gérer l'affichage/masquage des sous-choix
+              const value = cb.value;
+              const subOptionsDiv = document.getElementById(`suboptions_${value}`);
+              if (subOptionsDiv) {
+                if (cb.checked) {
+                  subOptionsDiv.removeAttribute('hidden');
+                } else {
+                  subOptionsDiv.setAttribute('hidden', '');
+                  // Décocher tous les sous-choix
+                  const subChecks = subOptionsDiv.querySelectorAll('input[name="sub_check"]');
+                  subChecks.forEach(subCb => {
+                    subCb.checked = false;
+                  });
+                  // Supprimer les sous-choix du storage
+                  const subOptionsFieldId = subOptionsDiv.querySelector('input[name="sub_check"]')?.getAttribute('data-suboptions-field');
+                  if (subOptionsFieldId && responses[subOptionsFieldId]) {
+                    delete responses[subOptionsFieldId];
+                    saveLocal(true);
+                  }
+                }
+              }
+
+              updateSelectionLimitUI();
+              updateNextButtonDisabledState();
+            });
+          });
+        }
+        
+        // Gestion des sous-choix (sub-options)
+        const subCheckboxes = questionDiv.querySelectorAll('input[name="sub_check"]');
+        subCheckboxes.forEach(subCb => {
+          subCb.addEventListener('change', function() {
+            const subOptionsFieldId = this.getAttribute('data-suboptions-field');
+            if (!subOptionsFieldId) return;
+            
+            const parent = this.getAttribute('data-parent');
+            const container = document.getElementById(`suboptions_${parent}`);
+            if (!container) return;
+            
+            const checkedSubs = container.querySelectorAll('input[name="sub_check"]:checked');
+            const selectedValues = Array.from(checkedSubs).map(cb => cb.value);
+            
+            if (selectedValues.length > 0) {
+              responses[subOptionsFieldId] = selectedValues;
+            } else {
+              delete responses[subOptionsFieldId];
+            }
+            saveLocal(true);
+          });
+        });
         
         // Gestion des champs texte pour checkbox_multiple
         const textInputs = questionDiv.querySelectorAll('.text-field-checkbox input[type="text"][data-field]');
@@ -638,9 +907,28 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
             }
           });
         });
+
+        updateSelectionLimitUI();
+        updateNextButtonDisabledState();
       }
     }
   });
+
+  // Init état du bouton Suivant après attachement des listeners
+  try {
+    if (typeof __nextBtnEl !== 'undefined' && __nextBtnEl) {
+      const hasViolation = sectionQuestions.some(qi => {
+        const rule = selectionLimitRules[qi.id];
+        if (!rule) return false;
+        const div = document.querySelector(`[data-question-id="${qi.id}"]`);
+        return isSelectionOverLimit(div, qi.id);
+      });
+      __nextBtnEl.disabled = hasViolation;
+    }
+  } catch {
+  }
+
+  updateSelectionLimitUI();
 
   updateProgress(idx, visible);
 }

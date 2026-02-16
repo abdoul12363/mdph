@@ -88,23 +88,68 @@
       "options": [
         {
           "value": "maladie_chronique",
-          "label": "Maladie chronique"
+          "label": "Maladie chronique",
+          "subOptions": [
+            {"value": "douleurs_chroniques", "label": "Douleurs chroniques"},
+            {"value": "fatigue_chronique", "label": "Fatigue chronique"},
+            {"value": "maladie_evolutive", "label": "Maladie évolutive"},
+            {"value": "crises_imprevisibles", "label": "Crises imprévisibles"},
+            {"value": "intolerance_effort", "label": "Intolérance à l'effort"},
+            {"value": "retentissement_quotidien", "label": "Retentissement quotidien permanent"},
+            {"value": "traitements_lourds", "label": "Traitements lourds ou contraignants"},
+            {"value": "aggravation_stress", "label": "Aggravation avec le stress ou l'activité"}
+          ]
         },
         {
           "value": "handicap_visible",
-          "label": "Handicap visible"
+          "label": "Handicap visible",
+          "subOptions": [
+            {"value": "difficulte_marcher", "label": "Difficulté à marcher"},
+            {"value": "aide_mobilite", "label": "Utilisation d'une aide à la mobilité"},
+            {"value": "perte_membre", "label": "Perte ou limitation d'un membre"},
+            {"value": "difficulte_debout", "label": "Difficulté à se tenir debout longtemps"},
+            {"value": "difficulte_porter", "label": "Difficulté à porter ou manipuler des objets"},
+            {"value": "deformation_visible", "label": "Déformation ou atteinte visible du corps"}
+          ]
         },
         {
           "value": "handicap_invisible",
-          "label": "Handicap invisible"
+          "label": "Handicap invisible",
+          "subOptions": [
+            {"value": "fatigue_intense", "label": "Fatigue intense non visible"},
+            {"value": "douleurs_invisibles", "label": "Douleurs non visibles"},
+            {"value": "rythme_instable", "label": "Difficulté à maintenir un rythme stable"},
+            {"value": "repos_frequent", "label": "Besoin de repos fréquent"},
+            {"value": "limitation_endurance", "label": "Limitation de l'endurance"},
+            {"value": "fluctuation_sante", "label": "Fluctuation importante de l'état de santé"}
+          ]
         },
         {
           "value": "troubles_cognitifs_psychiques",
-          "label": "Troubles cognitifs / psychiques"
+          "label": "Troubles cognitifs / psychiques",
+          "subOptions": [
+            {"value": "difficulte_concentration", "label": "Difficultés de concentration"},
+            {"value": "fatigue_mentale", "label": "Fatigue mentale importante"},
+            {"value": "troubles_memoire", "label": "Troubles de la mémoire"},
+            {"value": "difficulte_organisation", "label": "Difficultés d'organisation"},
+            {"value": "lenteur_reflexion", "label": "Lenteur de réflexion"},
+            {"value": "difficulte_attention", "label": "Difficulté à maintenir l'attention"},
+            {"value": "multitache_difficile", "label": "Difficulté à gérer plusieurs tâches"},
+            {"value": "saturation_mentale", "label": "Saturation mentale rapide"},
+            {"value": "difficulte_decisions", "label": "Difficultés à prendre des décisions"},
+            {"value": "fluctuation_capacites", "label": "Fluctuation des capacités selon les jours"}
+          ]
         },
         {
           "value": "evaluation",
-          "label": "Situation en cours d’évaluation"
+          "label": "Situation en cours d'évaluation",
+          "subOptions": [
+            {"value": "examens_cours", "label": "Examens médicaux en cours"},
+            {"value": "diagnostic_attente", "label": "Diagnostic non encore posé"},
+            {"value": "suivi_recent", "label": "Suivi médical récent"},
+            {"value": "situation_instable", "label": "Situation instable"},
+            {"value": "avis_specialise", "label": "Attente d'avis spécialisé"}
+          ]
         },
         {
           "value": "autre",

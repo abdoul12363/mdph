@@ -55,27 +55,70 @@
           "options": [
             {
               "value": "fatigue",
-              "label": "Fatigue importante"
+              "label": "Fatigue importante",
+              "subOptions": [
+                {"value": "fatigue_debut_journee", "label": "Fatigue dès le début de la journée"},
+                {"value": "epuisement_rapide", "label": "Épuisement rapide"},
+                {"value": "fatigue_disproportionnee", "label": "Fatigue disproportionnée à l'effort"},
+                {"value": "pauses_frequentes_travail", "label": "Besoin de pauses fréquentes"},
+                {"value": "impossible_journee_complete", "label": "Impossible de tenir une journée complète"}
+              ]
             },
             {
               "value": "douleurs",
-              "label": "Douleurs"
+              "label": "Douleurs",
+              "subOptions": [
+                {"value": "douleurs_constantes", "label": "Douleurs constantes"},
+                {"value": "douleurs_fluctuantes", "label": "Douleurs fluctuantes"},
+                {"value": "douleurs_aggravees", "label": "Douleurs aggravées par l'activité"},
+                {"value": "douleurs_posture", "label": "Douleurs limitant la posture assise ou debout"},
+                {"value": "douleurs_concentration", "label": "Douleurs impactant la concentration"}
+              ]
             },
             {
               "value": "concentration",
-              "label": "Difficultés de concentration"
+              "label": "Difficultés de concentration",
+              "subOptions": [
+                {"value": "concentration_longue", "label": "Difficulté à se concentrer longtemps"},
+                {"value": "perte_attention", "label": "Perte rapide de l'attention"},
+                {"value": "difficulte_consignes", "label": "Difficulté à suivre des consignes"},
+                {"value": "difficulte_lire_ecouter", "label": "Difficulté à lire ou écouter sur la durée"},
+                {"value": "oublis_frequents", "label": "Oublis fréquents"},
+                {"value": "erreurs_inattention_travail", "label": "Erreurs d'inattention"}
+              ]
             },
             {
               "value": "rythme",
-              "label": "Difficultés à tenir un rythme"
+              "label": "Difficultés à tenir un rythme",
+              "subOptions": [
+                {"value": "rythme_impose", "label": "Rythme imposé difficilement supportable"},
+                {"value": "incapacite_enchainer", "label": "Incapacité à enchaîner les tâches"},
+                {"value": "besoin_ralentir", "label": "Besoin de ralentir fortement"},
+                {"value": "variations_jours", "label": "Variations importantes selon les jours"},
+                {"value": "decrochage_surcharge", "label": "Décrochage en cas de surcharge"}
+              ]
             },
             {
               "value": "physique",
-              "label": "Difficultés physiques (posture, déplacements...)"
+              "label": "Difficultés physiques (posture, déplacements...)",
+              "subOptions": [
+                {"value": "difficulte_assis", "label": "Difficulté à rester assis longtemps"},
+                {"value": "difficulte_debout_travail", "label": "Difficulté à rester debout"},
+                {"value": "difficulte_deplacer", "label": "Difficulté à se déplacer régulièrement"},
+                {"value": "gene_posturale", "label": "Gêne posturale prolongée"},
+                {"value": "limitation_gestes", "label": "Limitation des gestes répétitifs"}
+              ]
             },
             {
               "value": "stress",
-              "label": "Stress / anxiété"
+              "label": "Stress / anxiété",
+              "subOptions": [
+                {"value": "stress_exigences", "label": "Stress accru par les exigences"},
+                {"value": "anxiete_performance", "label": "Anxiété liée à la performance"},
+                {"value": "anxiete_delais", "label": "Anxiété face aux délais"},
+                {"value": "difficulte_pression", "label": "Difficulté à travailler sous pression"},
+                {"value": "aggravation_stress", "label": "Aggravation des symptômes en situation stressante"}
+              ]
             },
             {
               "value": "impossible_travailler",

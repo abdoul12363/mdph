@@ -98,27 +98,62 @@
             {
               "value": "ne_pas_y_arriver",
               "label": "Je n'y arrive pas",
-              "pdfField": "consequence_ne_pas_y_arriver"
+              "pdfField": "consequence_ne_pas_y_arriver",
+              "subOptions": [
+                {"value": "impossible_terminer", "label": "Impossible de terminer certaines tâches"},
+                {"value": "blocage_mental_physique", "label": "Blocage mental ou physique"},
+                {"value": "incapacite_commencer", "label": "Incapacité à commencer une activité"},
+                {"value": "abandon_cours", "label": "Abandon en cours de tâche"},
+                {"value": "effort_impossible", "label": "Effort impossible certains jours"}
+              ]
             },
             {
               "value": "plus_de_temps",
               "label": "Je mets beaucoup plus de temps",
-              "pdfField": "consequence_plus_de_temps"
+              "pdfField": "consequence_plus_de_temps",
+              "subOptions": [
+                {"value": "temps_allonge", "label": "Temps de réalisation fortement allongé"},
+                {"value": "pauses_frequentes", "label": "Besoin de pauses fréquentes"},
+                {"value": "ralentissement_global", "label": "Ralentissement global"},
+                {"value": "rythme_difficile", "label": "Difficulté à suivre un rythme normal"},
+                {"value": "une_tache_demi_journee", "label": "Une seule tâche par demi-journée"}
+              ]
             },
             {
               "value": "dangereux",
               "label": "C'est dangereux pour moi",
-              "pdfField": "consequence_dangereux"
+              "pdfField": "consequence_dangereux",
+              "subOptions": [
+                {"value": "erreurs_inattention", "label": "Erreurs d'inattention"},
+                {"value": "risque_accidents", "label": "Risque d'accidents domestiques"},
+                {"value": "oublis_importants", "label": "Oublis importants (gaz, portes, médicaments, rendez-vous)"},
+                {"value": "danger_fatigue", "label": "Mise en danger liée à la fatigue"},
+                {"value": "perte_vigilance", "label": "Perte de vigilance"}
+              ]
             },
             {
               "value": "abandon_activites",
               "label": "J'abandonne certaines activités",
-              "pdfField": "consequence_abandon_activites"
+              "pdfField": "consequence_abandon_activites",
+              "subOptions": [
+                {"value": "activites_sociales_reduites", "label": "Activités sociales réduites"},
+                {"value": "loisirs_abandonnes", "label": "Loisirs abandonnés"},
+                {"value": "sorties_limitees", "label": "Sorties limitées"},
+                {"value": "renoncement_demarches", "label": "Renoncement à des démarches"},
+                {"value": "reduction_quotidien", "label": "Réduction des activités quotidiennes"}
+              ]
             },
             {
               "value": "demande_aide",
               "label": "Je dois demander de l'aide",
-              "pdfField": "consequence_demande_aide"
+              "pdfField": "consequence_demande_aide",
+              "subOptions": [
+                {"value": "aide_organisation", "label": "Aide pour l'organisation"},
+                {"value": "aide_administratif", "label": "Aide pour les démarches administratives"},
+                {"value": "aide_quotidien", "label": "Aide pour la gestion du quotidien"},
+                {"value": "soutien_rendez_vous", "label": "Soutien pour tenir les rendez-vous"},
+                {"value": "accompagnement_regulier", "label": "Besoin d'accompagnement régulier"}
+              ]
             },
             {
               "value": "autre_consequence",

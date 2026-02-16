@@ -8,19 +8,91 @@
           "id": "type_demande",
           "type": "checkbox_multiple",
           "options": [
-            {"value": "aah", "label": "Allocation (AAH)", "pdfField": "demande_aah"},
-            {"value": "rqth", "label": "Reconnaissance travailleur handicapé (RQTH)", "pdfField": "demande_rqth"},
-            {"value": "pch", "label": "Prestation de compensation du handicap (PCH)", "pdfField": "demande_pch"},
-            {"value": "orientation_pro", "label": "Orientation professionnelle / formation adaptée", "pdfField": "demande_orientation_pro"},
-            {"value": "orientation_scolaire", "label": "Orientation scolaire / aménagement des études", "pdfField": "demande_orientation_scolaire"},
-            {"value": "aides_techniques", "label": "Aides techniques (matériel, équipements)", "pdfField": "demande_aides_techniques"},
-            {"value": "amenagement_logement", "label": "Aménagement du logement", "pdfField": "demande_amenagement_logement"},
-            {"value": "aide_transports", "label": "Aide aux transports / déplacements", "pdfField": "demande_aide_transports"},
-            {"value": "reconnaissance_handicap", "label": "Reconnaissance du handicap / taux d'incapacité", "pdfField": "demande_reconnaissance_handicap"},
-            {"value": "amenagement", "label": "Aménagement du poste de travail", "pdfField": "demande_amenagement"},
-            {"value": "aide_humaine", "label": "Aide humaine", "pdfField": "demande_aide_humaine"},
-            {"value": "orientation", "label": "Orientation / accompagnement", "pdfField": "demande_orientation"},
-            {"value": "carte_mobilite", "label": "Carte mobilité / invalidité", "pdfField": "demande_carte_mobilite"},
+            {"value": "aah", "label": "Allocation (AAH)", "pdfField": "demande_aah", "subOptions": [
+              {"value": "absence_ressources", "label": "Absence ou insuffisance de ressources"},
+              {"value": "impossibilite_travailler", "label": "Impossibilité de travailler durablement"},
+              {"value": "capacite_reduite", "label": "Capacité de travail très réduite"},
+              {"value": "revenus_instables", "label": "Revenus instables ou inexistants"},
+              {"value": "securisation_financiere", "label": "Besoin de sécurisation financière"}
+            ]},
+            {"value": "rqth", "label": "Reconnaissance travailleur handicapé (RQTH)", "pdfField": "demande_rqth", "subOptions": [
+              {"value": "acces_emploi_adapte", "label": "Accès à l'emploi adapté"},
+              {"value": "protection_parcours", "label": "Protection du parcours professionnel"},
+              {"value": "acces_amenagements", "label": "Accès aux aménagements de poste"},
+              {"value": "facilitation_emploi", "label": "Facilitation des démarches emploi"},
+              {"value": "securisation_employeurs", "label": "Sécurisation vis-à-vis des employeurs"}
+            ]},
+            {"value": "pch", "label": "Prestation de compensation du handicap (PCH)", "pdfField": "demande_pch", "subOptions": [
+              {"value": "compensation_limitations", "label": "Compensation des limitations quotidiennes"},
+              {"value": "aide_fatigue", "label": "Aide liée à la fatigue"},
+              {"value": "aide_troubles_cognitifs", "label": "Aide liée aux troubles cognitifs"},
+              {"value": "compensation_surcouts", "label": "Compensation des surcoûts liés au handicap"},
+              {"value": "maintien_autonomie", "label": "Maintien de l'autonomie"}
+            ]},
+            {"value": "orientation_pro", "label": "Orientation professionnelle / formation adaptée", "pdfField": "demande_orientation_pro", "subOptions": [
+              {"value": "environnement_compatible", "label": "Orientation vers un environnement compatible"},
+              {"value": "formation_rythme_adapte", "label": "Formation avec rythme adapté"},
+              {"value": "reorientation_pro", "label": "Réorientation professionnelle"},
+              {"value": "accompagnement_projet", "label": "Accompagnement vers un projet réaliste"},
+              {"value": "eviter_echec", "label": "Éviter l'échec ou l'épuisement"}
+            ]},
+            {"value": "orientation_scolaire", "label": "Orientation scolaire / aménagement des études", "pdfField": "demande_orientation_scolaire", "subOptions": [
+              {"value": "allegement_charge", "label": "Allègement de la charge de travail"},
+              {"value": "amenagement_examens", "label": "Aménagement des examens"},
+              {"value": "adaptation_rythme_scolaire", "label": "Adaptation du rythme scolaire"},
+              {"value": "autorisation_absences", "label": "Autorisation d'absences justifiées"},
+              {"value": "securisation_parcours_scolaire", "label": "Sécurisation du parcours scolaire"}
+            ]},
+            {"value": "aides_techniques", "label": "Aides techniques (matériel, équipements)", "pdfField": "demande_aides_techniques", "subOptions": [
+              {"value": "outils_concentration", "label": "Outils facilitant la concentration"},
+              {"value": "materiel_fatigue", "label": "Matériel réduisant la fatigue"},
+              {"value": "equipements_adaptes", "label": "Équipements adaptés au travail ou aux études"},
+              {"value": "solutions_compensatoires", "label": "Solutions compensant les limitations"},
+              {"value": "amelioration_autonomie", "label": "Amélioration de l'autonomie"}
+            ]},
+            {"value": "amenagement_logement", "label": "Aménagement du logement", "pdfField": "demande_amenagement_logement", "subOptions": [
+              {"value": "adaptation_fatigue", "label": "Adaptation pour limiter la fatigue"},
+              {"value": "amenagement_quotidien", "label": "Aménagement facilitant le quotidien"},
+              {"value": "reduction_efforts", "label": "Réduction des efforts inutiles"},
+              {"value": "securisation_gestes", "label": "Sécurisation des gestes du quotidien"}
+            ]},
+            {"value": "aide_transports", "label": "Aide aux transports / déplacements", "pdfField": "demande_aide_transports", "subOptions": [
+              {"value": "difficulte_transports_classiques", "label": "Difficulté à utiliser les transports classiques"},
+              {"value": "fatigue_deplacements", "label": "Fatigue liée aux déplacements"},
+              {"value": "trajets_adaptes", "label": "Besoin de trajets adaptés"},
+              {"value": "limitation_deplacements", "label": "Limitation des déplacements prolongés"}
+            ]},
+            {"value": "reconnaissance_handicap", "label": "Reconnaissance du handicap / taux d'incapacité", "pdfField": "demande_reconnaissance_handicap", "subOptions": [
+              {"value": "reconnaissance_officielle", "label": "Reconnaissance officielle de la situation"},
+              {"value": "acces_droits", "label": "Accès aux droits associés"},
+              {"value": "stabilisation_administrative", "label": "Stabilisation administrative"},
+              {"value": "protection_long_terme", "label": "Protection à long terme"}
+            ]},
+            {"value": "amenagement", "label": "Aménagement du poste de travail", "pdfField": "demande_amenagement", "subOptions": [
+              {"value": "horaires_amenages", "label": "Horaires aménagés"},
+              {"value": "teletravail", "label": "Télétravail partiel ou total"},
+              {"value": "pauses_supplementaires", "label": "Pauses supplémentaires"},
+              {"value": "adaptation_rythme_objectifs", "label": "Adaptation du rythme et des objectifs"},
+              {"value": "reduction_charge", "label": "Réduction de la charge"}
+            ]},
+            {"value": "aide_humaine", "label": "Aide humaine", "pdfField": "demande_aide_humaine", "subOptions": [
+              {"value": "aide_organisation_humaine", "label": "Aide à l'organisation"},
+              {"value": "aide_demarches", "label": "Aide aux démarches administratives"},
+              {"value": "soutien_ponctuel", "label": "Soutien ponctuel ou régulier"},
+              {"value": "accompagnement_quotidien", "label": "Accompagnement dans le quotidien"}
+            ]},
+            {"value": "orientation", "label": "Orientation / accompagnement", "pdfField": "demande_orientation", "subOptions": [
+              {"value": "accompagnement_global", "label": "Accompagnement global"},
+              {"value": "aide_construction_parcours", "label": "Aide à la construction du parcours"},
+              {"value": "coordination_demarches", "label": "Coordination des démarches"},
+              {"value": "soutien_duree", "label": "Soutien dans la durée"}
+            ]},
+            {"value": "carte_mobilite", "label": "Carte mobilité / invalidité", "pdfField": "demande_carte_mobilite", "subOptions": [
+              {"value": "facilitation_deplacements", "label": "Facilitation des déplacements"},
+              {"value": "reduction_fatigue_carte", "label": "Réduction de la fatigue"},
+              {"value": "acces_priorites", "label": "Accès aux priorités"},
+              {"value": "reconnaissance_visible", "label": "Reconnaissance visible des limitations"}
+            ]},
             {"value": "autre", "label": "Autre demande (précisez)", "pdfField": "demande_autre", "hasTextField": true, "textFieldLabel": "Précisez votre demande", "textFieldPlaceholder": "Décrivez votre demande..."}
           ],
           "required": false

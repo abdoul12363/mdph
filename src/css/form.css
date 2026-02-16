@@ -49,6 +49,69 @@
   color: #E53E3E;
 }
 
+.selection-limit-message {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(229, 62, 62, 0.08);
+  border: 1px solid rgba(229, 62, 62, 0.25);
+  color: #B83232;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.selection-limit-box {
+  margin-top: 18px;
+}
+
+.selection-limit-box .selection-limit-message:first-child {
+  margin-top: 0;
+}
+
+/* Sous-choix (sub-options) */
+.sub-options-container {
+  margin-top: 12px;
+  margin-left: 28px;
+  padding-left: 16px;
+  border-left: 2px solid rgba(236, 157, 92, 0.3);
+}
+
+.sub-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.sub-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(236, 157, 92, 0.05);
+  border: 1px solid rgba(236, 157, 92, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.sub-choice:hover {
+  background: rgba(236, 157, 92, 0.1);
+  border-color: rgba(236, 157, 92, 0.3);
+}
+
+.sub-choice input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.sub-choice span {
+  flex: 1;
+  color: #2A293E;
+}
+
 /* Masquer les boutons de navigation sur les pages récap */
 .hide-nav-buttons #prevBtn,
 .hide-nav-buttons #nextBtn {
