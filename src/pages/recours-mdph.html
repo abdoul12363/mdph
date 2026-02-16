@@ -487,7 +487,7 @@
       
       if (question.type === 'textarea') {
         html += `
-          <label for="${question.id}">${question.description} *</label>
+          <label for="${question.id}">${question.description}</label>
           <textarea id="${question.id}" 
                    required 
                    minlength="${question.minLength || ''}" 
@@ -500,12 +500,12 @@
         `;
       } else if (question.type === 'date') {
         html += `
-          <label for="${question.id}">${question.description} *</label>
+          <label for="${question.id}">${question.description}</label>
           <input type="date" id="${question.id}" required />
         `;
       } else if (question.type === 'checkbox') {
         html += `
-          <label>${question.description} *</label>
+          <label>${question.description}</label>
           <div class="choice-grid">
         `;
         question.options.forEach(option => {
