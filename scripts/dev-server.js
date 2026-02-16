@@ -162,13 +162,24 @@ const server = http.createServer((req, res) => {
       res.end('Form file not found');
       return;
     }
+  } else if (urlPath === '/recours-mdph' || urlPath === '/recours-mdph.html') {
+    const recoursPath = path.join(ROOT, 'src/pages/recours-mdph.html');
+    if (fs.existsSync(recoursPath)) {
+      serveFile(recoursPath, res);
+      return;
+    } else {
+      res.statusCode = 404;
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.end('Recours page not found');
+      return;
+    }
   }
 
   // Pages additionnelles depuis src/pages
   // - /mentions-legales ou /mentions-legales.html
   // - /charte-ethique ou /charte-ethique.html
   // - etc.
-  if (urlPath.endsWith('.html') && urlPath !== '/index.html' && urlPath !== '/form.html') {
+  if (urlPath.endsWith('.html') && urlPath !== '/index.html' && urlPath !== '/form.html' && urlPath !== '/recours-mdph.html') {
     const pageFile = path.basename(urlPath);
     const pagePath = path.join(ROOT, 'src', 'pages', pageFile);
     if (fs.existsSync(pagePath)) {

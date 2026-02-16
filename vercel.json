@@ -116,6 +116,10 @@
       "dest": "/src/pages/paiement-success.html"
     },
     {
+      "src": "/recours-mdph",
+      "dest": "/src/pages/recours-mdph.html"
+    },
+    {
       "src": "/form",
       "dest": "/src/pages/form.html"
     },

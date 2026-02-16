@@ -147,14 +147,18 @@ body.form-page .main {
 
 body.form-page .main::before {
   content: "";
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-image: url('/34886429_8239756.svg');
   background-size: cover;
-  background-position: center top;
+  background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   filter: brightness(0.9);
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -165,11 +169,22 @@ body.form-page .main > * {
 
 body.form-page .header {
   position: relative;
-  z-index: 1;
+  z-index: 10;
+}
+
+body.form-page .nav-phone {
+  color: var(--font-color);
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-left: auto;
+  font-size: 14px;
 }
 
 body.form-page .header {
   background-color: #FFFEFD;
+  padding: 20px 0;
 }
 
 body.form-page .nav-link:hover {
@@ -181,11 +196,6 @@ body.form-page .nav-link::after {
   background-color: #EC9D5C;
 }
 
-@media (min-width: 1024px) {
-  body.form-page .header .container {
-    padding-right: 0;
-  }
-}
 
 .main .container {
   max-width: 800px;
@@ -220,20 +230,20 @@ body.form-page .nav-link::after {
   }
 
   body.form-page .header {
-    padding: 10px 0;
+    padding: 20px 0;
   }
 
   body.form-page .header-inner {
-    height: 52px;
+    height: 64px;
   }
 
   body.form-page .nav {
-    gap: 12px;
+    gap: 24px;
   }
 
   body.form-page .nav-link {
     font-size: 12px;
-    padding: 6px 0;
+    padding: 8px 0;
   }
 
   .form-card {

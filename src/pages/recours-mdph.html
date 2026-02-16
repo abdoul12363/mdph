@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Recours MDPH — Accompagnement spécialisé</title>
+  <meta name="description" content="Accompagnement pour contester une décision MDPH (RAPO ou Tribunal administratif)" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Heebo:400,700|IBM+Plex+Sans:600" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="/src/css/styles.css" />
+  <link rel="stylesheet" href="/src/css/form.css" />
+  <style>
+    .recours-step {
+      margin-bottom: 30px;
+    }
+    .recours-step.hidden {
+      display: none;
+    }
+    .recours-step h2 {
+      margin: 0 0 20px 0;
+      color: var(--font-color);
+      font-size: calc(var(--font-size) * 2.2);
+      font-weight: 700;
+      font-family: var(--font-face);
+    }
+    .recours-step p {
+      margin: 0 0 20px 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: var(--font-size);
+      font-family: var(--font-face);
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .q-title {
+      font-weight: 800;
+      margin: 0 0 12px 0;
+      padding: 0;
+      font-size: 16px;
+      color: var(--font-color);
+    }
+    .question-item {
+      margin-bottom: 24px;
+    }
+    .field-container label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: var(--font-color);
+      font-size: var(--font-size);
+      font-family: var(--font-face);
+    }
+    .char-counter {
+      font-size: 12px;
+      color: #6B7A90;
+      margin-top: 8px;
+      text-align: right;
+      transition: color 0.2s ease;
+    }
+    .char-counter .char-count {
+      font-weight: 600;
+    }
+    .char-counter .char-min {
+      font-size: 11px;
+      margin-left: 8px;
+      color: #999;
+    }
+    .char-counter--too-short {
+      color: #E53E3E;
+    }
+    .char-counter--too-short .char-count {
+      color: #E53E3E;
+    }
+    .char-counter--valid {
+      color: #38A169;
+    }
+    .char-counter--valid .char-count {
+      color: #38A169;
+    }
+    .char-counter--too-long {
+      color: #E53E3E;
+    }
+    .char-counter--too-long .char-count {
+      color: #E53E3E;
+    }
+    /* Effet de survol pour les messages d'erreur */
+    .muted#status:hover {
+      color: var(--font-color) !important;
+      cursor: pointer !important;
+      transition: color 0.2s ease !important;
+    }
+    .muted#status:empty:hover {
+      color: var(--muted) !important;
+      cursor: default !important;
+    }
+    .pricing-item {
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 12px;
+      padding: 22px;
+      background: var(--panel);
+      box-shadow: 0 8px 22px rgba(0,0,0,.06);
+      border-color: #f97316;
+      box-shadow: 0 10px 26px rgba(249,115,22,.12);
+    }
+    .pricing-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .pricing-header .btn-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+    .pricing-header .btn {
+      width: 100%;
+      justify-content: flex-start;
+      font-size: 13px;
+      padding: 8px 10px;
+      min-height: 36px;
+      white-space: normal;
+      text-align: left;
+      line-height: 1.25;
+    }
+    .pricing-header .btn .pricing-price {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 2px;
+      color: #16a34a;
+    }
+    .pricing-header .btn .pricing-title {
+      display: block;
+      font-weight: 600;
+    }
+    .pricing-body {
+      margin-top: 10px;
+    }
+    .pricing-body .muted {
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .pricing-body .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px;
+    }
+    .pricing-body .pricing-features li {
+      padding: 4px 0 4px 20px;
+      position: relative;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .pricing-body .pricing-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #16a34a;
+      font-weight: 700;
+    }
+    .pricing-body .form-actions {
+      margin-top: 20px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .pricing-body .form-actions .btn {
+      font-size: 12px;
+      padding: 8px 10px;
+      min-height: 36px;
+      white-space: normal;
+      line-height: 1.25;
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+    .btn-actions {
+      display: flex !important;
+      justify-content: space-between !important;
+      margin: 30px 0 10px !important;
+      padding: 15px 0 !important;
+      gap: 15px !important;
+    }
+    .form-card {
+      overflow: hidden;
+    }
+    .btn-primary,
+    .btn-secondary {
+      display: inline-block !important;
+      min-width: 100px !important;
+      padding: 10px 20px !important;
+      border-radius: 4px !important;
+      font-weight: 500 !important;
+      cursor: pointer !important;
+      font-size: 16px !important;
+      transition: all 0.2s !important;
+      text-align: center !important;
+      letter-spacing: normal !important;
+      border-bottom: none !important;
+    }
+    /* Style spécifique pour le bouton prevBtn dans le formulaire recours */
+    .recours-step #prevBtn {
+      background: #2d3748 !important;
+      color: white !important;
+      border: 1px solid #4a5568 !important;
+    }
+    .recours-step #prevBtn:hover {
+      background: #4a5568 !important;
+      border-color: #718096 !important;
+    }
+    /* Copie exacte de la première définition de #startBtn */
+    #btn-step1 {
+      padding: 12px 24px !important;
+      font-size: 1rem !important;
+      margin: 20px auto 0 !important;
+      display: block !important;
+      float: none !important;
+      border-radius: 4px !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      background: var(--form-button-bg) !important;
+      color: var(--form-button-text) !important;
+      border: none !important;
+    }
+    #btn-step1:hover {
+      background: var(--form-button-hover-bg) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Copie exacte de la deuxième définition de #startBtn (écrase la première) */
+    #btn-step1 {
+      margin-top: 1.5rem !important;
+      padding: 0.8rem 2.5rem !important;
+      font-size: var(--font-size) !important;
+      font-weight: 600 !important;
+      border-radius: 2px !important;
+      background: var(--form-button-bg) !important;
+      color: var(--form-button-text) !important;
+      border: none !important;
+      cursor: pointer !important;
+      transition: .2s all ease-in-out !important;
+      border-bottom: 2px solid transparent !important;
+      outline: none !important;
+      font-family: var(--font-face) !important;
+      letter-spacing: 2px !important;
+    }
+    #btn-step1:hover {
+      background: var(--form-button-hover-bg) !important;
+      color: var(--form-button-hover-text) !important;
+      border-bottom: 2px solid var(--form-button-hover-border-bottom) !important;
+      transform: none !important;
+    }
+    .btn-primary {
+      background: var(--color-primary) !important;
+      color: white !important;
+      border: 1px solid var(--color-primary) !important;
+    }
+    .btn-secondary {
+      background: #2d3748 !important;
+      color: white !important;
+      border: 1px solid #4a5568 !important;
+    }
+    .btn-primary:hover {
+      background: var(--color-primary-hover) !important;
+      border-color: var(--color-primary-hover) !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .btn-secondary:hover {
+      background: #4a5568 !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .nav-phone {
+      color: var(--font-color);
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      margin-left: auto;
+      font-size: 14px;
+    }
+      </style>
+</head>
+<body class="form-page">
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand"></div>
+      <nav class="nav">
+        <a class="nav-link" href="/">Accueil</a>
+        <a class="nav-link" href="/donnees-confidentialite.html">Données & confidentialité</a>
+        <a class="nav-link" href="/qui-sommes-nous.html">Qui sommes-nous</a>
+        <span class="nav-phone">02 99 260 127</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="section">
+      <div class="container">
+        
+        <div class="card form-card">
+          <!-- Étape 1: Choix du type de recours -->
+          <div id="step1" class="recours-step">
+          <h2>Type de recours</h2>
+          <p>Quelle démarche souhaitez-vous engager ?</p>
+          <div class="choice-grid">
+            <label class="choice">
+              <input type="radio" name="type_recours" value="rapo" required />
+              <span>Recours administratif préalable obligatoire (RAPO)</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="type_recours" value="tribunal" required />
+              <span>Recours contentieux – Tribunal administratif</span>
+            </label>
+          </div>
+          <div class="btn-actions">
+            <button class="btn btn-primary" id="btn-step1">Continuer</button>
+          </div>
+          <p class="muted" id="status" style="margin-top:12px"></p>
+        </div>
+
+        <!-- Étape 2: Formulaire de description -->
+        <div id="step2" class="recours-step hidden">
+          <div id="questionArea"></div>
+          <div class="form-actions">
+            <button class="btn" id="prevBtn" type="button">Précédent</button>
+            <button class="btn btn-primary" id="nextBtn" type="button">Suivant</button>
+          </div>
+          <p class="muted" id="status" style="margin-top:12px"></p>
+        </div>
+
+        <!-- Étape 3: Offre -->
+        <div id="step3" class="recours-step hidden">
+          <h2>Accompagnement pour votre recours</h2>
+          <p>Votre situation nécessite un accompagnement spécialisé pour maximiser vos chances de succès.</p>
+          
+          <div class="pricing-item">
+            <div class="pricing-header">
+              <div class="btn-wrapper">
+                <button class="btn">
+                  <span class="pricing-price">49,90 €</span>
+                  <span class="pricing-title">Offre Recours MDPH – Accompagnement complet</span>
+                </button>
+              </div>
+            </div>
+            <div class="pricing-body">
+              <div class="muted">
+                <div>Votre situation nécessite un accompagnement spécialisé pour maximiser vos chances de succès.</div>
+              </div>
+              <ul class="pricing-features">
+                <li>Analyse approfondie de votre dossier – Étude de la décision MDPH et des éléments de votre situation</li>
+                <li>Structuration du recours – Préparation du RAPO ou du recours contentieux selon votre situation</li>
+                <li>Préparation des arguments juridiques – Construction d'une argumentation solide et adaptée</li>
+                <li>Accompagnement personnalisé – Échange avec un expert MDPH pour finaliser votre recours</li>
+                <li>Documents structurés – Recours rédigé et prêt à envoyer</li>
+              </ul>
+              <div class="muted">
+                <div>Paiement sécurisé – Accès immédiat après validation</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-actions">
+            <button class="btn btn-secondary" id="btn-back-step3">Retour</button>
+            <button class="btn btn-primary" id="btn-step3">Procéder au paiement</button>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { responses, saveLocal, loadSaved } from '/src/js/modules/storage.js';
+
+    loadSaved();
+
+    // Charger les valeurs sauvegardées
+    if (responses.type_recours) {
+      const radio = document.querySelector(`input[name="type_recours"][value="${responses.type_recours}"]`);
+      if (radio) radio.checked = true;
+    }
+    if (responses.decision_contestee) {
+      const decisionElement = document.getElementById('decision_contestee');
+      if (decisionElement) decisionElement.value = responses.decision_contestee;
+    }
+    if (responses.date_decision) {
+      const dateElement = document.getElementById('date_decision');
+      if (dateElement) dateElement.value = responses.date_decision;
+    }
+    if (responses.impact_decision) {
+      const impactElement = document.getElementById('impact_decision');
+      if (impactElement) impactElement.value = responses.impact_decision;
+    }
+    
+        if (Array.isArray(responses.nature_refus)) {
+      responses.nature_refus.forEach(val => {
+        const cb = document.querySelector(`input[name="nature_refus"][value="${val}"]`);
+        if (cb) cb.checked = true;
+      });
+    }
+    if (Array.isArray(responses.objectif_recours)) {
+      responses.objectif_recours.forEach(val => {
+        const cb = document.querySelector(`input[name="objectif_recours"][value="${val}"]`);
+        if (cb) cb.checked = true;
+      });
+    }
+
+    // Questions pour le formulaire recours
+    const recoursQuestions = [
+      {
+        id: 'decision_contestee',
+        title: 'Description de votre situation',
+        description: 'Quelle décision de la MDPH contestez-vous ?',
+        type: 'textarea',
+        obligatoire: true,
+        minLength: 50,
+        maxLength: 500,
+        placeholder: 'Décrivez précisément la décision que vous contestez...'
+      },
+      {
+        id: 'date_decision',
+        title: 'Date de la décision',
+        description: 'Date de la décision MDPH',
+        type: 'date',
+        obligatoire: true
+      },
+      {
+        id: 'nature_refus',
+        title: 'Nature de la décision contestée',
+        description: 'Sélectionnez tous les éléments concernés',
+        type: 'checkbox',
+        obligatoire: true,
+        options: [
+          { value: 'refus_total', label: 'Refus total de la demande' },
+          { value: 'refus_partiel', label: 'Refus partiel' },
+          { value: 'reduction', label: 'Réduction d\'une aide existante' },
+          { value: 'suppression', label: 'Suppression d\'une aide' },
+          { value: 'taux_insuffisant', label: 'Taux d\'incapacité jugé insuffisant' },
+          { value: 'duree_insuffisante', label: 'Durée d\'attribution trop courte' }
+        ]
+      },
+      {
+        id: 'impact_decision',
+        title: 'Impact concret de cette décision',
+        description: 'Impact concret de cette décision sur votre situation',
+        type: 'textarea',
+        obligatoire: true,
+        minLength: 100,
+        maxLength: 800,
+        placeholder: 'Expliquez l\'impact réel de cette décision sur votre quotidien...'
+      },
+      {
+        id: 'objectif_recours',
+        title: 'Objectif de votre recours',
+        description: 'Que souhaitez-vous obtenir avec ce recours ?',
+        type: 'checkbox',
+        obligatoire: true,
+        options: [
+          { value: 'reexamen_complet', label: 'Réexamen complet du dossier' },
+          { value: 'retablissement_aide', label: 'Rétablissement de l\'aide supprimée' },
+          { value: 'augmentation_aide', label: 'Augmentation du montant ou de la durée' },
+          { value: 'reconnaissance_taux', label: 'Reconnaissance d\'un taux d\'incapacité supérieur' },
+          { value: 'obtention_aide_refusee', label: 'Obtention de l\'aide initialement refusée' }
+        ]
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    // Fonction pour rendre une question
+    function renderRecoursQuestion(question) {
+      const questionArea = document.getElementById('questionArea');
+      
+      let html = `
+        <div class="question-item">
+          <div class="q-title">${question.title}</div>
+          <div class="field-container">
+      `;
+      
+      if (question.type === 'textarea') {
+        html += `
+          <label for="${question.id}">${question.description} *</label>
+          <textarea id="${question.id}" 
+                   required 
+                   minlength="${question.minLength || ''}" 
+                   maxlength="${question.maxLength || ''}"
+                   placeholder="${question.placeholder || ''}"></textarea>
+          <div class="char-counter" id="counter-${question.id}">
+            <span class="char-count">0</span> / ${question.maxLength} caractères
+            <span class="char-min">(minimum ${question.minLength})</span>
+          </div>
+        `;
+      } else if (question.type === 'date') {
+        html += `
+          <label for="${question.id}">${question.description} *</label>
+          <input type="date" id="${question.id}" required />
+        `;
+      } else if (question.type === 'checkbox') {
+        html += `
+          <label>${question.description} *</label>
+          <div class="choice-grid">
+        `;
+        question.options.forEach(option => {
+          html += `
+            <label class="choice">
+              <input type="checkbox" name="${question.id}" value="${option.value}" />
+              <span>${option.label}</span>
+            </label>
+          `;
+        });
+        html += `
+          </div>
+        `;
+      }
+      
+      html += `
+          </div>
+        </div>
+      `;
+      
+      questionArea.innerHTML = html;
+      
+      // Initialiser les compteurs de caractères
+      if (question.type === 'textarea') {
+        initCharCounter(question.id, question.minLength, question.maxLength);
+      }
+      
+      // Charger les valeurs sauvegardées
+      loadQuestionValues(question);
+    }
+
+    // Initialiser un compteur de caractères
+    function initCharCounter(textareaId, minLength, maxLength) {
+      const textarea = document.getElementById(textareaId);
+      const counter = document.getElementById(`counter-${textareaId}`);
+      const charCount = counter.querySelector('.char-count');
+      
+      function updateCounter() {
+        const currentLength = textarea.value.length;
+        charCount.textContent = currentLength;
+        
+        counter.classList.remove('char-counter--too-short', 'char-counter--valid', 'char-counter--too-long');
+        
+        if (currentLength < minLength) {
+          counter.classList.add('char-counter--too-short');
+        } else if (currentLength > maxLength) {
+          counter.classList.add('char-counter--too-long');
+        } else {
+          counter.classList.add('char-counter--valid');
+        }
+        
+        responses[textareaId] = textarea.value;
+        saveLocal(true);
+      }
+      
+      textarea.addEventListener('input', updateCounter);
+      updateCounter(); // Initialiser
+    }
+
+    // Charger les valeurs sauvegardées pour une question
+    function loadQuestionValues(question) {
+      if (question.type === 'textarea' || question.type === 'date') {
+        if (responses[question.id]) {
+          document.getElementById(question.id).value = responses[question.id];
+        }
+      } else if (question.type === 'checkbox' && Array.isArray(responses[question.id])) {
+        responses[question.id].forEach(value => {
+          const checkbox = document.querySelector(`input[name="${question.id}"][value="${value}"]`);
+          if (checkbox) checkbox.checked = true;
+        });
+      }
+    }
+
+    // Afficher la question actuelle
+    function showCurrentQuestion() {
+      if (currentQuestionIndex < recoursQuestions.length) {
+        renderRecoursQuestion(recoursQuestions[currentQuestionIndex]);
+        updateButtonStates();
+        
+        // Nettoyer les messages d'erreur
+        const status = document.getElementById('status');
+        if (status) status.textContent = '';
+      }
+    }
+
+    // Initialiser l'étape 2
+    function initStep2() {
+      currentQuestionIndex = 0;
+      showCurrentQuestion();
+    }
+
+    // Navigation entre les étapes
+    document.getElementById('btn-step1').addEventListener('click', function() {
+      const selected = document.querySelector('input[name="type_recours"]:checked');
+      if (!selected) {
+        const status = document.getElementById('status');
+        if (status) status.textContent = 'Veuillez sélectionner un type de recours';
+        return;
+      }
+      const status = document.getElementById('status');
+      if (status) status.textContent = '';
+      responses.type_recours = selected.value;
+      saveLocal(true);
+      initStep2(); // Initialiser les questions dynamiques
+      showStep(2);
+    });
+
+    // Navigation dans les questions (étape 2)
+    document.getElementById('nextBtn').addEventListener('click', function() {
+      // Valider la question actuelle
+      const currentQuestion = recoursQuestions[currentQuestionIndex];
+      let isValid = true;
+      
+      if (currentQuestion.type === 'textarea' || currentQuestion.type === 'date') {
+        const value = document.getElementById(currentQuestion.id).value;
+        if (!value || (currentQuestion.minLength && value.length < currentQuestion.minLength)) {
+          isValid = false;
+        }
+      } else if (currentQuestion.type === 'checkbox') {
+        const checked = document.querySelectorAll(`input[name="${currentQuestion.id}"]:checked`);
+        if (checked.length === 0) {
+          isValid = false;
+        } else {
+          responses[currentQuestion.id] = Array.from(checked).map(cb => cb.value);
+          saveLocal(true);
+        }
+      }
+      
+      if (!isValid) {
+        const status = document.getElementById('status');
+        if (status) status.textContent = 'Veuillez remplir tous les champs obligatoires';
+        return;
+      }
+      
+      // Passer à la question suivante ou à l'étape 3
+      currentQuestionIndex++;
+      if (currentQuestionIndex < recoursQuestions.length) {
+        showCurrentQuestion();
+        updateButtonStates();
+      } else {
+        showStep(3); // Passer à l'offre
+      }
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', function() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        showCurrentQuestion();
+        updateButtonStates();
+      } else {
+        showStep(1);
+      }
+    });
+
+    // Mettre à jour l'état des boutons
+    function updateButtonStates() {
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      
+      if (prevBtn) {
+        prevBtn.disabled = false; // Toujours activé pour permettre de revenir à l'étape 1
+      }
+      
+      if (nextBtn) {
+        // Le bouton suivant est toujours enabled sauf si on est à la dernière question
+        nextBtn.disabled = false;
+      }
+    }
+
+    document.getElementById('btn-back-step3').addEventListener('click', function() {
+      currentQuestionIndex = recoursQuestions.length - 1; // Revenir à la dernière question
+      showCurrentQuestion();
+      showStep(2);
+    });
+
+    document.getElementById('btn-step3').addEventListener('click', function() {
+      // Rediriger vers le paiement
+      window.location.href = '/paiement.html?offer=recours';
+    });
+
+    // Fonctions utilitaires pour afficher/masquer les étapes
+    function showStep(stepNumber) {
+      document.querySelectorAll('.recours-step').forEach(step => {
+        step.classList.add('hidden');
+      });
+      document.getElementById(`step${stepNumber}`).classList.remove('hidden');
+      
+      // Nettoyer les messages d'erreur
+      const status = document.getElementById('status');
+      if (status) status.textContent = '';
+      
+      window.scrollTo(0, 0);
+    }
+  </script>
+</body>
+</html>

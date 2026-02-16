@@ -194,6 +194,23 @@
                 padding: 20px;
             }
         }
+        
+        .nav-phone {
+            color: #2A293E;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-left: auto;
+            font-size: 14px;
+        }
+        
+        /* Header identique aux autres pages */
+        .header {
+            background-color: #FFFEFD !important;
+            padding: 20px 0 !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
     </style>
 </head>
 <body class="home-page is-boxed has-animations">
@@ -202,11 +219,7 @@
             <div class="container header-inner">
                 <div class="brand">
                 </div>
-                <nav class="nav">
-                    <a class="nav-link" href="/">Accueil</a>
-                    <a class="nav-link" href="/donnees-confidentialite.html">Données & confidentialité</a>
-                    <a class="nav-link" href="/qui-sommes-nous.html">Qui sommes-nous</a>
-                </nav>
+                <!-- Navigation sera créée par JavaScript -->
             </div>
         </header>
 
@@ -394,7 +407,12 @@
         </footer>
     </div>
 
-    <script>
+    <script type="module">
+        import { createNavigation } from '/src/js/modules/navigation.js';
+        
+        // Créer la navigation centralisée
+        createNavigation();
+        
         // Gestion des modales
         (function() {
             const modalTriggers = document.querySelectorAll('[data-modal]');

@@ -67,9 +67,19 @@ body.home-page main > * {
 
 /* Header - Styles unifiés avec le formulaire */
 .header {
-  padding: 15px 0;
+  background-color: #FFFEFD;
   position: relative;
-  z-index: 1;
+  z-index: 10;
+}
+
+.nav-phone {
+  color: #2A293E;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-left: auto;
+  font-size: 14px;
 }
 
 .header-inner {
@@ -107,11 +117,6 @@ body.home-page main > * {
   padding: 8px 0;
   position: relative;
   transition: color 0.2s ease, background-color 0.2s ease;
-  margin-left: 20px;
-}
-
-.nav-link:first-child {
-  margin-left: 0;
 }
 
 .nav-link:hover {

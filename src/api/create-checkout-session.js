@@ -49,7 +49,7 @@ export default async function handler(req, res) {
     const offer = String(payload.offer || '');
     const advisor = payload.advisor ? String(payload.advisor) : '';
 
-    if (offer !== '49' && offer !== '79') {
+    if (offer !== '49' && offer !== '79' && offer !== 'recours') {
       return json(res, 400, { error: 'Invalid offer' });
     }
 
@@ -59,13 +59,15 @@ export default async function handler(req, res) {
 
     const origin = asOrigin(req);
 
-    const amountCents = offer === '49' ? 4900 : 7900;
-    const productName = offer === '49'
-      ? 'Projet de vie structuré pour la MDPH'
-      : 'Accompagnement personnalisé (projet de vie + échange)';
+    const amountCents = offer === 'recours' ? 4990 : (offer === '49' ? 4900 : 7900);
+    const productName = offer === 'recours'
+      ? 'Offre Recours MDPH – Accompagnement complet'
+      : (offer === '49'
+        ? 'Projet de vie structuré pour la MDPH'
+        : 'Accompagnement personnalisé (projet de vie + échange)');
 
     const amountValue = (amountCents / 100).toFixed(2);
-    const redirectUrl = offer === '79'
+    const redirectUrl = (offer === '79' || offer === 'recours')
       ? `${origin}/prendre-rendez_vous`
       : `${origin}/telecharger-votre-pdf`;
     const isLocal = /localhost|127\.0\.0\.1|\[::1\]/i.test(origin);

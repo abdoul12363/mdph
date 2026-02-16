@@ -21,7 +21,7 @@
     {
       "id": "type_demande",
       "title": "Type de demande",
-      "description": "Est-ce votre première demande auprès de la MDPH, ou bien un renouvellement ?",
+      "description": "Est-ce votre première demande auprès de la MDPH, un renouvellement, ou souhaitez-vous contester une décision ?",
       "isIntroduction": true,
       "type": "radio",
       "options": [
@@ -32,6 +32,10 @@
         {
           "value": "renouvellement",
           "label": "Renouvellement"
+        },
+        {
+          "value": "decision_contestee",
+          "label": "Décision MDPH contestée (recours)"
         }
       ],
       "obligatoire": true,

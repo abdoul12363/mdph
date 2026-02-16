@@ -20,6 +20,12 @@ function getQueryParam(name) {
 }
 
 function buildRecap(offer, advisor) {
+  if (offer === 'recours') {
+    return `
+      <p style="margin: 0 0 10px 0;"><strong>Offre :</strong> Recours MDPH – Accompagnement complet</p>
+      <p style="margin: 0;"><strong>Prix :</strong> 49,90 €</p>
+    `;
+  }
   if (offer === '49') {
     return `
       <p style="margin: 0 0 10px 0;"><strong>Offre :</strong> Projet de vie structuré pour la MDPH</p>
@@ -96,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const offer = getQueryParam('offer');
   const advisor = getQueryParam('advisor');
 
-  if (offer !== '49' && offer !== '79') {
+  if (offer !== '49' && offer !== '79' && offer !== 'recours') {
     setRecap('<p>Offre manquante. Retournez à la page précédente.</p>');
     setStatus('');
     return;

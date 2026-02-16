@@ -220,6 +220,12 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
       } catch (e) {
       }
 
+      // Si l'utilisateur a sélectionné "Décision MDPH contestée", rediriger vers le parcours recours
+      if (q && q.id === 'type_demande' && responses.type_demande === 'decision_contestee') {
+        window.location.href = '/recours-mdph';
+        return;
+      }
+
       if (nextCallback) {
         nextCallback();
       }
