@@ -26,9 +26,10 @@ body.home-page main {
   min-height: 100vh;
 }
 
-body.home-page::before {
+/* Background par défaut (landing / home) : limité au main */
+body.home-page main::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   background-image: url('/bg_landingpage.svg');
   background-repeat: no-repeat;
@@ -39,8 +40,32 @@ body.home-page::before {
   z-index: 0;
 }
 
-body.home-page .header,
-body.home-page .main {
+body.home-page main > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Pages légales : background sur toute la page (header inclus) */
+body.home-page.legal-page main::before {
+  display: none;
+}
+
+body.home-page.legal-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/bg_landingpage.svg');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  opacity: 0.2;
+  display: block;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.home-page.legal-page .header,
+body.home-page.legal-page .main {
   position: relative;
   z-index: 1;
 }
