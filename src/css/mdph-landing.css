@@ -1,9 +1,9 @@
-/* Styles Switch appliqués à la page d'accueil MDPH */
 
-/* Reset et styles de base */
+
+
 *{box-sizing:border-box}
 html, body {
-  height: auto;
+  height: 100%;
   min-height: 100%;
   margin: 0;
   padding: 0;
@@ -16,18 +16,19 @@ body.home-page {
   color: #2A293E;
   position: relative;
   min-height: 100vh;
-  background: #FFFFFF; /* Background identique à Switch */
+  background: #FFFFFF; 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
 
 body.home-page main {
   position: relative;
+  min-height: 100vh;
 }
 
-body.home-page main::before {
+body.home-page::before {
   content: '';
-  position: absolute;
+  position: fixed;
   inset: 0;
   background-image: url('/bg_landingpage.svg');
   background-repeat: no-repeat;
@@ -38,7 +39,8 @@ body.home-page main::before {
   z-index: 0;
 }
 
-body.home-page main > * {
+body.home-page .header,
+body.home-page .main {
   position: relative;
   z-index: 1;
 }
@@ -147,9 +149,9 @@ body.home-page main > * {
   padding-top: 48px;
   padding-bottom: 88px;
   background: transparent;
-  border-radius: 0; /* Pas de bordure dans layout boxed */
-  margin: 0; /* Pas de margin dans layout boxed */
-  box-shadow: none; /* Pas d'ombre dans layout boxed */
+  border-radius: 0; 
+  margin: 0; 
+  box-shadow: none; 
   position: relative;
 }
 
@@ -238,7 +240,7 @@ body.home-page main > * {
 /* Features Section */
 .features {
   padding: 80px 0;
-  background: #FFFFFF; /* Background blanc comme Switch */
+  background: #FFFFFF;
 }
 
 .section-inner {
@@ -388,7 +390,7 @@ body.home-page main > * {
   margin: 0;
 }
 
-/* Carousel */
+
 .landing-carousel {
   position: relative;
   width: 100%;

@@ -129,6 +129,15 @@
       "questionsFile": "pages/page4/coordonnees.json",
       "order": 17,
       "required": true
+    },
+    {
+      "id": "final_questions",
+      "title": "Finalisation",
+      "description": "Dernières questions avant le paiement",
+      "questionsFile": "pages/payment/final_question.json",
+      "isIntroduction": true,
+      "order": 18,
+      "required": true
     }
   ]
 }

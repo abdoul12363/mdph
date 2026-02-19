@@ -67,9 +67,11 @@ export default async function handler(req, res) {
         : 'Accompagnement personnalisé (projet de vie + échange)');
 
     const amountValue = (amountCents / 100).toFixed(2);
-    const redirectUrl = (offer === '79' || offer === 'recours')
-      ? `${origin}/prendre-rendez_vous`
-      : `${origin}/telecharger-votre-pdf`;
+    const redirectUrl = offer === 'recours'
+      ? `${origin}/prendre-rendez_vous_repo`
+      : (offer === '79'
+        ? `${origin}/prendre-rendez_vous`
+        : `${origin}/telecharger-votre-pdf`);
     const isLocal = /localhost|127\.0\.0\.1|\[::1\]/i.test(origin);
     const webhookUrl = isLocal ? undefined : `${origin}/api/mollie-webhook`;
 

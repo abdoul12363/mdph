@@ -4,6 +4,17 @@
   "description": "Questions pour préparer un recours MDPH.",
   "questions": [
     {
+      "id": "type_recours",
+      "title": "Type de recours",
+      "description": "Quelle démarche souhaitez-vous engager ?",
+      "type": "radio",
+      "obligatoire": true,
+      "options": [
+        { "value": "rapo", "label": "Recours administratif préalable obligatoire (RAPO)" },
+        { "value": "tribunal", "label": "Recours contentieux – Tribunal administratif" }
+      ]
+    },
+    {
       "id": "decision_contestee",
       "title": "Description de votre situation",
       "description": "Quelle décision de la MDPH contestez-vous ?",
@@ -64,7 +75,14 @@
         { "value": "annulation_decision", "label": "Annulation pure et simple de la décision" },
         { "value": "reexamen_dossier", "label": "Réexamen complet du dossier" }
       ]
+    },
+    {
+      "id": "terms_acceptance_recours",
+      "title": "Conditions d'utilisation",
+      "description": "Veuillez accepter les conditions pour continuer",
+      "type": "checkbox_single",
+      "obligatoire": true,
+      "checkboxLabel": "J'ai lu et j'accepte les <a href='/conditions-generales-vente.html' target='_blank' rel='noopener noreferrer'>conditions générales de vente</a> et la <a href='/donnees-confidentialite.html' target='_blank' rel='noopener noreferrer'>politique de confidentialité</a>."
     }
   ]
 }
-

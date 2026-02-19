@@ -31,66 +31,41 @@
   <main class="main">
     <section class="section">
       <div class="container">
-        
         <div class="card form-card">
-          <!-- Étape 1: Choix du type de recours -->
-          <div id="step1" class="recours-step">
-            <h2>Type de recours</h2>
-            <p>Quelle démarche souhaitez-vous engager ?</p>
+          
+          <div id="step2" class="recours-step">
+            <div id="questionArea"></div>
+            <div class="form-actions">
+              <button class="btn" id="prevBtn" type="button" disabled>Précédent</button>
+              <button class="btn btn-primary" id="nextBtn" type="button">Suivant</button>
+            </div>
+          </div>
 
-            <div class="choice-grid">
-              <label class="choice">
-                <input type="radio" name="type_recours" value="rapo" required />
-                <span>Recours administratif préalable obligatoire (RAPO)</span>
-              </label>
-              <label class="choice">
-                <input type="radio" name="type_recours" value="tribunal" required />
-                <span>Recours contentieux – Tribunal administratif</span>
-              </label>
+          <div id="step3" class="recours-step hidden">
+            <h2>Accompagnement pour votre recours</h2>
+            <p>Votre situation nécessite un accompagnement spécialisé pour maximiser vos chances de succès.</p>
+            
+            <div class="pricing-offer">
+              <div class="pricing-price">49,90 €</div>
+              <div class="pricing-title">Offre Recours MDPH – Accompagnement complet</div>
+              <ul class="pricing-features">
+                <li>Analyse approfondie de votre dossier – Étude de la décision MDPH et des éléments de votre situation</li>
+                <li>Structuration du recours – Préparation du RAPO ou du recours contentieux selon votre situation</li>
+                <li>Préparation des arguments juridiques – Construction d'une argumentation solide et adaptée</li>
+                <li>Accompagnement personnalisé – Échange avec un expert MDPH pour finaliser votre recours</li>
+                <li>Documents structurés – Recours rédigé et prêt à envoyer</li>
+              </ul>
+              <p class="muted">Paiement sécurisé – Accès immédiat après validation</p>
             </div>
 
             <div class="form-actions">
-              <button class="btn btn-primary" id="btn-step1" type="button">Continuer</button>
+              <button class="btn" id="btn-back-step3" type="button">Retour</button>
+              <button class="btn btn-primary" id="btn-step3" type="button">Procéder au paiement</button>
             </div>
           </div>
 
-        <!-- Étape 2: Formulaire de description -->
-        <div id="step2" class="recours-step hidden">
-          <div id="questionArea"></div>
-
-          <div class="form-actions">
-            <button class="btn" id="prevBtn" type="button" disabled>Précédent</button>
-            <button class="btn btn-primary" id="nextBtn" type="button">Suivant</button>
-          </div>
         </div>
-
-        <!-- Étape 3: Offre -->
-        <div id="step3" class="recours-step hidden">
-          <h2>Accompagnement pour votre recours</h2>
-          <p>Votre situation nécessite un accompagnement spécialisé pour maximiser vos chances de succès.</p>
-          
-          <div class="pricing-offer">
-            <div class="pricing-price">49,90 €</div>
-            <div class="pricing-title">Offre Recours MDPH – Accompagnement complet</div>
-            
-            <ul class="pricing-features">
-              <li>Analyse approfondie de votre dossier – Étude de la décision MDPH et des éléments de votre situation</li>
-              <li>Structuration du recours – Préparation du RAPO ou du recours contentieux selon votre situation</li>
-              <li>Préparation des arguments juridiques – Construction d'une argumentation solide et adaptée</li>
-              <li>Accompagnement personnalisé – Échange avec un expert MDPH pour finaliser votre recours</li>
-              <li>Documents structurés – Recours rédigé et prêt à envoyer</li>
-            </ul>
-            
-            <p class="muted">Paiement sécurisé – Accès immédiat après validation</p>
-          </div>
-
-          <div class="form-actions">
-            <button class="btn" id="btn-back-step3" type="button">Retour</button>
-            <button class="btn btn-primary" id="btn-step3" type="button">Procéder au paiement</button>
-          </div>
-        </div>
-
-        <p class="muted" id="status" style="margin-top:12px"></p>
+        <p class="muted" id="status"></p>
       </div>
     </section>
   </main>
@@ -111,27 +86,21 @@
         if (status) {
           status.textContent = 'Erreur de chargement des questions du recours. Veuillez réessayer plus tard.';
         }
-        const btn = document.getElementById('btn-step1');
-        if (btn) btn.disabled = true;
         return;
       }
 
-      // Charger les valeurs de l'étape 1 si nécessaire
-      loadStep1Values();
-
       // Restaurer l'étape et l'index de question après refresh
-      const savedStep = Number(responses.recours_step || 1);
+      const savedStep = Number(responses.recours_step || 2);
       const savedIndex = Number.isFinite(Number(responses.recours_question_index))
         ? Number(responses.recours_question_index)
         : 0;
       currentQuestionIndex = Math.max(0, savedIndex);
 
-      if (savedStep >= 2) {
-        initStep2();
-        showStep(2);
-      }
       if (savedStep >= 3) {
         showStep(3);
+      } else {
+        initStep2();
+        showStep(2);
       }
     }
 
@@ -195,6 +164,31 @@
         html += `
           </div>
         `;
+      } else if (question.type === 'checkbox_single') {
+        html += `
+          <div class="choice-grid">
+            <label class="choice terms-choice" style="cursor: pointer;">
+              <input type="checkbox" id="${question.id}" required />
+              <span class="terms-text">${question.checkboxLabel}</span>
+            </label>
+          </div>
+        `;
+      } else if (question.type === 'radio') {
+        html += `
+          <label>${question.description}</label>
+          <div class="choice-grid">
+        `;
+        question.options.forEach(option => {
+          html += `
+            <label class="choice">
+              <input type="radio" name="${question.id}" value="${option.value}" required />
+              <span>${option.label}</span>
+            </label>
+          `;
+        });
+        html += `
+          </div>
+        `;
       }
       
       html += `
@@ -223,6 +217,31 @@
         const inputs = document.querySelectorAll(`input[name="${question.id}"]`);
         inputs.forEach((input) => {
           input.addEventListener('change', () => updateCheckboxResponse(question.id));
+        });
+      }
+      if (question.type === 'checkbox_single') {
+        const checkbox = document.getElementById(question.id);
+        if (checkbox) {
+          checkbox.addEventListener('change', () => {
+            responses[question.id] = checkbox.checked;
+            saveLocal(true);
+          });
+        }
+
+        const links = document.querySelectorAll('.terms-choice a');
+        links.forEach((a) => {
+          a.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        });
+      }
+      if (question.type === 'radio') {
+        const radios = document.querySelectorAll(`input[name="${question.id}"]`);
+        radios.forEach((radio) => {
+          radio.addEventListener('change', () => {
+            responses[question.id] = radio.value;
+            saveLocal(true);
+          });
         });
       }
       
@@ -288,6 +307,14 @@
           const checkbox = document.querySelector(`input[name="${question.id}"][value="${value}"]`);
           if (checkbox) checkbox.checked = true;
         });
+      } else if (question.type === 'checkbox_single') {
+        const checkbox = document.getElementById(question.id);
+        if (checkbox && responses[question.id]) {
+          checkbox.checked = true;
+        }
+      } else if (question.type === 'radio' && responses[question.id]) {
+        const radio = document.querySelector(`input[name="${question.id}"][value="${responses[question.id]}"]`);
+        if (radio) radio.checked = true;
       }
     }
 
@@ -310,32 +337,6 @@
       saveLocal(true);
     }
 
-    // Charger les réponses de l'étape 1
-    function loadStep1Values() {
-      if (responses.type_recours) {
-        const radio = document.querySelector(`input[name="type_recours"][value="${responses.type_recours}"]`);
-        if (radio) radio.checked = true;
-      }
-      if (responses.decision_contestee) {
-        const decisionElement = document.getElementById('decision_contestee');
-        if (decisionElement) decisionElement.value = responses.decision_contestee;
-      }
-      if (responses.date_decision) {
-        const dateElement = document.getElementById('date_decision');
-        if (dateElement) dateElement.value = responses.date_decision;
-      }
-      if (responses.impact_decision) {
-        const impactElement = document.getElementById('impact_decision');
-        if (impactElement) impactElement.value = responses.impact_decision;
-      }
-      if (responses.objectif_recours && Array.isArray(responses.objectif_recours)) {
-        responses.objectif_recours.forEach(val => {
-          const cb = document.querySelector(`input[name="objectif_recours"][value="${val}"]`);
-          if (cb) cb.checked = true;
-        });
-      }
-    }
-
     // Initialiser l'étape 2
     function initStep2() {
       if (!Number.isFinite(currentQuestionIndex) || currentQuestionIndex < 0) currentQuestionIndex = 0;
@@ -343,23 +344,7 @@
       showCurrentQuestion();
     }
 
-    // Navigation entre les étapes
-    document.getElementById('btn-step1').addEventListener('click', function() {
-      const selected = document.querySelector('input[name="type_recours"]:checked');
-      if (!selected) {
-        const status = document.getElementById('status');
-        if (status) status.textContent = 'Veuillez sélectionner un type de recours';
-        return;
-      }
-      const status = document.getElementById('status');
-      if (status) status.textContent = '';
-      responses.type_recours = selected.value;
-      saveLocal(true);
-      initStep2(); // Initialiser les questions dynamiques
-      showStep(2);
-    });
-
-    // Navigation dans les questions (étape 2)
+    // Navigation dans les questions
     document.getElementById('nextBtn').addEventListener('click', function() {
       // Valider la question actuelle
       const currentQuestion = recoursQuestions[currentQuestionIndex];
@@ -379,6 +364,22 @@
           isValid = false;
         } else {
           responses[currentQuestion.id] = Array.from(checked).map(cb => cb.value);
+          saveLocal(true);
+        }
+      } else if (currentQuestion.type === 'checkbox_single') {
+        const checkbox = document.getElementById(currentQuestion.id);
+        if (!checkbox || !checkbox.checked) {
+          isValid = false;
+        } else {
+          responses[currentQuestion.id] = true;
+          saveLocal(true);
+        }
+      } else if (currentQuestion.type === 'radio') {
+        const selected = document.querySelector(`input[name="${currentQuestion.id}"]:checked`);
+        if (!selected) {
+          isValid = false;
+        } else {
+          responses[currentQuestion.id] = selected.value;
           saveLocal(true);
         }
       }
@@ -408,8 +409,6 @@
         saveLocal(true);
         showCurrentQuestion();
         updateButtonStates();
-      } else {
-        showStep(1);
       }
     });
 
@@ -419,11 +418,10 @@
       const nextBtn = document.getElementById('nextBtn');
       
       if (prevBtn) {
-        prevBtn.disabled = false; // Toujours activé pour permettre de revenir à l'étape 1
+        prevBtn.disabled = currentQuestionIndex === 0; // Désactivé à la première question
       }
       
       if (nextBtn) {
-        // Le bouton suivant est toujours enabled sauf si on est à la dernière question
         nextBtn.disabled = false;
       }
     }

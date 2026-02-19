@@ -52,3 +52,20 @@
   margin-top: 16px;
   text-align: center;
 }
+
+/* Conditions d'utilisation (recours) : liens cliquables sans casser l'alignement */
+.choice.terms-choice {
+  align-items: flex-start;
+}
+
+.choice.terms-choice .terms-text {
+  display: block !important;
+  align-items: unset !important;
+}
+
+.choice.terms-choice a {
+  color: var(--form-focus);
+  text-decoration: underline;
+  display: inline;
+  cursor: pointer;
+}

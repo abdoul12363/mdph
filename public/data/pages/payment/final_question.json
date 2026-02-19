@@ -12,19 +12,4 @@
       "requireCheckbox": true,
       "buttonText": "Continuer"
 
-    },
-    {
-      "id": "final_payment_expert",
-      "title": "J'ai besoins d'un expert MDPH",
-      "description": "Voulez-vous qu’un expert MDPH cadre votre projet de vie ?",
-      "isIntroduction": true,
-      "type": "radio",
-      "obligatoire": true,
-      "options": [
-        { "value": "oui", "label": "Oui" },
-        { "value": "non", "label": "Non" }
-      ],
-      "buttonText": "Continuer"
     }
-  ]
-}

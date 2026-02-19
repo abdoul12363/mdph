@@ -100,6 +100,10 @@
       "dest": "/src/pages/prendre-rendez_vous.html"
     },
     {
+      "src": "/prendre-rendez_vous_repo",
+      "dest": "/src/pages/prendre-rendez_vous_repo.html"
+    },
+    {
       "src": "/finaliser-projet-de-vie",
       "dest": "/src/pages/finaliser-projet-de-vie.html"
     },
