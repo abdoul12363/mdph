@@ -1,0 +1,70 @@
+
+{
+  "title": "Recours MDPH",
+  "description": "Questions pour préparer un recours MDPH.",
+  "questions": [
+    {
+      "id": "decision_contestee",
+      "title": "Description de votre situation",
+      "description": "Quelle décision de la MDPH contestez-vous ?",
+      "type": "textarea",
+      "obligatoire": true,
+      "minLength": 50,
+      "maxLength": 500,
+      "placeholder": "Décrivez précisément la décision que vous contestez..."
+    },
+    {
+      "id": "date_decision",
+      "title": "Date de la décision",
+      "description": "Date de la décision MDPH",
+      "type": "date",
+      "obligatoire": true
+    },
+    {
+      "id": "nature_refus",
+      "title": "Nature de la décision contestée",
+      "description": "Sélectionnez tous les éléments concernés",
+      "type": "checkbox",
+      "obligatoire": true,
+      "options": [
+        { "value": "refus_aah", "label": "Refus de l'AAH" },
+        { "value": "refus_apt", "label": "Refus de l'APT" },
+        { "value": "refus_pch", "label": "Refus de la PCH" },
+        { "value": "refus_carte", "label": "Refus de la carte mobilité inclusion" },
+        { "value": "refus_emploi", "label": "Refus de la reconnaissance travailleur handicapé" },
+        { "value": "refus_orientation", "label": "Refus d'orientation ESAT/entreprise adaptée" },
+        { "value": "refus_autre", "label": "Autre décision" }
+      ]
+    },
+    {
+      "id": "impact_decision",
+      "title": "Impact de la décision",
+      "description": "Comment cette décision affecte-t-elle votre quotidien ?",
+      "type": "textarea",
+      "obligatoire": true,
+      "minLength": 100,
+      "maxLength": 800,
+      "placeholder": "Décrivez les conséquences de cette décision sur votre vie quotidienne, vos finances, votre santé..."
+    },
+    {
+      "id": "objectif_recours",
+      "title": "Objectif du recours",
+      "description": "Que souhaitez-vous obtenir avec ce recours ?",
+      "type": "checkbox",
+      "obligatoire": true,
+      "options": [
+        { "value": "obtenir_aah", "label": "Obtenir l'AAH" },
+        { "value": "augmenter_aah", "label": "Augmenter le taux d'AAH" },
+        { "value": "obtenir_apt", "label": "Obtenir l'APT" },
+        { "value": "obtenir_pch", "label": "Obtenir la PCH" },
+        { "value": "obtenir_carte", "label": "Obtenir la carte mobilité inclusion" },
+        { "value": "reconnaissance_th", "label": "Obtenir la reconnaissance travailleur handicapé" },
+        { "value": "orientation_esat", "label": "Obtenir une orientation ESAT" },
+        { "value": "orientation_adaptee", "label": "Obtenir une orientation entreprise adaptée" },
+        { "value": "annulation_decision", "label": "Annulation pure et simple de la décision" },
+        { "value": "reexamen_dossier", "label": "Réexamen complet du dossier" }
+      ]
+    }
+  ]
+}
+

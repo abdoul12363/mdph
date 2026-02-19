@@ -138,11 +138,12 @@
     },
     {
       "title": "Conséquences concrètes au travail",
-      "description": "Ces difficultés entraînent…",
+      "description": "Indiquez uniquement les 3 conséquences les plus marquantes",
       "questions": [
         {
           "id": "consequences_travail",
           "type": "checkbox_multiple",
+          "maxSelections": 3,
           "options": [
             {
               "value": "absences",

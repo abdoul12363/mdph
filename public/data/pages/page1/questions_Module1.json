@@ -89,11 +89,12 @@
     },
     {
       "title": "Sans aide ou adaptation, cela entraîne…",
-      "description": "Cochez la ou les conséquences",
+      "description": "Indiquez uniquement les 3 conséquences les plus marquantes",
       "questions": [
         {
           "id": "consequences_difficultes",
           "type": "checkbox_multiple",
+          "maxSelections": 3,
           "options": [
             {
               "value": "ne_pas_y_arriver",

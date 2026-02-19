@@ -70,21 +70,22 @@ body.home-page::before {
 
 /* Header de la page d'accueil */
 body.home-page .header {
-  background-color: transparent;
-  border-bottom: none;
-  padding: 15px 0;
+  background-color: #FFFEFD;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 body.home-page .nav-link {
-  color: var(--font-color);
+  color: #000000;
   text-decoration: none;
-  margin-left: 20px;
+  font-size: 14px;
   font-weight: 400;
-  transition: color 0.2s;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 body.home-page .nav-link:hover {
-  color: var(--form-border);
+  color: var(--form-focus);
+  background: transparent;
 }
 
 /* Contenu principal */
@@ -205,7 +206,9 @@ body.home-page .card p {
 .container{max-width:980px;margin:0 auto;padding:0 20px;background:none}
 
 .header {
-  padding: 15px 0;
+  background-color: #FFFEFD;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1;
 }
@@ -287,6 +290,9 @@ body.home-page .card p {
 .pricing-header .btn{width:100%;justify-content:flex-start;font-size:13px;padding:8px 10px;min-height:36px;white-space:normal;text-align:left;line-height:1.25}
 .pricing-header .btn .pricing-price{display:block;font-weight:700;margin-bottom:2px;color:#16a34a}
 .pricing-header .btn .pricing-title{display:block;font-weight:600}
+.pricing-header .pricing-header-content{width:100%;font-size:13px;padding:8px 10px;min-height:36px;white-space:normal;text-align:left;line-height:1.25;cursor:default;user-select:text}
+.pricing-header .pricing-header-content .pricing-price{display:block;font-weight:700;margin-bottom:2px;color:#16a34a}
+.pricing-header .pricing-header-content .pricing-title{display:block;font-weight:600}
 .pricing-header .pricing-badge{align-self:center;display:inline-flex;align-items:center;justify-content:center;font-size:10px;padding:2px 6px;min-height:18px;border-radius:999px;background:rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.1);white-space:nowrap;text-align:center;line-height:1}
 .pricing-body{margin-top:10px}
 .pricing-body .muted{font-size:13px;line-height:1.5;margin-bottom:12px}

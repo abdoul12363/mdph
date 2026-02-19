@@ -49,15 +49,48 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
     radioOptions = `
       <div class="field-container intro-radio-options">
         <div class="choice-grid">
-          ${q.options.map(option => `
-            <label class="choice">
-              <input type="radio" 
-                     name="${radioKey}" 
-                     value="${option.value}" 
-                     ${responses[radioKey] === option.value ? 'checked' : ''}>
-              <span>${option.label}</span>
-            </label>
-          `).join('')}
+          ${q.options.map(option => {
+            const isChecked = responses[radioKey] === option.value;
+            const hasSubOptions = option.subOptions && Array.isArray(option.subOptions) && option.subOptions.length > 0;
+            
+            let optionHtml = `
+              <div class="radio-option-container" data-value="${option.value}">
+                <label class="choice">
+                  <input type="radio" 
+                         name="${radioKey}" 
+                         value="${option.value}" 
+                         data-has-suboptions="${hasSubOptions ? 'true' : 'false'}"
+                         ${isChecked ? 'checked' : ''}>
+                  <span>${option.label}</span>
+                </label>
+            `;
+            
+            // Ajouter les sous-options si présentes
+            if (hasSubOptions) {
+              const subOptionsFieldId = `${option.value}_suboptions`;
+              const selectedSubOptions = Array.isArray(responses[subOptionsFieldId]) ? responses[subOptionsFieldId] : [];
+              
+              optionHtml += `
+                <div class="sub-options-container" id="suboptions_${option.value}" style="${isChecked ? '' : 'display:none'}">
+                  <div class="sub-options-grid">
+                    ${option.subOptions.map(subOpt => {
+                      const subChecked = selectedSubOptions.includes(subOpt.value) ? 'checked' : '';
+                      return `
+                        <label class="sub-choice">
+                          <input type="checkbox" name="sub_check" value="${subOpt.value}" ${subChecked}
+                                 data-parent="${option.value}" data-suboptions-field="${subOptionsFieldId}" />
+                          <span>${subOpt.label}</span>
+                        </label>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              `;
+            }
+            
+            optionHtml += `</div>`;
+            return optionHtml;
+          }).join('')}
         </div>
       </div>
     `;
@@ -162,8 +195,57 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
           } catch (_) {
           }
           responses[radio.name] = radio.value;
+          
+          // Gérer l'affichage/masquage des sous-options
+          const hasSubOptions = radio.getAttribute('data-has-suboptions') === 'true';
+          if (hasSubOptions) {
+            const allSubContainers = document.querySelectorAll('.introduction-page .sub-options-container');
+            allSubContainers.forEach(container => {
+              container.style.display = 'none';
+              // Décocher les sous-options non visibles
+              const subChecks = container.querySelectorAll('input[name="sub_check"]');
+              subChecks.forEach(subCb => {
+                subCb.checked = false;
+              });
+              // Supprimer du storage
+              const subOptionsFieldId = container.querySelector('input[name="sub_check"]')?.getAttribute('data-suboptions-field');
+              if (subOptionsFieldId && responses[subOptionsFieldId]) {
+                delete responses[subOptionsFieldId];
+              }
+            });
+            
+            // Afficher les sous-options de la radio sélectionnée
+            const subContainer = document.getElementById(`suboptions_${radio.value}`);
+            if (subContainer) {
+              subContainer.style.display = 'block';
+            }
+          }
+          
           saveLocal(true);
           render();
+        });
+      });
+      
+      // Gérer les sous-checkboxes
+      const subCheckboxes = document.querySelectorAll('.introduction-page input[name="sub_check"]');
+      subCheckboxes.forEach(subCb => {
+        subCb.addEventListener('change', function() {
+          const subOptionsFieldId = this.getAttribute('data-suboptions-field');
+          if (!subOptionsFieldId) return;
+          
+          const parent = this.getAttribute('data-parent');
+          const container = document.getElementById(`suboptions_${parent}`);
+          if (!container) return;
+          
+          const checkedSubs = container.querySelectorAll('input[name="sub_check"]:checked');
+          const selectedValues = Array.from(checkedSubs).map(cb => cb.value);
+          
+          if (selectedValues.length > 0) {
+            responses[subOptionsFieldId] = selectedValues;
+          } else {
+            delete responses[subOptionsFieldId];
+          }
+          saveLocal(true);
         });
       });
 

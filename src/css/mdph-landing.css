@@ -68,6 +68,8 @@ body.home-page main > * {
 /* Header - Styles unifiés avec le formulaire */
 .header {
   background-color: #FFFEFD;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 10;
 }
@@ -686,7 +688,7 @@ body.home-page main > * {
   }
   
   .nav {
-    gap: 12px;
+    gap: 24px;
   }
   
   .nav-link {

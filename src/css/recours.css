@@ -1,0 +1,54 @@
+/* Styles spécifiques pour le formulaire de recours */
+
+/* Structure de l'offre pricing simplifiée */
+.pricing-offer {
+  background: var(--panel);
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.pricing-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #16a34a;
+  margin-bottom: 8px;
+}
+
+.pricing-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20px;
+  display: block;
+}
+
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.pricing-features li {
+  padding: 8px 0 8px 24px;
+  position: relative;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.pricing-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #16a34a;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.pricing-offer .muted {
+  font-size: 13px;
+  margin-top: 16px;
+  text-align: center;
+}
