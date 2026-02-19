@@ -31,6 +31,19 @@
   <main class="main">
     <section class="section">
       <div class="container">
+        <div class="form-header" id="recoursFormHeader">
+          <h1 id="formTitle" class="form-title"></h1>
+          <p id="formDescription" class="muted"></p>
+        </div>
+        <div class="progress" id="recoursProgress">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+          </div>
+          <div class="progress-meta">
+            <span class="muted" id="progressText">0 / 0</span>
+            <span class="muted" id="questionId"></span>
+          </div>
+        </div>
         <div class="card form-card">
           
           <div id="step2" class="recours-step">
@@ -322,6 +335,8 @@
     function showCurrentQuestion() {
       if (currentQuestionIndex < recoursQuestions.length) {
         renderRecoursQuestion(recoursQuestions[currentQuestionIndex]);
+        updateRecoursHeader();
+        updateProgressBar();
         updateButtonStates();
         
         // Nettoyer les messages d'erreur
@@ -342,6 +357,34 @@
       if (!Number.isFinite(currentQuestionIndex) || currentQuestionIndex < 0) currentQuestionIndex = 0;
       if (currentQuestionIndex >= recoursQuestions.length) currentQuestionIndex = Math.max(0, recoursQuestions.length - 1);
       showCurrentQuestion();
+    }
+
+    function updateRecoursHeader() {
+      const titleEl = document.getElementById('formTitle');
+      const descEl = document.getElementById('formDescription');
+      const q = recoursQuestions && recoursQuestions[currentQuestionIndex];
+
+      if (titleEl) titleEl.textContent = q && q.title ? q.title : 'Recours MDPH';
+      if (descEl) descEl.textContent = q && q.description ? q.description : '';
+    }
+
+    function updateProgressBar() {
+      const total = Array.isArray(recoursQuestions) ? recoursQuestions.length : 0;
+      const current = total > 0 ? Math.min(currentQuestionIndex + 1, total) : 0;
+
+      const progressFill = document.getElementById('progressFill');
+      const progressText = document.getElementById('progressText');
+      const questionId = document.getElementById('questionId');
+
+      if (progressText) progressText.textContent = `${current} / ${total}`;
+      if (questionId) {
+        const q = recoursQuestions && recoursQuestions[currentQuestionIndex];
+        questionId.textContent = q && q.id ? q.id : '';
+      }
+      if (progressFill) {
+        const pct = total > 0 ? (current / total) * 100 : 0;
+        progressFill.style.width = `${pct}%`;
+      }
     }
 
     // Navigation dans les questions
@@ -443,6 +486,21 @@
         step.classList.add('hidden');
       });
       document.getElementById(`step${stepNumber}`).classList.remove('hidden');
+
+      const header = document.getElementById('recoursFormHeader');
+      if (header) {
+        header.style.display = stepNumber === 3 ? 'none' : '';
+      }
+
+      const progress = document.getElementById('recoursProgress');
+      if (progress) {
+        progress.style.display = stepNumber === 3 ? 'none' : '';
+      }
+
+      if (stepNumber !== 3) {
+        updateRecoursHeader();
+        updateProgressBar();
+      }
 
       responses.recours_step = stepNumber;
       saveLocal(true);
