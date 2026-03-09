@@ -1,47 +1,6 @@
 {
   "sections": [
     {
-      "title": "Comment ça marche ?",
-      "description": "Vous allez répondre à des questions simples sur votre quotidien.Ces réponses servent de base pour vous aider à formuler un texte clair et structuré.",
-      "isIntroduction": true,
-      "buttonText": "Ok, mais encore ?"
-    },
-    {
-      "title": "Est-ce que c’est payant ?",
-      "description": "Non. La génération et la mise en forme de votre texte sont 100 % gratuites.Aucun paiement ne vous sera demandé pour utiliser ce parcours.",
-      "isIntroduction": true,
-      "buttonText": "D’accord, et à la fin j’obtiens quoi ?"
-    },
-    {
-      "title": "Ce que vous obtenez",
-      "description": "⦁ une première version structurée de votre projet de vie,\n⦁ basée sur vos réponses.\nCette version peut servir de base de travail pour un accompagnement personnalisé.",
-      "isIntroduction": true,
-      "buttonText": "J’ai compris"
-    },
-    {
-      "id": "type_demande",
-      "title": "Type de demande",
-      "description": "Est-ce votre première demande auprès de la MDPH, un renouvellement, ou souhaitez-vous contester une décision ?",
-      "isIntroduction": true,
-      "type": "radio",
-      "options": [
-        {
-          "value": "premiere",
-          "label": "Première demande"
-        },
-        {
-          "value": "renouvellement",
-          "label": "Renouvellement"
-        },
-        {
-          "value": "decision_contestee",
-          "label": "Décision MDPH contestée (recours)"
-        }
-      ],
-      "obligatoire": true,
-      "buttonText": "continuer"
-    },
-    {
       "id": "qui_est_concerne",
       "title": "Qui est concerné ?",
       "description": "Pour qui remplissez-vous ce projet de vie ?",

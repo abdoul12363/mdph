@@ -4,27 +4,27 @@
 
 import { $ } from './dom-utils.js';
 
-export function getCurrentStepNumber(visible, idx) {
-  if (!visible[idx]) return 1;
-
-  return visible[idx].step || 1;
-}
-
-export function getTotalSteps(visible) {
-  if (visible.length === 0) return 1;
-
-  const maxStep = Math.max(...visible.map(q => q.step || 1));
-  return maxStep > 0 ? maxStep : 1;
-}
-
 export function updateProgress(idx, visible) {
   const total = visible.length;
-
   const currentQuestion = visible[idx];
+
+  if (currentQuestion && currentQuestion.isEntryFlow) {
+    const currentStep = currentQuestion.progressStep || idx + 1;
+    const totalSteps = currentQuestion.progressTotal || 1;
+    const currentTitle = currentQuestion.title || currentQuestion.sectionTitle || '';
+
+    $('progressText').textContent = `Étape ${currentStep} sur ${totalSteps} – ${currentTitle}`;
+    $('progressFill').style.width = totalSteps ? `${Math.round((currentStep / totalSteps) * 100)}%` : '0%';
+    $('questionId').textContent = '';
+    $('prevBtn').disabled = idx <= 0;
+    $('nextBtn').textContent = idx >= total - 1 ? 'Terminer' : 'Suivant';
+    return;
+  }
+
   let currentModule = 1;
   let currentPageTitle = '';
   let currentPageDescription = '';
-  
+
   if (currentQuestion) {
     const match = currentQuestion.pageId?.match(/page(\d+)/);
     if (match) {
@@ -36,19 +36,18 @@ export function updateProgress(idx, visible) {
 
     const moduleTitle = document.getElementById('moduleTitle');
     const moduleDescription = document.getElementById('moduleDescription');
-    
+
     if (moduleTitle) moduleTitle.textContent = currentPageTitle;
     if (moduleDescription) moduleDescription.textContent = currentPageDescription;
   }
 
   const currentStep = currentModule;
-  const totalSteps = 4; // Nombre total de modules
-
+  const totalSteps = 4;
   const partieText = `Partie ${currentStep} sur ${totalSteps} – ${currentPageTitle}`;
+
   $('progressText').textContent = partieText;
   $('progressFill').style.width = totalSteps ? `${Math.round((currentStep / totalSteps) * 100)}%` : '0%';
   $('questionId').textContent = '';
-
   $('prevBtn').disabled = idx <= 0;
   $('nextBtn').textContent = idx >= total - 1 ? 'Terminer' : 'Suivant';
 }

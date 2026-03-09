@@ -302,12 +302,6 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
       } catch (e) {
       }
 
-      // Si l'utilisateur a sélectionné "Décision MDPH contestée", rediriger vers le parcours recours
-      if (q && q.id === 'type_demande' && responses.type_demande === 'decision_contestee') {
-        window.location.href = '/recours-mdph';
-        return;
-      }
-
       if (nextCallback) {
         nextCallback();
       }
@@ -590,7 +584,7 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
   const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
   
   // Pour toutes les sections, on utilise le même affichage avec titre et description de section
-  const sectionDescription = q.sectionDescription || '';
+  const sectionDescription = q.sectionDescription || q.description || '';
     
   let sectionHtml = `
     <div class="${q.className || ''} section-container">

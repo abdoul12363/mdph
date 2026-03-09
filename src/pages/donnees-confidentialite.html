@@ -13,13 +13,6 @@
 <body class="home-page legal-page">
   <header class="header">
     <div class="container header-inner">
-      <div class="brand"></div>
-      <nav class="nav">
-        <a class="nav-link" href="/">Accueil</a>
-        <a class="nav-link" href="/donnees-confidentialite.html">Données & confidentialité</a>
-        <a class="nav-link" href="/qui-sommes-nous.html">Qui sommes-nous</a>
-        <span class="nav-phone">02 99 260 127</span>
-      </nav>
     </div>
   </header>
 
@@ -36,7 +29,7 @@
             <p>Le responsable du traitement des données personnelles est :</p>
             <p>Gassama Abdoul Hadiri,<br>
             16 rue Louis et René Moine, 35000 Rennes.</p>
-            <p>Les informations légales complètes figurent dans la page <a href="/mentions-legales.html">Mentions légales</a>.</p>
+            <p>Les informations légales complètes figurent dans la page <a href="/mentions">Mentions légales</a>.</p>
           </div>
           
           <div class="legal-section">
@@ -131,5 +124,10 @@
       </div>
     </section>
   </main>
+
+  <script type="module">
+    import { initUniversalMenu } from '/src/js/modules/universal-menu.js';
+    initUniversalMenu();
+  </script>
 </body>
 </html>

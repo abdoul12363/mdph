@@ -7,23 +7,42 @@ import { responses, saveLocal } from './storage.js';
 import { getAnswerFromDom, validateRequired } from './answer-extractor.js';
 import { validateMinLength, getMinLengthErrorMessage } from './min-length-validator.js';
 
-// Fonction pour créer un menu centralisé
-export function createNavigation() {
-  const header = document.querySelector('.header .container');
-  if (!header) return;
+let inFlight = false;
 
-  const existingNav = header.querySelector('.nav');
-  if (existingNav) {
-    existingNav.remove();
+function redirectToFinalStep() {
+  try {
+    if (typeof window !== 'undefined') {
+      window.location.href = '/finaliser-projet-de-vie';
+    }
+  } catch {
   }
 }
 
-let inFlight = false;
+function validateAndStoreAnswer(q) {
+  const answer = getAnswerFromDom(q);
+
+  if (q.obligatoire && !validateRequired(q, answer)) {
+    alert('Cette question est obligatoire');
+    return { isValid: false, answer };
+  }
+
+  if (!validateMinLength(q, answer)) {
+    alert(getMinLengthErrorMessage(q, answer));
+    return { isValid: false, answer };
+  }
+
+  if (answer !== undefined) {
+    responses[q.id] = answer;
+  }
+
+  return { isValid: true, answer };
+}
 
 function getSectionRange(visible, idx) {
   try {
     const q = visible[idx];
     if (!q || !q.sectionTitle) return null;
+    if (q.isIntroduction || q.isCelebration || q.isRecap) return null;
 
     const sectionTitle = q.sectionTitle;
     const pageId = q.pageId;
@@ -68,62 +87,29 @@ export function next(idx, render, visible) {
       for (let i = range.start; i <= range.end; i += 1) {
         const qi = visible[i];
         if (!qi) continue;
-        const ans = getAnswerFromDom(qi);
-
-        if (qi.obligatoire && !validateRequired(qi, ans)) {
-          alert('Cette question est obligatoire');
+        const { isValid } = validateAndStoreAnswer(qi);
+        if (!isValid) {
           return idx;
-        }
-
-        // Validation de la longueur minimale
-        if (!validateMinLength(qi, ans)) {
-          alert(getMinLengthErrorMessage(qi, ans));
-          return idx;
-        }
-
-        if (ans !== undefined) {
-          responses[qi.id] = ans;
         }
       }
       saveLocal(true);
 
       if (range.end === visible.length - 1) {
-        try {
-          if (typeof window !== 'undefined') {
-            window.location.href = '/finaliser-projet-de-vie';
-          }
-        } catch {
-        }
+        redirectToFinalStep();
         return idx;
       }
 
       idx = range.end + 1;
     } else {
-      const answer = getAnswerFromDom(q);
-      
-      if (q.obligatoire && !validateRequired(q, answer)) {
-        alert('Cette question est obligatoire');
+      const { isValid } = validateAndStoreAnswer(q);
+      if (!isValid) {
         return idx;
-      }
-      
-      // Validation de la longueur minimale
-      if (!validateMinLength(q, answer)) {
-        alert(getMinLengthErrorMessage(q, answer));
-        return idx;
-      }
-      
-      if (answer !== undefined) {
-        responses[q.id] = answer;
-        saveLocal(true);
       }
 
+      saveLocal(true);
+
       if (isLastQuestion) {
-        try {
-          if (typeof window !== 'undefined') {
-            window.location.href = '/finaliser-projet-de-vie';
-          }
-        } catch {
-        }
+        redirectToFinalStep();
         return idx;
       }
       

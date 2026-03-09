@@ -18,13 +18,6 @@
 <body class="form-page">
   <header class="header">
     <div class="container header-inner">
-      <div class="brand"></div>
-      <nav class="nav">
-        <a class="nav-link" href="/">Accueil</a>
-        <a class="nav-link" href="/donnees-confidentialite.html">Données & confidentialité</a>
-        <a class="nav-link" href="/qui-sommes-nous.html">Qui sommes-nous</a>
-        <span class="nav-phone">02 99 260 127</span>
-      </nav>
     </div>
   </header>
 
@@ -85,6 +78,7 @@
 
   <script type="module">
     import { responses, saveLocal, loadSaved } from '/src/js/modules/storage.js';
+    import { initUniversalMenu } from '/src/js/modules/universal-menu.js';
  
     // Fonction d'initialisation comme dans form.js
     async function boot() {
@@ -364,7 +358,7 @@
       const descEl = document.getElementById('formDescription');
       const q = recoursQuestions && recoursQuestions[currentQuestionIndex];
 
-      if (titleEl) titleEl.textContent = q && q.title ? q.title : 'Recours MDPH';
+      if (titleEl) titleEl.textContent = 'Recours';
       if (descEl) descEl.textContent = q && q.description ? q.description : '';
     }
 
@@ -511,6 +505,8 @@
       
       window.scrollTo(0, 0);
     }
+
+    initUniversalMenu();
 
     // Démarrer l'application
     boot();

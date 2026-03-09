@@ -92,7 +92,15 @@
       "dest": "/src/pages/telecharger-votre-correction.html"
     },
     {
+      "src": "/correction-pdf",
+      "dest": "/src/pages/telecharger-votre-correction.html"
+    },
+    {
       "src": "/telecharger-votre-pdf",
+      "dest": "/src/pages/telecharger-votre-pdf.html"
+    },
+    {
+      "src": "/telecharger-pdf",
       "dest": "/src/pages/telecharger-votre-pdf.html"
     },
     {
@@ -100,7 +108,15 @@
       "dest": "/src/pages/prendre-rendez_vous.html"
     },
     {
+      "src": "/prendre-rendez-vous",
+      "dest": "/src/pages/prendre-rendez_vous.html"
+    },
+    {
       "src": "/prendre-rendez_vous_repo",
+      "dest": "/src/pages/prendre-rendez_vous_repo.html"
+    },
+    {
+      "src": "/rendez-vous-confirmation",
       "dest": "/src/pages/prendre-rendez_vous_repo.html"
     },
     {
@@ -108,7 +124,15 @@
       "dest": "/src/pages/finaliser-projet-de-vie.html"
     },
     {
+      "src": "/finaliser-dossier",
+      "dest": "/src/pages/finaliser-projet-de-vie.html"
+    },
+    {
       "src": "/confirmation-gratuite",
+      "dest": "/src/pages/confirmation-gratuite.html"
+    },
+    {
+      "src": "/confirmation",
       "dest": "/src/pages/confirmation-gratuite.html"
     },
     {
@@ -120,7 +144,15 @@
       "dest": "/src/pages/paiement-success.html"
     },
     {
+      "src": "/paiement-confirme",
+      "dest": "/src/pages/paiement-success.html"
+    },
+    {
       "src": "/recours-mdph",
+      "dest": "/src/pages/recours-mdph.html"
+    },
+    {
+      "src": "/recours",
       "dest": "/src/pages/recours-mdph.html"
     },
     {
@@ -128,8 +160,32 @@
       "dest": "/src/pages/form.html"
     },
     {
+      "src": "/formulaire",
+      "dest": "/src/pages/form.html"
+    },
+    {
       "src": "/",
       "dest": "/src/pages/index.html"
+    },
+    {
+      "src": "/confidentialite",
+      "dest": "/src/pages/donnees-confidentialite.html"
+    },
+    {
+      "src": "/a-propos",
+      "dest": "/src/pages/qui-sommes-nous.html"
+    },
+    {
+      "src": "/mentions",
+      "dest": "/src/pages/mentions-legales.html"
+    },
+    {
+      "src": "/charte",
+      "dest": "/src/pages/charte-ethique.html"
+    },
+    {
+      "src": "/conditions-vente",
+      "dest": "/src/pages/conditions-generales-vente.html"
     },
     {
       "src": "/(donnees-confidentialite|qui-sommes-nous|mentions-legales|charte-ethique|conditions-generales-vente)$",

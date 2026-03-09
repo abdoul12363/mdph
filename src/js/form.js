@@ -1,12 +1,14 @@
 // Imports des modules
 import { $, setStatus } from './modules/dom-utils.js';
-import { loadSaved, resetAll } from './modules/storage.js';
-import { allQuestions, visible, refreshVisible, loadAllQuestions } from './modules/question-loader.js';
+import { loadSaved, resetAll, responses, saveLocal } from './modules/storage.js';
+import { visible, refreshVisible, loadAllQuestions } from './modules/question-loader.js';
 import { updateProgress } from './modules/progress.js';
 import { updateFormHeader } from './modules/form-header.js';
 import { renderIntroductionPage, renderCelebrationPage, renderRecapPage, renderNormalPage } from './modules/page-renderer.js';
 import { next as navNext, prev as navPrev } from './modules/navigation.js';
 import { initCharCounters } from './modules/char-counter.js';
+import { primeEntryResponses, getEntryFlow } from './modules/premiere-question.js';
+import { initUniversalMenu } from './modules/universal-menu.js';
 
 // Variables globales
 let idx = 0;
@@ -84,8 +86,9 @@ function resetAllResponses() {
 
 // Fonction d'initialisation
 async function boot() {
+  let qs = '';
   try {
-    const qs = typeof window !== 'undefined' ? window.location.search : '';
+    qs = typeof window !== 'undefined' ? window.location.search : '';
     if (qs && qs.includes('reset=1')) {
       localStorage.removeItem('cerfa_responses_v1');
     }
@@ -93,14 +96,14 @@ async function boot() {
   }
 
   loadSaved();
+  const entry = getEntryFlow(qs);
+  primeEntryResponses(entry, responses);
+  if (entry) {
+    saveLocal(true);
+  }
 
   try {
     await loadAllQuestions();
-    
-    if (!Array.isArray(allQuestions)) {
-      console.error('Format de questions invalide :', allQuestions);
-      allQuestions = [];
-    }
   } catch (error) {
     console.error('Erreur lors du chargement des questions :', error);
     setStatus('Erreur de chargement des questions');
@@ -115,11 +118,6 @@ async function boot() {
   idx = 0;
   refreshVisible();
   render();
-  
-  // Mettre à jour l'en-tête avec la première question
-  if (visible.length > 0) {
-    updateFormHeader(visible[0]);
-  }
 }
 
 // Ajouter les écouteurs d'événements uniquement si les éléments existent
@@ -131,4 +129,5 @@ window.resetAll = resetAllResponses;
 window.boot = boot;
 
 // Démarrer l'application
+initUniversalMenu();
 boot();

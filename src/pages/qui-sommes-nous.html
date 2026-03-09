@@ -13,13 +13,6 @@
 <body class="home-page">
   <header class="header">
     <div class="container header-inner">
-      <div class="brand"></div>
-      <nav class="nav">
-        <a class="nav-link" href="/">Accueil</a>
-        <a class="nav-link" href="/donnees-confidentialite.html">Données & confidentialité</a>
-        <a class="nav-link" href="/qui-sommes-nous.html">Qui sommes-nous</a>
-        <span class="nav-phone">02 99 260 127</span>
-      </nav>
     </div>
   </header>
 
@@ -68,7 +61,7 @@
           
           <div class="legal-section">
             <h2>Données personnelles</h2>
-            <p>Les modalités de collecte et de traitement des données personnelles sont détaillées dans la <a href="/donnees-confidentialite.html">Politique de confidentialité</a>, accessible à tout moment sur le site.</p>
+            <p>Les modalités de collecte et de traitement des données personnelles sont détaillées dans la <a href="/confidentialite">Politique de confidentialité</a>, accessible à tout moment sur le site.</p>
           </div>
           
           <div class="legal-section">
@@ -85,5 +78,10 @@
       </div>
     </section>
   </main>
+
+  <script type="module">
+    import { initUniversalMenu } from '/src/js/modules/universal-menu.js';
+    initUniversalMenu();
+  </script>
 </body>
 </html>

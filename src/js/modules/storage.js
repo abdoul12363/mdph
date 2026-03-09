@@ -8,10 +8,6 @@ const storageKey = 'cerfa_responses_v1';
 
 export let responses = {};
 
-export function updateResponses(newResponses) {
-  responses = newResponses;
-}
-
 export function loadSaved() {
   try {
     const raw = localStorage.getItem(storageKey);
@@ -37,20 +33,4 @@ export function resetAll() {
   responses = {};
   saveLocal(true);
   return true;
-}
-
-export function setResponse(questionId, value) {
-  responses[questionId] = value;
-}
-
-export function getResponse(questionId) {
-  return responses[questionId];
-}
-
-// Exposition minimale pour d'éventuels handlers inline (éviter d'étendre plus que nécessaire).
-if (typeof window !== 'undefined') {
-  window.responses = responses;
-  window.saveLocal = saveLocal;
-  window.setResponse = setResponse;
-  window.getResponse = getResponse;
 }

@@ -3,50 +3,39 @@
  */
 
 import { responses } from './storage.js';
+import { buildEntryFlowQuestions, getEntryFlow } from './premiere-question.js';
 
 export let allQuestions = [];
 export let visible = [];
 
+function evaluateStrictEqualityCondition(condition) {
+  if (!condition || !condition.includes('===')) return true;
+
+  const stringMatch = condition.match(/(\w+)\s*===\s*['"]([^'"]+)['"]/);
+  if (!stringMatch) return true;
+
+  const [, fieldId, expectedValue] = stringMatch;
+  const actualValue = String(responses[fieldId] || '');
+  return actualValue === expectedValue;
+}
+
 export function refreshVisible() {
   visible = allQuestions.filter(q => {
-    // Toujours afficher les questions d'introduction
     if (q.isIntroduction) {
       return true;
     }
     
-    // Vérifier d'abord la condition de section
     if (q.sectionCondition) {
-      const condition = q.sectionCondition;
-      
-      // Vérifier si c'est une comparaison avec des chaînes 'true'/'false'
-      const stringMatch = condition.match(/(\w+)\s*===\s*['"]([^'"]+)['"]/);
-      if (stringMatch) {
-        const [, fieldId, expectedValue] = stringMatch;
-        const actualValue = String(responses[fieldId] || '');
-        
-        if (actualValue !== expectedValue) {
-          return false; // Exclure cette question si la condition de section n'est pas remplie
-        }
+      if (!evaluateStrictEqualityCondition(q.sectionCondition)) {
+        return false;
       }
     }
-    
-    // Ensuite vérifier la condition d'affichage de la question
+
     if (!q.condition_affichage) {
       return true;
     }
-    
-    const condition = q.condition_affichage;
-    if (condition.includes('===')) {
-      // Vérifier si c'est une comparaison avec des chaînes 'true'/'false'
-      const stringMatch = condition.match(/(\w+)\s*===\s*['"]([^'"]+)['"]/);
-      if (stringMatch) {
-        const [, field, expectedValue] = stringMatch;
-        const fieldValue = String(responses[field] || '');
-        return fieldValue === expectedValue;
-      }
-    }
-    
-    return true;
+
+    return evaluateStrictEqualityCondition(q.condition_affichage);
   });
   
   return visible;
@@ -60,6 +49,8 @@ export async function loadAllQuestions() {
       throw new Error(`Erreur HTTP: ${pagesResponse.status}`);
     }
     const pagesConfig = await pagesResponse.json();
+    
+    const entry = typeof window !== 'undefined' ? getEntryFlow(window.location.search) : null;
     
     allQuestions = [];
     
@@ -156,6 +147,11 @@ export async function loadAllQuestions() {
       } catch (pageError) {
         console.error(`Erreur lors du chargement de ${pageConfig.title}:`, pageError);
       }
+    }
+    
+    const entryQuestions = buildEntryFlowQuestions(entry);
+    if (entryQuestions.length > 0) {
+      allQuestions.unshift(...entryQuestions);
     }
     
     if (!Array.isArray(allQuestions)) {

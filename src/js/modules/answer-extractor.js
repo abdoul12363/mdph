@@ -22,8 +22,19 @@ export function getAnswerFromDom(q) {
   const scope = getScope(q);
   
   if (type === 'checkbox') {
+    if (Array.isArray(q.options) && q.options.length > 0) {
+      const checkedBoxes = scope.querySelectorAll(`input[name="${q.id}"]:checked`);
+      return Array.from(checkedBoxes).map(cb => cb.value);
+    }
+
     const el = scope.querySelector('#answer');
     return el ? el.checked : false;
+  }
+  
+  if (type === 'checkbox_single') {
+    const el = (q && q.id ? scope.querySelector(`#${q.id}`) : null)
+      || scope.querySelector('#answer');
+    return el ? el.checked === true : false;
   }
   
   if (type === 'checkbox_multiple_with_frequency') {

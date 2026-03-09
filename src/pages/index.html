@@ -7,6 +7,7 @@
     <title>— Projet de vie MDPH</title>
     <link href="https://fonts.googleapis.com/css?family=Heebo:400,700|IBM+Plex+Sans:600" rel="stylesheet">
     <link rel="stylesheet" href="/src/css/mdph-landing.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="home-page is-boxed has-animations">
     <div class="body-wrap boxed-container">
@@ -23,10 +24,131 @@
                 <div class="container">
                     <div class="hero-inner">
                         <div class="hero-copy">
-                            <h1 class="hero-title mt-0">Votre dossier MDPH <span class="typewriter" aria-label="refusé, incomplet, sous-évalué, mal compris"><span id="typewriter-word" class="typewriter__word">refusé</span></span> <span class="hero-static-optima">ou peut être structuré avec la méthode OPTIMA</span></h1>
+                            <div class="trust-badge">
+                                <div class="trust-stars">★★★★★</div>
+                                <span class="trust-rating">4.7/5</span>
+                                <span class="trust-text">Trust Pilot</span>
+                            </div>
+                            <h1 class="hero-title mt-0">Votre dossier MDPH peut être <span class="typewriter" aria-label="refusé, incomplet, sous-évalué, mal compris"><span id="typewriter-word" class="typewriter__word">refusé</span></span> <span class="hero-static-optima">ou être structuré avec la méthode OPTIMA</span></h1>
                             <p class="hero-paragraph">Analyse structurée et optimisation stratégique selon les critères d’évaluation MDPH.</p>
                             <div class="hero-cta">
-                                <a class="button button-primary" href="/form">Evaluer ma situation</a>
+                                <a class="button button-primary" href="#solution-section">Evaluer ma situation</a>
+                                <a class="button button-secondary" href="#optima-section">Découvrir la méthode OPTIMA</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Solution Adaptée -->
+            <section class="solution-section" id="solution-section">
+                <div class="container">
+                    <div class="solution-inner">
+                        <div class="solution-badge-container">
+                            <div class="solution-badge">Une solution à la hauteur de vos besoins</div>
+                        </div>
+                        <h2 class="solution-title"><span class="solution-title-highlight">Une solution adaptée</span> à votre problème</h2>
+                        <p class="solution-subtitle">Nous comprenons les défis spécifiques liés à votre dossier MDPH et vous offrons une approche personnalisée</p>
+                        
+                        <div class="solution-grid">
+                            <div class="solution-item" data-entry-target="/recours" tabindex="0" role="link">
+                                <div class="solution-icon" aria-hidden="true">
+                                    <i data-lucide="file-x" class="lucide-icon"></i>
+                                </div>
+                                <p class="solution-item-text">Vous avez reçu un refus ou une décision partielle</p>
+                                <div class="solution-action">→ Analyser ma décision</div>
+                            </div>
+                            <div class="solution-item" data-entry-target="/formulaire?parcours=renouvellement" tabindex="0" role="link">
+                                <div class="solution-icon" aria-hidden="true">
+                                    <i data-lucide="refresh-cw" class="lucide-icon"></i>
+                                </div>
+                                <p class="solution-item-text">Vous devez renouveler vos droits</p>
+                                <div class="solution-action">→ Sécuriser mon renouvellement</div>
+                            </div>
+                            <div class="solution-item" data-entry-target="/formulaire?parcours=aggravation" tabindex="0" role="link">
+                                <div class="solution-icon" aria-hidden="true">
+                                    <i data-lucide="heart-pulse" class="lucide-icon"></i>
+                                </div>
+                                <p class="solution-item-text">Votre situation médicale est grave ou évolutive</p>
+                                <div class="solution-action">→ Structurer mon dossier</div>
+                            </div>
+                            <div class="solution-item" data-entry-target="/formulaire?parcours=premiere-demande" tabindex="0" role="link">
+                                <div class="solution-icon" aria-hidden="true">
+                                    <i data-lucide="file-plus" class="lucide-icon"></i>
+                                </div>
+                                <p class="solution-item-text">Vous préparez une première demande</p>
+                                <div class="solution-action">→ Construire mon dossier</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Métriques -->
+            <section class="metrics-section">
+                <div class="container">
+                    <div class="metrics-badge-container">
+                        <div class="metrics-badge glass">Des chiffres qui parlent</div>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <div class="metric-number" data-target="200" data-suffix="+">0</div>
+                            <div class="metric-label">personnes accompagnées</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-number" data-target="90" data-suffix="%">0</div>
+                            <div class="metric-label">de dossiers validés</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-number" data-target="4.8" data-suffix="/5">0</div>
+                            <div class="metric-label">note moyenne</div>
+                        </div>
+                    </div>
+                    <div class="metrics-cta">
+                        <a class="button button-primary orange-button" href="#solution-section">Structurer mon dossier</a>
+                        <a class="button button-secondary" href="#optima-section">Notre méthode</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Méthode Optima -->
+            <section class="optima-section" id="optima-section">
+                <div class="container">
+                    <div class="optima-inner">
+                        <div class="optima-badge-container">
+                            <div class="optima-badge">Une methodologie d'experts</div>
+                        </div>
+                        <h2 class="optima-title"><span class="optima-title-highlight">La méthode optima</span></h2>
+                        <p class="optima-subtitle">Une approche unique pour maximiser vos chances de succès</p>
+                        
+                        <div class="optima-card" id="optima-card">
+                            <div class="optima-card-inner">
+                                <div class="optima-navigation">
+                                    <button class="optima-nav-btn optima-nav-prev" id="optima-prev" aria-label="Étape précédente">
+                                        <i data-lucide="chevron-left" class="lucide-icon"></i>
+                                    </button>
+                                    <button class="optima-nav-btn optima-nav-next" id="optima-next" aria-label="Étape suivante">
+                                        <i data-lucide="chevron-right" class="lucide-icon"></i>
+                                    </button>
+                                </div>
+                                <div class="optima-word" aria-hidden="true">
+                                    <span class="optima-word-letter is-active">O</span>
+                                    <span class="optima-word-letter">P</span>
+                                    <span class="optima-word-letter">T</span>
+                                    <span class="optima-word-letter">I</span>
+                                    <span class="optima-word-letter">M</span>
+                                    <span class="optima-word-letter">A</span>
+                                </div>
+                                <h3 class="optima-item-title" id="optima-step-title">Observation</h3>
+                                <p class="optima-item-text" id="optima-step-text">Comprendre précisément votre situation, vos limites et votre quotidien avant toute rédaction.</p>
+                                <div class="optima-progress" aria-hidden="true">
+                                    <span class="optima-progress-dot is-active"></span>
+                                    <span class="optima-progress-dot"></span>
+                                    <span class="optima-progress-dot"></span>
+                                    <span class="optima-progress-dot"></span>
+                                    <span class="optima-progress-dot"></span>
+                                    <span class="optima-progress-dot"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,7 +174,7 @@
                         <p>Le responsable du traitement des données personnelles est :<br>
                         Gassama Abdoul Hadiri,<br>
                         16 rue Louis et René Moine, 35000 Rennes.</p>
-                        <p>Les informations légales complètes figurent dans la page <a href="/mentions-legales.html" target="_blank">Mentions légales</a>.</p>
+                        <p>Les informations légales complètes figurent dans la page <a href="/mentions" target="_blank">Mentions légales</a>.</p>
                     </div>
                     
                     <div class="modal-section">
@@ -135,7 +257,7 @@
                             <li>droit d'opposition</li>
                             <li>droit au retrait du consentement</li>
                         </ul>
-                        <p>Ces droits peuvent être exercés en contactant l'éditeur via les coordonnées figurant dans les <a href="/mentions-legales.html" target="_blank">Mentions légales</a>.</p>
+                        <p>Ces droits peuvent être exercés en contactant l'éditeur via les coordonnées figurant dans les <a href="/mentions" target="_blank">Mentions légales</a>.</p>
                     </div>
                     
                     <div class="modal-section">
@@ -165,7 +287,7 @@
                 <div class="site-footer-inner">
                     <div class="brand footer-brand">
                         <a href="#">
-                            <img class="asset-dark" src="/fauteuil-roulant.png" alt="Logo">
+                            <img class="asset-dark" src="/34886429_8239756.svg" alt="Logo">
                         </a>
                     </div>
                     <ul class="footer-links list-reset">
@@ -176,21 +298,19 @@
                             <a href="#">À propos de nous</a>
                         </li>
                         <li>
-                            <a href="/charte-ethique.html">Charte éthique</a>
+                            <a href="/charte">Charte éthique</a>
                         </li>
                     </ul>
                     <div class="footer-copyright">&copy; 2026 Projet de vie MDPH, tous droits réservés</div>
                 </div>
             </div>
         </footer>
-    </div>
 
     <script type="module">
-        import { createNavigation } from '/src/js/modules/navigation.js';
-        
-        createNavigation();
-        
-        // Gestion des modales
+        import { initUniversalMenu } from '/src/js/modules/universal-menu.js';
+
+        initUniversalMenu();
+
         (function() {
             const modalTriggers = document.querySelectorAll('[data-modal]');
             const modalOverlay = document.getElementById('modal-overlay');
@@ -220,13 +340,12 @@
             });
 
             closeButtons.forEach(btn => btn.addEventListener('click', closeModal));
-            modalOverlay.addEventListener('click', closeModal);
+            if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') closeModal();
             });
         })();
 
-        // Animation en fondu simple sur les mots rotatifs du hero
         (function() {
             const el = document.getElementById('typewriter-word');
             const container = el?.parentElement;
@@ -254,6 +373,149 @@
             } else {
                 tick();
             }
+        })();
+
+        (function() {
+            const solutionItems = document.querySelectorAll('.solution-item[data-entry-target]');
+            solutionItems.forEach(item => {
+                const goToTarget = () => {
+                    const target = item.getAttribute('data-entry-target');
+                    if (target) {
+                        window.location.href = target;
+                    }
+                };
+
+                item.addEventListener('click', goToTarget);
+                item.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        goToTarget();
+                    }
+                });
+            });
+        })();
+
+        (function() {
+            const card = document.getElementById('optima-card');
+            const title = document.getElementById('optima-step-title');
+            const text = document.getElementById('optima-step-text');
+            const dots = Array.from(document.querySelectorAll('.optima-progress-dot'));
+            const wordLetters = Array.from(document.querySelectorAll('.optima-word-letter'));
+            const prevBtn = document.getElementById('optima-prev');
+            const nextBtn = document.getElementById('optima-next');
+            if (!card || !title || !text || dots.length === 0 || wordLetters.length === 0 || !prevBtn || !nextBtn) return;
+
+            const steps = [
+                { letter: 'O', title: 'Observation', text: 'Comprendre précisément votre situation, vos limites et votre quotidien avant toute rédaction.' },
+                { letter: 'P', title: 'Pondération', text: 'Hiérarchiser les informations importantes pour mettre en avant ce qui a le plus d\'impact.' },
+                { letter: 'T', title: 'Traduction', text: 'Transformer votre vécu en formulations claires, compréhensibles et exploitables pour l\'évaluation.' },
+                { letter: 'I', title: 'Identification', text: 'Repérer les éléments décisifs de votre dossier pour ne laisser aucune information essentielle de côté.' },
+                { letter: 'M', title: 'Mise en cohérence', text: 'Structurer l\'ensemble de vos éléments pour que le dossier soit logique, fluide et convaincant.' },
+                { letter: 'A', title: 'Argumentation', text: 'Appuyer chaque demande avec des arguments solides, concrets et alignés avec vos besoins réels.' }
+            ];
+
+            let index = 0;
+            const fadeMs = 260;
+            const displayMs = 2400;
+            let cycleTimeoutId;
+            let fadeTimeoutId;
+
+            function renderStep(stepIndex) {
+                const step = steps[stepIndex];
+                title.textContent = step.title;
+                text.textContent = step.text;
+
+                dots.forEach((dot, dotIndex) => {
+                    dot.classList.toggle('is-active', dotIndex === stepIndex);
+                });
+                wordLetters.forEach((wordLetter, wordLetterIndex) => {
+                    wordLetter.classList.toggle('is-active', wordLetterIndex === stepIndex);
+                });
+            }
+
+            function scheduleCycle() {
+                window.clearTimeout(cycleTimeoutId);
+                cycleTimeoutId = window.setTimeout(cycle, displayMs);
+            }
+
+            function clearCycle() {
+                window.clearTimeout(cycleTimeoutId);
+                window.clearTimeout(fadeTimeoutId);
+                card.classList.remove('is-fading');
+            }
+
+            function goToStep(newIndex) {
+                clearCycle();
+                if (newIndex < 0) newIndex = steps.length - 1;
+                if (newIndex >= steps.length) newIndex = 0;
+                index = newIndex;
+                renderStep(index);
+                scheduleCycle();
+            }
+
+            prevBtn.addEventListener('click', () => goToStep(index - 1));
+            nextBtn.addEventListener('click', () => goToStep(index + 1));
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                renderStep(0);
+                return;
+            }
+
+            function cycle() {
+                clearCycle();
+                card.classList.add('is-fading');
+                fadeTimeoutId = window.setTimeout(() => {
+                    index = (index + 1) % steps.length;
+                    renderStep(index);
+                    card.classList.remove('is-fading');
+                    scheduleCycle();
+                }, fadeMs);
+            }
+
+            renderStep(0);
+            scheduleCycle();
+        })();
+
+        lucide.createIcons();
+
+        (function() {
+            const metricNumbers = document.querySelectorAll('.metric-number');
+
+            function animateNumber(element, target) {
+                const duration = 2000;
+                const start = 0;
+                const increment = target / (duration / 16);
+                let current = start;
+                const suffix = element.getAttribute('data-suffix') || '';
+                const isDecimal = target % 1 !== 0;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    if (isDecimal) {
+                        element.textContent = current.toFixed(1) + suffix;
+                    } else {
+                        element.textContent = Math.floor(current) + suffix;
+                    }
+                }, 16);
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = parseFloat(entry.target.getAttribute('data-target'));
+                        animateNumber(entry.target, target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            metricNumbers.forEach(number => {
+                observer.observe(number);
+            });
         })();
     </script>
 </body>

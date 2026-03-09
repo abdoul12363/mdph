@@ -151,7 +151,7 @@ const server = http.createServer((req, res) => {
       res.end('Index file not found');
       return;
     }
-  } else if (urlPath === '/form' || urlPath === '/form.html') {
+  } else if (urlPath === '/form' || urlPath === '/form.html' || urlPath === '/formulaire') {
     const formPath = path.join(ROOT, 'src/pages/form.html');
     if (fs.existsSync(formPath)) {
       serveFile(formPath, res);
@@ -162,7 +162,7 @@ const server = http.createServer((req, res) => {
       res.end('Form file not found');
       return;
     }
-  } else if (urlPath === '/recours-mdph' || urlPath === '/recours-mdph.html') {
+  } else if (urlPath === '/recours-mdph' || urlPath === '/recours-mdph.html' || urlPath === '/recours') {
     const recoursPath = path.join(ROOT, 'src/pages/recours-mdph.html');
     if (fs.existsSync(recoursPath)) {
       serveFile(recoursPath, res);
@@ -171,6 +171,78 @@ const server = http.createServer((req, res) => {
       res.statusCode = 404;
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       res.end('Recours page not found');
+      return;
+    }
+  } else if (urlPath === '/confidentialite') {
+    const pagePath = path.join(ROOT, 'src/pages/donnees-confidentialite.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/a-propos') {
+    const pagePath = path.join(ROOT, 'src/pages/qui-sommes-nous.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/mentions') {
+    const pagePath = path.join(ROOT, 'src/pages/mentions-legales.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/charte') {
+    const pagePath = path.join(ROOT, 'src/pages/charte-ethique.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/conditions-vente') {
+    const pagePath = path.join(ROOT, 'src/pages/conditions-generales-vente.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/finaliser-dossier') {
+    const pagePath = path.join(ROOT, 'src/pages/finaliser-projet-de-vie.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/telecharger-pdf') {
+    const pagePath = path.join(ROOT, 'src/pages/telecharger-votre-pdf.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/correction-pdf') {
+    const pagePath = path.join(ROOT, 'src/pages/telecharger-votre-correction.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/confirmation') {
+    const pagePath = path.join(ROOT, 'src/pages/confirmation-gratuite.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/paiement-confirme') {
+    const pagePath = path.join(ROOT, 'src/pages/paiement-success.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/prendre-rendez-vous') {
+    const pagePath = path.join(ROOT, 'src/pages/prendre-rendez_vous.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
+      return;
+    }
+  } else if (urlPath === '/rendez-vous-confirmation') {
+    const pagePath = path.join(ROOT, 'src/pages/prendre-rendez_vous_repo.html');
+    if (fs.existsSync(pagePath)) {
+      serveFile(pagePath, res);
       return;
     }
   }
