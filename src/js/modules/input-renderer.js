@@ -23,6 +23,21 @@ export function renderInput(q, value) {
     return `${base} (précisez)`;
   };
   
+  if (type === 'file') {
+    const isMultiple = q.multiple === true;
+    const acceptAttr = q.accept ? `accept="${q.accept}"` : '';
+    const multipleAttr = isMultiple ? 'multiple' : '';
+    const hint = q.hint ? `<div class="field-description">${q.hint}</div>` : '';
+
+    return `
+      <div class="field-container">
+        ${q.question ? `<div class="question-title">${q.question}</div>` : ''}
+        ${description}
+        ${hint}
+        <input class="input" id="answer" type="file" ${acceptAttr} ${multipleAttr} />
+      </div>`;
+  }
+
   if (type === 'text' || type === 'email') {
     const inputType = type === 'email' && q.className !== 'coordonnees-page' ? 'email' : 'text';
     return `
@@ -75,6 +90,22 @@ export function renderInput(q, value) {
         ${description}
         <label class="choice">
           ${q.label}
+          <input type="checkbox" id="answer" value="${checkboxValue}" ${checked}/> 
+        </label>
+      </div>`;
+  }
+
+  if (type === 'checkbox_single') {
+    const defaultVal = q.defaultValue !== undefined ? q.defaultValue : false;
+    const currentValue = value !== undefined ? value : defaultVal;
+    const checked = currentValue ? 'checked' : '';
+    const checkboxValue = q.id || 'checkbox_value';
+    const label = q.checkboxLabel || q.label || '';
+    return `
+      <div class="field-container">
+        ${description}
+        <label class="choice">
+          ${label}
           <input type="checkbox" id="answer" value="${checkboxValue}" ${checked}/> 
         </label>
       </div>`;

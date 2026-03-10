@@ -1,11 +1,12 @@
 const ENTRY_FLOW_CONFIG = {
   'first-demand': {
     shortTitle: 'Première demande',
+    description: 'Déposer votre premier dossier MDPH et faire reconnaître votre handicap',
     flowKey: 'premiere-demande',
     typeDemandeValue: 'premiere',
     questions: [
       {
-        id: 'entry_first_demand_reason',
+        id: 'raison_premiere_demande',
         title: 'Qu’est-ce qui vous amène aujourd’hui à déposer un dossier MDPH ?',
         type: 'radio',
         obligatoire: true,
@@ -19,7 +20,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_first_demand_history',
+        id: 'reconnaissance_administrative',
         title: 'Votre situation a-t-elle déjà été reconnue administrativement ?',
         type: 'radio',
         obligatoire: true,
@@ -32,7 +33,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_first_demand_current_status',
+        id: 'situation_actuelle',
         title: 'Aujourd’hui, quelle est votre situation principale ?',
         type: 'radio',
         obligatoire: true,
@@ -47,7 +48,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_first_demand_goal',
+        id: 'objectif_dossier',
         title: 'Quel est l’objectif principal de votre dossier MDPH ?',
         type: 'radio',
         obligatoire: true,
@@ -64,11 +65,12 @@ const ENTRY_FLOW_CONFIG = {
   },
   renewal: {
     shortTitle: 'Renouvellement',
+    description: 'Renouveler vos droits MDPH et maintenir vos accompagnements',
     flowKey: 'renouvellement',
     typeDemandeValue: 'renouvellement',
     questions: [
       {
-        id: 'entry_renewal_current_rights',
+        id: 'droits_actuels',
         title: 'Quels droits MDPH avez-vous actuellement ?',
         type: 'radio',
         obligatoire: true,
@@ -83,7 +85,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_renewal_medical_change',
+        id: 'evolution_medical',
         title: 'Depuis votre dernière décision MDPH, votre situation a-t-elle évolué ?',
         type: 'radio',
         obligatoire: true,
@@ -97,7 +99,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_renewal_work_change',
+        id: 'changement_professionnel',
         title: 'Votre situation professionnelle a-t-elle changé depuis votre dernier dossier ?',
         type: 'radio',
         obligatoire: true,
@@ -111,7 +113,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_renewal_expectation',
+        id: 'attente_renouvellement',
         title: 'Qu’attendez-vous principalement de ce renouvellement ?',
         type: 'radio',
         obligatoire: true,
@@ -127,12 +129,13 @@ const ENTRY_FLOW_CONFIG = {
     ]
   },
   verification: {
-    shortTitle: 'Vérification dossier',
+    shortTitle: 'Vérification du dossier avant envoi',
+    description: 'Faire vérifier votre dossier MDPH par un expert avant de l\'envoyer',
     flowKey: 'verification-dossier',
     typeDemandeValue: 'premiere',
     questions: [
       {
-        id: 'entry_verification_dossier_status',
+        id: 'statut_dossier',
         title: 'Votre dossier MDPH est-il déjà rédigé ?',
         type: 'radio',
         obligatoire: true,
@@ -145,7 +148,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_verification_medical_documents',
+        id: 'documents_medicaux',
         title: 'Disposez-vous déjà des documents médicaux nécessaires ?',
         type: 'radio',
         obligatoire: true,
@@ -158,7 +161,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_verification_hesitation',
+        id: 'hesitation',
         title: 'Quel point vous fait le plus hésiter avant d’envoyer votre dossier ?',
         type: 'radio',
         obligatoire: true,
@@ -172,7 +175,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_verification_expectation',
+        id: 'attente_verification',
         title: 'Qu’attendez-vous principalement de cette vérification ?',
         type: 'radio',
         obligatoire: true,
@@ -189,25 +192,25 @@ const ENTRY_FLOW_CONFIG = {
   },
   aggravation: {
     shortTitle: 'Aggravation',
+    description: 'Mettre à jour votre dossier MDPH en cas d\'aggravation de votre état de santé',
     flowKey: 'aggravation',
     typeDemandeValue: 'premiere',
     questions: [
       {
-        id: 'entry_aggravation_reason',
-        title: 'Qu’est-ce qui vous amène aujourd’hui à déposer un dossier MDPH ?',
+        id: 'raison_aggravation',
+        title: 'Votre dossier MDPH est-il déjà rédigé ?',
         type: 'radio',
         obligatoire: true,
         buttonText: 'Continuer',
         options: [
-          { value: 'sante_degradee', label: 'ma situation de santé s’est récemment dégradée' },
-          { value: 'difficultes_anciennes', label: 'mes difficultés existent depuis longtemps mais je n’avais jamais fait de démarche' },
-          { value: 'conseille_par_professionnel', label: 'un professionnel (médecin, travailleur social, employeur) m’a conseillé de faire une demande' },
-          { value: 'situation_professionnelle_difficile', label: 'ma situation professionnelle devient difficile à cause de ma santé' },
-          { value: 'besoin_aide_quotidienne', label: 'j’ai besoin d’aide dans ma vie quotidienne' }
+          { value: 'dossier_complet', label: 'oui, le dossier est complet' },
+          { value: 'dossier_a_finaliser', label: 'oui, mais certaines parties restent à finaliser' },
+          { value: 'formulaire_sans_projet', label: 'j’ai rempli le formulaire mais pas le projet de vie' },
+          { value: 'structure_incertaine', label: 'j’ai commencé mais je ne suis pas sûr de l’avoir bien structuré' }
         ]
       },
       {
-        id: 'entry_aggravation_history',
+        id: 'historique_aggravation',
         title: 'Votre situation a-t-elle déjà été reconnue administrativement ?',
         type: 'radio',
         obligatoire: true,
@@ -220,7 +223,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_aggravation_current_status',
+        id: 'situation_aggravation',
         title: 'Aujourd’hui, quelle est votre situation principale ?',
         type: 'radio',
         obligatoire: true,
@@ -235,7 +238,7 @@ const ENTRY_FLOW_CONFIG = {
         ]
       },
       {
-        id: 'entry_aggravation_goal',
+        id: 'objectif_aggravation',
         title: 'Quel est l’objectif principal de votre dossier MDPH ?',
         type: 'radio',
         obligatoire: true,
@@ -250,7 +253,200 @@ const ENTRY_FLOW_CONFIG = {
       }
     ],
     defaults: {
-      entry_aggravation_reason: 'sante_degradee'
+      raison_aggravation: 'sante_degradee'
+    }
+  },
+  refus: {
+    shortTitle: 'Refus',
+    description: 'Contester une décision de refus MDPH et préparer votre recours',
+    flowKey: 'refus',
+    typeDemandeValue: 'refus',
+    questions: [
+      {
+        id: 'mode_refus',
+        title: 'Que souhaitez-vous faire concernant votre décision de refus ?',
+        type: 'radio',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        options: [
+          { value: 'analyse', label: 'Faire analyser la décision' },
+          { value: 'recours', label: 'Faire un recours' }
+        ]
+      },
+      {
+        id: 'type_recours',
+        title: 'Quel type de recours souhaitez-vous faire ?',
+        type: 'radio',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        options: [
+          { value: 'rapo', label: 'RAPO' },
+          { value: 'contentieux', label: 'Recours contentieux' }
+        ]
+      },
+      {
+        id: 'aide_refusee',
+        title: 'Quelle aide a été refusée ?',
+        type: 'radio',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        options: [
+          { value: 'aah', label: 'AAH (Allocation aux adultes handicapés)' },
+          { value: 'rqth', label: 'RQTH (Reconnaissance qualité travailleur handicapé)' },
+          { value: 'pch', label: 'PCH (Prestation de compensation du handicap)' },
+          { value: 'carte_mobilite', label: 'Carte mobilité inclusion' },
+          { value: 'orientation_esat', label: 'Orientation ESAT' },
+          { value: 'orientation_entreprise_adaptee', label: 'Orientation entreprise adaptée' },
+          { value: 'amenagement_emploi', label: 'Aménagement de poste' },
+          { value: 'autre', label: 'Autre aide' }
+        ]
+      },
+      {
+        id: 'date_notification',
+        title: 'Quelle est la date de notification de la décision ?',
+        type: 'date',
+        obligatoire: true,
+        buttonText: 'Continuer'
+      },
+      {
+        id: 'courrier_decision',
+        title: 'Avez-vous le courrier de décision ?',
+        type: 'radio',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        options: [
+          { value: 'oui', label: 'Oui' },
+          { value: 'non', label: 'Non' }
+        ]
+      },
+      {
+        id: 'demarche_engagee',
+        title: 'Une démarche est-elle déjà engagée ?',
+        type: 'radio',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        options: [
+          { value: 'oui', label: 'Oui' },
+          { value: 'non', label: 'Non' }
+        ]
+      },
+      {
+        id: 'limitation_deplacements',
+        title: 'Dans quelle mesure votre situation limite vos déplacements ?',
+        type: 'scale',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        scaleMin: 0,
+        scaleMax: 4,
+        scaleLabels: {
+          0: 'Aucune limitation',
+          4: 'Limitation totale'
+        }
+      },
+      {
+        id: 'limitation_autonomie',
+        title: 'Dans quelle mesure votre situation limite votre autonomie ?',
+        type: 'scale',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        scaleMin: 0,
+        scaleMax: 4,
+        scaleLabels: {
+          0: 'Aucune limitation',
+          4: 'Limitation totale'
+        }
+      },
+      {
+        id: 'limitation_travail',
+        title: 'Dans quelle mesure votre situation limite votre capacité à travailler ?',
+        type: 'scale',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        scaleMin: 0,
+        scaleMax: 4,
+        scaleLabels: {
+          0: 'Aucune limitation',
+          4: 'Limitation totale'
+        }
+      },
+      {
+        id: 'limitation_quotidien',
+        title: 'Dans quelle mesure votre situation limite vos activités quotidiennes ?',
+        type: 'scale',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        scaleMin: 0,
+        scaleMax: 4,
+        scaleLabels: {
+          0: 'Aucune limitation',
+          4: 'Limitation totale'
+        }
+      },
+      {
+        id: 'difficulte_quotidien',
+        title: 'En une phrase, qu\'est-ce qui est le plus difficile dans votre quotidien ?',
+        type: 'text',
+        obligatoire: true,
+        buttonText: 'Continuer'
+      },
+      {
+        id: 'notification_mdph',
+        title: 'Avez-vous la notification MDPH ?',
+        type: 'radio',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        options: [
+          { value: 'oui', label: 'Oui' },
+          { value: 'non', label: 'Non' }
+        ]
+      },
+      {
+        id: 'certificats_medicaux',
+        title: 'Avez-vous les certificats médicaux ?',
+        type: 'radio',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        options: [
+          { value: 'oui', label: 'Oui' },
+          { value: 'non', label: 'Non' }
+        ]
+      },
+      {
+        id: 'decisions_precedentes',
+        title: 'Avez-vous les décisions précédentes ?',
+        type: 'radio',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        options: [
+          { value: 'oui', label: 'Oui' },
+          { value: 'non', label: 'Non' }
+        ]
+      },
+      {
+        id: 'coordonnees',
+        title: 'Vos coordonnées',
+        type: 'contact_group',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        fields: [
+          { id: 'nom', label: 'Votre nom', type: 'text', required: true },
+          { id: 'prenom', label: 'Votre prénom', type: 'text', required: true },
+          { id: 'email', label: 'Votre email', type: 'email', required: true },
+          { id: 'telephone', label: 'Votre téléphone', type: 'tel', required: true },
+          { id: 'departement', label: 'Votre département', type: 'text', required: true }
+        ]
+      },
+      {
+        id: 'consentement_rgpd',
+        title: 'J\'accepte que mes données soient traitées conformément au RGPD',
+        type: 'checkbox_single',
+        obligatoire: true,
+        buttonText: 'Continuer',
+        checkboxLabel: 'J\'accepte que mes données soient traitées conformément au RGPD'
+      }
+    ],
+    defaults: {
+      entry_refus_mode: 'analyse'
     }
   }
 };
@@ -259,7 +455,8 @@ const ENTRY_FLOW_ALIASES = {
   'premiere-demande': 'first-demand',
   'renouvellement': 'renewal',
   'verification-dossier': 'verification',
-  'aggravation': 'aggravation'
+  'aggravation': 'aggravation',
+  'refus': 'refus'
 };
 
 export function getEntryFlow(search = '') {
@@ -300,9 +497,9 @@ export function buildEntryFlowQuestions(entry) {
     isIntroduction: false,
     isEntryFlow: true,
     pageId: 'entry_flow',
-    pageTitle: config.shortTitle || question.title,
+    pageTitle: config.shortTitle,
     sectionTitle: question.title,
-    sectionDescription: question.description,
+    sectionDescription: config.description,
     estimatedTime: `${index + 1} / ${config.questions.length}`,
     progressStep: index + 1,
     progressTotal: config.questions.length

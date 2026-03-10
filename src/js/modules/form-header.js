@@ -11,7 +11,18 @@ let formPagesData = null;
  */
 export async function loadFormPages() {
   try {
-    const response = await fetch('/data/form_pages.json');
+    let pagesConfigPath = '/data/form_pages.json';
+    try {
+      const qs = typeof window !== 'undefined' ? window.location.search : '';
+      const params = new URLSearchParams(qs || '');
+      const parcours = params.get('parcours');
+      if (parcours === 'recours') {
+        pagesConfigPath = '/data/form_pages_recours.json';
+      }
+    } catch {
+    }
+
+    const response = await fetch(pagesConfigPath);
     if (!response.ok) throw new Error('Échec du chargement des pages du formulaire');
     formPagesData = await response.json();
   } catch (error) {

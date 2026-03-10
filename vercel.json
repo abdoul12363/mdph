@@ -149,11 +149,24 @@
     },
     {
       "src": "/recours-mdph",
-      "dest": "/src/pages/recours-mdph.html"
+      "status": 302,
+      "headers": {
+        "Location": "/formulaire?parcours=recours"
+      }
+    },
+    {
+      "src": "/recours-mdph\\.html$",
+      "status": 302,
+      "headers": {
+        "Location": "/formulaire?parcours=recours"
+      }
     },
     {
       "src": "/recours",
-      "dest": "/src/pages/recours-mdph.html"
+      "status": 302,
+      "headers": {
+        "Location": "/formulaire?parcours=recours"
+      }
     },
     {
       "src": "/form",

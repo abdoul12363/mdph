@@ -589,7 +589,6 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
   let sectionHtml = `
     <div class="${q.className || ''} section-container">
       <h2 class="q-title">${currentSection}</h2>
-      ${sectionDescription ? `<p class="section-description">${sectionDescription}</p>` : ''}
   `;
     
   // Ajouter chaque question de la section

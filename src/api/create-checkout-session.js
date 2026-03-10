@@ -59,7 +59,7 @@ export default async function handler(req, res) {
 
     const origin = asOrigin(req);
 
-    const amountCents = offer === 'recours' ? 4990 : (offer === '49' ? 4900 : 7900);
+    const amountCents = offer === 'recours' ? 5000 : (offer === '49' ? 4900 : 7900);
     const productName = offer === 'recours'
       ? 'Offre Recours MDPH – Accompagnement complet'
       : (offer === '49'

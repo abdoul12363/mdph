@@ -5,6 +5,35 @@ function setStatus(msg) {
   if (el) el.textContent = msg || '';
 }
 
+function isRecoursOrRefusFlow() {
+  try {
+    const qs = typeof window !== 'undefined' ? window.location.search : '';
+    const params = new URLSearchParams(qs || '');
+    const parcours = params.get('parcours');
+    const entry = params.get('entry');
+
+    if (parcours === 'recours' || entry === 'refus') return true;
+
+    const entryFlow = responses && typeof responses === 'object' ? responses.entry_flow : null;
+    const typeDemande = responses && typeof responses === 'object' ? responses.type_demande : null;
+    if (entryFlow === 'refus' || typeDemande === 'refus') return true;
+
+    const looksLikeRecours = responses && typeof responses === 'object' && (
+      responses.mode_refus !== undefined
+      || responses.type_recours !== undefined
+      || responses.aide_refusee !== undefined
+      || responses.date_notification !== undefined
+      || responses.courrier_decision !== undefined
+      || responses.demarche_deja_engagee !== undefined
+      || responses.upload_documents !== undefined
+      || responses.rgpd_consent_refus !== undefined
+    );
+    if (looksLikeRecours) return true;
+  } catch {
+  }
+  return false;
+}
+
 function escapeHtml(str) {
   return String(str ?? '')
     .replace(/&/g, '&amp;')
@@ -97,6 +126,102 @@ async function downloadFilledPdf() {
 function renderAccordion(openOfferId = null) {
   const root = document.getElementById('pricingAccordion');
   if (!root) return;
+
+  const isRecoursFlow = isRecoursOrRefusFlow();
+
+  try {
+    const pricingArea = document.getElementById('pricingArea');
+    if (pricingArea) {
+      const titleEl = pricingArea.querySelector('h1');
+      const descEl = pricingArea.querySelector('p.muted');
+      if (isRecoursFlow) {
+        pricingArea.style.textAlign = '';
+        if (titleEl) {
+          titleEl.textContent = 'Finaliser votre recours MDPH';
+          titleEl.style.textAlign = 'center';
+        }
+        if (descEl) descEl.textContent = '';
+      } else {
+        pricingArea.style.textAlign = '';
+        if (titleEl) {
+          titleEl.textContent = 'Finaliser votre projet de vie MDPH';
+          titleEl.style.textAlign = '';
+        }
+        if (descEl) descEl.textContent = 'Vous avez renseigné les informations nécessaires. Choisissez maintenant comment vous souhaitez récupérer ou finaliser votre document.';
+      }
+    }
+  } catch {
+  }
+
+  if (isRecoursFlow) {
+    try {
+      root.style.display = 'grid';
+      root.style.gridTemplateColumns = 'minmax(0, 1fr)';
+      root.style.maxWidth = '360px';
+      root.style.width = '100%';
+      root.style.marginLeft = 'auto';
+      root.style.marginRight = 'auto';
+      root.style.justifyContent = 'stretch';
+      root.style.alignItems = 'start';
+      root.style.gap = '18px';
+    } catch {
+    }
+
+    root.innerHTML = `
+      <div class="pricing-item" data-offer="recours" style="text-align:left;">
+        <div class="pricing-header">
+          <div class="btn-wrapper">
+            <span class="pricing-badge">Offre</span>
+            <button type="button" class="btn" data-toggle="recours">
+              <span class="pricing-price">50 €</span>
+              <span class="pricing-title">Recours MDPH (refus) — document structuré</span>
+            </button>
+          </div>
+        </div>
+        <div class="pricing-body" data-body="recours" style="display:${openOfferId === 'recours' ? 'block' : 'none'};">
+          <ul class="pricing-features">
+            <li><strong>Produits possibles</strong><br/>Analyse décision<br/>Recours RAPO<br/>Recours contentieux</li>
+            <li><strong>Choix livraison</strong><br/>STANDARD — Livraison sous 3h ouvrées<br/>PRIORITAIRE — Livraison sous 45 minutes</li>
+            <li><strong>Résumé achat</strong><br/>Document PDF structuré<br/>Échange gratuit 15 minutes<br/>Livraison par email sécurisé</li>
+            <li><strong>Mention</strong><br/>Aucune garantie de décision MDPH.</li>
+          </ul>
+          <div class="form-actions">
+            <button class="btn btn-primary" id="payRecoursBtn" type="button">Continuer</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const payRecoursBtn = document.getElementById('payRecoursBtn');
+    if (payRecoursBtn) {
+      payRecoursBtn.addEventListener('click', () => startPayment('recours'));
+    }
+
+    const toggles = root.querySelectorAll('[data-toggle]');
+    toggles.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const offer = btn.getAttribute('data-toggle');
+        if (!offer) return;
+        const next = openOfferId === offer ? null : offer;
+        renderAccordion(next);
+      });
+    });
+
+    return;
+  }
+
+  try {
+    root.style.display = '';
+    root.style.gridTemplateColumns = '';
+    root.style.maxWidth = '';
+    root.style.width = '';
+    root.style.marginLeft = '';
+    root.style.marginRight = '';
+    root.style.justifyContent = '';
+    root.style.alignItems = '';
+    root.style.gap = '';
+  } catch {
+  }
 
   const advisors = [
     { id: 'conseiller', prenom: 'Conseiller', role: 'Conseiller', score: 'Clarté 10/10', img: '/photo_5783179550492659090_y.jpg' },

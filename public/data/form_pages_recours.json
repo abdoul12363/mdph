@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Configuration des pages du parcours Recours",
+    "lastUpdated": "2026-03-10"
+  },
+  "pages": [
+    {
+      "id": "recours",
+      "title": "Recours MDPH",
+      "description": "Préparez votre recours MDPH étape par étape",
+      "questionsFile": "pages/recours/recours.json",
+      "order": 1,
+      "required": true,
+      "progressMode": "questions"
+    }
+  ]
+}

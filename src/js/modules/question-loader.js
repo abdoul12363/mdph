@@ -44,7 +44,18 @@ export function refreshVisible() {
 export async function loadAllQuestions() {
   try {
     // Charger la configuration des pages
-    const pagesResponse = await fetch('/data/form_pages.json');
+    let pagesConfigPath = '/data/form_pages.json';
+    try {
+      const qs = typeof window !== 'undefined' ? window.location.search : '';
+      const params = new URLSearchParams(qs || '');
+      const parcours = params.get('parcours');
+      if (parcours === 'recours') {
+        pagesConfigPath = '/data/form_pages_recours.json';
+      }
+    } catch {
+    }
+
+    const pagesResponse = await fetch(pagesConfigPath);
     if (!pagesResponse.ok) {
       throw new Error(`Erreur HTTP: ${pagesResponse.status}`);
     }
@@ -59,13 +70,15 @@ export async function loadAllQuestions() {
       try {
         const pageResponse = await fetch(`/data/${pageConfig.questionsFile}`);
         const pageData = await pageResponse.json();
+
+        const useQuestionProgress = pageConfig && pageConfig.progressMode === 'questions';
         
         if (pageData?.sections) {
           for (const section of pageData.sections) {
             // TOUJOURS charger les sections, les conditions seront évaluées dynamiquement
             if (section.questions) {
               // Ajouter l'info de la page à chaque question
-              const questionsWithPage = section.questions.map(q => ({
+              const questionsWithPage = section.questions.map((q, index) => ({
                 ...q,
                 pageId: pageConfig.id,
                 pageTitle: pageConfig.title,
@@ -73,7 +86,10 @@ export async function loadAllQuestions() {
                 sectionDescription: section.description,
                 sectionCondition: section.condition_section,
                 isIntroduction: section.isIntroduction || false,
-                estimatedTime: section.estimatedTime
+                estimatedTime: section.estimatedTime,
+                isEntryFlow: useQuestionProgress ? true : (q.isEntryFlow || false),
+                progressStep: useQuestionProgress ? index + 1 : q.progressStep,
+                progressTotal: useQuestionProgress ? section.questions.length : q.progressTotal
               }));
               allQuestions.push(...questionsWithPage);
             } else {
@@ -135,6 +151,15 @@ export async function loadAllQuestions() {
             pageId: pageConfig.id,
             pageTitle: pageConfig.title
           });
+        } else if (pageData?.questions && Array.isArray(pageData.questions)) {
+          const questionsWithPage = pageData.questions.map(q => ({
+            ...q,
+            pageId: pageConfig.id,
+            pageTitle: pageConfig.title,
+            sectionTitle: q.sectionTitle || q.title || pageConfig.title,
+            sectionDescription: q.sectionDescription || q.description || pageConfig.description
+          }));
+          allQuestions.push(...questionsWithPage);
         } else if (Array.isArray(pageData)) {
           // Si le fichier est directement un tableau de questions
           const questionsWithPage = pageData.map(q => ({

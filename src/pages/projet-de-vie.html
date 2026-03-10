@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Projet de Vie — Formulaire MDPH</title>
+  <meta name="description" content="Formulaire guidé pour rédiger votre projet de vie MDPH." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Heebo:400,700|IBM+Plex+Sans:600" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="/src/css/styles.css" />
+  <link rel="stylesheet" href="/src/css/form.css" />
+</head>
+<body class="form-page">
+  <header class="header">
+    <div class="container header-inner">
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="section">
+      <div class="container">
+        <div class="form-header">
+          <h1 id="formTitle" class="form-title">Projet de Vie</h1>
+          <p id="formDescription" class="muted">Répondez aux questions pour structurer votre projet de vie MDPH</p>
+        </div>
+
+        <div class="progress">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+          </div>
+          <div class="progress-meta">
+            <span class="muted" id="progressText">0 / 0</span>
+            <span class="muted" id="questionId"></span>
+          </div>
+        </div>
+
+        <div class="card form-card">
+          <div id="questionArea"></div>
+
+          <div class="form-actions">
+            <button class="btn" id="prevBtn" type="button" disabled>Précédent</button>
+            <button class="btn btn-primary" id="nextBtn" type="button">Suivant</button>
+          </div>
+        </div>
+
+        <p class="muted" id="status" style="margin-top:12px"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/src/js/projet-de-vie.js" type="module"></script>
+</body>
+</html>

@@ -12,7 +12,25 @@ let inFlight = false;
 function redirectToFinalStep() {
   try {
     if (typeof window !== 'undefined') {
-      window.location.href = '/finaliser-projet-de-vie';
+      const params = new URLSearchParams(window.location.search || '');
+      const nextParams = new URLSearchParams();
+
+      const parcours = params.get('parcours');
+      const entry = params.get('entry');
+
+      if (parcours) nextParams.set('parcours', parcours);
+      if (entry) nextParams.set('entry', entry);
+
+      if (!entry) {
+        const entryFlow = responses && typeof responses === 'object' ? responses.entry_flow : null;
+        const typeDemande = responses && typeof responses === 'object' ? responses.type_demande : null;
+        if (entryFlow === 'refus' || typeDemande === 'refus') {
+          nextParams.set('entry', 'refus');
+        }
+      }
+
+      const qs = nextParams.toString();
+      window.location.href = `/finaliser-projet-de-vie${qs ? `?${qs}` : ''}`;
     }
   } catch {
   }

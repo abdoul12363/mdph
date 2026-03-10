@@ -279,6 +279,26 @@ body.home-page .hero > .container {
   width: 100%;
 }
 
+/* Universal menu (hamburger mobile) */
+.universal-menu{display:flex;align-items:center;justify-content:space-between;width:100%}
+.universal-menu__toggle{display:none;border:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#2A293E;border-radius:10px;min-height:40px;min-width:40px;padding:0 10px;font-size:18px;line-height:1;cursor:pointer}
+.universal-menu__overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999}
+.universal-menu__panel{position:fixed;top:0;right:0;height:100vh;width:min(86vw,340px);background:#FFFEFD;border-left:1px solid rgba(0,0,0,.08);box-shadow:-18px 0 40px rgba(0,0,0,.14);z-index:1000}
+.universal-menu__panel-inner{display:flex;flex-direction:column;height:100%;padding:16px 14px;gap:14px}
+.universal-menu__panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.universal-menu__panel-title{font-weight:700;font-size:14px;letter-spacing:.2px}
+.universal-menu__close{border:1px solid rgba(0,0,0,.12);background:transparent;color:#2A293E;border-radius:10px;min-height:36px;min-width:36px;font-size:16px;cursor:pointer}
+.universal-menu__panel-links{display:flex;flex-direction:column;gap:10px}
+.universal-menu__panel-links .nav-link{padding:0;border:none;background:transparent;color:#2A293E;font-size:15px;text-align:left}
+.universal-menu__panel-links .nav-link:hover{color:#EC9D5C;background:transparent}
+.universal-menu__panel-links .nav-link.is-active{color:#EC9D5C;background:transparent}
+.universal-menu__panel-contact{margin-top:auto}
+
+@media (max-width: 768px){
+  .universal-menu__desktop{display:none !important}
+  .universal-menu__toggle{display:inline-flex;align-items:center;justify-content:center}
+}
+
 /* Hero Section */
 .hero {
   text-align: center;

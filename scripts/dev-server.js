@@ -139,6 +139,10 @@ const server = http.createServer((req, res) => {
 
   let urlPath = req.url.split('?')[0]; // Ignorer les paramètres de requête
 
+  if (urlPath.length > 1 && urlPath.endsWith('/')) {
+    urlPath = urlPath.slice(0, -1);
+  }
+
   // Gestion des routes principales
   if (urlPath === '/' || urlPath === '' || urlPath === '/index.html') {
     const indexPath = path.join(ROOT, 'src/pages/index.html');
@@ -162,17 +166,22 @@ const server = http.createServer((req, res) => {
       res.end('Form file not found');
       return;
     }
-  } else if (urlPath === '/recours-mdph' || urlPath === '/recours-mdph.html' || urlPath === '/recours') {
-    const recoursPath = path.join(ROOT, 'src/pages/recours-mdph.html');
-    if (fs.existsSync(recoursPath)) {
-      serveFile(recoursPath, res);
+  } else if (urlPath === '/projet-de-vie' || urlPath === '/projet-de-vie.html') {
+    const projetViePath = path.join(ROOT, 'src/pages/projet-de-vie.html');
+    if (fs.existsSync(projetViePath)) {
+      serveFile(projetViePath, res);
       return;
     } else {
-      res.statusCode = 404;
-      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      res.end('Recours page not found');
+      console.error('Projet de vie file not found at:', projetViePath);
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Projet de vie page not found');
       return;
     }
+  } else if (urlPath === '/recours-mdph' || urlPath === '/recours' || urlPath === '/recours-mdph.html') {
+    res.statusCode = 302;
+    res.setHeader('Location', '/formulaire?parcours=recours');
+    res.end();
+    return;
   } else if (urlPath === '/confidentialite') {
     const pagePath = path.join(ROOT, 'src/pages/donnees-confidentialite.html');
     if (fs.existsSync(pagePath)) {
@@ -251,7 +260,7 @@ const server = http.createServer((req, res) => {
   // - /mentions-legales ou /mentions-legales.html
   // - /charte-ethique ou /charte-ethique.html
   // - etc.
-  if (urlPath.endsWith('.html') && urlPath !== '/index.html' && urlPath !== '/form.html' && urlPath !== '/recours-mdph.html') {
+  if (urlPath.endsWith('.html') && urlPath !== '/index.html' && urlPath !== '/form.html') {
     const pageFile = path.basename(urlPath);
     const pagePath = path.join(ROOT, 'src', 'pages', pageFile);
     if (fs.existsSync(pagePath)) {

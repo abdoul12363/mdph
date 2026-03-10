@@ -20,6 +20,12 @@ function getScope(q) {
 export function getAnswerFromDom(q) {
   const type = q.type || q.type_champ;
   const scope = getScope(q);
+
+  if (type === 'file') {
+    const el = scope.querySelector('#answer') || $('answer');
+    if (!el || !el.files) return [];
+    return Array.from(el.files).map(f => f.name);
+  }
   
   if (type === 'checkbox') {
     if (Array.isArray(q.options) && q.options.length > 0) {

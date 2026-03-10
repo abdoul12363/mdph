@@ -23,7 +23,7 @@ function buildRecap(offer, advisor) {
   if (offer === 'recours') {
     return `
       <p style="margin: 0 0 10px 0;"><strong>Offre :</strong> Recours MDPH – Accompagnement complet</p>
-      <p style="margin: 0;"><strong>Prix :</strong> 49,90 €</p>
+      <p style="margin: 0;"><strong>Prix :</strong> 50 €</p>
     `;
   }
   if (offer === '49') {

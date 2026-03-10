@@ -1,88 +1,239 @@
-
 {
   "title": "Recours MDPH",
   "description": "Questions pour préparer un recours MDPH.",
   "questions": [
     {
-      "id": "type_recours",
-      "title": "Type de recours",
-      "description": "Quelle démarche souhaitez-vous engager ?",
+      "id": "mode_refus",
+      "title": "Voulez-vous faire :",
+      "description": "",
       "type": "radio",
       "obligatoire": true,
       "options": [
-        { "value": "rapo", "label": "Recours administratif préalable obligatoire (RAPO)" },
-        { "value": "tribunal", "label": "Recours contentieux – Tribunal administratif" }
+        { "value": "analyse", "label": "Analyser la décision" },
+        { "value": "recours", "label": "Faire un recours" }
       ]
     },
     {
-      "id": "decision_contestee",
-      "title": "Description de votre situation",
-      "description": "Quelle décision de la MDPH contestez-vous ?",
-      "type": "textarea",
+      "id": "type_recours",
+      "title": "Quel type de recours souhaitez-vous faire ? ",
+      "description": "",
+      "type": "radio",
       "obligatoire": true,
-      "minLength": 50,
-      "maxLength": 500,
-      "placeholder": "Décrivez précisément la décision que vous contestez..."
+      "condition_affichage": "mode_refus === 'recours'",
+      "options": [
+        { "value": "rapo", "label": "RAPO" },
+        { "value": "contentieux", "label": "Recours contentieux" }
+      ]
     },
     {
-      "id": "date_decision",
-      "title": "Date de la décision",
-      "description": "Date de la décision MDPH",
+      "id": "aide_refusee",
+      "title": "Aide refusée",
+      "description": "Quelle aide a été refusée ? ",
+      "type": "checkbox_multiple",
+      "obligatoire": true,
+      "condition_affichage": "recours",
+      "options": [
+        { "value": "aah", "label": "AAH" },
+        { "value": "pch", "label": "PCH" },
+        { "value": "cmi", "label": "Carte mobilité inclusion" },
+        { "value": "rqh", "label": "Reconnaissance travailleur handicapé" },
+        { "value": "orientation", "label": "Orientation" },
+        { "value": "autre", "label": "Autre" }
+      ]
+    },
+    {
+      "id": "date_notification",
+      "title": "Date notification",
+      "description": "Quelle est la date de notification de la décision ? ",
       "type": "date",
-      "obligatoire": true
+      "obligatoire": true,
+      "condition_affichage": "recours"
     },
     {
-      "id": "nature_refus",
-      "title": "Nature de la décision contestée",
-      "description": "Sélectionnez tous les éléments concernés",
-      "type": "checkbox",
+      "id": "courrier_decision",
+      "title": "Courrier décision",
+      "description": "Avez-vous reçu le courrier de décision ? ",
+      "type": "oui_non",
       "obligatoire": true,
+      "condition_affichage": "recours"
+    },
+    {
+      "id": "demarche_deja_engagee",
+      "title": "Démarche déjà engagée",
+      "description": "Avez-vous déjà engagé une démarche (RAPO, avocat, etc.) ? ",
+      "type": "oui_non",
+      "obligatoire": true,
+      "condition_affichage": "recours"
+    },
+    {
+      "id": "analyse_fonctionnelle_complementaire",
+      "title": "Analyse fonctionnelle complémentaire",
+      "description": "Souhaitez-vous ajouter une analyse fonctionnelle complémentaire ? ",
+      "type": "oui_non",
+      "obligatoire": true,
+      "condition_affichage": "recours"
+    },
+    {
+      "id": "limitation_deplacements",
+      "title": "Dans quelle mesure votre situation limite vos déplacements ? ",
+      "description": "Échelle 0–4",
+      "type": "radio",
+      "obligatoire": true,
+      "condition_affichage": "recours",
       "options": [
-        { "value": "refus_aah", "label": "Refus de l'AAH" },
-        { "value": "refus_apt", "label": "Refus de l'APT" },
-        { "value": "refus_pch", "label": "Refus de la PCH" },
-        { "value": "refus_carte", "label": "Refus de la carte mobilité inclusion" },
-        { "value": "refus_emploi", "label": "Refus de la reconnaissance travailleur handicapé" },
-        { "value": "refus_orientation", "label": "Refus d'orientation ESAT/entreprise adaptée" },
-        { "value": "refus_autre", "label": "Autre décision" }
+        { "value": "0", "label": "0" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
       ]
     },
     {
-      "id": "impact_decision",
-      "title": "Impact de la décision",
-      "description": "Comment cette décision affecte-t-elle votre quotidien ?",
-      "type": "textarea",
+      "id": "limitation_autonomie",
+      "title": "Dans quelle mesure votre situation limite votre autonomie ?",
+      "description": "Échelle 0–4",
+      "type": "radio",
       "obligatoire": true,
-      "minLength": 100,
-      "maxLength": 800,
-      "placeholder": "Décrivez les conséquences de cette décision sur votre vie quotidienne, vos finances, votre santé..."
-    },
-    {
-      "id": "objectif_recours",
-      "title": "Objectif du recours",
-      "description": "Que souhaitez-vous obtenir avec ce recours ?",
-      "type": "checkbox",
-      "obligatoire": true,
+      "condition_affichage": "recours",
       "options": [
-        { "value": "obtenir_aah", "label": "Obtenir l'AAH" },
-        { "value": "augmenter_aah", "label": "Augmenter le taux d'AAH" },
-        { "value": "obtenir_apt", "label": "Obtenir l'APT" },
-        { "value": "obtenir_pch", "label": "Obtenir la PCH" },
-        { "value": "obtenir_carte", "label": "Obtenir la carte mobilité inclusion" },
-        { "value": "reconnaissance_th", "label": "Obtenir la reconnaissance travailleur handicapé" },
-        { "value": "orientation_esat", "label": "Obtenir une orientation ESAT" },
-        { "value": "orientation_adaptee", "label": "Obtenir une orientation entreprise adaptée" },
-        { "value": "annulation_decision", "label": "Annulation pure et simple de la décision" },
-        { "value": "reexamen_dossier", "label": "Réexamen complet du dossier" }
+        { "value": "0", "label": "0" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
       ]
     },
     {
-      "id": "terms_acceptance_recours",
-      "title": "Conditions d'utilisation",
-      "description": "Veuillez accepter les conditions pour continuer",
+      "id": "limitation_travail",
+      "title": "Dans quelle mesure votre situation limite votre capacité à travailler ? ",
+      "description": "Échelle 0–4",
+      "type": "radio",
+      "obligatoire": true,
+      "condition_affichage": "recours",
+      "options": [
+        { "value": "0", "label": "0" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ]
+    },
+    {
+      "id": "limitation_activites_quotidiennes",
+      "title": "Dans quelle mesure votre situation limite vos activités quotidiennes ? ",
+      "description": "Échelle 0–4",
+      "type": "radio",
+      "obligatoire": true,
+      "condition_affichage": "recours",
+      "options": [
+        { "value": "0", "label": "0" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ]
+    },
+    {
+      "id": "phrase_difficulte_quotidien",
+      "title": "En une phrase expliquez nous votre difficuté quotidienne",
+      "description": "En une phrase, qu’est-ce qui est le plus difficile dans votre quotidien ?",
+      "type": "text",
+      "obligatoire": true,
+      "condition_affichage": "recours",
+      "maxLength": 180,
+      "placeholder": "Ex : Monter les escaliers est devenu très douloureux."
+    },
+    {
+      "id": "documents_notification_mdph",
+      "title": "Notification MDPH",
+      "description": "Avez-vous la notification MDPH ?",
+      "type": "oui_non",
+      "obligatoire": true,
+      "condition_affichage": "recours"
+    },
+    {
+      "id": "documents_certificats_medicaux",
+      "title": "Certificats médicaux",
+      "description": "Avez-vous des certificats médicaux récents ?",
+      "type": "oui_non",
+      "obligatoire": true,
+      "condition_affichage": "recours"
+    },
+    {
+      "id": "documents_decisions_precedentes",
+      "title": "Décisions précédentes",
+      "description": "Avez-vous des décisions précédentes ?",
+      "type": "oui_non",
+      "obligatoire": true,
+      "condition_affichage": "recours"
+    },
+    {
+      "id": "upload_documents",
+      "title": "Upload document",
+      "description": "Téléchargez vos documents (notification, certificats, décisions)",
+      "type": "file",
+      "obligatoire": false,
+      "condition_affichage": "recours"
+    },
+    {
+      "id": "contact_nom",
+      "sectionTitle": "Renseignez vos informations de contact",
+      "title": "Nom",
+      "description": "",
+      "type": "text",
+      "obligatoire": true,
+      "condition_affichage": "recours",
+      "placeholder": "Votre nom"
+    },
+    {
+      "id": "contact_prenom",
+      "sectionTitle": "Renseignez vos informations de contact",
+      "title": "Prénom",
+      "description": "",
+      "type": "text",
+      "obligatoire": true,
+      "condition_affichage": "recours",
+      "placeholder": "Votre prénom"
+    },
+    {
+      "id": "contact_email",
+      "sectionTitle": "Renseignez vos informations de contact",
+      "title": "Email",
+      "description": "",
+      "type": "email",
+      "obligatoire": true,
+      "condition_affichage": "recours",
+      "placeholder": "votre@email.com"
+    },
+    {
+      "id": "contact_telephone",
+      "sectionTitle": "Renseignez vos informations de contact",
+      "title": "Téléphone",
+      "description": "",
+      "type": "text",
+      "obligatoire": true,
+      "condition_affichage": "recours",
+      "placeholder": "Ex: 06 12 34 56 78"
+    },
+    {
+      "id": "contact_departement",
+      "sectionTitle": "Renseignez vos informations de contact",
+      "title": "Département",
+      "description": "",
+      "type": "text",
+      "obligatoire": true,
+      "condition_affichage": "recours",
+      "placeholder": "Ex: 75"
+    },
+    {
+      "id": "rgpd_consent_refus",
+      "sectionTitle": "veuillez accepter le consentement RGPD avant de continuer",
+      "title": "Consentement RGPD",
+      "description": "Consentement RGPD obligatoire.",
       "type": "checkbox_single",
       "obligatoire": true,
-      "checkboxLabel": "J'ai lu et j'accepte les <a href='/conditions-generales-vente.html' target='_blank' rel='noopener noreferrer'>conditions générales de vente</a> et la <a href='/donnees-confidentialite.html' target='_blank' rel='noopener noreferrer'>politique de confidentialité</a>."
+      "condition_affichage": "recours",
+      "checkboxLabel": "J’accepte l’utilisation de mes données pour générer mon recours et j’ai pris connaissance de la politique de confidentialité."
     }
   ]
 }
