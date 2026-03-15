@@ -11,13 +11,15 @@ let formPagesData = null;
  */
 export async function loadFormPages() {
   try {
-    let pagesConfigPath = '/data/form_pages.json';
+    let pagesConfigPath = '/data/form_pages_premiere_demande.json';
     try {
       const qs = typeof window !== 'undefined' ? window.location.search : '';
       const params = new URLSearchParams(qs || '');
       const parcours = params.get('parcours');
       if (parcours === 'recours') {
         pagesConfigPath = '/data/form_pages_recours.json';
+      } else if (parcours === 'verification-dossier') {
+        pagesConfigPath = '/data/form_pages_verification.json';
       }
     } catch {
     }

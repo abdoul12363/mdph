@@ -8,6 +8,7 @@ import { responses } from './storage.js';
 
 export function renderInput(q, value) {
   const type = q.type || q.type_champ;
+  console.log('renderInput:', q.id, 'description:', q.description); // DEBUG
   const description = q.description ? `<div class="field-description">${q.description}</div>` : '';
 
   const shouldAutoAddTextField = (optValue, optLabel, opt) => {

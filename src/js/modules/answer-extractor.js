@@ -20,6 +20,9 @@ function getScope(q) {
 export function getAnswerFromDom(q) {
   const type = q.type || q.type_champ;
   const scope = getScope(q);
+  
+  // Debug
+  console.log('getAnswerFromDom - question:', q.id, 'type:', type, 'scope:', scope);
 
   if (type === 'file') {
     const el = scope.querySelector('#answer') || $('answer');
@@ -56,7 +59,12 @@ export function getAnswerFromDom(q) {
   if (type === 'radio') {
     const el = (q && q.id ? scope.querySelector(`input[name="${q.id}"]:checked`) : null)
       || (q && q.id ? scope.querySelector(`input[name="opt_${q.id}"]:checked`) : null)
-      || scope.querySelector('input[name="opt"]:checked');
+      || scope.querySelector('input[name="opt"]:checked')
+      || scope.querySelector(`input[type="radio"][name="${q.id}"]:checked`);
+    
+    // Debug
+    console.log('Radio - found element:', el, 'value:', el ? el.value : 'none');
+    
     if (!el) return '';
 
     return String(el.value);

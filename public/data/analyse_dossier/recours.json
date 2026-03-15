@@ -1,0 +1,29 @@
+{
+  "title": "Analyse et Recours",
+  "description": "Préparez votre Analyse ou Recours MDPH étape par étape.",
+  "questions": [
+    {
+      "id": "recours_choix_action",
+      "title": "Que souhaitez-vous faire ?",
+      "description": "Choisissez l'action que vous souhaitez entreprendre.",
+      "type": "radio",
+      "obligatoire": true,
+      "options": [
+        { "value": "analyse", "label": "Analyser la décision" },
+        { "value": "recours", "label": "Faire un recours" }
+      ]
+    },
+    {
+      "id": "recours_type",
+      "title": "Quel type de recours souhaitez-vous faire ?",
+      "description": "Précisez le type de recours que vous souhaitez engager.",
+      "type": "radio",
+      "obligatoire": true,
+      "condition_affichage": "recours_choix_action === 'recours'",
+      "options": [
+        { "value": "rapo", "label": "RAPO" },
+        { "value": "contentieux", "label": "Recours contentieux" }
+      ]
+    }
+  ]
+}

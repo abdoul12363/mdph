@@ -1,0 +1,410 @@
+{
+  "title": "Analyse dossier MDPH",
+  "description": "Analysez votre décision MDPH étape par étape.",
+  "sections": [
+    {
+      "id": "omprendre_decision",
+      "title": "comprendre la décision MDPH",
+      "questions": [
+        {
+          "id": "analyse_aide_refusee",
+          "title": "Quelle aide MDPH a été refusée ?",
+          "description": "Sélectionnez l'aide qui a été refusée ou partiellement accordée.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "aah", "label": "Allocation Adulte Handicapé (AAH)" },
+            { "value": "pch", "label": "Prestation de Compensation du Handicap (PCH)" },
+            { "value": "rqth", "label": "Reconnaissance de la Qualité de Travailleur Handicapé (RQTH)" },
+            { "value": "cmi", "label": "Carte Mobilité Inclusion (CMI)" },
+            { "value": "orientation_pro", "label": "Orientation professionnelle" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez l'aide concernée" }
+          ]
+        },
+        {
+          "id": "analyse_type_demande",
+          "title": "Cette demande était:",
+          "description": "Précisez la nature de votre demande initiale.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "premiere", "label": "Une première demande" },
+            { "value": "renouvellement", "label": "Un renouvellement" },
+            { "value": "reevaluation", "label": "Une réévaluation de votre situation" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez votre situation" }
+          ]
+        },
+        {
+          "id": "analyse_date_decision",
+          "title": "Quelle est la date indiquée sur la décision MDPH ?",
+          "description": "Date de la décision :",
+          "type": "date",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'"
+        },
+        {
+          "id": "analyse_decision_correspond_a",
+          "title": "La décision correspond à :",
+          "description": "Précisez le type de décision prise par la MDPH.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "refus_total", "label": "Un refus total" },
+            { "value": "refus_partiel", "label": "Un refus partiel", "hasTextField": true, "textFieldPlaceholder": "Qu’est-ce qui a été accordé par la MDPH ?" },
+            { "value": "incomprehensible", "label": "Je ne comprends pas la décision" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+          ]
+        },
+        {
+          "id": "analyse_motif_courrier",
+          "title": "Quel motif est indiqué dans le courrier de décision ?",
+          "description": "Sélectionnez le motif de refus mentionné par la MDPH.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "taux_insuffisant", "label": "Taux d’incapacité jugé insuffisant" },
+            { "value": "capacite_travail", "label": "Capacité de travail jugée possible" },
+            { "value": "dossier_insuffisant", "label": "Dossier médical jugé insuffisant" },
+            { "value": "non_stabilisee", "label": "Situation jugée non stabilisée" },
+            { "value": "aucun_motif", "label": "Aucun motif clairement expliqué" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez le motif indiqué" }
+          ]
+        },
+        {
+          "id": "analyse_phrase_courrier",
+          "title": "Copiez la phrase du courrier qui explique le refus",
+          "description": "Phrase du courrier de la MDPH :",
+          "type": "textarea",
+          "placeholder": "Exemple : 'Après examen de votre demande d'Allocation Adulte Handicapé, la Commission départementale a décidé de ne pas vous attribuer cette prestation car votre taux d'incapacité est estimé à 78%'...",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'"
+        }
+      ]
+    },
+    {
+      "id": "situation_medicale",
+      "title": "Situation médicale",
+      "questions": [
+        {
+          "id": "analyse_pathologie",
+          "title": "Quelle est votre maladie ou votre handicap principal ?",
+          "description": "Décrivez votre pathologie :",
+          "type": "textarea",
+          "placeholder": "Exemple : Sclérose en plaques diagnostiquée en 2020. Fatigue chronique sévère, troubles de la marche avec risque de chutes, et difficultés de concentration...",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'"
+        },
+        {
+          "id": "analyse_duree_difficultes",
+          "title": "Depuis combien de temps avez-vous ces difficultés ?",
+          "description": "Indiquez depuis quand votre état limite votre autonomie.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "moins_6_mois", "label": "Moins de 6 mois" },
+            { "value": "6_mois_2_ans", "label": "Entre 6 mois et 2 ans" },
+            { "value": "plus_2_ans", "label": "Plus de 2 ans" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+          ]
+        },
+        {
+          "id": "analyse_suivi_specialiste",
+          "title": "Êtes-vous suivi par un médecin spécialiste ?",
+          "description": "Précisez si vous avez un suivi spécialisé.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "oui", "label": "Oui" },
+            { "value": "non", "label": "Non" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez votre suivi médical" }
+          ]
+        },
+        {
+          "id": "analyse_aggravation_recent",
+          "title": "Votre état de santé s'est-il aggravé récemment ?",
+          "description": "Indiquez si votre état a évolué récemment.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "non", "label": "Non" },
+            { "value": "oui", "label": "Oui" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+          ]
+        },
+        {
+          "id": "analyse_aggravation_depuis_quand",
+          "title": "Depuis quand votre état s'est-il aggravé ?",
+          "description": "Précisez la date ou la période de l'aggravation.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse' && analyse_aggravation_recent === 'oui'",
+          "options": [
+            { "value": "moins_6_mois", "label": "Moins de 6 mois" },
+            { "value": "6_12_mois", "label": "Entre 6 et 12 mois" },
+            { "value": "plus_1_an", "label": "Plus d’un an" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "limitations",
+      "title": "Limitations dans la vie quotidienne",
+      "questions": [
+        {
+          "id": "analyse_mobilite_limitee",
+          "title": "Votre mobilité est-elle limitée ?",
+          "description": "Évaluez dans quelle mesure votre état limite vos déplacements.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "non", "label": "Non" },
+            { "value": "un_peu", "label": "Un peu" },
+            { "value": "beaucoup", "label": "Beaucoup" },
+            { "value": "pas_seul", "label": "Je ne peux pas me déplacer seul" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Expliquez la difficulté" }
+          ]
+        },
+        {
+          "id": "analyse_aide_marche",
+          "title": "Utilisez-vous une aide pour marcher ?",
+          "description": "Précisez si vous utilisez des aides techniques.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse' && (analyse_mobilite_limitee === 'beaucoup' || analyse_mobilite_limitee === 'pas_seul')",
+          "options": [
+            { "value": "non", "label": "Non" },
+            { "value": "canne", "label": "Canne" },
+            { "value": "deambulateur", "label": "Déambulateur" },
+            { "value": "fauteuil", "label": "Fauteuil roulant" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+          ]
+        },
+        {
+          "id": "analyse_besoin_aide_quotidien",
+          "title": "Avez-vous besoin d'aide dans votre vie quotidienne ?",
+          "description": "Évaluez votre besoin d'aide pour les activités quotidiennes.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "non", "label": "Non" },
+            { "value": "parfois", "label": "Parfois" },
+            { "value": "souvent", "label": "Souvent" },
+            { "value": "toujours", "label": "Toujours" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+          ]
+        },
+        {
+          "id": "analyse_taches_aide",
+          "title": "Pour quelles tâches avez-vous besoin d'aide ?",
+          "description": "Cochez les tâches pour lesquelles vous avez besoin d'aide.",
+          "type": "checkbox_multiple",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse' && (analyse_besoin_aide_quotidien === 'souvent' || analyse_besoin_aide_quotidien === 'toujours')",
+          "options": [
+            { "value": "courses", "label": "Faire les courses" },
+            { "value": "repas", "label": "Préparer les repas" },
+            { "value": "menage", "label": "Faire le ménage" },
+            { "value": "deplacements", "label": "Se déplacer" },
+            { "value": "administratif", "label": "Gérer les démarches administratives" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+          ]
+        },
+        {
+          "id": "analyse_autonomie_globale",
+          "title": "Globalement, votre état de santé limite votre autonomie :",
+          "description": "Évaluez l'impact global de votre état sur votre autonomie.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "faiblement", "label": "Faiblement" },
+            { "value": "moderement", "label": "Modérément" },
+            { "value": "fortement", "label": "Fortement" },
+            { "value": "totalement", "label": "Totalement" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "situation_pro",
+      "title": "Situation professionnelle",
+      "questions": [
+        {
+          "id": "analyse_situation_pro",
+          "title": "Quelle est votre situation professionnelle actuelle ?",
+          "description": "Précisez votre situation actuelle sur le plan professionnel.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "temps_plein", "label": "Emploi à temps plein" },
+            { "value": "temps_partiel", "label": "Emploi à temps partiel" },
+            { "value": "arret_maladie", "label": "Arrêt maladie" },
+            { "value": "invalidite", "label": "Invalidité" },
+            { "value": "chomage", "label": "Au chômage" },
+            { "value": "sans_activite", "label": "Sans activité professionnelle" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez votre situation" }
+          ]
+        },
+        {
+          "id": "analyse_heures_travail",
+          "title": "Combien d'heures travaillez-vous par semaine ?",
+          "description": "Indiquez votre volume de travail hebdomadaire.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse' && (analyse_situation_pro === 'temps_plein' || analyse_situation_pro === 'temps_partiel')",
+          "options": [
+            { "value": "moins_10", "label": "Moins de 10 heures" },
+            { "value": "10_20", "label": "Entre 10 et 20 heures" },
+            { "value": "20_35", "label": "Entre 20 et 35 heures" },
+            { "value": "plus_35", "label": "Plus de 35 heures" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+          ]
+        },
+        {
+          "id": "analyse_limitation_capacite_travail",
+          "title": "Votre état de santé limite votre capacité à travailler :",
+          "description": "Évaluez l'impact de votre état sur votre capacité à travailler.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "pas_du_tout", "label": "Pas du tout" },
+            { "value": "un_peu", "label": "Un peu" },
+            { "value": "beaucoup", "label": "Beaucoup" },
+            { "value": "impossible", "label": "Je ne peux pas travailler" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Expliquez" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "realite_quotidienne",
+      "title": "Votre réalité quotidienne",
+      "questions": [
+        {
+          "id": "analyse_plus_grande_difficulte",
+          "title": "Quelle est aujourd'hui la plus grande difficulté dans votre quotidien ?",
+          "description": "Décrivez la principale difficulté rencontrée.",
+          "type": "textarea",
+          "placeholder": "Exemple : Je ne peux plus me lever seul le matin. Ma femme doit m'aider pour m'habiller et préparer mes médicaments. Les douleurs et la fatigue m'empêchent de conduire...",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'"
+        },
+        {
+          "id": "analyse_journee_typique",
+          "title": "Décrivez une journée typique avec votre handicap",
+          "description": "Décrivez comment se déroule une journée habituelle.",
+          "type": "textarea",
+          "placeholder": "Exemple : Je me lève vers 9h avec beaucoup de difficulté. Ma femme prépare le petit-déjeuner. Je dois me reposer 1h après. L'après-midi, je peux faire une courte marche avec ma canne...",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'"
+        }
+      ]
+    },
+    {
+      "id": "ecart_decision",
+      "title": "Comprendre l’écart avec la décision",
+      "questions": [
+        {
+          "id": "analyse_pourquoi_refus",
+          "title": "Selon vous, pourquoi la MDPH a-t-elle refusé votre demande ?",
+          "description": "Donnez votre analyse sur les raisons du refus.",
+          "type": "textarea",
+          "placeholder": "Exemple : Je pense que la MDPH n'a pas pris en compte l'évolution récente de ma maladie. Mon dossier mentionnait principalement des examens de 2022, alors que ma situation s'est aggravée depuis...",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'"
+        },
+        {
+          "id": "analyse_element_non_pris_compte",
+          "title": "Y a-t-il un élément important qui n'a pas été pris en compte dans votre dossier ?",
+          "description": "Mentionnez tout élément qui aurait été omis.",
+          "type": "textarea",
+          "placeholder": "Exemple : Mon hospitalisation de 3 semaines en novembre 2023 n'apparaît pas dans le récapitulatif médical. Le rapport de mon kinésithérapeute décrivant mes difficultés de mobilité n'a pas été retenu...",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'"
+        }
+      ]
+    },
+    {
+      "id": "etape7_documents",
+      "title": "Documents",
+      "questions": [
+        {
+          "id": "analyse_doc_notification",
+          "title": "Téléversez la notification de décision MDPH",
+          "description": "Joignez la notification de décision.",
+          "type": "file",
+          "obligatoire": true,
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "missingOptions": [
+            { "value": "je_ne_l_ai_plus", "label": "Je ne l’ai plus" },
+            { "value": "je_ne_l_ai_jamais_recue", "label": "Je ne l’ai jamais reçue", "hasTextField": true, "textFieldPlaceholder": "Expliquez la situation" }
+          ]
+        },
+        {
+          "id": "analyse_doc_certificat",
+          "title": "Téléversez le certificat médical utilisé dans votre dossier",
+          "description": "Joignez le certificat médical.",
+          "type": "file",
+          "obligatoire": true,
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "missingOptions": [
+            { "value": "je_ne_l_ai_pas", "label": "Je ne l’ai pas" },
+            { "value": "je_ne_sais_pas", "label": "Je ne sais pas" }
+          ]
+        },
+        {
+          "id": "analyse_autres_docs_medicaux",
+          "title": "Avez-vous d’autres documents médicaux utiles ?",
+          "description": "Indiquez si vous disposez d'autres documents pertinents.",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "oui", "label": "Oui" },
+            { "value": "non", "label": "Non" }
+          ]
+        },
+        {
+          "id": "analyse_upload_autres_docs_medicaux",
+          "title": "Upload multiple",
+          "description": "Joignez les documents médicaux supplémentaires.",
+          "type": "file",
+          "obligatoire": true,
+          "multiple": true,
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "condition_affichage": "recours_choix_action === 'analyse' && analyse_autres_docs_medicaux === 'oui'"
+        },
+        {
+          "id": "analyse_docs_pro",
+          "title": "Avez-vous des documents liés à votre situation professionnelle ?",
+          "description": "Cochez les documents disponibles.",
+          "type": "checkbox_multiple",
+          "obligatoire": true,
+          "condition_affichage": "recours_choix_action === 'analyse'",
+          "options": [
+            { "value": "arret_maladie", "label": "arrêt maladie" },
+            { "value": "invalidite", "label": "invalidité" },
+            { "value": "inaptitude", "label": "reconnaissance d’inaptitude" },
+            { "value": "autre", "label": "autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" },
+            { "value": "aucun", "label": "aucun" }
+          ]
+        }
+      ]
+    }
+  ]
+}

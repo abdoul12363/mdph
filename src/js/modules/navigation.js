@@ -38,6 +38,9 @@ function redirectToFinalStep() {
 
 function validateAndStoreAnswer(q) {
   const answer = getAnswerFromDom(q);
+  
+  // Debug
+  console.log('Validation question:', q.id, q.obligatoire, answer);
 
   if (q.obligatoire && !validateRequired(q, answer)) {
     alert('Cette question est obligatoire');
@@ -81,7 +84,7 @@ function getSectionRange(visible, idx) {
       end += 1;
     }
 
-    if (start === end) return null;
+    // Toujours retourner un range, même pour une seule question
     return { start, end };
   } catch {
     return null;
@@ -100,39 +103,20 @@ export function next(idx, render, visible) {
 
     const isLastQuestion = idx === visible.length - 1;
 
-    const range = getSectionRange(visible, idx);
-    if (range) {
-      for (let i = range.start; i <= range.end; i += 1) {
-        const qi = visible[i];
-        if (!qi) continue;
-        const { isValid } = validateAndStoreAnswer(qi);
-        if (!isValid) {
-          return idx;
-        }
-      }
-      saveLocal(true);
-
-      if (range.end === visible.length - 1) {
-        redirectToFinalStep();
-        return idx;
-      }
-
-      idx = range.end + 1;
-    } else {
-      const { isValid } = validateAndStoreAnswer(q);
-      if (!isValid) {
-        return idx;
-      }
-
-      saveLocal(true);
-
-      if (isLastQuestion) {
-        redirectToFinalStep();
-        return idx;
-      }
-      
-      idx++;
+    // Valider uniquement la question courante
+    const { isValid } = validateAndStoreAnswer(q);
+    if (!isValid) {
+      return idx;
     }
+
+    saveLocal(true);
+
+    if (isLastQuestion) {
+      redirectToFinalStep();
+      return idx;
+    }
+    
+    idx++;
     
     if (idx >= visible.length) {
       idx = visible.length - 1;

@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const root = process.cwd();
 
     const pdfPath = path.join(root, 'public', 'Formulaire-de-demande-a-la-MDPH-Document-cerfa_15692-012-combine.pdf');
-    const formPagesPath = path.join(root, 'public', 'data', 'form_pages.json');
+    const formPagesPath = path.join(root, 'public', 'data', 'form_pages_premiere_demande.json');
 
     if (!fs.existsSync(pdfPath)) {
       res.statusCode = 500;

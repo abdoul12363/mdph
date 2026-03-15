@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Configuration des pages du parcours Vérification du dossier",
+    "lastUpdated": "2026-03-15"
+  },
+  "pages": [
+    {
+      "id": "verification",
+      "title": "Vérification du dossier",
+      "description": "Vérifiez votre dossier MDPH avant envoi pour maximiser vos chances de succès.",
+      "questionsFile": "verification/verification.json",
+      "order": 1,
+      "required": true,
+      "progressMode": "questions"
+    },
+    {
+      "id": "coordonnees",
+      "title": "Vos coordonnées",
+      "description": "Renseignements relatifs à vos informations personnelles",
+      "questionsFile": "final/coordonnees.json",
+      "order": 2,
+      "required": true,
+      "progressMode": "questions"
+    }
+  ]
+}

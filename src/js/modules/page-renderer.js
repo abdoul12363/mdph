@@ -9,19 +9,100 @@ import { renderInput } from './input-renderer.js';
 import { updateProgress } from './progress.js';
 import { createConfetti, addConfettiStyles } from './confetti.js';
 
-export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
+function setProgressVisible(isVisible) {
   const progressContainer = document.querySelector('.progress');
   if (progressContainer) {
-    progressContainer.style.display = '';
+    progressContainer.style.display = isVisible ? '' : 'none';
   }
-  
+}
+
+function setFormHeaderVisible(isVisible) {
   const formHeader = document.querySelector('.form-header');
   if (formHeader) {
-    formHeader.style.display = '';
+    formHeader.style.display = isVisible ? '' : 'none';
   }
-  
+}
+
+function setContainerMode(mode) {
   const container = document.querySelector('.main .container');
-  if (container) container.classList.add('is-introduction');
+  if (!container) return;
+  container.classList.remove('is-introduction', 'is-celebration', 'is-recap');
+  if (mode) container.classList.add(mode);
+}
+
+function resetButton(el) {
+  if (!el || !el.parentNode) return null;
+  const newEl = el.cloneNode(true);
+  el.parentNode.replaceChild(newEl, el);
+  return newEl;
+}
+
+function setupNavButton(buttonId, { visible = true, text, className, onClick } = {}) {
+  const el = $(buttonId);
+  if (!el) return null;
+
+  el.style.display = visible ? 'inline-block' : 'none';
+  if (text !== undefined) el.innerHTML = text;
+  if (className !== undefined) el.className = className;
+
+  const newEl = resetButton(el);
+  if (newEl && onClick) newEl.addEventListener('click', onClick);
+  return newEl;
+}
+
+function ensureNavButtonsVisible() {
+  document.body.classList.remove('hide-nav-buttons');
+}
+
+// Règles de limite de sélection (module-level pour éviter duplication)
+const selectionLimitRules = {
+  situation_generale: { max: 2, message: 'Choisissez 1 ou 2 situations maximum.' },
+  difficultes_quotidiennes: { max: 3, message: 'Essayez de garder uniquement les 3 difficultés les plus importantes.' },
+  difficultes_travail: { max: 2, message: 'Choisissez jusqu\'à 2 difficultés principales.' },
+  consequences_difficultes: { max: 2, message: 'Indiquez uniquement les 2 conséquences les plus marquantes.' },
+  consequences_travail: { max: 2, message: 'Indiquez uniquement les 2 conséquences les plus marquantes.' },
+  type_demande: { max: 3, message: 'Pour plus de clarté, choisissez jusqu\'à 3 aides utiles.' },
+  priorites_actuelles: { max: 4, message: 'Concentrez-vous sur 4 priorités maximum.' }
+};
+
+const isSelectionOverLimit = (questionDiv, questionId) => {
+  const rule = selectionLimitRules[questionId];
+  if (!rule || !questionDiv) return false;
+  const checked = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
+  return (checked?.length || 0) > rule.max;
+};
+
+function redirectToFinalStep() {
+  try {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search || '');
+      const nextParams = new URLSearchParams();
+
+      const parcours = params.get('parcours');
+      const entry = params.get('entry');
+
+      if (parcours) nextParams.set('parcours', parcours);
+      if (entry) nextParams.set('entry', entry);
+
+      if (!entry) {
+        const entryFlow = responses && typeof responses === 'object' ? responses.entry_flow : null;
+        const typeDemande = responses && typeof responses === 'object' ? responses.type_demande : null;
+        if (entryFlow === 'refus' || typeDemande === 'refus') {
+          nextParams.set('entry', 'refus');
+        }
+      }
+
+      const qs = nextParams.toString();
+      window.location.href = `/finaliser-projet-de-vie${qs ? `?${qs}` : ''}`;
+    }
+  } catch {
+  }
+}
+
+export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
+  setProgressVisible(true);
+  setFormHeaderVisible(true);
+  setContainerMode('is-introduction');
   
   const checkboxId = `intro_checkbox_${q.id}`;
   const savedCheckboxValue = responses[checkboxId] === true;
@@ -133,10 +214,10 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
 
   const introductionHTML = `
     <div class="introduction-page${q.type === 'radio' ? ' intro-radio' : ''}">
-      ${shouldShowTitle ? `<h2>${q.title || 'Bienvenue'}</h2>` : ''}
+      ${shouldShowTitle ? `<h2>${q.title || q.sectionTitle || 'Bienvenue'}</h2>` : ''}
       ${shouldShowDescription ? `
       <div class="introduction-content">
-        <p>${(q.description || '').replace(/\n/g, '</p><p>')}</p>
+        <p>${((q.description || q.sectionDescription) || '').replace(/\n/g, '</p><p>')}</p>
         ${q.estimatedTime ? `<div class="estimated-time">${q.estimatedTime}</div>` : ''}
       </div>
       ` : ''}
@@ -174,8 +255,8 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
     }
   }
   
-  if ($('prevBtn')) $('prevBtn').style.display = 'none';
-  if ($('nextBtn')) $('nextBtn').style.display = 'none';
+  setupNavButton('prevBtn', { visible: false });
+  setupNavButton('nextBtn', { visible: false });
   
   const startBtn = document.getElementById('startBtn');
   if (startBtn) {
@@ -314,8 +395,7 @@ export function renderIntroductionPage(q, idx, render, visible, nextCallback) {
 }
 
 export function renderCelebrationPage(q, idx, render, visible, nextCallback, prevCallback) {
-  const container = document.querySelector('.main .container');
-  if (container) container.classList.add('is-celebration');
+  setContainerMode('is-celebration');
   
   addConfettiStyles();
   
@@ -331,39 +411,10 @@ export function renderCelebrationPage(q, idx, render, visible, nextCallback, pre
   
   $('questionArea').innerHTML = celebrationHTML;
 
-  if ($('prevBtn')) {
-    $('prevBtn').style.display = 'inline-block';
-    $('prevBtn').innerHTML = 'Retour';
-    $('prevBtn').className = 'btn';
-    
-    const newPrevBtn = $('prevBtn').cloneNode(true);
-    $('prevBtn').parentNode.replaceChild(newPrevBtn, $('prevBtn'));
-    if (prevCallback) {
-      newPrevBtn.addEventListener('click', prevCallback);
-    }
-  }
-  
-  if ($('nextBtn')) {
-    $('nextBtn').style.display = 'inline-block';
-    $('nextBtn').innerHTML = q.continueButtonText || 'Continuer';
-    $('nextBtn').className = 'btn btn-primary';
-    
-    const newNextBtn = $('nextBtn').cloneNode(true);
-    $('nextBtn').parentNode.replaceChild(newNextBtn, $('nextBtn'));
-    if (nextCallback) {
-      newNextBtn.addEventListener('click', nextCallback);
-    }
-  }
-  
-  const progressContainer = document.querySelector('.progress');
-  if (progressContainer) {
-    progressContainer.style.display = 'none';
-  }
-  
-  const formHeader = document.querySelector('.form-header');
-  if (formHeader) {
-    formHeader.style.display = 'none';
-  }
+  setupNavButton('prevBtn', { visible: true, text: 'Retour', className: 'btn', onClick: prevCallback });
+  setupNavButton('nextBtn', { visible: true, text: q.continueButtonText || 'Continuer', className: 'btn btn-primary', onClick: nextCallback });
+  setProgressVisible(false);
+  setFormHeaderVisible(false);
   
   setTimeout(() => {
     createConfetti();
@@ -371,11 +422,7 @@ export function renderCelebrationPage(q, idx, render, visible, nextCallback, pre
 }
 
 export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallback) {
-  const progressContainer = document.querySelector('.progress');
-  if (progressContainer) {
-    progressContainer.style.display = 'none';
-  }
-  
+  setProgressVisible(false);
   const formHeader = document.querySelector('.form-header');
   const formTitle = document.getElementById('formTitle');
   const formDescription = document.getElementById('formDescription');
@@ -385,9 +432,7 @@ export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallb
     formTitle.textContent = '';
     formDescription.textContent = '';
   }
-  
-  const container = document.querySelector('.main .container');
-  if (container) container.classList.add('is-recap');
+  setContainerMode('is-recap');
 
   const toParagraphsHtml = (text) => {
     const safeText = String(text || '').replace(/en toute\s*\n\s*tranquillité\./g, 'en toute tranquillité.');
@@ -418,32 +463,18 @@ export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallb
     </div>
   `;
   
-  if ($('prevBtn')) {
-    $('prevBtn').style.display = 'inline-block';
-    $('prevBtn').innerHTML = '✏️ Modifier mes réponses';
-    $('prevBtn').className = 'btn secondary';
-    
-    $('prevBtn').replaceWith($('prevBtn').cloneNode(true));
-    $('prevBtn').addEventListener('click', () => {
-      // Utiliser prevCallback pour retourner à la question précédente
-      if (prevCallback) {
-        prevCallback();
-      }
-    });
-  }
-  
-  if ($('nextBtn')) {
-    $('nextBtn').style.display = 'inline-block';
-    $('nextBtn').innerHTML = 'Continuer';
-    $('nextBtn').className = 'btn btn-primary';
-    
-    $('nextBtn').replaceWith($('nextBtn').cloneNode(true));
-    $('nextBtn').addEventListener('click', () => {
-      if (nextCallback) {
-        nextCallback();
-      }
-    });
-  }
+  setupNavButton('prevBtn', {
+    visible: true,
+    text: '✏️ Modifier mes réponses',
+    className: 'btn secondary',
+    onClick: prevCallback ? () => prevCallback() : null
+  });
+  setupNavButton('nextBtn', {
+    visible: true,
+    text: 'Continuer',
+    className: 'btn btn-primary',
+    onClick: nextCallback ? () => nextCallback() : null
+  });
   
   $('questionArea').innerHTML = recapHTML;
   
@@ -451,49 +482,16 @@ export function renderRecapPage(q, idx, render, visible, nextCallback, prevCallb
 }
 
 export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
-  // Retirer d'abord la classe is-introduction si elle existe
-  const container = document.querySelector('.main .container');
-  if (container) container.classList.remove('is-introduction');
+  // Retirer d'abord les modes "intro/celebration/recap" si nécessaire
+  setContainerMode(null);
 
   let __nextBtnEl = null;
-
-  const selectionLimitRules = {
-    situation_generale: {
-      max: 2,
-      message: 'Choisissez 1 ou 2 situations maximum.'
-    },
-    difficultes_quotidiennes: {
-      max: 3,
-      message: 'Essayez de garder uniquement les 3 difficultés les plus importantes.'
-    },
-    difficultes_travail: {
-      max: 2,
-      message: 'Choisissez jusqu’à 2 difficultés principales.'
-    },
-    consequences_difficultes: {
-      max: 2,
-      message: 'Indiquez uniquement les 2 conséquences les plus marquantes.'
-    },
-    consequences_travail: {
-      max: 2,
-      message: 'Indiquez uniquement les 2 conséquences les plus marquantes.'
-    },
-    type_demande: {
-      max: 3,
-      message: 'Pour plus de clarté, choisissez jusqu’à 3 aides utiles.'
-    },
-    priorites_actuelles: {
-      max: 4,
-      message: 'Concentrez-vous sur 4 priorités maximum.'
-    }
-  };
 
   const getOrCreateGlobalLimitBox = () => {
     const root = $('questionArea');
     if (!root) return null;
     const existing = root.querySelector('.selection-limit-box');
     if (existing) return existing;
-
     const box = document.createElement('div');
     box.className = 'selection-limit-box';
     box.style.display = 'none';
@@ -504,7 +502,6 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
   const updateSelectionLimitUI = () => {
     const box = getOrCreateGlobalLimitBox();
     if (!box) return;
-
     const violations = [];
     try {
       const currentSection = q.sectionTitle;
@@ -514,13 +511,9 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
         if (!rule) return;
         const div = document.querySelector(`[data-question-id="${qi.id}"]`);
         if (!div) return;
-        if (isSelectionOverLimit(div, qi.id)) {
-          violations.push(rule.message);
-        }
+        if (isSelectionOverLimit(div, qi.id)) violations.push(rule.message);
       });
-    } catch {
-    }
-
+    } catch {}
     if (violations.length) {
       box.innerHTML = violations.map(msg => `<div class="selection-limit-message">${msg}</div>`).join('');
       box.style.display = 'block';
@@ -530,486 +523,353 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
     }
   };
 
-  const isSelectionOverLimit = (questionDiv, questionId) => {
-    const rule = selectionLimitRules[questionId];
-    if (!rule || !questionDiv) return false;
-    const checked = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
-    const count = checked ? checked.length : 0;
-    return count > rule.max;
+  const updateNextButtonDisabledState = () => {
+    try {
+      if (!__nextBtnEl) return;
+      const div = document.querySelector(`[data-question-id="${q.id}"]`);
+      __nextBtnEl.disabled = isSelectionOverLimit(div, q.id);
+    } catch {}
   };
   
-  // Restaurer la barre de progression (au cas où elle aurait été masquée sur une page de félicitations)
-  const progressContainer = document.querySelector('.progress');
-  if (progressContainer) {
-    progressContainer.style.display = '';
-  }
-  
-  // Restaurer l'en-tête du formulaire (au cas où il aurait été masqué)
-  const formHeader = document.querySelector('.form-header');
-  if (formHeader) {
-    formHeader.style.display = '';
-  }
+  // Restaurer la barre de progression et l'en-tête
+  setProgressVisible(true);
+  setFormHeaderVisible(true);
   
   // Remettre les boutons visibles pour les pages normales
-  document.body.classList.remove('hide-nav-buttons');
+  ensureNavButtonsVisible();
   
   // Restaurer les boutons de navigation normaux
-  if ($('prevBtn')) {
-    $('prevBtn').innerHTML = 'Précédent';
-    $('prevBtn').className = 'btn';
-    
-    // Restaurer le gestionnaire d'événement
-    const newPrevBtn = $('prevBtn').cloneNode(true);
-    $('prevBtn').parentNode.replaceChild(newPrevBtn, $('prevBtn'));
-    if (prevCallback) {
-      newPrevBtn.addEventListener('click', prevCallback);
-    }
-  }
-  if ($('nextBtn')) {
-    $('nextBtn').innerHTML = 'Suivant';
-    $('nextBtn').className = 'btn btn-primary';
-    
-    // Restaurer le gestionnaire d'événement
-    const newNextBtn = $('nextBtn').cloneNode(true);
-    $('nextBtn').parentNode.replaceChild(newNextBtn, $('nextBtn'));
-    if (nextCallback) {
-      newNextBtn.addEventListener('click', nextCallback);
-    }
-
-    __nextBtnEl = newNextBtn;
-  }
+  setupNavButton('prevBtn', { visible: true, text: 'Précédent', className: 'btn', onClick: prevCallback });
+  __nextBtnEl = setupNavButton('nextBtn', { visible: true, text: 'Suivant', className: 'btn btn-primary', onClick: nextCallback });
   
-  // Vérifier si cette question fait partie d'une section avec plusieurs questions
-  const currentSection = q.sectionTitle;
-  const sectionQuestions = visible.filter(question => question.sectionTitle === currentSection);
+  // Afficher chaque question dans sa propre carte individuelle
+  // Affiche le titre de section une seule fois (pas de duplication avec renderInput)
+  const sectionTitle = q.sectionTitle || q.title || '';
   
-  // Pour toutes les sections, on utilise le même affichage avec titre et description de section
-  const sectionDescription = q.sectionDescription || q.description || '';
-    
   let sectionHtml = `
     <div class="${q.className || ''} section-container">
-      <h2 class="q-title">${currentSection}</h2>
+      ${sectionTitle ? `<h2 class="q-title">${sectionTitle}</h2>` : ''}
+      <div class="question-card" data-question-id="${q.id}">
+        ${renderInput(q, responses[q.id])}
+      </div>
+    </div>
   `;
     
-  // Ajouter chaque question de la section
-  sectionQuestions.forEach(sectionQ => {
-    const value = responses[sectionQ.id];
-    sectionHtml += `
-      <div class="question-item" data-question-id="${sectionQ.id}">
-        ${renderInput(sectionQ, value)}
-      </div>
-    `;
-  });
-    
-  sectionHtml += `</div>`;
   $('questionArea').innerHTML = sectionHtml;
 
   // Zone unique d'erreurs en bas du formulaire (emplacement constant)
   getOrCreateGlobalLimitBox();
     
-  // Ajouter les événements pour tous les champs de la section
-  sectionQuestions.forEach(sectionQ => {
-    const updateNextButtonDisabledState = () => {
-      try {
-        if (typeof __nextBtnEl === 'undefined' || !__nextBtnEl) return;
-        const hasViolation = sectionQuestions.some(qi => {
-          const rule = selectionLimitRules[qi.id];
-          if (!rule) return false;
-          const div = document.querySelector(`[data-question-id="${qi.id}"]`);
-          return isSelectionOverLimit(div, qi.id);
-        });
-        __nextBtnEl.disabled = hasViolation;
-      } catch {
-      }
-    };
+  // Helper pour attacher les événements communs
+  const onChangeSave = (fn) => (e) => { fn(e); saveLocal(true); };
+  const refreshUI = () => { updateSelectionLimitUI(); updateNextButtonDisabledState(); };
 
-    // Sauvegarde live pour les champs texte (utile quand plusieurs questions sont affichées sur une même page)
-    if (sectionQ.type === 'text' || sectionQ.type === 'email' || sectionQ.type === 'texte_long' || sectionQ.type === 'textarea') {
-      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
-      if (questionDiv) {
-        const input = questionDiv.querySelector('#answer');
-        if (input) {
-          input.addEventListener('input', function () {
-            responses[sectionQ.id] = String(this.value ?? '');
-            saveLocal(true);
-          });
-        }
-      }
+  // Sauvegarde live pour les champs texte
+  if (q.type === 'text' || q.type === 'email' || q.type === 'textarea') {
+    const questionDiv = document.querySelector(`[data-question-id="${q.id}"]`);
+    const input = questionDiv?.querySelector('#answer');
+    if (input) {
+      input.addEventListener('input', (e) => { responses[q.id] = String(e.target.value ?? ''); saveLocal(true); });
     }
+  }
 
-    if (sectionQ.type === 'radio_with_text') {
-      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
-      if (questionDiv) {
-        const radioInputs = questionDiv.querySelectorAll('input[name="opt"]');
-        radioInputs.forEach(radio => {
-          radio.addEventListener('change', function() {
-            const textFields = questionDiv.querySelectorAll('.text-field-inline');
-            textFields.forEach(field => field.style.display = 'none');
-              
-            const selectedOption = sectionQ.options.find(opt => opt.value === this.value);
-            if (selectedOption && selectedOption.hasTextField) {
-              const textField = this.parentElement.nextElementSibling;
-              if (textField && textField.classList.contains('text-field-inline')) {
-                textField.style.display = 'block';
-              }
-            }
-          });
+  if (q.type === 'radio') {
+    const questionDiv = document.querySelector(`[data-question-id="${q.id}"]`);
+    if (questionDiv) {
+      const radioInputs = questionDiv.querySelectorAll(`input[type="radio"][name="${q.id}"]`);
+      const syncRadioTextFields = () => {
+        const checked = questionDiv.querySelector(`input[type="radio"][name="${q.id}"]:checked`);
+        const selectedValue = checked ? String(checked.value) : '';
+        questionDiv.querySelectorAll('.text-field-inline').forEach(wrapper => {
+          const shouldShow = selectedValue && wrapper.getAttribute('data-text-for') === selectedValue;
+          wrapper.style.display = shouldShow ? 'block' : 'none';
+          if (!shouldShow) {
+            const input = wrapper.querySelector('input[data-field]');
+            const fieldId = input?.getAttribute('data-field');
+            if (fieldId && responses[fieldId] !== undefined) { input.value = ''; delete responses[fieldId]; }
+          }
         });
-      }
-    }
-
-    if (sectionQ.type === 'radio') {
-      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
-      if (questionDiv) {
-        const radioInputs = questionDiv.querySelectorAll(`input[type="radio"][name="${sectionQ.id}"]`);
-        const textInputs = questionDiv.querySelectorAll('.text-field-inline input[type="text"][data-field]');
-
-        const syncRadioTextFields = () => {
-          const checked = questionDiv.querySelector(`input[type="radio"][name="${sectionQ.id}"]:checked`);
-          const selectedValue = checked ? String(checked.value) : '';
-
-          const wrappers = questionDiv.querySelectorAll('.text-field-inline');
-          wrappers.forEach(wrapper => {
-            const forValue = wrapper.getAttribute('data-text-for') || '';
-            const shouldShow = selectedValue && String(forValue) === String(selectedValue);
-            wrapper.style.display = shouldShow ? 'block' : 'none';
-
-            if (!shouldShow) {
-              const input = wrapper.querySelector('input[type="text"][data-field]');
-              if (input) {
-                const fieldId = input.getAttribute('data-field');
-                input.value = '';
-                if (fieldId && responses[fieldId] !== undefined) {
-                  delete responses[fieldId];
-                }
-              }
-            }
-          });
-          
-          // Gérer l'affichage/masquage des sous-choix pour radio
-          const subOptionsContainers = questionDiv.querySelectorAll('.sub-options-container');
-          subOptionsContainers.forEach(container => {
-            const containerId = container.getAttribute('id');
-            if (containerId && containerId.startsWith('suboptions_')) {
-              const optValue = containerId.replace('suboptions_', '');
-              const shouldShow = selectedValue && String(optValue) === String(selectedValue);
-              container.style.display = shouldShow ? 'block' : 'none';
-              
-              if (!shouldShow) {
-                // Décocher tous les sous-choix
-                const subChecks = container.querySelectorAll('input[name="sub_check"]');
-                subChecks.forEach(subCb => {
-                  subCb.checked = false;
-                });
-                // Supprimer les sous-choix du storage
-                const subOptionsFieldId = container.querySelector('input[name="sub_check"]')?.getAttribute('data-suboptions-field');
-                if (subOptionsFieldId && responses[subOptionsFieldId]) {
-                  delete responses[subOptionsFieldId];
-                }
-              }
-            }
-          });
-          
+        questionDiv.querySelectorAll('.sub-options-container[id^="suboptions_"]').forEach(container => {
+          const optValue = container.id.replace('suboptions_', '');
+          const shouldShow = selectedValue === optValue;
+          container.style.display = shouldShow ? 'block' : 'none';
+          if (!shouldShow) {
+            container.querySelectorAll('input[name="sub_check"]').forEach(cb => cb.checked = false);
+            const subField = container.querySelector('input[data-suboptions-field]')?.getAttribute('data-suboptions-field');
+            if (subField && responses[subField]) delete responses[subField];
+          }
+        });
+        saveLocal(true);
+      };
+      radioInputs.forEach(radio => radio.addEventListener('change', syncRadioTextFields));
+      questionDiv.querySelectorAll('.text-field-inline input[data-field]').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const fieldId = e.target.getAttribute('data-field');
+          if (fieldId) responses[fieldId] = String(e.target.value || '');
           saveLocal(true);
-        };
-
-        radioInputs.forEach(radio => {
-          radio.addEventListener('change', syncRadioTextFields);
         });
-
-        textInputs.forEach(input => {
-          input.addEventListener('input', function() {
-            const fieldId = this.getAttribute('data-field');
-            if (fieldId) {
-              responses[fieldId] = String(this.value || '');
-              saveLocal(true);
-            }
-          });
+      });
+      questionDiv.querySelectorAll('input[name="sub_check"]').forEach(subCb => {
+        subCb.addEventListener('change', () => {
+          const container = document.getElementById(`suboptions_${subCb.getAttribute('data-parent')}`);
+          const subField = subCb.getAttribute('data-suboptions-field');
+          if (!subField || !container) return;
+          const values = Array.from(container.querySelectorAll('input[name="sub_check"]:checked')).map(cb => cb.value);
+          responses[subField] = values.length ? values : undefined;
+          if (!values.length) delete responses[subField];
+          saveLocal(true);
         });
-        
-        // Gestion des sous-choix pour radio
-        const subCheckboxes = questionDiv.querySelectorAll('input[name="sub_check"]');
-        subCheckboxes.forEach(subCb => {
-          subCb.addEventListener('change', function() {
-            const subOptionsFieldId = this.getAttribute('data-suboptions-field');
-            if (!subOptionsFieldId) return;
-            
-            const parent = this.getAttribute('data-parent');
-            const container = document.getElementById(`suboptions_${parent}`);
-            if (!container) return;
-            
-            const checkedSubs = container.querySelectorAll('input[name="sub_check"]:checked');
-            const selectedValues = Array.from(checkedSubs).map(cb => cb.value);
-            
-            if (selectedValues.length > 0) {
-              responses[subOptionsFieldId] = selectedValues;
-            } else {
-              delete responses[subOptionsFieldId];
-            }
-            saveLocal(true);
-          });
-        });
-
-        syncRadioTextFields();
-      }
+      });
+      syncRadioTextFields();
     }
-    
-    // Gestion des difficultés avec fréquences
-    if (sectionQ.type === 'checkbox_multiple_with_frequency') {
-      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
-      if (questionDiv) {
-        const checkboxes = questionDiv.querySelectorAll('input[name="multi_check"]');
-        
-        checkboxes.forEach(checkbox => {
-          checkbox.addEventListener('change', function() {
-            const rule = selectionLimitRules[sectionQ.id];
-            if (rule && this.checked) {
-              const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
-              if (checkedNow && checkedNow.length > rule.max) {
-                // Rejeter la sélection en trop
-                if (this.dataset && this.dataset.reverting === '1') {
-                  delete this.dataset.reverting;
-                } else {
-                  this.dataset.reverting = '1';
-                  this.checked = false;
-                  try {
-                    this.dispatchEvent(new Event('change', { bubbles: true }));
-                  } catch {
-                  }
-                  return;
-                }
+  }
+
+  // Gestion des difficultés avec fréquences
+  if (q.type === 'checkbox_multiple_with_frequency') {
+    const questionDiv = document.querySelector(`[data-question-id="${q.id}"]`);
+    if (questionDiv) {
+      const rule = selectionLimitRules[q.id];
+      questionDiv.querySelectorAll('input[name="multi_check"]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          if (rule && checkbox.checked) {
+            const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
+            if (checkedNow.length > rule.max) {
+              checkbox.checked = false;
+              return;
+            }
+          }
+          const difficulty = checkbox.getAttribute('data-difficulty');
+          const frequencyDiv = document.getElementById(`freq_${difficulty}`);
+          const textDiv = document.getElementById(`text_${difficulty}`);
+          if (frequencyDiv) {
+            const isChecked = checkbox.checked;
+            frequencyDiv.style.display = isChecked ? 'block' : 'none';
+            if (textDiv) textDiv.style.display = isChecked ? 'block' : 'none';
+            if (!isChecked) {
+              frequencyDiv.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+                const fieldId = radio.getAttribute('data-frequency-field');
+                if (fieldId && responses[fieldId]) delete responses[fieldId];
+              });
+              if (textDiv) {
+                const ti = textDiv.querySelector('input[data-field]');
+                const fid = ti?.getAttribute('data-field');
+                if (ti) ti.value = '';
+                if (fid && responses[fid]) delete responses[fid];
               }
             }
-
-            const difficulty = this.getAttribute('data-difficulty');
-            const frequencyDiv = document.getElementById(`freq_${difficulty}`);
-            const textDiv = document.getElementById(`text_${difficulty}`);
-            
-            if (frequencyDiv) {
-              if (this.checked) {
-                frequencyDiv.style.display = 'block';
-                if (textDiv) textDiv.style.display = 'block';
-              } else {
-                frequencyDiv.style.display = 'none';
-                if (textDiv) textDiv.style.display = 'none';
-                
-                // Réinitialiser les sélections de fréquence
-                const radios = frequencyDiv.querySelectorAll('input[type="radio"]');
-                radios.forEach(radio => {
-                  radio.checked = false;
-                  // Supprimer la valeur du stockage
-                  const fieldId = radio.getAttribute('data-frequency-field');
-                  if (fieldId && responses[fieldId]) {
-                    delete responses[fieldId];
-                  }
-                });
-                
-                // Supprimer le texte si présent
-                if (textDiv) {
-                  const textInput = textDiv.querySelector('input[type="text"]');
-                  if (textInput) {
-                    textInput.value = '';
-                    const fieldId = textInput.getAttribute('data-field');
-                    if (fieldId && responses[fieldId]) {
-                      delete responses[fieldId];
-                    }
-                  }
-                }
-              }
-            }
-          });
-
-          checkbox.addEventListener('change', function() {
-            updateSelectionLimitUI();
-            updateNextButtonDisabledState();
-          });
+          }
+          refreshUI();
         });
-        
-        // Gestion des boutons radio de fréquence
-        const frequencyRadios = questionDiv.querySelectorAll('input[type="radio"][data-frequency-field]');
-        frequencyRadios.forEach(radio => {
-          radio.addEventListener('change', function() {
-            const fieldId = this.getAttribute('data-frequency-field');
-            if (fieldId) {
-              responses[fieldId] = this.value;
-              saveLocal(true);
-            }
-          });
+      });
+      questionDiv.querySelectorAll('input[type="radio"][data-frequency-field]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          const fieldId = e.target.getAttribute('data-frequency-field');
+          if (fieldId) responses[fieldId] = e.target.value;
+          saveLocal(true);
         });
-        
-        // Gestion des champs texte
-        const textInputs = questionDiv.querySelectorAll('input[type="text"][data-field]');
-        textInputs.forEach(input => {
-          input.addEventListener('input', function() {
-            const fieldId = this.getAttribute('data-field');
-            if (fieldId) {
-              responses[fieldId] = this.value;
-              saveLocal(true);
-            }
-          });
+      });
+      questionDiv.querySelectorAll('input[type="text"][data-field]').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const fieldId = e.target.getAttribute('data-field');
+          if (fieldId) responses[fieldId] = e.target.value;
+          saveLocal(true);
         });
-
-        updateSelectionLimitUI();
-        updateNextButtonDisabledState();
-      }
+      });
+      refreshUI();
     }
-    
-    // Gestion des checkbox_multiple avec champs texte
-    if (sectionQ.type === 'checkbox_multiple') {
-      const questionDiv = document.querySelector(`[data-question-id="${sectionQ.id}"]`);
-      if (questionDiv) {
-        const checkboxes = questionDiv.querySelectorAll('input[name="multi_check"][data-has-text="true"]');
-        
-        const allCheckboxes = questionDiv.querySelectorAll('input[name="multi_check"]');
-        const max1AutoDeselect = selectionLimitRules[sectionQ.id] && selectionLimitRules[sectionQ.id].max === 1;
+  }
 
-        checkboxes.forEach(checkbox => {
-          checkbox.addEventListener('change', function() {
-            const value = this.value;
-            const textDiv = document.getElementById(`text_${value}`);
-            
-            if (textDiv) {
-              if (this.checked) {
-                textDiv.style.display = 'block';
-              } else {
-                textDiv.style.display = 'none';
-                // Vider le champ texte quand on décoche
-                const textInput = textDiv.querySelector('input[type="text"]');
-                if (textInput) {
-                  textInput.value = '';
-                  const fieldId = textInput.getAttribute('data-field');
-                  if (fieldId && responses[fieldId]) {
-                    delete responses[fieldId];
-                    saveLocal(true);
-                  }
-                }
-              }
-            }
-          });
-        });
-
-        if (allCheckboxes && allCheckboxes.length) {
-          allCheckboxes.forEach(cb => {
-            cb.addEventListener('change', function(e) {
-              const rule = selectionLimitRules[sectionQ.id];
-
-              // Limite > 1 : rejeter la sélection si on dépasse
-              if (rule && rule.max > 1 && cb.checked) {
-                const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
-                if (checkedNow && checkedNow.length > rule.max) {
-                  if (cb.dataset && cb.dataset.reverting === '1') {
-                    delete cb.dataset.reverting;
-                  } else {
-                    cb.dataset.reverting = '1';
-                    cb.checked = false;
-                    try {
-                      cb.dispatchEvent(new Event('change', { bubbles: true }));
-                    } catch {
-                    }
-                    return;
-                  }
-                }
-              }
-
-              if (max1AutoDeselect && cb.checked) {
-                const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
-                if (checkedNow && checkedNow.length > 1) {
-                  checkedNow.forEach(other => {
-                    if (other !== cb && other.checked) {
-                      other.checked = false;
-                      try {
-                        other.dispatchEvent(new Event('change', { bubbles: true }));
-                      } catch {
-                      }
-                    }
-                  });
-                }
-              }
-
-              // Gérer l'affichage/masquage des sous-choix
-              const value = cb.value;
-              const subOptionsDiv = document.getElementById(`suboptions_${value}`);
-              if (subOptionsDiv) {
-                if (cb.checked) {
-                  subOptionsDiv.removeAttribute('hidden');
-                } else {
-                  subOptionsDiv.setAttribute('hidden', '');
-                  // Décocher tous les sous-choix
-                  const subChecks = subOptionsDiv.querySelectorAll('input[name="sub_check"]');
-                  subChecks.forEach(subCb => {
-                    subCb.checked = false;
-                  });
-                  // Supprimer les sous-choix du storage
-                  const subOptionsFieldId = subOptionsDiv.querySelector('input[name="sub_check"]')?.getAttribute('data-suboptions-field');
-                  if (subOptionsFieldId && responses[subOptionsFieldId]) {
-                    delete responses[subOptionsFieldId];
-                    saveLocal(true);
-                  }
-                }
-              }
-
-              updateSelectionLimitUI();
-              updateNextButtonDisabledState();
+  // Gestion des checkbox_multiple avec/sans champs texte
+  if (q.type === 'checkbox_multiple') {
+    const questionDiv = document.querySelector(`[data-question-id="${q.id}"]`);
+    if (questionDiv) {
+      const rule = selectionLimitRules[q.id];
+      const max1Auto = rule?.max === 1;
+      questionDiv.querySelectorAll('input[name="multi_check"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+          if (rule && cb.checked && rule.max > 1) {
+            const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
+            if (checkedNow.length > rule.max) { cb.checked = false; return; }
+          }
+          if (max1Auto && cb.checked) {
+            questionDiv.querySelectorAll('input[name="multi_check"]:checked').forEach(other => {
+              if (other !== cb) other.checked = false;
             });
-          });
-        }
-        
-        // Gestion des sous-choix (sub-options)
-        const subCheckboxes = questionDiv.querySelectorAll('input[name="sub_check"]');
-        subCheckboxes.forEach(subCb => {
-          subCb.addEventListener('change', function() {
-            const subOptionsFieldId = this.getAttribute('data-suboptions-field');
-            if (!subOptionsFieldId) return;
-            
-            const parent = this.getAttribute('data-parent');
-            const container = document.getElementById(`suboptions_${parent}`);
-            if (!container) return;
-            
-            const checkedSubs = container.querySelectorAll('input[name="sub_check"]:checked');
-            const selectedValues = Array.from(checkedSubs).map(cb => cb.value);
-            
-            if (selectedValues.length > 0) {
-              responses[subOptionsFieldId] = selectedValues;
-            } else {
-              delete responses[subOptionsFieldId];
+          }
+          const subContainer = document.getElementById(`suboptions_${cb.value}`);
+          if (subContainer) {
+            subContainer.hidden = !cb.checked;
+            if (!cb.checked) {
+              subContainer.querySelectorAll('input[name="sub_check"]').forEach(sub => sub.checked = false);
+              const subField = subContainer.querySelector('input[data-suboptions-field]')?.getAttribute('data-suboptions-field');
+              if (subField && responses[subField]) delete responses[subField];
             }
-            saveLocal(true);
-          });
+          }
+          refreshUI();
         });
-        
-        // Gestion des champs texte pour checkbox_multiple
-        const textInputs = questionDiv.querySelectorAll('.text-field-checkbox input[type="text"][data-field]');
-        textInputs.forEach(input => {
-          input.addEventListener('input', function() {
-            const fieldId = this.getAttribute('data-field');
-            if (fieldId) {
-              responses[fieldId] = this.value;
-              saveLocal(true);
+      });
+      questionDiv.querySelectorAll('input[name="multi_check"][data-has-text="true"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+          const textDiv = document.getElementById(`text_${cb.value}`);
+          if (textDiv) {
+            textDiv.style.display = cb.checked ? 'block' : 'none';
+            if (!cb.checked) {
+              const ti = textDiv.querySelector('input[data-field]');
+              const fid = ti?.getAttribute('data-field');
+              if (ti) ti.value = '';
+              if (fid && responses[fid]) { delete responses[fid]; saveLocal(true); }
             }
-          });
+          }
         });
-
-        updateSelectionLimitUI();
-        updateNextButtonDisabledState();
-      }
+      });
+      questionDiv.querySelectorAll('input[name="sub_check"]').forEach(subCb => {
+        subCb.addEventListener('change', () => {
+          const container = document.getElementById(`suboptions_${subCb.getAttribute('data-parent')}`);
+          const subField = subCb.getAttribute('data-suboptions-field');
+          if (!subField || !container) return;
+          const values = Array.from(container.querySelectorAll('input[name="sub_check"]:checked')).map(x => x.value);
+          if (values.length) responses[subField] = values; else delete responses[subField];
+          saveLocal(true);
+        });
+      });
+      questionDiv.querySelectorAll('.text-field-checkbox input[data-field]').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const fieldId = e.target.getAttribute('data-field');
+          if (fieldId) responses[fieldId] = e.target.value;
+          saveLocal(true);
+        });
+      });
+      refreshUI();
     }
-  });
+  }
 
-  // Init état du bouton Suivant après attachement des listeners
+    // Init état du bouton Suivant après attachement des listeners
   try {
     if (typeof __nextBtnEl !== 'undefined' && __nextBtnEl) {
-      const hasViolation = sectionQuestions.some(qi => {
-        const rule = selectionLimitRules[qi.id];
-        if (!rule) return false;
-        const div = document.querySelector(`[data-question-id="${qi.id}"]`);
-        return isSelectionOverLimit(div, qi.id);
-      });
+      const div = document.querySelector(`[data-question-id="${q.id}"]`);
+      const hasViolation = isSelectionOverLimit(div, q.id);
       __nextBtnEl.disabled = hasViolation;
     }
   } catch {
   }
 
   updateSelectionLimitUI();
+
+  updateProgress(idx, visible);
+}
+
+export function renderMultiQuestionPage(questions, idx, visible, nextCallback, prevCallback) {
+  setContainerMode(null);
+
+  let __nextBtnEl = null;
+
+  // Restaurer la barre de progression et l'en-tête
+  setProgressVisible(true);
+  setFormHeaderVisible(true);
+
+  ensureNavButtonsVisible();
+
+  // Construire le HTML avec toutes les questions
+  let sectionHtml = `<div class="coordonnees-page section-container">`;
+  
+  // Titre de la première question (ou section)
+  const firstQ = questions[0];
+  if (firstQ && firstQ.sectionTitle) {
+    sectionHtml += `<h2 class="q-title">${firstQ.sectionTitle}</h2>`;
+  }
+
+  const firstDescription = (firstQ && (firstQ.sectionDescription || firstQ.description)) ? (firstQ.sectionDescription || firstQ.description) : '';
+  if (firstDescription) {
+    sectionHtml += `<p class="q-description">${firstDescription}</p>`;
+  }
+
+  questions.forEach(q => {
+    // Gestion spéciale pour les sections avec checkbox (CGU)
+    if (q.hasCheckbox && q.isIntroduction) {
+      sectionHtml += `
+        <div class="question-card terms-acceptance-card" data-question-id="${q.id}">
+          <div class="terms-acceptance-content">
+            ${q.hideTitle ? '' : `<h3 class="terms-title">${q.title || q.sectionTitle || ''}</h3>`}
+            ${q.hideDescription ? '' : `<p class="terms-description">${q.description || q.sectionDescription || ''}</p>`}
+            <div class="terms-checkbox-wrapper">
+              <label class="terms-checkbox-label">
+                <input type="checkbox" id="terms_checkbox" ${q.requireCheckbox ? 'data-required="true"' : ''}>
+                <span class="checkbox-text">${q.checkboxLabel || 'J\'accepte les conditions'}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      sectionHtml += `
+        <div class="question-card" data-question-id="${q.id}">
+          ${renderInput(q, responses[q.id])}
+        </div>
+      `;
+    }
+  });
+
+  sectionHtml += `</div>`;
+
+  $('questionArea').innerHTML = sectionHtml;
+
+  // Restaurer les boutons avec gestion spéciale pour terms_acceptance
+  const lastQ = questions[questions.length - 1];
+  const hasTermsAcceptance = lastQ && lastQ.hasCheckbox && lastQ.isIntroduction;
+
+  setupNavButton('prevBtn', { visible: true, text: 'Précédent', className: 'btn', onClick: prevCallback });
+
+  const nextText = hasTermsAcceptance ? (lastQ.buttonText || 'Continuer') : 'Suivant';
+  __nextBtnEl = setupNavButton('nextBtn', {
+    visible: true,
+    text: nextText,
+    className: 'btn btn-primary',
+    onClick: () => {
+      if (hasTermsAcceptance && lastQ.requireCheckbox) {
+        const termsCheckbox = document.getElementById('terms_checkbox');
+        if (termsCheckbox && !termsCheckbox.checked) {
+          alert('Vous devez accepter les conditions d\'utilisation pour continuer.');
+          return;
+        }
+        responses[lastQ.id] = termsCheckbox && termsCheckbox.checked ? 'accepted' : '';
+        saveLocal(true);
+        redirectToFinalStep();
+        return;
+      }
+      if (nextCallback) nextCallback();
+    }
+  });
+
+  // Gestion spéciale pour le checkbox CGU
+  if (__nextBtnEl && hasTermsAcceptance && lastQ.requireCheckbox) {
+    const termsCheckbox = document.getElementById('terms_checkbox');
+    if (termsCheckbox) {
+      __nextBtnEl.disabled = !termsCheckbox.checked;
+      termsCheckbox.addEventListener('change', function() {
+        __nextBtnEl.disabled = !this.checked;
+      });
+    }
+  }
+
+  // Attacher les événements pour chaque question (sauf terms_acceptance déjà géré)
+  questions.forEach(q => {
+    if (q.hasCheckbox && q.isIntroduction) return; // Déjà géré ci-dessus
+
+    const questionDiv = document.querySelector(`[data-question-id="${q.id}"]`);
+    if (!questionDiv) return;
+
+    // Sauvegarde live pour texte/email/textarea
+    if (q.type === 'text' || q.type === 'email' || q.type === 'textarea') {
+      const input = questionDiv.querySelector('input, textarea');
+      if (input) {
+        input.addEventListener('input', function () {
+          responses[q.id] = String(this.value ?? '');
+          saveLocal(true);
+        });
+      }
+    }
+  });
 
   updateProgress(idx, visible);
 }

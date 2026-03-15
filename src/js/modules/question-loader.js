@@ -3,20 +3,185 @@
  */
 
 import { responses } from './storage.js';
-import { buildEntryFlowQuestions, getEntryFlow } from './premiere-question.js';
 
 export let allQuestions = [];
 export let visible = [];
 
-function evaluateStrictEqualityCondition(condition) {
-  if (!condition || !condition.includes('===')) return true;
+function tokenizeCondition(input) {
+  const s = String(input || '');
+  const tokens = [];
+  let i = 0;
 
-  const stringMatch = condition.match(/(\w+)\s*===\s*['"]([^'"]+)['"]/);
-  if (!stringMatch) return true;
+  const isWs = c => c === ' ' || c === '\t' || c === '\n' || c === '\r';
+  const isIdentStart = c => /[A-Za-z_]/.test(c);
+  const isIdent = c => /[A-Za-z0-9_]/.test(c);
 
-  const [, fieldId, expectedValue] = stringMatch;
-  const actualValue = String(responses[fieldId] || '');
-  return actualValue === expectedValue;
+  while (i < s.length) {
+    const c = s[i];
+    if (isWs(c)) {
+      i += 1;
+      continue;
+    }
+
+    if (c === '(' || c === ')') {
+      tokens.push({ type: c });
+      i += 1;
+      continue;
+    }
+
+    const two = s.slice(i, i + 2);
+    const three = s.slice(i, i + 3);
+    if (three === '===') {
+      tokens.push({ type: 'op', value: '===' });
+      i += 3;
+      continue;
+    }
+    if (three === '!==') {
+      tokens.push({ type: 'op', value: '!==' });
+      i += 3;
+      continue;
+    }
+    if (two === '&&' || two === '||') {
+      tokens.push({ type: 'op', value: two });
+      i += 2;
+      continue;
+    }
+
+    if (c === '\'' || c === '"') {
+      const quote = c;
+      i += 1;
+      let out = '';
+      while (i < s.length) {
+        const ch = s[i];
+        if (ch === '\\' && i + 1 < s.length) {
+          out += s[i + 1];
+          i += 2;
+          continue;
+        }
+        if (ch === quote) {
+          i += 1;
+          break;
+        }
+        out += ch;
+        i += 1;
+      }
+      tokens.push({ type: 'string', value: out });
+      continue;
+    }
+
+    if (isIdentStart(c)) {
+      let start = i;
+      i += 1;
+      while (i < s.length && isIdent(s[i])) i += 1;
+      const ident = s.slice(start, i);
+      tokens.push({ type: 'ident', value: ident });
+      continue;
+    }
+
+    // caractère inattendu: on arrête de façon safe
+    tokens.push({ type: 'unknown', value: c });
+    i += 1;
+  }
+
+  tokens.push({ type: 'eof' });
+  return tokens;
+}
+
+function parseCondition(condition) {
+  const tokens = tokenizeCondition(condition);
+  let pos = 0;
+
+  const peek = () => tokens[pos] || { type: 'eof' };
+  const next = () => (pos < tokens.length ? tokens[pos++] : { type: 'eof' });
+
+  const parsePrimary = () => {
+    const t = peek();
+    if (t.type === '(') {
+      next();
+      const expr = parseOr();
+      if (peek().type === ')') next();
+      return expr;
+    }
+    if (t.type === 'ident') {
+      next();
+      return { type: 'ident', name: t.value };
+    }
+    if (t.type === 'string') {
+      next();
+      return { type: 'string', value: t.value };
+    }
+    // fallback safe
+    next();
+    return { type: 'string', value: '' };
+  };
+
+  const parseComparison = () => {
+    let left = parsePrimary();
+    const t = peek();
+    if (t.type === 'op' && (t.value === '===' || t.value === '!==')) {
+      next();
+      const right = parsePrimary();
+      return { type: 'cmp', op: t.value, left, right };
+    }
+    // si pas de comparaison, on considère l'ident comme vérité si non vide
+    return left;
+  };
+
+  const parseAnd = () => {
+    let node = parseComparison();
+    while (peek().type === 'op' && peek().value === '&&') {
+      next();
+      node = { type: 'and', left: node, right: parseComparison() };
+    }
+    return node;
+  };
+
+  const parseOr = () => {
+    let node = parseAnd();
+    while (peek().type === 'op' && peek().value === '||') {
+      next();
+      node = { type: 'or', left: node, right: parseAnd() };
+    }
+    return node;
+  };
+
+  return parseOr();
+}
+
+function evalConditionAst(ast) {
+  const evalValue = node => {
+    if (!node) return '';
+    if (node.type === 'string') return String(node.value || '');
+    if (node.type === 'ident') return String(responses[node.name] ?? '');
+    return '';
+  };
+
+  const evalBool = node => {
+    if (!node) return true;
+    if (node.type === 'and') return evalBool(node.left) && evalBool(node.right);
+    if (node.type === 'or') return evalBool(node.left) || evalBool(node.right);
+    if (node.type === 'cmp') {
+      const l = evalValue(node.left);
+      const r = evalValue(node.right);
+      return node.op === '===' ? l === r : l !== r;
+    }
+    if (node.type === 'ident') return String(responses[node.name] ?? '') !== '';
+    if (node.type === 'string') return String(node.value || '') !== '';
+    return true;
+  };
+
+  return evalBool(ast);
+}
+
+function evaluateCondition(condition) {
+  if (!condition) return true;
+  // compat: si condition simple "champ === 'x'" (ancien comportement)
+  try {
+    const ast = parseCondition(condition);
+    return evalConditionAst(ast);
+  } catch {
+    return true;
+  }
 }
 
 export function refreshVisible() {
@@ -24,9 +189,15 @@ export function refreshVisible() {
     if (q.isIntroduction) {
       return true;
     }
+
+    if (q.pageCondition) {
+      if (!evaluateCondition(q.pageCondition)) {
+        return false;
+      }
+    }
     
     if (q.sectionCondition) {
-      if (!evaluateStrictEqualityCondition(q.sectionCondition)) {
+      if (!evaluateCondition(q.sectionCondition)) {
         return false;
       }
     }
@@ -35,7 +206,7 @@ export function refreshVisible() {
       return true;
     }
 
-    return evaluateStrictEqualityCondition(q.condition_affichage);
+    return evaluateCondition(q.condition_affichage);
   });
   
   return visible;
@@ -44,13 +215,15 @@ export function refreshVisible() {
 export async function loadAllQuestions() {
   try {
     // Charger la configuration des pages
-    let pagesConfigPath = '/data/form_pages.json';
+    let pagesConfigPath = '/data/form_pages_premiere_demande.json';
     try {
       const qs = typeof window !== 'undefined' ? window.location.search : '';
       const params = new URLSearchParams(qs || '');
       const parcours = params.get('parcours');
       if (parcours === 'recours') {
         pagesConfigPath = '/data/form_pages_recours.json';
+      } else if (parcours === 'verification-dossier') {
+        pagesConfigPath = '/data/form_pages_verification.json';
       }
     } catch {
     }
@@ -60,9 +233,7 @@ export async function loadAllQuestions() {
       throw new Error(`Erreur HTTP: ${pagesResponse.status}`);
     }
     const pagesConfig = await pagesResponse.json();
-    
-    const entry = typeof window !== 'undefined' ? getEntryFlow(window.location.search) : null;
-    
+
     allQuestions = [];
     
     // Charger toutes les pages dans l'ordre
@@ -82,6 +253,7 @@ export async function loadAllQuestions() {
                 ...q,
                 pageId: pageConfig.id,
                 pageTitle: pageConfig.title,
+                pageCondition: pageConfig.condition,
                 sectionTitle: section.title,
                 sectionDescription: section.description,
                 sectionCondition: section.condition_section,
@@ -156,6 +328,7 @@ export async function loadAllQuestions() {
             ...q,
             pageId: pageConfig.id,
             pageTitle: pageConfig.title,
+            pageCondition: pageConfig.condition,
             sectionTitle: q.sectionTitle || q.title || pageConfig.title,
             sectionDescription: q.sectionDescription || q.description || pageConfig.description
           }));
@@ -165,7 +338,8 @@ export async function loadAllQuestions() {
           const questionsWithPage = pageData.map(q => ({
             ...q,
             pageId: pageConfig.id,
-            pageTitle: pageConfig.title
+            pageTitle: pageConfig.title,
+            pageCondition: pageConfig.condition
           }));
           allQuestions.push(...questionsWithPage);
         }
@@ -173,12 +347,7 @@ export async function loadAllQuestions() {
         console.error(`Erreur lors du chargement de ${pageConfig.title}:`, pageError);
       }
     }
-    
-    const entryQuestions = buildEntryFlowQuestions(entry);
-    if (entryQuestions.length > 0) {
-      allQuestions.unshift(...entryQuestions);
-    }
-    
+
     if (!Array.isArray(allQuestions)) {
       console.error('Format de questions invalide :', allQuestions);
       allQuestions = [];

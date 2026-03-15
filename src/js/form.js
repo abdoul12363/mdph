@@ -4,10 +4,9 @@ import { loadSaved, resetAll, responses, saveLocal } from './modules/storage.js'
 import { visible, refreshVisible, loadAllQuestions } from './modules/question-loader.js';
 import { updateProgress } from './modules/progress.js';
 import { updateFormHeader } from './modules/form-header.js';
-import { renderIntroductionPage, renderCelebrationPage, renderRecapPage, renderNormalPage } from './modules/page-renderer.js';
+import { renderIntroductionPage, renderCelebrationPage, renderRecapPage, renderNormalPage, renderMultiQuestionPage } from './modules/page-renderer.js';
 import { next as navNext, prev as navPrev } from './modules/navigation.js';
 import { initCharCounters } from './modules/char-counter.js';
-import { primeEntryResponses, getEntryFlow } from './modules/premiere-question.js';
 import { initUniversalMenu } from './modules/universal-menu.js';
 
 // Variables globales
@@ -56,6 +55,19 @@ function render() {
     return;
   }
 
+  // Page coordonnees : afficher toutes les questions de cette page ensemble
+  if (q.pageId === 'coordonnees') {
+    const currentPageId = q.pageId;
+    const pageQuestions = visible.filter(question => question.pageId === currentPageId);
+    // Trouver l'index de la dernière question de cette page pour la progression
+    const lastQuestionIndex = visible.findIndex(question => 
+      question.pageId === currentPageId && 
+      visible.indexOf(question) === Math.max(...pageQuestions.map(pq => visible.indexOf(pq)))
+    );
+    renderMultiQuestionPage(pageQuestions, lastQuestionIndex, visible, next, prev);
+    return;
+  }
+
   // Page normale
   renderNormalPage(q, idx, visible, next, prev);
   
@@ -96,11 +108,6 @@ async function boot() {
   }
 
   loadSaved();
-  const entry = getEntryFlow(qs);
-  primeEntryResponses(entry, responses);
-  if (entry) {
-    saveLocal(true);
-  }
 
   try {
     await loadAllQuestions();

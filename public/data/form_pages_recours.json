@@ -2,15 +2,54 @@
   "metadata": {
     "version": "1.0",
     "description": "Configuration des pages du parcours Recours",
-    "lastUpdated": "2026-03-10"
+    "lastUpdated": "2026-03-14"
   },
   "pages": [
     {
-      "id": "recours",
-      "title": "Recours MDPH",
-      "description": "Préparez votre recours MDPH étape par étape",
-      "questionsFile": "pages/recours/recours.json",
+      "id": "Analyse-Recours",
+      "title": "Analyse et Recours",
+      "description": "Préparez votre Analyse et Recours MDPH étape par étape.",
+      "questionsFile": "analyse_dossier/recours.json",
       "order": 1,
+      "required": true,
+      "progressMode": "questions"
+    },
+    {
+      "id": "analyse",
+      "title": "Analyse dossier MDPH",
+      "description": "Analysez votre dossier MDPH avant de prendre une décision",
+      "questionsFile": "analyse_dossier/analyse.json",
+      "condition": "recours_choix_action === 'analyse'",
+      "order": 2,
+      "required": true,
+      "progressMode": "questions"
+    },
+    {
+      "id": "rapo",
+      "title": "Formulaire RAPO",
+      "description": "Préparez votre Recours Administratif Préalable Obligatoire",
+      "questionsFile": "analyse_dossier/rapo.json",
+      "condition": "recours_type === 'rapo'",
+      "order": 3,
+      "required": true,
+      "progressMode": "questions"
+    },
+    {
+      "id": "recours-contentieux",
+      "title": "Recours contentieux",
+      "description": "Préparez votre recours contentieux étape par étape.",
+      "questionsFile": "analyse_dossier/recours-contencieux.json",
+      "condition": "recours_type === 'contentieux'",
+      "order": 4,
+      "required": true,
+      "progressMode": "questions"
+    },
+    {
+      "id": "coordonnees",
+      "title": "Vos coordonnées",
+      "description": "Renseignements relatifs à vos informations personnelles",
+      "questionsFile": "final/coordonnees.json",
+      "order": 5,
       "required": true,
       "progressMode": "questions"
     }
