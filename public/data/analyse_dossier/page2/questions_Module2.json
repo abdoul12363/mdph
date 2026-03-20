@@ -327,8 +327,7 @@
           "accept": ".pdf,.jpg,.jpeg,.png",
           "condition_affichage": "recours_choix_action === 'analyse'",
           "missingOptions": [
-            { "value": "je_ne_l_ai_pas", "label": "Je ne l’ai pas" },
-            { "value": "je_ne_sais_pas", "label": "Je ne sais pas" }
+            { "value": "je_ne_l_ai_pas", "label": "Je ne l’ai pas" }
           ]
         },
         {
