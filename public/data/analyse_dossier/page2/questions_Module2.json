@@ -51,13 +51,7 @@
           "condition_affichage": "recours_choix_action === 'analyse'",
           "options": [
             { "value": "refus_total", "label": "Un refus total" },
-            { "value": "refus_partiel", "label": "Un refus partiel", "followUp": {
-              "id": "analyse_ce_qui_accorde",
-              "title": "Qu'est-ce qui a été accordé par la MDPH ?",
-              "type": "text",
-              "placeholder": "Précisez ce qui a été accordé par la MDPH...",
-              "obligatoire": true
-            }},
+            { "value": "refus_partiel", "label": "Un refus partiel", "hasTextField": true, "textFieldPlaceholder": "Qu'est-ce qui a été accordé par la MDPH ?" },
             { "value": "incomprehensible", "label": "Je ne comprends pas la décision" },
             { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez votre suivi médical" }
           ]
