@@ -149,27 +149,18 @@ export function prev(idx, render, visible) {
           }
         }
         saveLocal(true);
-        idx = range.start - 1;
       } else {
         const answer = getAnswerFromDom(q);
         if (answer !== undefined) {
           responses[q.id] = answer;
           saveLocal(true);
         }
-        idx--;
       }
     } else {
-      idx--;
+      //simple retour question précédente
     }
 
-    // Si on tombe au milieu d'une section, revenir au début de la section précédente
-    if (idx > 0) {
-      const prevRange = getSectionRange(visible, idx);
-      if (prevRange) {
-        idx = prevRange.start;
-      }
-    }
-    
+    idx -= 1;
     if (idx < 0) idx = 0;
     
     return idx;
