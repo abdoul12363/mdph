@@ -1,13 +1,13 @@
 {
   "sections": [
     {
-      "title": "Solidité médicale",
+      "title": "",
       "description": "",
       "questions": [
         {
           "id": "renouv_certificat_6mois",
           "title": "Votre certificat médical date-t-il de moins de 6 mois ?",
-          "description": "Vérifiez la date de rédaction de votre certificat médical.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -19,7 +19,7 @@
         {
           "id": "renouv_nouveau_certificat_prevu",
           "title": "Un nouveau certificat médical est-il prévu ?",
-          "description": "Indiquez si un nouveau certificat est planifié.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "renouv_certificat_6mois === 'non'",
@@ -31,7 +31,7 @@
         {
           "id": "renouv_certificat_description",
           "title": "Votre certificat médical décrit-il clairement votre diagnostic, vos limitations fonctionnelles et l'impact sur votre quotidien ?",
-          "description": "Évaluez la qualité et la précision des informations.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -43,7 +43,7 @@
         {
           "id": "renouv_certificat_contenu_principal",
           "title": "Que décrit principalement votre certificat médical ?",
-          "description": "Sélectionnez l'élément le plus mis en avant.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "renouv_certificat_description === 'partiellement' || renouv_certificat_description === 'non'",
@@ -57,7 +57,7 @@
         {
           "id": "renouv_amelioration_certificat",
           "title": "Selon vous, que devrait préciser votre médecin pour mieux décrire votre situation ?",
-          "description": "Indiquez ce qui manque pour mieux décrire votre situation.",
+          "description": "",
           "type": "text",
           "obligatoire": true,
           "condition_affichage": "renouv_certificat_description === 'partiellement' || renouv_certificat_description === 'non'",
@@ -66,7 +66,7 @@
         {
           "id": "renouv_comptes_rendus_recents",
           "title": "Disposez-vous de comptes rendus récents de spécialistes ?",
-          "description": "Indiquez si vous avez des documents médicaux récents de spécialistes.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -77,7 +77,7 @@
         {
           "id": "renouv_specialistes",
           "title": "Quels spécialistes vous suivent ?",
-          "description": "Cochez tous les spécialistes qui assurent votre suivi.",
+          "description": "",
           "type": "checkbox_multiple",
           "obligatoire": true,
           "condition_affichage": "renouv_comptes_rendus_recents === 'oui'",

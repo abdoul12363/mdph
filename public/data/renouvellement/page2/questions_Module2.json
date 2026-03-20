@@ -1,13 +1,13 @@
 {
   "sections": [
     {
-      "title": "Type de demande",
+      "title": "",
       "description": "",
       "questions": [
         {
           "id": "renouv_type_dossier",
           "title": "Quel type de dossier souhaitez-vous faire analyser ?",
-          "description": "Indiquez le type de demande.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -20,7 +20,7 @@
         {
           "id": "renouv_aides_demandees",
           "title": "Quelles aides avez-vous demandées ?",
-          "description": "Cochez toutes les aides demandées dans votre dossier.",
+          "description": "",
           "type": "checkbox_multiple",
           "obligatoire": true,
           "options": [
@@ -35,7 +35,7 @@
         {
           "id": "renouv_aah_acces_emploi",
           "title": "Votre dossier explique-t-il clairement pourquoi votre état de santé limite votre accès à l'emploi ?",
-          "description": "Évaluez la qualité de l'argumentation pour l'AAH concernant l'accès à l'emploi.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "renouv_aides_demandees && renouv_aides_demandees.includes('aah')",

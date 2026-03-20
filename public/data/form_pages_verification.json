@@ -7,8 +7,8 @@
   "pages": [
     {
       "id": "page1",
-      "title": " Verification / import du dossier",
-      "description": "Importez votre dossier et indiquez son niveau de préparation.",
+      "title": "",
+      "description": "",
       "questionsFile": "verification/page1/questions_Module1.json",
       "pdfMappingFile": "verification/page1/pdf_fields_Module1.json",
       "order": 1,
@@ -17,8 +17,8 @@
     },
     {
       "id": "page2",
-      "title": "Verification /type de demande",
-      "description": "Précisez le type de demande et les aides demandées.",
+      "title": "",
+      "description": "",
       "questionsFile": "verification/page2/questions_Module2.json",
       "pdfMappingFile": "verification/page2/pdf_fields_Module2.json",
       "order": 2,
@@ -27,8 +27,8 @@
     },
     {
       "id": "page3",
-      "title": "Verification / solidité médicale",
-      "description": "Vérifiez la solidité et la cohérence de vos documents médicaux.",
+      "title": "",
+      "description": "",
       "questionsFile": "verification/page3/questions_Module3.json",
       "pdfMappingFile": "verification/page3/pdf_fields_Module3.json",
       "order": 3,
@@ -37,8 +37,8 @@
     },
     {
       "id": "page4",
-      "title": "Verification / limitations fonctionnelles",
-      "description": "Quantifiez vos limitations pour aider l'analyse.",
+      "title": "",
+      "description": "",
       "questionsFile": "verification/page4/questions_Module4.json",
       "pdfMappingFile": "verification/page4/pdf_fields_Module4.json",
       "order": 4,
@@ -47,8 +47,8 @@
     },
     {
       "id": "page5",
-      "title": "Verification / impact professionnel",
-      "description": "Décrivez votre situation professionnelle et les aménagements éventuels.",
+      "title": "",
+      "description": "",
       "questionsFile": "verification/page5/questions_Module5.json",
       "pdfMappingFile": "verification/page5/pdf_fields_Module5.json",
       "order": 5,
@@ -57,8 +57,8 @@
     },
     {
       "id": "page6",
-      "title": "Verification / Cohérence du dossier",
-      "description": "Vérifiez la cohérence entre vos documents.",
+      "title": "",
+      "description": "",
       "questionsFile": "verification/page6/questions_Module6.json",
       "pdfMappingFile": "verification/page6/pdf_fields_Module6.json",
       "order": 6,
@@ -67,8 +67,8 @@
     },
     {
       "id": "page7",
-      "title": "Verification / conclusion",
-      "description": "Soulignez le point le plus important.",
+      "title": "",
+      "description": "",
       "questionsFile": "verification/page7/questions_Module7.json",
       "pdfMappingFile": "verification/page7/pdf_fields_Module7.json",
       "order": 7,
@@ -77,8 +77,8 @@
     },
     {
       "id": "coordonnees",
-      "title": "Vos coordonnées",
-      "description": "Renseignements relatifs à vos informations personnelles",
+      "title": "",
+      "description": "",
       "questionsFile": "final/coordonnees.json",
       "order": 8,
       "required": true,

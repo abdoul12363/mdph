@@ -1,13 +1,13 @@
 {
   "sections": [
     {
-      "title": "Limitations fonctionnelles",
+      "title": "",
       "description": "",
       "questions": [
         {
           "id": "renouv_limitation_deplacer",
           "title": "Dans quelle mesure votre état de santé vous limite-t-il pour vous déplacer ?",
-          "description": "0 — aucune difficulté, 4 — impossible seul",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -21,7 +21,7 @@
         {
           "id": "renouv_limitation_taches",
           "title": "Dans quelle mesure votre état de santé vous limite-t-il pour effectuer les tâches quotidiennes ?",
-          "description": "0 — aucune difficulté, 4 — impossible seul",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -35,7 +35,7 @@
         {
           "id": "renouv_limitation_concentration",
           "title": "Dans quelle mesure votre état de santé vous limite-t-il pour vous concentrer ?",
-          "description": "0 — aucune difficulté, 4 — impossible seul",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -49,7 +49,7 @@
         {
           "id": "renouv_limitation_rythme",
           "title": "Dans quelle mesure votre état de santé vous limite-t-il pour maintenir un rythme d'activité ?",
-          "description": "0 — aucune difficulté, 4 — impossible seul",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -63,7 +63,7 @@
         {
           "id": "renouv_frequence_difficultes",
           "title": "À quelle fréquence ces difficultés apparaissent-elles ?",
-          "description": "Répondez si au moins une difficulté est à 3 ou 4.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "renouv_limitation_deplacer === '3' || renouv_limitation_deplacer === '4' || renouv_limitation_taches === '3' || renouv_limitation_taches === '4' || renouv_limitation_concentration === '3' || renouv_limitation_concentration === '4' || renouv_limitation_rythme === '3' || renouv_limitation_rythme === '4'",
@@ -76,7 +76,7 @@
         {
           "id": "renouv_impact_difficultes",
           "title": "Lorsque ces difficultés apparaissent, êtes-vous obligé de :",
-          "description": "Choisissez ce qui correspond le mieux.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "renouv_limitation_deplacer === '3' || renouv_limitation_deplacer === '4' || renouv_limitation_taches === '3' || renouv_limitation_taches === '4' || renouv_limitation_concentration === '3' || renouv_limitation_concentration === '4' || renouv_limitation_rythme === '3' || renouv_limitation_rythme === '4'",
@@ -89,7 +89,7 @@
         {
           "id": "renouv_exemple_concret",
           "title": "Décrivez une situation concrète où cette difficulté vous empêche d'agir normalement.",
-          "description": "Donnez un exemple concret.",
+          "description": "",
           "type": "text",
           "obligatoire": true,
           "condition_affichage": "renouv_limitation_deplacer === '3' || renouv_limitation_deplacer === '4' || renouv_limitation_taches === '3' || renouv_limitation_taches === '4' || renouv_limitation_concentration === '3' || renouv_limitation_concentration === '4' || renouv_limitation_rythme === '3' || renouv_limitation_rythme === '4'",

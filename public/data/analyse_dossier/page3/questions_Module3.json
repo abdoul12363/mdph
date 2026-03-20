@@ -2,12 +2,12 @@
   "sections": [
     {
       "id": "etape_identification",
-      "title": "Quelle aide MDPH a été refusée ?",
+      "title": "",
       "questions": [
         {
           "id": "rapo_aide_refusee",
-          "title": "La décision contestée était une:",
-          "description": "Sélectionnez l'aide qui a été refusée par la MDPH.",
+          "title": "Quelle aide MDPH a été refusée ?",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -27,7 +27,7 @@
         {
           "id": "rapo_type_demande",
           "title": "Cette demande était :",
-          "description": "Précisez la nature de votre demande initiale.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -44,15 +44,15 @@
         },
         {
           "id": "rapo_date_decision",
-          "title": "Quels est la date de la décision MDPH?",
-          "description": "Date figurant sur la notification :",
+          "title": "Date de la décision MDPH",
+          "description": "",
           "type": "date",
           "obligatoire": true
         },
         {
           "id": "rapo_numero_dossier",
           "title": "Numéro de dossier ou référence de la décision?",
-          "description": "Indiquez le numéro de dossier figurant sur la notification.",
+          "description": "",
           "type": "text",
           "placeholder": "Exemple : 2024-MDPH-123456",
           "obligatoire": true
@@ -60,7 +60,7 @@
         {
           "id": "rapo_type_decision",
           "title": "La décision correspond à :",
-          "description": "Précisez le type de décision prise par la MDPH.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -78,8 +78,8 @@
         },
         {
           "id": "rapo_motif_refus",
-          "title": "Motif indiqué dans le courrier de décision:",
-          "description": "Sélectionnez le motif de refus mentionné par la MDPH.",
+          "title": "Motif indiqué dans le courrier de décision :",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -99,8 +99,8 @@
         },
         {
           "id": "rapo_phrase_refus",
-          "title": "Copiez la phrase du courrier expliquant le refus:",
-          "description": "Copiez ici la phrase principale du courrier",
+          "title": "Copiez la phrase du courrier expliquant le refus :",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : 'Après examen de votre demande, la Commission a décidé de ne pas vous attribuer l'Allocation Adulte Handicapé car votre taux d'incapacité est estimé à 78%, inférieur au seuil requis de 80%'...",
           "obligatoire": true
@@ -114,7 +114,7 @@
         {
           "id": "rapo_pathologie",
           "title": "Quelle est votre pathologie principale ?",
-          "description": "Décrivez votre maladie ou handicap :",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : Sclérose en plaques diagnostiquée en 2019. Fatigue chronique importante, troubles de la marche nécessitant l'utilisation d'une canne, et troubles cognitifs affectant ma concentration...",
           "obligatoire": true
@@ -122,7 +122,7 @@
         {
           "id": "rapo_duree_difficultes",
           "title": "Depuis combien de temps avez-vous ces difficultés ?",
-          "description": "Indiquez depuis quand votre état de santé limite votre autonomie.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -141,7 +141,7 @@
         {
           "id": "rapo_suivi_specialiste",
           "title": "Êtes-vous suivi par un médecin spécialiste ?",
-          "description": "Précisez si vous êtes suivi par un spécialiste pour votre pathologie.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -159,14 +159,14 @@
         {
           "id": "rapo_traitement",
           "title": "Suivez-vous un traitement ou une prise en charge médicale ?",
-          "description": "Indiquez si vous suivez actuellement un traitement.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
             { "value": "oui", "label": "Oui", "followUp": {
               "id": "rapo_traitement_precise",
               "title": "Précisez :",
-              "description": "Traitement, thérapie, suivi médical",
+              "description": "",
               "type": "textarea",
               "placeholder": "Exemple : Traitement par interféron bêta-1a (Avonex) injectable hebdomadaire, séances de rééducation motrice hebdomadaires, et suivi psychologique mensuel...",
               "obligatoire": true
@@ -178,7 +178,7 @@
         {
           "id": "rapo_hospitalisation",
           "title": "Avez-vous déjà été hospitalisé ou suivi dans un service spécialisé pour cette situation ?",
-          "description": "Mentionnez toute hospitalisation ou suivi spécialisé lié à votre état.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -202,7 +202,7 @@
         {
           "id": "rapo_mobilite",
           "title": "Votre mobilité est-elle limitée ?",
-          "description": "Évaluez dans quelle mesure votre état limite vos déplacements.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -222,7 +222,7 @@
         {
           "id": "rapo_aide_marche",
           "title": "Utilisez-vous une aide pour marcher ?",
-          "description": "Précisez si vous utilisez des aides techniques pour vous déplacer.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "rapo_mobilite === 'beaucoup' || rapo_mobilite === 'pas_seul'",
@@ -236,8 +236,8 @@
         },
         {
           "id": "rapo_aide_quotidienne",
-          "title": "Avez-vous besoin d'aide dans votre vie quotidienne ?",
-          "description": "Évaluez votre besoin d'aide pour les activités quotidiennes.",
+          "title": "Avez-vous besoin d’aide dans votre vie quotidienne ?",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -251,7 +251,7 @@
         {
           "id": "rapo_taches_aide",
           "title": "Pour quelles tâches ?",
-          "description": "Cochez les tâches pour lesquelles vous avez besoin d'aide.",
+          "description": "",
           "type": "checkbox_multiple",
           "obligatoire": true,
           "condition_affichage": "rapo_aide_quotidienne === 'souvent' || rapo_aide_quotidienne === 'toujours'",
@@ -267,7 +267,7 @@
         {
           "id": "rapo_autonomie_globale",
           "title": "Globalement, votre état de santé limite votre autonomie :",
-          "description": "Évaluez l'impact global de votre état sur votre autonomie.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -287,7 +287,7 @@
         {
           "id": "rapo_situation_pro",
           "title": "Quelle est votre situation professionnelle actuelle ?",
-          "description": "Précisez votre situation actuelle sur le plan professionnel.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -302,8 +302,8 @@
         },
         {
           "id": "rapo_heures_travail",
-          "title": "Combien d'heures travaillez-vous par semaine ?",
-          "description": "Indiquez votre volume de travail hebdomadaire.",
+          "title": "Combien d’heures travaillez-vous par semaine ?",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "rapo_situation_pro === 'temps_plein' || rapo_situation_pro === 'temps_partiel'",
@@ -318,7 +318,7 @@
         {
           "id": "rapo_limitation_travail",
           "title": "Votre état de santé limite votre capacité à travailler :",
-          "description": "Évaluez l'impact de votre état sur votre capacité à travailler.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -334,20 +334,20 @@
     {
       "id": "etape5_argumentaire",
       "title": "Argumentaire personnel",
-      "description": "Ces champs alimentent directement le RAPO.",
+      "description": "",
       "questions": [
         {
           "id": "rapo_plus_grande_difficulte",
           "title": "Quelle est votre plus grande difficulté au quotidien ?",
-          "description": "Décrivez la principale difficulté rencontrée dans votre quotidien.",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : Le matin, je mets parfois plus d'une heure à m'habiller car la fatigue est intense. Ma femme doit m'aider pour les boutons et les lacets. Je ne peux plus conduire...",
           "obligatoire": true
         },
         {
           "id": "rapo_journee_typique",
-          "title": "Décrivez une journée typique avec votre handicap",
-          "description": "Décrivez comment se déroule une journée habituelle.",
+          "title": "Décrivez une journée typique avec votre handicap :",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : Je me lève à 8h avec beaucoup de fatigue. Après le petit-déjeuner (préparé par ma femme), je dois me reposer 1h. Je peux faire quelques tâches simples le matin...",
           "obligatoire": true
@@ -355,15 +355,15 @@
         {
           "id": "rapo_pourquoi_incorrecte",
           "title": "Pourquoi estimez-vous que la décision de la MDPH est incorrecte ?",
-          "description": "Expliquez les raisons de votre désaccord avec la décision.",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : La MDPH a évalué mon taux d'incapacité à 75%, mais mon médecin traitant et mon neurologue estiment qu'il est bien supérieur compte tenu de mes limitations...",
           "obligatoire": true
         },
         {
           "id": "rapo_element_non_pris_en_compte",
-          "title": "Y a-t-il un élément important qui n'a pas été pris en compte dans votre dossier ?",
-          "description": "Mentionnez tout élément qui aurait été omis dans l'évaluation.",
+          "title": "Y a-t-il un élément important qui n’a pas été pris en compte dans votre dossier ?",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : Mon hospitalisation de 2 semaines en septembre 2023 pour poussée sévère n'a pas été mentionnée. Le rapport de mon ergothérapeute décrivant mes difficultés quotidiennes a été ignoré...",
           "obligatoire": true
@@ -377,7 +377,7 @@
         {
           "id": "rapo_demande_recours",
           "title": "Que demandez-vous dans ce recours ?",
-          "description": "Cochez les éléments demandés dans votre recours.",
+          "description": "",
           "type": "checkbox_multiple",
           "obligatoire": true,
           "options": [
@@ -405,7 +405,7 @@
         {
           "id": "rapo_doc_notification",
           "title": "Téléversez la notification de décision MDPH",
-          "description": "Joignez le document de notification de la MDPH.",
+          "description": "",
           "type": "file",
           "obligatoire": true,
           "accept": ".pdf,.jpg,.jpeg,.png"
@@ -413,7 +413,7 @@
         {
           "id": "rapo_doc_certificat",
           "title": "Téléversez le certificat médical utilisé dans votre dossier",
-          "description": "Joignez le certificat médical soumis dans votre dossier.",
+          "description": "",
           "type": "file",
           "obligatoire": true,
           "accept": ".pdf,.jpg,.jpeg,.png"
@@ -421,7 +421,7 @@
         {
           "id": "rapo_doc_medical",
           "title": "Autres documents médicaux",
-          "description": "Exemples : compte rendu spécialiste, bilan médical, hospitalisation, examens médicaux",
+          "description": "",
           "type": "file",
           "obligatoire": false,
           "multiple": true,
@@ -430,7 +430,7 @@
         {
           "id": "rapo_doc_pro",
           "title": "Documents liés à votre situation professionnelle (facultatif)",
-          "description": "Arrêt maladie, invalidité, reconnaissance d'inaptitude",
+          "description": "",
           "type": "file",
           "obligatoire": false,
           "multiple": true,

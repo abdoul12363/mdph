@@ -2,13 +2,13 @@
   "sections": [
     {
       "id": "autorite_juridiction",
-      "title": "Autorité administrative et juridiction",
+      "title": "",
       "condition_section": "recours_type === 'contentieux'",
       "questions": [
         {
           "id": "contentieux_mdph_departement",
-          "title": "Dans quel département se situe la MDPH qui a pris la décision contestée ?",
-          "description": "Ce champ permet de déterminer le tribunal compétent.",
+          "title": "Quelle MDPH a pris la décision contestée ?",
+          "description": "",
           "type": "text",
           "placeholder": "Exemple : MDPH d'Ille-et-Vilaine",
           "obligatoire": true
@@ -23,7 +23,7 @@
         {
           "id": "contentieux_aide_concernee",
           "title": "Quelle aide est concernée par la décision contestée ?",
-          "description": "Sélectionnez l'aide qui a été refusée ou partiellement accordée par la MDPH.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -38,7 +38,7 @@
         {
           "id": "contentieux_type_demande",
           "title": "Cette demande était :",
-          "description": "Précisez la nature de votre demande initiale auprès de la MDPH.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -51,21 +51,21 @@
         {
           "id": "contentieux_date_decision",
           "title": "Date de la décision de la MDPH",
-          "description": "Indiquez la date figurant sur la notification de décision.",
+          "description": "",
           "type": "date",
           "obligatoire": true
         },
         {
           "id": "contentieux_date_reception_decision",
           "title": "Date à laquelle vous avez reçu cette décision",
-          "description": "Indiquez quand vous avez réellement reçu le courrier de décision.",
+          "description": "",
           "type": "date",
           "obligatoire": true
         },
         {
           "id": "contentieux_numero_dossier",
           "title": "Numéro de dossier ou référence indiquée sur la notification",
-          "description": "Copiez le numéro de dossier ou la référence de la décision MDPH.",
+          "description": "",
           "type": "text",
           "placeholder": "Exemple : 2024-MDPH-123456",
           "obligatoire": true
@@ -73,7 +73,7 @@
         {
           "id": "contentieux_motif_courrier",
           "title": "Quel motif est indiqué dans le courrier de décision ?",
-          "description": "Sélectionnez le motif de refus indiqué par la MDPH dans la notification.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -88,7 +88,7 @@
         {
           "id": "contentieux_phrase_courrier",
           "title": "Copiez la phrase du courrier expliquant le refus",
-          "description": "Copiez ici la phrase principale de la décision",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : 'Après examen de votre dossier, la Commission des Droits et de l'Autonomie des Personnes Handicapées a décidé de ne pas reconnaitre votre handicap au taux requis pour l'attribution de l'AAH...'",
           "obligatoire": true
@@ -103,7 +103,7 @@
         {
           "id": "contentieux_rapo_envoye",
           "title": "Avez-vous envoyé un recours administratif préalable (RAPO) ?",
-          "description": "Indiquez si vous avez déjà engagé un recours administratif avant le contentieux.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -115,7 +115,7 @@
         {
           "id": "contentieux_rapo_date_envoi",
           "title": "Date d’envoi du RAPO",
-          "description": "Indiquez quand vous avez envoyé votre recours administratif.",
+          "description": "",
           "type": "date",
           "obligatoire": true,
           "condition_affichage": "contentieux_rapo_envoye === 'oui'"
@@ -123,7 +123,7 @@
         {
           "id": "contentieux_rapo_reponse",
           "title": "La MDPH a-t-elle répondu à votre RAPO ?",
-          "description": "Précisez si vous avez reçu une réponse de la MDPH.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "contentieux_rapo_envoye === 'oui'",
@@ -136,7 +136,7 @@
         {
           "id": "contentieux_rapo_date_reponse",
           "title": "Date de la réponse de la MDPH",
-          "description": "Indiquez la date de la réception de la réponse.",
+          "description": "",
           "type": "date",
           "obligatoire": true,
           "condition_affichage": "contentieux_rapo_envoye === 'oui' && contentieux_rapo_reponse === 'oui'"
@@ -144,7 +144,7 @@
         {
           "id": "contentieux_rapo_resultat",
           "title": "Quel a été le résultat du RAPO ?",
-          "description": "Précisez l'issue de votre recours administratif.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "contentieux_rapo_envoye === 'oui'",
@@ -164,7 +164,7 @@
         {
           "id": "contentieux_pathologie_principale",
           "title": "Quelle est votre pathologie principale ?",
-          "description": "Décrivez votre maladie ou handicap principal.",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : Je souffre d'une sclérose en plaques diagnostiquée en 2020, avec des poussées régulières affectant ma mobilité et ma fatigue chronique...",
           "obligatoire": true
@@ -185,7 +185,7 @@
         {
           "id": "contentieux_suivi_medecin",
           "title": "Êtes-vous suivi par un médecin ou un spécialiste ?",
-          "description": "Précisez si vous avez un suivi médical spécialisé.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -197,7 +197,7 @@
         {
           "id": "contentieux_traitement_en_cours",
           "title": "Suivez-vous actuellement un traitement ou une prise en charge médicale ?",
-          "description": "Indiquez si vous êtes sous traitement.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -216,7 +216,7 @@
         {
           "id": "contentieux_mobilite_limitee",
           "title": "Votre mobilité est-elle limitée ?",
-          "description": "Évaluez l'impact de votre état sur vos déplacements.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -230,7 +230,7 @@
         {
           "id": "contentieux_aide_quotidien",
           "title": "Avez-vous besoin d’aide dans votre vie quotidienne ?",
-          "description": "Évaluez votre besoin d'aide pour les activités quotidiennes.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -258,7 +258,7 @@
         {
           "id": "contentieux_limitation_travail",
           "title": "Votre état de santé limite votre capacité à travailler ?",
-          "description": "Évaluez l'impact sur votre capacité professionnelle.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -279,7 +279,7 @@
         {
           "id": "contentieux_difficulte_quotidien",
           "title": "Décrivez votre plus grande difficulté au quotidien",
-          "description": "Expliquez la principale contrainte dans votre vie quotidienne.",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : Je ne peux plus me lever seul le matin. Ma femme doit m'aider pour m'habiller et préparer mes médicaments. Les douleurs m'empêchent de conduire...",
           "obligatoire": true
@@ -287,7 +287,7 @@
         {
           "id": "contentieux_pourquoi_contestation",
           "title": "Expliquez pourquoi vous contestez la décision de la MDPH",
-          "description": "Détaillez les raisons de votre désaccord avec la décision.",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : La MDPH a estimé que mon taux d'incapacité était de 75%, mais mon médecin traitant et mon neurologue estiment que mes limitations sont bien plus sévères...",
           "obligatoire": true
@@ -295,7 +295,7 @@
         {
           "id": "contentieux_elements_non_pris_en_compte",
           "title": "Quels éléments importants n'ont pas été pris en compte ?",
-          "description": "Mentionnez les éléments omis dans l'évaluation MDPH.",
+          "description": "",
           "type": "textarea",
           "placeholder": "Exemple : Mon hospitalisation de 3 semaines en 2023 n'a pas été mentionnée. Mon certificat médical mentionnant la progression de la maladie a été ignoré...",
           "obligatoire": true
@@ -310,7 +310,7 @@
         {
           "id": "contentieux_demande_tribunal",
           "title": "Que demandez-vous au tribunal ?",
-          "description": "Précisez ce que vous sollicitez par voie de justice.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -331,7 +331,7 @@
         {
           "id": "contentieux_upload_notification",
           "title": "Notification de décision MDPH",
-          "description": "Joignez la notification de décision.",
+          "description": "",
           "type": "file",
           "obligatoire": false,
           "accept": ".pdf,.jpg,.jpeg,.png"
@@ -339,7 +339,7 @@
         {
           "id": "contentieux_upload_rapo",
           "title": "Copie du RAPO",
-          "description": "Joignez votre recours administratif.",
+          "description": "",
           "type": "file",
           "obligatoire": false,
           "accept": ".pdf,.jpg,.jpeg,.png"
@@ -347,7 +347,7 @@
         {
           "id": "contentieux_upload_reponse_rapo",
           "title": "Réponse de la MDPH au RAPO",
-          "description": "Joignez la réponse reçue de la MDPH.",
+          "description": "",
           "type": "file",
           "obligatoire": false,
           "accept": ".pdf,.jpg,.jpeg,.png"
@@ -355,7 +355,7 @@
         {
           "id": "contentieux_upload_certificat",
           "title": "Certificat médical",
-          "description": "Joignez le certificat médical.",
+          "description": "",
           "type": "file",
           "obligatoire": false,
           "accept": ".pdf,.jpg,.jpeg,.png"
@@ -363,7 +363,7 @@
         {
           "id": "contentieux_upload_docs_medicaux",
           "title": "Autres documents médicaux",
-          "description": "Joignez d'autres documents pertinents.",
+          "description": "",
           "type": "file",
           "obligatoire": false,
           "multiple": true,
@@ -372,7 +372,7 @@
         {
           "id": "contentieux_upload_docs_admin",
           "title": "Autres documents administratifs",
-          "description": "Joignez les documents administratifs utiles.",
+          "description": "",
           "type": "file",
           "obligatoire": false,
           "accept": ".pdf,.jpg,.jpeg,.png"

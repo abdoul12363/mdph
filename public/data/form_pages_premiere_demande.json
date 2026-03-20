@@ -7,8 +7,8 @@
   "pages": [
     {
       "id": "introduction",
-      "title": "Avant de commencer",
-      "description": "Présentation du formulaire et informations importantes",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/introduction/introduction.json",
       "isIntroduction": true,
       "order": 1,
@@ -16,8 +16,8 @@
     },
     {
       "id": "page1_intro",
-      "title": "Module 1 : Vie quotidienne",
-      "description": "Introduction au module des difficultés quotidiennes",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page1/introduction_Module1.json",
       "isIntroduction": true,
       "order": 2,
@@ -25,8 +25,8 @@
     },
     {
       "id": "page1",
-      "title": "Vie quotidienne",
-      "description": "Identification des difficultés rencontrées au quotidien",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page1/questions_Module1.json",
       "pdfMappingFile": "premiere_demande/page1/pdf_fields_Module1.json",
       "order": 3,
@@ -34,8 +34,8 @@
     },
     {
       "id": "page1_recap",
-      "title": "Récapitulatif - Vie quotidienne",
-      "description": "Résumé de vos difficultés quotidiennes",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page1/recap_Module1.json",
       "isRecap": true,
       "order": 4,
@@ -43,8 +43,8 @@
     },
     {
       "id": "page2_intro",
-      "title": "Module 2 : Travail / scolarité",
-      "description": "Introduction au module travail et scolarité",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page2/introduction_Module2.json",
       "isIntroduction": true,
       "order": 6,
@@ -52,8 +52,8 @@
     },
     {
       "id": "page2",
-      "title": "Travail / scolarité",
-      "description": "Décrivez votre situation professionnelle et personnelle actuelle",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page2/questions_Module2.json",
       "pdfMappingFile": "premiere_demande/page2/pdf_fields_Module2.json",
       "order": 7,
@@ -61,8 +61,8 @@
     },
     {
       "id": "page2_recap",
-      "title": "Récapitulatif - Travail / scolarité",
-      "description": "Résumé de votre situation professionnelle",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page2/recap_Module2.json",
       "isRecap": true,
       "order": 8,
@@ -70,8 +70,8 @@
     },
     {
       "id": "page3_intro",
-      "title": "Module 3 : Demandes et besoins",
-      "description": "Introduction au module des demandes",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page3/introduction_Module3.json",
       "isIntroduction": true,
       "order": 10,
@@ -79,8 +79,8 @@
     },
     {
       "id": "page3",
-      "title": "Demandes et besoins",
-      "description": "Précisez les aides ou reconnaissances que vous souhaitez demander",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page3/questions_Module3.json",
       "pdfMappingFile": "premiere_demande/page3/pdf_fields_Module3.json",
       "order": 11,
@@ -88,8 +88,8 @@
     },
     {
       "id": "page3_recap",
-      "title": "Récapitulatif - Demandes et besoins",
-      "description": "Résumé de vos demandes",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page3/recap_Module3.json",
       "isRecap": true,
       "order": 12,
@@ -97,8 +97,8 @@
     },
     {
       "id": "page4_intro",
-      "title": "Module 4 : Projet de vie",
-      "description": "Introduction au module du projet de vie",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page4/introduction_Module4.json",
       "isIntroduction": true,
       "order": 14,
@@ -106,8 +106,8 @@
     },
     {
       "id": "page4",
-      "title": "Projet de vie",
-      "description": "Définissez vos objectifs et priorités pour l'avenir",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page4/questions_Module4.json",
       "pdfMappingFile": "premiere_demande/page4/pdf_fields_Module4.json",
       "order": 15,
@@ -115,8 +115,8 @@
     },
     {
       "id": "page4_recap",
-      "title": "Récapitulatif - Projet de vie",
-      "description": "Résumé de votre projet de vie",
+      "title": "",
+      "description": "",
       "questionsFile": "premiere_demande/page4/recap_Module4.json",
       "isRecap": true,
       "order": 16,
@@ -124,8 +124,8 @@
     },
     {
       "id": "page4_coordonnees",
-      "title": "Vos coordonnées",
-      "description": "Renseignements relatifs à vos informations personnelles",
+      "title": "",
+      "description": "",
       "questionsFile": "final/coordonnees.json",
       "order": 17,
       "required": true
