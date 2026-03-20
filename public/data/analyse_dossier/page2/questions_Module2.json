@@ -315,8 +315,7 @@
           "accept": ".pdf,.jpg,.jpeg,.png",
           "condition_affichage": "recours_choix_action === 'analyse'",
           "missingOptions": [
-            { "value": "je_ne_l_ai_plus", "label": "Je ne l’ai plus" },
-            { "value": "je_ne_l_ai_jamais_recue", "label": "Je ne l’ai jamais reçue", "hasTextField": true, "textFieldPlaceholder": "Expliquez la situation" }
+            { "value": "je_ne_l_ai_plus", "label": "Je ne l'ai plus" }
           ]
         },
         {
