@@ -5,12 +5,46 @@
       "description": "",
       "questions": [
         {
-          "id": "renouv_point_important",
-          "title": "Selon vous, quel est le point le plus important de votre dossier ?",
-          "description": "Indiquez l'élément le plus important.",
-          "type": "text",
+          "id": "renouv_situation_pro",
+          "title": "Quelle est votre situation professionnelle actuelle ?",
+          "description": "",
+          "type": "radio",
           "obligatoire": true,
-          "placeholder": "Exemple : Mes limitations au travail"
+          "options": [
+            { "value": "temps_plein", "label": "temps plein" },
+            { "value": "temps_partiel", "label": "temps partiel" },
+            { "value": "arret_maladie", "label": "arrêt maladie" },
+            { "value": "invalidite", "label": "invalidité" },
+            { "value": "chomage", "label": "chômage" },
+            { "value": "sans_activite", "label": "sans activité" }
+          ]
+        },
+        {
+          "id": "renouv_limitation_travail",
+          "title": "Dans quelle mesure votre état de santé limite-t-il votre capacité à travailler ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "0", "label": "0 — aucune difficulté" },
+            { "value": "1", "label": "1 — difficulté légère" },
+            { "value": "2", "label": "2 — difficulté modérée" },
+            { "value": "3", "label": "3 — difficulté importante" },
+            { "value": "4", "label": "4 — impossible à réaliser seul" }
+          ]
+        },
+        {
+          "id": "renouv_arrets_travail",
+          "title": "Au cours des derniers mois, avez-vous eu des arrêts de travail ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "aucun", "label": "aucun" },
+            { "value": "occasionnels", "label": "occasionnels" },
+            { "value": "frequents", "label": "fréquents" },
+            { "value": "tres_frequents", "label": "très fréquents" }
+          ]
         }
       ]
     }

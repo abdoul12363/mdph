@@ -30,12 +30,49 @@ export function renderInput(q, value) {
     const multipleAttr = isMultiple ? 'multiple' : '';
     const hint = q.hint ? `<div class="field-description">${q.hint}</div>` : '';
 
+    // Ajouter les missingOptions si présentes
+    let missingOptionsHtml = '';
+    if (q.missingOptions && Array.isArray(q.missingOptions)) {
+      missingOptionsHtml = `
+        <div class="missing-options">
+          ${q.missingOptions.map(opt => {
+            const optValue = opt.value || opt;
+            const optLabel = opt.label || opt;
+            const hasTextField = opt.hasTextField || false;
+            const textFieldId = `${optValue}_text`;
+            const textFieldValue = responses[textFieldId] || '';
+            
+            let optionHtml = `
+              <label class="choice missing-option">
+                <input type="radio" name="${q.id}_missing" value="${optValue}" 
+                       data-has-text="${hasTextField ? 'true' : 'false'}" />
+                <span>${optLabel}</span>
+              </label>`;
+            
+            // Ajouter le champ texte si cette option l'a
+            if (hasTextField) {
+              optionHtml += `
+                <div class="text-field-missing" id="text_${optValue}" hidden>
+                  <input type="text" 
+                         placeholder="${opt.textFieldPlaceholder || 'Précisez...'}" 
+                         value="${textFieldValue}" 
+                         data-field="${textFieldId}"
+                         class="input" />
+                </div>`;
+            }
+            
+            return optionHtml;
+          }).join('')}
+        </div>`;
+    }
+
     return `
       <div class="field-container">
         ${q.question ? `<div class="question-title">${q.question}</div>` : ''}
         ${description}
         ${hint}
         <input class="input" id="answer" type="file" ${acceptAttr} ${multipleAttr} />
+        ${missingOptionsHtml}
       </div>`;
   }
 

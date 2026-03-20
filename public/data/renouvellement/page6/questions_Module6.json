@@ -5,50 +5,52 @@
       "description": "",
       "questions": [
         {
-          "id": "renouv_coherence_projet_certificat",
-          "title": "Votre projet de vie décrit-il les mêmes difficultés que celles mentionnées dans votre certificat médical ?",
-          "description": "Comparez les informations du projet de vie et du certificat.",
+          "id": "renouv_rdv_medicaux",
+          "title": "Combien de rendez-vous médicaux avez-vous en moyenne par mois ?",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
-            { "value": "oui", "label": "Oui" },
-            { "value": "partiellement", "label": "Partiellement" },
-            { "value": "non", "label": "Non" }
+            { "value": "1", "label": "1" },
+            { "value": "2_3", "label": "2 à 3" },
+            { "value": "4_plus", "label": "4 ou plus" }
           ]
         },
         {
-          "id": "renouv_difference_projet_certificat",
-          "title": "Quelle différence existe entre les deux ?",
-          "description": "Décrivez la différence.",
-          "type": "text",
-          "obligatoire": true,
-          "condition_affichage": "renouv_coherence_projet_certificat === 'partiellement' || renouv_coherence_projet_certificat === 'non'",
-          "placeholder": "Exemple : Le certificat minimise la douleur"
-        },
-        {
-          "id": "renouv_coherence_medical_dossier",
-          "title": "Les documents médicaux et votre dossier racontent-ils la même réalité ?",
-          "description": "Évaluez la cohérence globale.",
+          "id": "renouv_temps_soins",
+          "title": "Combien d'heures consacrez-vous aux soins ou aux traitements chaque semaine ?",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
-            { "value": "oui", "label": "Oui" },
-            { "value": "partiellement", "label": "Partiellement" },
-            { "value": "non", "label": "Non" }
+            { "value": "moins_2h", "label": "moins de 2 heures" },
+            { "value": "2_5h", "label": "2 à 5 heures" },
+            { "value": "plus_5h", "label": "plus de 5 heures" }
           ]
         },
         {
-          "id": "renouv_incoherences_detectees",
-          "title": "Quels éléments semblent incohérents ?",
-          "description": "Cochez les domaines où vous identifiez des contradictions.",
+          "id": "renouv_effets_secondaires",
+          "title": "Vos traitements provoquent-ils des effets secondaires ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "oui", "label": "oui" },
+            { "value": "non", "label": "non" }
+          ]
+        },
+        {
+          "id": "renouv_quels_effets",
+          "title": "Quels effets secondaires ressentez-vous ?",
+          "description": "",
           "type": "checkbox_multiple",
           "obligatoire": true,
-          "condition_affichage": "renouv_coherence_medical_dossier === 'partiellement' || renouv_coherence_medical_dossier === 'non'",
+          "condition_affichage": "renouv_effets_secondaires === 'oui'",
           "options": [
-            { "value": "description_handicap", "label": "Description du handicap" },
-            { "value": "limitations_quotidiennes", "label": "Limitations quotidiennes" },
-            { "value": "capacite_travail", "label": "Capacité de travail" },
-            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            { "value": "fatigue", "label": "fatigue" },
+            { "value": "douleurs", "label": "douleurs" },
+            { "value": "troubles_concentration", "label": "troubles de concentration" },
+            { "value": "autre", "label": "autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
           ]
         }
       ]

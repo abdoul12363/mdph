@@ -1,0 +1,47 @@
+{
+  "sections": [
+    {
+      "title": "",
+      "description": "",
+      "questions": [
+        {
+          "id": "renouv_point_important",
+          "title": "Selon vous, quel est le point le plus important de votre dossier pour cette demande de renouvellement ?",
+          "description": "Indiquez l'élément qui selon vous doit être particulièrement examiné par la MDPH",
+          "type": "text",
+          "obligatoire": true,
+          "placeholder": "Exemple : L'aggravation de mes limitations au travail"
+        },
+        {
+          "id": "renouv_attentes_decision",
+          "title": "Qu'attendez-vous principalement de cette décision de renouvellement ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "maintien_droits", "label": "Maintien des droits actuels" },
+            { "value": "augmentation_taux", "label": "Augmentation du taux d'incapacité" },
+            { "value": "nouveaux_droits", "label": "Obtention de nouveaux droits" },
+            { "value": "reconnaissance_stabilisee", "label": "Reconnaissance d'état stabilisé" }
+          ]
+        },
+        {
+          "id": "renouv_changements_attendus",
+          "title": "Quels changements concrets cette décision devrait-elle apporter ?",
+          "description": "",
+          "type": "text",
+          "obligatoire": true,
+          "placeholder": "Exemple : Permettre un aménagement de poste, obtenir la carte mobilité..."
+        },
+        {
+          "id": "renouv_commentaires_supplementaires",
+          "title": "Avez-vous des commentaires supplémentaires pour compléter votre demande ?",
+          "description": "",
+          "type": "text",
+          "obligatoire": false,
+          "placeholder": "Précisez ici tout ce qui vous semble important pour l'examen de votre dossier"
+        }
+      ]
+    }
+  ]
+}

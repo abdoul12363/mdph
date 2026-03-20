@@ -25,6 +25,15 @@ export function getAnswerFromDom(q) {
   console.log('getAnswerFromDom - question:', q.id, 'type:', type, 'scope:', scope);
 
   if (type === 'file') {
+    // Vérifier d'abord si une missing option est sélectionnée
+    if (q.missingOptions && Array.isArray(q.missingOptions)) {
+      const missingRadio = scope.querySelector(`input[name="${q.id}_missing"]:checked`);
+      if (missingRadio) {
+        return missingRadio.value; // Retourner la valeur de la missing option cochée
+      }
+    }
+    
+    // Sinon, retourner les fichiers uploadés
     const el = scope.querySelector('#answer') || $('answer');
     if (!el || !el.files) return [];
     return Array.from(el.files).map(f => f.name);
@@ -109,6 +118,14 @@ export function validateRequired(q, answer) {
   if (typeof answer === 'boolean') return answer === true;
   if (Array.isArray(answer)) return answer.length > 0;
   if (answer === null || answer === undefined) return false;
+  
+  // Pour les inputs file avec missingOptions: une missing option cochée est valide
+  if (q.type === 'file' && q.missingOptions && Array.isArray(q.missingOptions)) {
+    // Si answer est une string et correspond à une missing option, c'est valide
+    const missingValues = q.missingOptions.map(opt => opt.value || opt);
+    return missingValues.includes(answer);
+  }
+  
   // Pour les champs coordonnées: aucune contrainte, juste non vide
   if (q.className === 'coordonnees-page') {
     return String(answer).length > 0;

@@ -5,61 +5,46 @@
       "description": "",
       "questions": [
         {
-          "id": "renouv_dossier_prepare",
-          "title": "Votre dossier MDPH est-il déjà préparé ?",
+          "id": "renouv_droits_actuels",
+          "title": "Quels droits MDPH avez-vous actuellement ?",
           "description": "",
-          "type": "radio",
+          "type": "checkbox_multiple",
           "obligatoire": true,
           "options": [
-            { "value": "pret", "label": "Oui, il est prêt" },
-            { "value": "partiel", "label": "Oui, mais il manque quelques éléments" },
-            { "value": "preparation", "label": "Non, il est encore en préparation" }
+            { "value": "aah", "label": "AAH" },
+            { "value": "pch", "label": "PCH" },
+            { "value": "rqth", "label": "RQTH" },
+            { "value": "cmi", "label": "Carte mobilité inclusion" },
+            { "value": "orientation_pro", "label": "Orientation professionnelle" },
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
           ]
         },
         {
-          "id": "renouv_upload_dossier",
-          "title": "Téléversez votre dossier MDPH.",
-          "description": "",
-          "type": "file",
-          "obligatoire": true,
-          "multiple": true,
-          "accept": ".pdf,.jpg,.jpeg,.png",
-          "condition_affichage": "renouv_dossier_prepare === 'pret' || renouv_dossier_prepare === 'partiel'"
-        },
-        {
-          "id": "renouv_element_manquant",
-          "title": "Quel élément manque principalement ?",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "renouv_dossier_prepare === 'partiel' || renouv_dossier_prepare === 'preparation'",
-          "options": [
-            { "value": "certificat_medical", "label": "Certificat médical" },
-            { "value": "comptes_rendus_medicaux", "label": "Comptes rendus médicaux" },
-            { "value": "projet_de_vie", "label": "Projet de vie" },
-            { "value": "formulaire_administratif", "label": "Formulaire administratif" },
-            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez l'élément manquant" }
-          ]
-        },
-        {
-          "id": "renouv_date_inconnue",
-          "title": "Je ne sais pas encore",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "renouv_dossier_prepare === 'partiel' || renouv_dossier_prepare === 'preparation'",
-          "options": [
-            { "value": "date", "label": "Je choisis une date" },
-            { "value": "inconnue", "label": "Je ne sais pas encore" }
-          ]
-        },
-        {
-          "id": "date_completion_prevue",
-          "title": "Quand pensez-vous pouvoir compléter votre dossier MDPH ?",
+          "id": "renouv_date_derniere_decision",
+          "title": "Date de la dernière décision MDPH",
           "description": "",
           "type": "date",
+          "obligatoire": true
+        },
+        {
+          "id": "renouv_date_fin_droits",
+          "title": "Date de fin de vos droits actuels",
+          "description": "",
+          "type": "date",
+          "obligatoire": true
+        },
+        {
+          "id": "renouv_taux_incapacite",
+          "title": "Quel taux d'incapacité vous a été attribué ?",
+          "description": "",
+          "type": "radio",
           "obligatoire": true,
-          "condition_affichage": "(renouv_dossier_prepare === 'partiel' || renouv_dossier_prepare === 'preparation') && renouv_date_inconnue === 'date'"
+          "options": [
+            { "value": "moins_50", "label": "moins de 50 %" },
+            { "value": "50_79", "label": "50–79 %" },
+            { "value": "80_plus", "label": "80 % ou plus" },
+            { "value": "ne_sais_pas", "label": "je ne sais pas" }
+          ]
         }
       ]
     }

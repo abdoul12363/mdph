@@ -5,53 +5,56 @@
       "description": "",
       "questions": [
         {
-          "id": "renouv_type_dossier",
-          "title": "Quel type de dossier souhaitez-vous faire analyser ?",
+          "id": "renouv_nombre_decisions",
+          "title": "Combien de décisions MDPH avez-vous déjà reçues ?",
           "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
-            { "value": "premiere", "label": "Première demande" },
-            { "value": "renouvellement", "label": "Renouvellement" },
-            { "value": "recours", "label": "Recours suite à un refus" },
-            { "value": "ne_sais_pas", "label": "Je ne sais pas" }
+            { "value": "1", "label": "1" },
+            { "value": "2", "label": "2" },
+            { "value": "3_plus", "label": "3 ou plus" }
           ]
         },
         {
-          "id": "renouv_aides_demandees",
-          "title": "Quelles aides avez-vous demandées ?",
+          "id": "renouv_evolution_taux",
+          "title": "Depuis la première décision, le taux d'incapacité a :",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "augmente", "label": "augmenté" },
+            { "value": "diminue", "label": "diminué" },
+            { "value": "stable", "label": "est resté stable" },
+            { "value": "ne_sais_pas", "label": "je ne sais pas" }
+          ]
+        },
+        {
+          "id": "renouv_duree_attribution",
+          "title": "Durée d'attribution des droits lors de la dernière décision :",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "1_an", "label": "1 an" },
+            { "value": "2_ans", "label": "2 ans" },
+            { "value": "5_ans", "label": "5 ans" },
+            { "value": "sans_limite", "label": "sans limite" }
+          ]
+        },
+        {
+          "id": "renouv_motifs_decisions",
+          "title": "Quels motifs étaient évoqués dans les décisions précédentes ?",
           "description": "",
           "type": "checkbox_multiple",
           "obligatoire": true,
           "options": [
-            { "value": "aah", "label": "AAH" },
-            { "value": "rqth", "label": "RQTH" },
-            { "value": "pch", "label": "PCH" },
-            { "value": "cmi", "label": "Carte mobilité inclusion" },
-            { "value": "orientation_pro", "label": "Orientation professionnelle" },
-            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez l'aide demandée" }
+            { "value": "stabilisation", "label": "stabilisation de l'état" },
+            { "value": "capacite_travail", "label": "capacité de travail possible" },
+            { "value": "autonomie_suffisante", "label": "autonomie jugée suffisante" },
+            { "value": "dossier_incomplet", "label": "dossier incomplet" },
+            { "value": "autre", "label": "autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
           ]
-        },
-        {
-          "id": "renouv_aah_acces_emploi",
-          "title": "Votre dossier explique-t-il clairement pourquoi votre état de santé limite votre accès à l'emploi ?",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "renouv_aides_demandees && renouv_aides_demandees.includes('aah')",
-          "options": [
-            { "value": "oui", "label": "Oui" },
-            { "value": "partiellement", "label": "Partiellement" },
-            { "value": "non", "label": "Non" }
-          ]
-        },
-        {
-          "id": "renouv_argument_principal",
-          "title": "Quel argument principal avez-vous utilisé dans votre dossier pour justifier cette demande ?",
-          "description": "Résumez en quelques mots l'argumentation principale de votre dossier.",
-          "type": "text",
-          "obligatoire": true,
-          "placeholder": "Exemple : Mon état de santé limite fortement ma capacité à travailler"
         }
       ]
     }

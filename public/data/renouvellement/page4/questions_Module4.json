@@ -5,8 +5,32 @@
       "description": "",
       "questions": [
         {
+          "id": "renouv_variabilite_symptomes",
+          "title": "Vos symptômes sont :",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "constants", "label": "constants" },
+            { "value": "variables", "label": "variables" },
+            { "value": "imprevisibles", "label": "imprévisibles" }
+          ]
+        },
+        {
+          "id": "renouv_jours_difficiles",
+          "title": "Combien de jours difficiles rencontrez-vous par semaine ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "1_2", "label": "1 à 2 jours" },
+            { "value": "3_4", "label": "3 à 4 jours" },
+            { "value": "5_plus", "label": "5 jours ou plus" }
+          ]
+        },
+        {
           "id": "renouv_limitation_deplacer",
-          "title": "Dans quelle mesure votre état de santé vous limite-t-il pour vous déplacer ?",
+          "title": "Lors de ces journées difficiles, dans quelle mesure êtes-vous limité pour vous déplacer ? (0=aucune difficulté, 4=impossible)",
           "description": "",
           "type": "radio",
           "obligatoire": true,
@@ -15,12 +39,12 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible seul" }
+            { "value": "4", "label": "4 — impossible" }
           ]
         },
         {
           "id": "renouv_limitation_taches",
-          "title": "Dans quelle mesure votre état de santé vous limite-t-il pour effectuer les tâches quotidiennes ?",
+          "title": "Lors de ces journées difficiles, dans quelle mesure êtes-vous limité pour effectuer les tâches quotidiennes ?",
           "description": "",
           "type": "radio",
           "obligatoire": true,
@@ -29,12 +53,26 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible seul" }
+            { "value": "4", "label": "4 — impossible" }
+          ]
+        },
+        {
+          "id": "renouv_limitation_travail",
+          "title": "Lors de ces journées difficiles, dans quelle mesure êtes-vous limité pour travailler ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "0", "label": "0 — aucune difficulté" },
+            { "value": "1", "label": "1 — difficulté légère" },
+            { "value": "2", "label": "2 — difficulté modérée" },
+            { "value": "3", "label": "3 — difficulté importante" },
+            { "value": "4", "label": "4 — impossible" }
           ]
         },
         {
           "id": "renouv_limitation_concentration",
-          "title": "Dans quelle mesure votre état de santé vous limite-t-il pour vous concentrer ?",
+          "title": "Lors de ces journées difficiles, dans quelle mesure êtes-vous limité pour vous concentrer ?",
           "description": "",
           "type": "radio",
           "obligatoire": true,
@@ -43,57 +81,20 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible seul" }
+            { "value": "4", "label": "4 — impossible" }
           ]
         },
         {
-          "id": "renouv_limitation_rythme",
-          "title": "Dans quelle mesure votre état de santé vous limite-t-il pour maintenir un rythme d'activité ?",
+          "id": "renouv_temps_recuperation",
+          "title": "Après un effort physique ou mental, combien de temps vous faut-il pour récupérer ?",
           "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
-            { "value": "0", "label": "0 — aucune difficulté" },
-            { "value": "1", "label": "1 — difficulté légère" },
-            { "value": "2", "label": "2 — difficulté modérée" },
-            { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible seul" }
+            { "value": "quelques_heures", "label": "quelques heures" },
+            { "value": "une_journee", "label": "une journée" },
+            { "value": "plusieurs_jours", "label": "plusieurs jours" }
           ]
-        },
-        {
-          "id": "renouv_frequence_difficultes",
-          "title": "À quelle fréquence ces difficultés apparaissent-elles ?",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "renouv_limitation_deplacer === '3' || renouv_limitation_deplacer === '4' || renouv_limitation_taches === '3' || renouv_limitation_taches === '4' || renouv_limitation_concentration === '3' || renouv_limitation_concentration === '4' || renouv_limitation_rythme === '3' || renouv_limitation_rythme === '4'",
-          "options": [
-            { "value": "tous_les_jours", "label": "Tous les jours" },
-            { "value": "plusieurs_fois_par_semaine", "label": "Plusieurs fois par semaine" },
-            { "value": "occasionnellement", "label": "Occasionnellement" }
-          ]
-        },
-        {
-          "id": "renouv_impact_difficultes",
-          "title": "Lorsque ces difficultés apparaissent, êtes-vous obligé de :",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "renouv_limitation_deplacer === '3' || renouv_limitation_deplacer === '4' || renouv_limitation_taches === '3' || renouv_limitation_taches === '4' || renouv_limitation_concentration === '3' || renouv_limitation_concentration === '4' || renouv_limitation_rythme === '3' || renouv_limitation_rythme === '4'",
-          "options": [
-            { "value": "ralentir", "label": "Ralentir votre activité" },
-            { "value": "interrompre", "label": "Interrompre votre activité" },
-            { "value": "demander_aide", "label": "Demander de l'aide" }
-          ]
-        },
-        {
-          "id": "renouv_exemple_concret",
-          "title": "Décrivez une situation concrète où cette difficulté vous empêche d'agir normalement.",
-          "description": "",
-          "type": "text",
-          "obligatoire": true,
-          "condition_affichage": "renouv_limitation_deplacer === '3' || renouv_limitation_deplacer === '4' || renouv_limitation_taches === '3' || renouv_limitation_taches === '4' || renouv_limitation_concentration === '3' || renouv_limitation_concentration === '4' || renouv_limitation_rythme === '3' || renouv_limitation_rythme === '4'",
-          "placeholder": "Exemple : Je ne peux plus faire les courses seul"
         }
       ]
     }

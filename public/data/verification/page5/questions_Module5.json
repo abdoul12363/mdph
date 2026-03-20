@@ -1,13 +1,13 @@
 {
   "sections": [
     {
-      "title": "Impact professionnel",
+      "title": "",
       "description": "",
       "questions": [
         {
-          "id": "verif_situation_pro",
+          "id": "renouv_situation_professionnelle",
           "title": "Quelle est votre situation professionnelle actuelle ?",
-          "description": "Précisez votre statut professionnel actuel.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
           "options": [
@@ -20,12 +20,12 @@
           ]
         },
         {
-          "id": "verif_travail_adapte",
+          "id": "renouv_travail_adapte",
           "title": "Votre travail est-il adapté à votre état de santé ?",
-          "description": "Évaluez si votre emploi actuel tient compte de vos limitations.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
-          "condition_affichage": "verif_situation_pro === 'temps_plein' || verif_situation_pro === 'temps_partiel'",
+          "condition_affichage": "renouv_situation_professionnelle === 'temps_plein' || renouv_situation_professionnelle === 'temps_partiel'",
           "options": [
             { "value": "oui", "label": "Oui" },
             { "value": "partiellement", "label": "Partiellement" },
@@ -33,38 +33,38 @@
           ]
         },
         {
-          "id": "verif_amenagements",
+          "id": "renouv_amenagements_poste",
           "title": "Avez-vous des aménagements de poste ?",
-          "description": "Indiquez si des adaptations ont été mises en place.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
-          "condition_affichage": "verif_situation_pro === 'temps_plein' || verif_situation_pro === 'temps_partiel'",
+          "condition_affichage": "renouv_situation_professionnelle === 'temps_plein' || renouv_situation_professionnelle === 'temps_partiel'",
           "options": [
             { "value": "oui", "label": "Oui" },
             { "value": "non", "label": "Non" }
           ]
         },
         {
-          "id": "verif_type_amenagements",
+          "id": "renouv_type_amenagements",
           "title": "Quels aménagements ?",
-          "description": "Cochez tous les aménagements dont vous bénéficiez.",
+          "description": "",
           "type": "checkbox_multiple",
           "obligatoire": true,
-          "condition_affichage": "(verif_situation_pro === 'temps_plein' || verif_situation_pro === 'temps_partiel') && verif_amenagements === 'oui'",
+          "condition_affichage": "renouv_amenagements_poste === 'oui'",
           "options": [
             { "value": "horaires_adaptes", "label": "Horaires adaptés" },
             { "value": "teletravail", "label": "Télétravail" },
             { "value": "taches_allegees", "label": "Tâches allégées" },
-            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez l'aménagement" }
+            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
           ]
         },
         {
-          "id": "verif_difficultes_persistantes",
+          "id": "renouv_difficultes_persistantes",
           "title": "Malgré ces aménagements, rencontrez-vous encore des difficultés pour travailler ?",
-          "description": "Évaluez si les aménagements sont suffisants.",
+          "description": "",
           "type": "radio",
           "obligatoire": true,
-          "condition_affichage": "(verif_situation_pro === 'temps_plein' || verif_situation_pro === 'temps_partiel') && verif_amenagements === 'oui'",
+          "condition_affichage": "renouv_amenagements_poste === 'oui'",
           "options": [
             { "value": "oui", "label": "Oui" },
             { "value": "non", "label": "Non" }

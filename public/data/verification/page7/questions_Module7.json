@@ -1,16 +1,16 @@
 {
   "sections": [
     {
-      "title": "Conclusion",
+      "title": "",
       "description": "",
       "questions": [
         {
-          "id": "verif_point_important",
+          "id": "renouv_point_important",
           "title": "Selon vous, quel est le point le plus important de votre dossier ?",
-          "description": "Identifiez l'élément clé qui doit retenir l'attention de la MDPH.",
-          "type": "textarea",
+          "description": "",
+          "type": "text",
           "obligatoire": true,
-          "placeholder": "Exemple : Le certificat de mon neurologue atteste de l'évolution défavorable de ma maladie"
+          "placeholder": "Exemple : Mes limitations au travail"
         }
       ]
     }

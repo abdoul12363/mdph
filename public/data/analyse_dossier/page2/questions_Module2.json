@@ -51,7 +51,13 @@
           "condition_affichage": "recours_choix_action === 'analyse'",
           "options": [
             { "value": "refus_total", "label": "Un refus total" },
-            { "value": "refus_partiel", "label": "Un refus partiel", "hasTextField": true, "textFieldPlaceholder": "Qu’est-ce qui a été accordé par la MDPH ?" },
+            { "value": "refus_partiel", "label": "Un refus partiel", "followUp": {
+              "id": "analyse_ce_qui_accorde",
+              "title": "Qu'est-ce qui a été accordé par la MDPH ?",
+              "type": "textarea",
+              "placeholder": "Décrivez ce qui a été accordé par la MDPH...",
+              "obligatoire": true
+            }},
             { "value": "incomprehensible", "label": "Je ne comprends pas la décision" },
             { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
           ]
@@ -125,28 +131,25 @@
         },
         {
           "id": "analyse_aggravation_recent",
-          "title": "Votre état de santé s’est-il aggravé récemment ?",
+          "title": "Votre état de santé s'est-il aggravé récemment ?",
           "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "recours_choix_action === 'analyse'",
           "options": [
             { "value": "non", "label": "Non" },
-            { "value": "oui", "label": "Oui" },
-            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
-          ]
-        },
-        {
-          "id": "analyse_aggravation_depuis_quand",
-          "title": "Depuis quand votre état s’est-il aggravé ?",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "recours_choix_action === 'analyse' && analyse_aggravation_recent === 'oui'",
-          "options": [
-            { "value": "moins_6_mois", "label": "Moins de 6 mois" },
-            { "value": "6_12_mois", "label": "Entre 6 et 12 mois" },
-            { "value": "plus_1_an", "label": "Plus d’un an" },
+            { "value": "oui", "label": "Oui", "followUp": {
+              "id": "analyse_aggravation_depuis_quand",
+              "title": "Depuis quand votre état s'est-il aggravé ?",
+              "type": "radio",
+              "obligatoire": true,
+              "options": [
+                { "value": "moins_6_mois", "label": "Moins de 6 mois" },
+                { "value": "6_12_mois", "label": "Entre 6 et 12 mois" },
+                { "value": "plus_1_an", "label": "Plus d'un an" },
+                { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+              ]
+            }},
             { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
           ]
         }
@@ -166,24 +169,19 @@
           "options": [
             { "value": "non", "label": "Non" },
             { "value": "un_peu", "label": "Un peu" },
-            { "value": "beaucoup", "label": "Beaucoup" },
-            { "value": "pas_seul", "label": "Je ne peux pas me déplacer seul" },
+            { "value": "beaucoup", "label": "Beaucoup", "subOptions": [
+              { "value": "canne", "label": "Canne" },
+              { "value": "deambulateur", "label": "Déambulateur" },
+              { "value": "fauteuil", "label": "Fauteuil roulant" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
+            { "value": "pas_seul", "label": "Je ne peux pas me déplacer seul", "subOptions": [
+              { "value": "canne", "label": "Canne" },
+              { "value": "deambulateur", "label": "Déambulateur" },
+              { "value": "fauteuil", "label": "Fauteuil roulant" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
             { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Expliquez la difficulté" }
-          ]
-        },
-        {
-          "id": "analyse_aide_marche",
-          "title": "Utilisez-vous une aide pour marcher ?",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "recours_choix_action === 'analyse' && (analyse_mobilite_limitee === 'beaucoup' || analyse_mobilite_limitee === 'pas_seul')",
-          "options": [
-            { "value": "non", "label": "Non" },
-            { "value": "canne", "label": "Canne" },
-            { "value": "deambulateur", "label": "Déambulateur" },
-            { "value": "fauteuil", "label": "Fauteuil roulant" },
-            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
           ]
         },
         {
@@ -196,24 +194,22 @@
           "options": [
             { "value": "non", "label": "Non" },
             { "value": "parfois", "label": "Parfois" },
-            { "value": "souvent", "label": "Souvent" },
-            { "value": "toujours", "label": "Toujours" },
-            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
-          ]
-        },
-        {
-          "id": "analyse_taches_aide",
-          "title": "Pour quelles tâches avez-vous besoin d’aide ?",
-          "description": "",
-          "type": "checkbox_multiple",
-          "obligatoire": true,
-          "condition_affichage": "recours_choix_action === 'analyse' && (analyse_besoin_aide_quotidien === 'souvent' || analyse_besoin_aide_quotidien === 'toujours')",
-          "options": [
-            { "value": "courses", "label": "Faire les courses" },
-            { "value": "repas", "label": "Préparer les repas" },
-            { "value": "menage", "label": "Faire le ménage" },
-            { "value": "deplacements", "label": "Se déplacer" },
-            { "value": "administratif", "label": "Gérer les démarches administratives" },
+            { "value": "souvent", "label": "Souvent", "subOptions": [
+              { "value": "courses", "label": "Faire les courses" },
+              { "value": "repas", "label": "Préparer les repas" },
+              { "value": "menage", "label": "Faire le ménage" },
+              { "value": "deplacements", "label": "Se déplacer" },
+              { "value": "administratif", "label": "Gérer les démarches administratives" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
+            { "value": "toujours", "label": "Toujours", "subOptions": [
+              { "value": "courses", "label": "Faire les courses" },
+              { "value": "repas", "label": "Préparer les repas" },
+              { "value": "menage", "label": "Faire le ménage" },
+              { "value": "deplacements", "label": "Se déplacer" },
+              { "value": "administratif", "label": "Gérer les démarches administratives" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
             { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
           ]
         },
@@ -246,28 +242,25 @@
           "obligatoire": true,
           "condition_affichage": "recours_choix_action === 'analyse'",
           "options": [
-            { "value": "temps_plein", "label": "Emploi à temps plein" },
-            { "value": "temps_partiel", "label": "Emploi à temps partiel" },
+            { "value": "temps_plein", "label": "Emploi à temps plein", "subOptions": [
+              { "value": "moins_10", "label": "Moins de 10 heures" },
+              { "value": "10_20", "label": "Entre 10 et 20 heures" },
+              { "value": "20_35", "label": "Entre 20 et 35 heures" },
+              { "value": "plus_35", "label": "Plus de 35 heures" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
+            { "value": "temps_partiel", "label": "Emploi à temps partiel", "subOptions": [
+              { "value": "moins_10", "label": "Moins de 10 heures" },
+              { "value": "10_20", "label": "Entre 10 et 20 heures" },
+              { "value": "20_35", "label": "Entre 20 et 35 heures" },
+              { "value": "plus_35", "label": "Plus de 35 heures" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
             { "value": "arret_maladie", "label": "Arrêt maladie" },
             { "value": "invalidite", "label": "Invalidité" },
             { "value": "chomage", "label": "Au chômage" },
             { "value": "sans_activite", "label": "Sans activité professionnelle" },
             { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez votre situation" }
-          ]
-        },
-        {
-          "id": "analyse_heures_travail",
-          "title": "Combien d’heures travaillez-vous par semaine ?",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "recours_choix_action === 'analyse' && (analyse_situation_pro === 'temps_plein' || analyse_situation_pro === 'temps_partiel')",
-          "options": [
-            { "value": "moins_10", "label": "Moins de 10 heures" },
-            { "value": "10_20", "label": "Entre 10 et 20 heures" },
-            { "value": "20_35", "label": "Entre 20 et 35 heures" },
-            { "value": "plus_35", "label": "Plus de 35 heures" },
-            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
           ]
         },
         {
@@ -337,7 +330,7 @@
     },
     {
       "id": "etape7_documents",
-      "title": "Documents",
+      "title": "",
       "questions": [
         {
           "id": "analyse_doc_notification",
@@ -367,25 +360,23 @@
         },
         {
           "id": "analyse_autres_docs_medicaux",
-          "title": "Avez-vous d’autres documents médicaux utiles ?",
+          "title": "Avez-vous d'autres documents médicaux utiles ?",
           "description": "",
           "type": "radio",
           "obligatoire": true,
           "condition_affichage": "recours_choix_action === 'analyse'",
           "options": [
-            { "value": "oui", "label": "Oui" },
+            { "value": "oui", "label": "Oui", "followUp": {
+              "id": "analyse_upload_autres_docs_medicaux",
+              "title": "",
+              "description": "",
+              "type": "file",
+              "obligatoire": true,
+              "multiple": true,
+              "accept": ".pdf,.jpg,.jpeg,.png"
+            }},
             { "value": "non", "label": "Non" }
           ]
-        },
-        {
-          "id": "analyse_upload_autres_docs_medicaux",
-          "title": "Upload multiple",
-          "description": "",
-          "type": "file",
-          "obligatoire": true,
-          "multiple": true,
-          "accept": ".pdf,.jpg,.jpeg,.png",
-          "condition_affichage": "recours_choix_action === 'analyse' && analyse_autres_docs_medicaux === 'oui'"
         },
         {
           "id": "analyse_docs_pro",

@@ -109,7 +109,7 @@
     },
     {
       "id": "etape_situation_medicale",
-      "title": "votre situation médicale",
+      "title": "",
       "questions": [
         {
           "id": "rapo_pathologie",
@@ -197,7 +197,7 @@
     },
     {
       "id": "etape3_limitations",
-      "title": "Limitations fonctionnelles",
+      "title": "",
       "questions": [
         {
           "id": "rapo_mobilite",
@@ -208,8 +208,20 @@
           "options": [
             { "value": "non", "label": "Non" },
             { "value": "un_peu", "label": "Un peu" },
-            { "value": "beaucoup", "label": "Beaucoup" },
-            { "value": "pas_seul", "label": "Je ne peux pas me déplacer seul" },
+            { "value": "beaucoup", "label": "Beaucoup", "subOptions": [
+              { "value": "non", "label": "Non" },
+              { "value": "canne", "label": "Canne" },
+              { "value": "deambulateur", "label": "Déambulateur" },
+              { "value": "fauteuil", "label": "Fauteuil roulant" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
+            { "value": "pas_seul", "label": "Je ne peux pas me déplacer seul", "subOptions": [
+              { "value": "non", "label": "Non" },
+              { "value": "canne", "label": "Canne" },
+              { "value": "deambulateur", "label": "Déambulateur" },
+              { "value": "fauteuil", "label": "Fauteuil roulant" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
             { "value": "autre", "label": "Autre", "followUp": {
               "id": "rapo_mobilite_autre",
               "title": "Expliquez :",
@@ -217,21 +229,6 @@
               "placeholder": "Exemple : J'ai des vertiges constants qui me font perdre l'équilibre, je dois m'accrocher aux murs pour me déplacer même à l'intérieur de mon domicile...",
               "obligatoire": true
             }}
-          ]
-        },
-        {
-          "id": "rapo_aide_marche",
-          "title": "Utilisez-vous une aide pour marcher ?",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "rapo_mobilite === 'beaucoup' || rapo_mobilite === 'pas_seul'",
-          "options": [
-            { "value": "non", "label": "Non" },
-            { "value": "canne", "label": "Canne" },
-            { "value": "deambulateur", "label": "Déambulateur" },
-            { "value": "fauteuil", "label": "Fauteuil roulant" },
-            { "value": "autre", "label": "Autre" }
           ]
         },
         {
@@ -243,24 +240,22 @@
           "options": [
             { "value": "non", "label": "Non" },
             { "value": "parfois", "label": "Parfois" },
-            { "value": "souvent", "label": "Souvent" },
-            { "value": "toujours", "label": "Toujours" },
-            { "value": "autre", "label": "Autre" }
-          ]
-        },
-        {
-          "id": "rapo_taches_aide",
-          "title": "Pour quelles tâches ?",
-          "description": "",
-          "type": "checkbox_multiple",
-          "obligatoire": true,
-          "condition_affichage": "rapo_aide_quotidienne === 'souvent' || rapo_aide_quotidienne === 'toujours'",
-          "options": [
-            { "value": "courses", "label": "Faire les courses" },
-            { "value": "repas", "label": "Préparer les repas" },
-            { "value": "menage", "label": "Faire le ménage" },
-            { "value": "deplacements", "label": "Se déplacer" },
-            { "value": "administratif", "label": "Gérer les démarches administratives" },
+            { "value": "souvent", "label": "Souvent", "subOptions": [
+              { "value": "courses", "label": "Faire les courses" },
+              { "value": "repas", "label": "Préparer les repas" },
+              { "value": "menage", "label": "Faire le ménage" },
+              { "value": "deplacements", "label": "Se déplacer" },
+              { "value": "administratif", "label": "Gérer les démarches administratives" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
+            { "value": "toujours", "label": "Toujours", "subOptions": [
+              { "value": "courses", "label": "Faire les courses" },
+              { "value": "repas", "label": "Préparer les repas" },
+              { "value": "menage", "label": "Faire le ménage" },
+              { "value": "deplacements", "label": "Se déplacer" },
+              { "value": "administratif", "label": "Gérer les démarches administratives" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
             { "value": "autre", "label": "Autre" }
           ]
         },
@@ -282,7 +277,7 @@
     },
     {
       "id": "etape4_situation_pro",
-      "title": "Situation professionnelle",
+      "title": "",
       "questions": [
         {
           "id": "rapo_situation_pro",
@@ -291,27 +286,24 @@
           "type": "radio",
           "obligatoire": true,
           "options": [
-            { "value": "temps_plein", "label": "Emploi à temps plein" },
-            { "value": "temps_partiel", "label": "Emploi à temps partiel" },
+            { "value": "temps_plein", "label": "Emploi à temps plein", "subOptions": [
+              { "value": "moins_10", "label": "Moins de 10 heures" },
+              { "value": "10_20", "label": "10 à 20 heures" },
+              { "value": "20_35", "label": "20 à 35 heures" },
+              { "value": "plus_35", "label": "Plus de 35 heures" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
+            { "value": "temps_partiel", "label": "Emploi à temps partiel", "subOptions": [
+              { "value": "moins_10", "label": "Moins de 10 heures" },
+              { "value": "10_20", "label": "10 à 20 heures" },
+              { "value": "20_35", "label": "20 à 35 heures" },
+              { "value": "plus_35", "label": "Plus de 35 heures" },
+              { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
+            ]},
             { "value": "arret", "label": "Arrêt maladie" },
             { "value": "invalidite", "label": "Invalidité" },
             { "value": "chomage", "label": "Chômage" },
             { "value": "sans_activite", "label": "Sans activité professionnelle" },
-            { "value": "autre", "label": "Autre" }
-          ]
-        },
-        {
-          "id": "rapo_heures_travail",
-          "title": "Combien d’heures travaillez-vous par semaine ?",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "rapo_situation_pro === 'temps_plein' || rapo_situation_pro === 'temps_partiel'",
-          "options": [
-            { "value": "moins_10", "label": "Moins de 10 heures" },
-            { "value": "10_20", "label": "10 à 20 heures" },
-            { "value": "20_35", "label": "20 à 35 heures" },
-            { "value": "plus_35", "label": "Plus de 35 heures" },
             { "value": "autre", "label": "Autre" }
           ]
         },
@@ -333,7 +325,7 @@
     },
     {
       "id": "etape5_argumentaire",
-      "title": "Argumentaire personnel",
+      "title": "",
       "description": "",
       "questions": [
         {
@@ -372,7 +364,7 @@
     },
     {
       "id": "etape6_demande",
-      "title": "Demande adressée à la commission",
+      "title": "",
       "questions": [
         {
           "id": "rapo_demande_recours",
@@ -400,7 +392,7 @@
     },
     {
       "id": "etape7_documents",
-      "title": "Documents",
+      "title": "",
       "questions": [
         {
           "id": "rapo_doc_notification",
@@ -408,7 +400,11 @@
           "description": "",
           "type": "file",
           "obligatoire": true,
-          "accept": ".pdf,.jpg,.jpeg,.png"
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "missingOptions": [
+            { "value": "je_ne_l_ai_plus", "label": "Je ne l'ai plus" },
+            { "value": "je_ne_l_ai_jamais_recue", "label": "Je ne l'ai jamais reçue", "hasTextField": true, "textFieldPlaceholder": "Expliquez la situation" }
+          ]
         },
         {
           "id": "rapo_doc_certificat",
@@ -416,7 +412,11 @@
           "description": "",
           "type": "file",
           "obligatoire": true,
-          "accept": ".pdf,.jpg,.jpeg,.png"
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "missingOptions": [
+            { "value": "je_ne_l_ai_pas", "label": "Je ne l'ai pas" },
+            { "value": "je_ne_sais_pas", "label": "Je ne sais pas" }
+          ]
         },
         {
           "id": "rapo_doc_medical",

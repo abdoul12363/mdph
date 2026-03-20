@@ -49,6 +49,53 @@
   color: #E53E3E;
 }
 
+/* Missing options pour les inputs file */
+.missing-options {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.missing-option {
+  display: block;
+  margin-bottom: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.missing-option:hover {
+  background-color: #e2e8f0;
+}
+
+.missing-option input[type="radio"] {
+  margin-right: 8px;
+}
+
+.text-field-missing {
+  margin-left: 24px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.text-field-missing input {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.text-field-missing input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
 .selection-limit-message {
   margin-top: 10px;
   padding: 10px 12px;

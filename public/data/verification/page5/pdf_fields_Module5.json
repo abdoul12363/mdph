@@ -1,10 +1,10 @@
 {
   "fields": [
-    { "name": "verif_situation_pro", "type": "text", "description": "Situation professionnelle" },
-    { "name": "verif_travail_adapte", "type": "text", "description": "Travail adapté" },
-    { "name": "verif_amenagements", "type": "text", "description": "Aménagements poste" },
-    { "name": "verif_type_amenagements", "type": "text", "description": "Types aménagements" },
-    { "name": "verif_type_amenagements_autre", "type": "text", "description": "Autre aménagement" },
-    { "name": "verif_difficultes_persistantes", "type": "text", "description": "Difficultés persistantes" }
+    { "name": "renouv_situation_professionnelle", "type": "text", "description": "Situation professionnelle" },
+    { "name": "renouv_travail_adapte", "type": "text", "description": "Travail adapté" },
+    { "name": "renouv_amenagements_poste", "type": "text", "description": "Aménagements de poste" },
+    { "name": "renouv_type_amenagements", "type": "text", "description": "Types d'aménagement" },
+    { "name": "renouv_type_amenagements_text", "type": "text", "description": "Précision - autre aménagement" },
+    { "name": "renouv_difficultes_persistantes", "type": "text", "description": "Difficultés persistantes" }
   ]
 }

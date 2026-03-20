@@ -12,12 +12,20 @@
           "type": "text",
           "placeholder": "Exemple : MDPH d'Ille-et-Vilaine",
           "obligatoire": true
+        },
+        {
+          "id": "contentieux_departement_tribunal",
+          "title": "Dans quel département se situe la MDPH concernée ?",
+          "description": "",
+          "type": "text",
+          "placeholder": "Exemple : Ille-et-Vilaine",
+          "obligatoire": true
         }
       ]
     },
     {
       "id": "identification_decision",
-      "title": "Identification de la décision contestée",
+      "title": "",
       "condition_section": "recours_type === 'contentieux'",
       "questions": [
         {
@@ -97,7 +105,7 @@
     },
     {
       "id": "etape_rapo",
-      "title": "Recours administratif préalable (RAPO)",
+      "title": "",
       "condition_section": "recours_type === 'contentieux'",
       "questions": [
         {
@@ -158,7 +166,7 @@
     },
     {
       "id": "etape4_situation_medicale",
-      "title": "Situation médicale",
+      "title": "",
       "condition_section": "recours_type === 'contentieux'",
       "questions": [
         {
@@ -210,7 +218,7 @@
     },
     {
       "id": "etape5_limitations_fonctionnelles",
-      "title": "Limitations fonctionnelles",
+      "title": "",
       "condition_section": "recours_type === 'contentieux'",
       "questions": [
         {
@@ -273,7 +281,7 @@
     },
     {
       "id": "etape6_argumentaire",
-      "title": "Argumentaire utilisateur",
+      "title": "",
       "condition_section": "recours_type === 'contentieux'",
       "questions": [
         {
@@ -304,7 +312,7 @@
     },
     {
       "id": "etape7_demande_tribunal",
-      "title": "Demande au tribunal",
+      "title": "",
       "condition_section": "recours_type === 'contentieux'",
       "questions": [
         {
@@ -325,7 +333,7 @@
     },
     {
       "id": "etape8_pieces_jointes",
-      "title": "Pièces jointes",
+      "title": "",
       "condition_section": "recours_type === 'contentieux'",
       "questions": [
         {
@@ -334,7 +342,11 @@
           "description": "",
           "type": "file",
           "obligatoire": false,
-          "accept": ".pdf,.jpg,.jpeg,.png"
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "missingOptions": [
+            { "value": "je_n_ai_pas_de_document", "label": "Je n'ai pas de document pour le moment" },
+            { "value": "documents_perdus", "label": "Mes documents sont perdus", "hasTextField": true, "textFieldPlaceholder": "Expliquez la situation" }
+          ]
         },
         {
           "id": "contentieux_upload_rapo",
@@ -342,7 +354,11 @@
           "description": "",
           "type": "file",
           "obligatoire": false,
-          "accept": ".pdf,.jpg,.jpeg,.png"
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "missingOptions": [
+            { "value": "je_n_ai_pas_fait_de_rapo", "label": "Je n'ai pas fait de RAPO" },
+            { "value": "rapo_perdu", "label": "Je ne trouve plus le RAPO", "hasTextField": true, "textFieldPlaceholder": "Expliquez la situation" }
+          ]
         },
         {
           "id": "contentieux_upload_reponse_rapo",
@@ -350,7 +366,11 @@
           "description": "",
           "type": "file",
           "obligatoire": false,
-          "accept": ".pdf,.jpg,.jpeg,.png"
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "missingOptions": [
+            { "value": "pas_de_reponse", "label": "Pas de réponse de la MDPH" },
+            { "value": "reponse_perdue", "label": "J'ai perdu la réponse", "hasTextField": true, "textFieldPlaceholder": "Expliquez la situation" }
+          ]
         },
         {
           "id": "contentieux_upload_certificat",
@@ -358,7 +378,11 @@
           "description": "",
           "type": "file",
           "obligatoire": false,
-          "accept": ".pdf,.jpg,.jpeg,.png"
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "missingOptions": [
+            { "value": "pas_de_certificat", "label": "Je n'ai pas de certificat" },
+            { "value": "certificat_perdu", "label": "Je ne trouve plus le certificat", "hasTextField": true, "textFieldPlaceholder": "Expliquez la situation" }
+          ]
         },
         {
           "id": "contentieux_upload_docs_medicaux",
@@ -367,7 +391,11 @@
           "type": "file",
           "obligatoire": false,
           "multiple": true,
-          "accept": ".pdf,.jpg,.jpeg,.png"
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "missingOptions": [
+            { "value": "pas_d_autres_docs", "label": "Je n'ai pas d'autres documents" },
+            { "value": "docs_medicaux_perdus", "label": "Mes documents sont perdus", "hasTextField": true, "textFieldPlaceholder": "Expliquez la situation" }
+          ]
         },
         {
           "id": "contentieux_upload_docs_admin",
@@ -375,7 +403,11 @@
           "description": "",
           "type": "file",
           "obligatoire": false,
-          "accept": ".pdf,.jpg,.jpeg,.png"
+          "accept": ".pdf,.jpg,.jpeg,.png",
+          "missingOptions": [
+            { "value": "pas_de_docs_admin", "label": "Je n'ai pas de document administratif" },
+            { "value": "docs_admin_perdus", "label": "Mes documents sont perdus", "hasTextField": true, "textFieldPlaceholder": "Expliquez la situation" }
+          ]
         }
       ]
     }

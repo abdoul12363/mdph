@@ -1,0 +1,70 @@
+{
+  "sections": [
+    {
+      "title": "",
+      "description": "",
+      "questions": [
+        {
+          "id": "renouv_certificat_medical",
+          "title": "Certificat médical récent",
+          "description": "Téléversez votre certificat médical de moins de 6 mois",
+          "type": "file",
+          "obligatoire": true,
+          "maxFiles": 1,
+          "acceptedFileTypes": [".pdf", ".jpg", ".jpeg", ".png"],
+          "maxFileSizeMB": 5
+        },
+        {
+          "id": "renouv_comptes_rendus",
+          "title": "Comptes rendus spécialisés",
+          "description": "Téléversez les comptes rendus des spécialistes consultés",
+          "type": "file",
+          "obligatoire": false,
+          "maxFiles": 10,
+          "acceptedFileTypes": [".pdf", ".jpg", ".jpeg", ".png"],
+          "maxFileSizeMB": 5
+        },
+        {
+          "id": "renouv_examens_recent",
+          "title": "Examens récents",
+          "description": "Téléversez les résultats d'examens des 12 derniers mois",
+          "type": "file",
+          "obligatoire": false,
+          "maxFiles": 10,
+          "acceptedFileTypes": [".pdf", ".jpg", ".jpeg", ".png"],
+          "maxFileSizeMB": 5
+        },
+        {
+          "id": "renouv_ordonnances",
+          "title": "Ordonnances en cours",
+          "description": "Téléversez vos ordonnances actuelles",
+          "type": "file",
+          "obligatoire": false,
+          "maxFiles": 5,
+          "acceptedFileTypes": [".pdf", ".jpg", ".jpeg", ".png"],
+          "maxFileSizeMB": 5
+        },
+        {
+          "id": "renouv_attestations",
+          "title": "Attestations diverses",
+          "description": "Téléversez les attestations utiles (arrêts travail, aménagements...)",
+          "type": "file",
+          "obligatoire": false,
+          "maxFiles": 10,
+          "acceptedFileTypes": [".pdf", ".jpg", ".jpeg", ".png"],
+          "maxFileSizeMB": 5
+        },
+        {
+          "id": "renouv_autres_documents",
+          "title": "Autres documents pertinents",
+          "description": "Téléversez tout autre document que vous jugez utile",
+          "type": "file",
+          "obligatoire": false,
+          "maxFiles": 10,
+          "acceptedFileTypes": [".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx"],
+          "maxFileSizeMB": 5
+        }
+      ]
+    }
+  ]
+}

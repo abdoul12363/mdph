@@ -1,0 +1,57 @@
+{
+  "sections": [
+    {
+      "title": "",
+      "description": "",
+      "questions": [
+        {
+          "id": "renouv_tentative_reprise",
+          "title": "Depuis la dernière décision MDPH, avez-vous tenté de reprendre une activité ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "oui", "label": "oui" },
+            { "value": "non", "label": "non" }
+          ]
+        },
+        {
+          "id": "renouv_nombre_tentatives",
+          "title": "Si oui, combien de tentatives ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "condition_affichage": "renouv_tentative_reprise === 'oui'",
+          "options": [
+            { "value": "1", "label": "1" },
+            { "value": "2", "label": "2" },
+            { "value": "3_plus", "label": "3 ou plus" }
+          ]
+        },
+        {
+          "id": "renouv_quitte_emploi_sante",
+          "title": "Avez-vous quitté un emploi à cause de votre état de santé ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "oui", "label": "oui" },
+            { "value": "non", "label": "non" }
+          ]
+        },
+        {
+          "id": "renouv_amenagement_poste",
+          "title": "Avez-vous demandé des aménagements de poste ?",
+          "description": "",
+          "type": "radio",
+          "obligatoire": true,
+          "options": [
+            { "value": "oui_acceptes", "label": "oui acceptés" },
+            { "value": "oui_refuses", "label": "oui refusés" },
+            { "value": "non", "label": "non" }
+          ]
+        }
+      ]
+    }
+  ]
+}

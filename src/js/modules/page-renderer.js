@@ -622,6 +622,75 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
       });
       syncRadioTextFields();
     }
+
+    // Gestion des missingOptions pour les inputs file
+    if (q.type === 'file' && q.missingOptions) {
+      const questionDiv = document.querySelector(`[data-question-id="${q.id}"]`);
+      if (questionDiv) {
+        const missingRadios = questionDiv.querySelectorAll('input[name="' + q.id + '_missing"]');
+        const fileInput = questionDiv.querySelector('#answer');
+        
+        // Synchroniser l'affichage des champs texte
+        const syncMissingTextFields = () => {
+          missingRadios.forEach(radio => {
+            const hasText = radio.getAttribute('data-has-text') === 'true';
+            const textFieldDiv = document.getElementById(`text_${radio.value}`);
+            if (textFieldDiv) {
+              textFieldDiv.style.display = radio.checked ? 'block' : 'none';
+            }
+          });
+        };
+        
+        // Gérer le changement de radio missingOptions
+        missingRadios.forEach(radio => {
+          radio.addEventListener('change', () => {
+            // Désactiver l'input file si une missing option est sélectionnée
+            if (fileInput) {
+              fileInput.disabled = missingRadios.some(r => r.checked);
+            }
+            
+            // Sauvegarder la réponse
+            if (radio.checked) {
+              responses[q.id] = radio.value;
+            } else {
+              delete responses[q.id];
+            }
+            
+            // Synchroniser les champs texte
+            syncMissingTextFields();
+            saveLocal(true);
+          });
+        });
+        
+        // Gérer l'input file directement
+        if (fileInput) {
+          fileInput.addEventListener('change', (e) => {
+            // Désactiver les missingOptions si un fichier est uploadé
+            missingRadios.forEach(radio => {
+              radio.checked = false;
+            });
+            syncMissingTextFields();
+            
+            // Sauvegarder les fichiers
+            const files = Array.from(e.target.files);
+            responses[q.id] = files.length > 0 ? files : undefined;
+            saveLocal(true);
+          });
+        }
+        
+        // Gérer les champs texte des missingOptions
+        questionDiv.querySelectorAll('.text-field-missing input[data-field]').forEach(input => {
+          input.addEventListener('input', (e) => {
+            const fieldId = e.target.getAttribute('data-field');
+            if (fieldId) responses[fieldId] = String(e.target.value || '');
+            saveLocal(true);
+          });
+        });
+        
+        // Initialiser l'état
+        syncMissingTextFields();
+      }
+    }
   }
 
   // Gestion des difficultés avec fréquences
