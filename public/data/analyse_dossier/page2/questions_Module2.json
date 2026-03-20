@@ -97,20 +97,6 @@
           "condition_affichage": "recours_choix_action === 'analyse'"
         },
         {
-          "id": "analyse_duree_difficultes",
-          "title": "Depuis combien de temps avez-vous ces difficultés ?",
-          "description": "",
-          "type": "radio",
-          "obligatoire": true,
-          "condition_affichage": "recours_choix_action === 'analyse'",
-          "options": [
-            { "value": "moins_6_mois", "label": "Moins de 6 mois" },
-            { "value": "6_mois_2_ans", "label": "Entre 6 mois et 2 ans" },
-            { "value": "plus_2_ans", "label": "Plus de 2 ans" },
-            { "value": "autre", "label": "Autre", "hasTextField": true, "textFieldPlaceholder": "Précisez" }
-          ]
-        },
-        {
           "id": "analyse_suivi_specialiste",
           "title": "Êtes-vous suivi par un médecin spécialiste ?",
           "description": "",
