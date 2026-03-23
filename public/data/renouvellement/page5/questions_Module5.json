@@ -14,8 +14,14 @@
             { "value": "0", "label": "0 — aucune difficulté" },
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
-            { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "3", "label": "3 — difficulté importante", "subOptionsTitle": "À quelle fréquence cette difficulté se produit-elle ?", "subOptions": [
+              { "value": "tous_les_jours", "label": "tous les jours" },
+              { "value": "plusieurs_fois_semaine", "label": "plusieurs fois par semaine" },
+              { "value": "occasionnellement", "label": "occasionnellement" },
+              { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
+            ]},
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -28,8 +34,14 @@
             { "value": "0", "label": "0 — aucune difficulté" },
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
-            { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "3", "label": "3 — difficulté importante", "subOptionsTitle": "À quelle fréquence cette difficulté se produit-elle ?", "subOptions": [
+              { "value": "tous_les_jours", "label": "tous les jours" },
+              { "value": "plusieurs_fois_semaine", "label": "plusieurs fois par semaine" },
+              { "value": "occasionnellement", "label": "occasionnellement" },
+              { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
+            ]},
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -42,8 +54,14 @@
             { "value": "0", "label": "0 — aucune difficulté" },
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
-            { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "3", "label": "3 — difficulté importante", "subOptionsTitle": "À quelle fréquence cette difficulté se produit-elle ?", "subOptions": [
+              { "value": "tous_les_jours", "label": "tous les jours" },
+              { "value": "plusieurs_fois_semaine", "label": "plusieurs fois par semaine" },
+              { "value": "occasionnellement", "label": "occasionnellement" },
+              { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
+            ]},
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -56,8 +74,14 @@
             { "value": "0", "label": "0 — aucune difficulté" },
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
-            { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "3", "label": "3 — difficulté importante", "subOptionsTitle": "À quelle fréquence cette difficulté se produit-elle ?", "subOptions": [
+              { "value": "tous_les_jours", "label": "tous les jours" },
+              { "value": "plusieurs_fois_semaine", "label": "plusieurs fois par semaine" },
+              { "value": "occasionnellement", "label": "occasionnellement" },
+              { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
+            ]},
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -70,8 +94,14 @@
             { "value": "0", "label": "0 — aucune difficulté" },
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
-            { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "3", "label": "3 — difficulté importante", "subOptionsTitle": "À quelle fréquence cette difficulté se produit-elle ?", "subOptions": [
+              { "value": "tous_les_jours", "label": "tous les jours" },
+              { "value": "plusieurs_fois_semaine", "label": "plusieurs fois par semaine" },
+              { "value": "occasionnellement", "label": "occasionnellement" },
+              { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
+            ]},
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -98,7 +128,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -112,7 +143,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -126,7 +158,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -140,7 +173,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -154,7 +188,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -194,7 +229,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -208,7 +244,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -222,7 +259,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -236,7 +274,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -263,7 +302,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -277,7 +317,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -291,7 +332,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -305,7 +347,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -332,7 +375,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -346,7 +390,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         },
         {
@@ -360,7 +405,8 @@
             { "value": "1", "label": "1 — difficulté légère" },
             { "value": "2", "label": "2 — difficulté modérée" },
             { "value": "3", "label": "3 — difficulté importante" },
-            { "value": "4", "label": "4 — impossible à réaliser seul" }
+            { "value": "4", "label": "4 — impossible à réaliser seul" },
+            { "value": "precisez", "label": "précisez", "hasTextField": true, "textFieldPlaceholder": "Décrivez la situation" }
           ]
         }
       ]
