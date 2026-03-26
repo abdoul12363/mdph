@@ -577,6 +577,28 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
     const questionDiv = document.querySelector(`[data-question-id="${q.id}"]`);
     if (questionDiv) {
       const radioInputs = questionDiv.querySelectorAll(`input[type="radio"][name="${q.id}"]`);
+
+      const syncSubOptionTextFields = () => {
+        try {
+          questionDiv.querySelectorAll('.sub-options-container[id^="suboptions_"]').forEach(container => {
+            container.querySelectorAll('.text-field-inline[data-subtext-for]').forEach(wrapper => {
+              const subValue = wrapper.getAttribute('data-subtext-for');
+              const cb = subValue
+                ? container.querySelector(`input[name="sub_check"][value="${CSS.escape(subValue)}"]`)
+                : null;
+              const shouldShow = !!(cb && cb.checked);
+              wrapper.style.display = shouldShow ? 'block' : 'none';
+              if (!shouldShow) {
+                const input = wrapper.querySelector('input[data-subtextfield]');
+                const fid = input?.getAttribute('data-subtextfield');
+                if (input) input.value = '';
+                if (fid && responses[fid] !== undefined) delete responses[fid];
+              }
+            });
+          });
+        } catch {}
+      };
+
       const syncRadioTextFields = () => {
         const checked = questionDiv.querySelector(`input[type="radio"][name="${q.id}"]:checked`);
         const selectedValue = checked ? String(checked.value) : '';
@@ -604,10 +626,20 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
               if (fid && responses[fid] !== undefined) delete responses[fid];
               inp.value = '';
             });
+
+            container.querySelectorAll('input[data-subtextfield]').forEach(inp => {
+              const fid = inp.getAttribute('data-subtextfield');
+              if (fid && responses[fid] !== undefined) delete responses[fid];
+              inp.value = '';
+            });
           }
         });
+
+        // Après le show/hide des containers, sync l'état des textfields des subOptions
+        syncSubOptionTextFields();
         saveLocal(true);
       };
+      
       radioInputs.forEach(radio => radio.addEventListener('change', syncRadioTextFields));
       questionDiv.querySelectorAll('.text-field-inline input[data-field]').forEach(input => {
         input.addEventListener('input', (e) => {
@@ -624,6 +656,20 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
           const values = Array.from(container.querySelectorAll('input[name="sub_check"]:checked')).map(cb => cb.value);
           responses[subField] = values.length ? values : undefined;
           if (!values.length) delete responses[subField];
+
+          syncSubOptionTextFields();
+          saveLocal(true);
+        });
+      });
+
+      // Sauvegarde live des champs texte des subOptions
+      questionDiv.querySelectorAll('.sub-options-container input[data-subtextfield]').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const fid = e.target.getAttribute('data-subtextfield');
+          if (!fid) return;
+          const val = String(e.target.value || '');
+          if (val) responses[fid] = val;
+          else delete responses[fid];
           saveLocal(true);
         });
       });
@@ -642,6 +688,7 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
         input.addEventListener('change', handler);
       });
       syncRadioTextFields();
+      syncSubOptionTextFields();
     }
 
     // Gestion des missingOptions pour les inputs file
@@ -723,10 +770,7 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
         checkbox.addEventListener('change', () => {
           if (rule && checkbox.checked) {
             const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
-            if (checkedNow.length > rule.max) {
-              checkbox.checked = false;
-              return;
-            }
+            if (checkedNow.length > rule.max) { checkbox.checked = false; return; }
           }
           const difficulty = checkbox.getAttribute('data-difficulty');
           const frequencyDiv = document.getElementById(`freq_${difficulty}`);
@@ -776,12 +820,35 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
     if (questionDiv) {
       const rule = selectionLimitRules[q.id];
       const max1Auto = rule?.max === 1;
+
+      const syncSubOptionTextFields = () => {
+        try {
+          questionDiv.querySelectorAll('.sub-options-container[id^="suboptions_"]').forEach(container => {
+            container.querySelectorAll('.text-field-inline[data-subtext-for]').forEach(wrapper => {
+              const subValue = wrapper.getAttribute('data-subtext-for');
+              const cb = subValue
+                ? container.querySelector(`input[name="sub_check"][value="${CSS.escape(subValue)}"]`)
+                : null;
+              const shouldShow = !!(cb && cb.checked);
+              wrapper.style.display = shouldShow ? 'block' : 'none';
+              if (!shouldShow) {
+                const input = wrapper.querySelector('input[data-subtextfield]');
+                const fid = input?.getAttribute('data-subtextfield');
+                if (input) input.value = '';
+                if (fid && responses[fid] !== undefined) delete responses[fid];
+              }
+            });
+          });
+        } catch {}
+      };
+
       questionDiv.querySelectorAll('input[name="multi_check"]').forEach(cb => {
         cb.addEventListener('change', () => {
           if (rule && cb.checked && rule.max > 1) {
             const checkedNow = questionDiv.querySelectorAll('input[name="multi_check"]:checked');
             if (checkedNow.length > rule.max) { cb.checked = false; return; }
           }
+
           if (max1Auto && cb.checked) {
             questionDiv.querySelectorAll('input[name="multi_check"]:checked').forEach(other => {
               if (other !== cb) other.checked = false;
@@ -794,11 +861,25 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
               subContainer.querySelectorAll('input[name="sub_check"]').forEach(sub => sub.checked = false);
               const subField = subContainer.querySelector('input[data-suboptions-field]')?.getAttribute('data-suboptions-field');
               if (subField && responses[subField]) delete responses[subField];
+
+              subContainer.querySelectorAll('input[data-subfield]').forEach(inp => {
+                const fid = inp.getAttribute('data-subfield');
+                if (fid && responses[fid] !== undefined) delete responses[fid];
+                inp.value = '';
+              });
+              subContainer.querySelectorAll('input[data-subtextfield]').forEach(inp => {
+                const fid = inp.getAttribute('data-subtextfield');
+                if (fid && responses[fid] !== undefined) delete responses[fid];
+                inp.value = '';
+              });
             }
           }
+
+          syncSubOptionTextFields();
           refreshUI();
         });
       });
+
       questionDiv.querySelectorAll('input[name="multi_check"][data-has-text="true"]').forEach(cb => {
         cb.addEventListener('change', () => {
           const textDiv = document.getElementById(`text_${cb.value}`);
@@ -820,9 +901,23 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
           if (!subField || !container) return;
           const values = Array.from(container.querySelectorAll('input[name="sub_check"]:checked')).map(x => x.value);
           if (values.length) responses[subField] = values; else delete responses[subField];
+
+          syncSubOptionTextFields();
           saveLocal(true);
         });
       });
+
+      questionDiv.querySelectorAll('.sub-options-container input[data-subtextfield]').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const fid = e.target.getAttribute('data-subtextfield');
+          if (!fid) return;
+          const val = String(e.target.value || '');
+          if (val) responses[fid] = val;
+          else delete responses[fid];
+          saveLocal(true);
+        });
+      });
+
       questionDiv.querySelectorAll('.text-field-checkbox input[data-field]').forEach(input => {
         input.addEventListener('input', (e) => {
           const fieldId = e.target.getAttribute('data-field');
@@ -830,6 +925,8 @@ export function renderNormalPage(q, idx, visible, nextCallback, prevCallback) {
           saveLocal(true);
         });
       });
+
+      syncSubOptionTextFields();
       refreshUI();
     }
   }
